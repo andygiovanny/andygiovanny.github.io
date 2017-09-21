@@ -2,28 +2,28 @@ var $tomato = $('#tomato');
 var x = setInterval(dance,1000);
 
 function dance(){
-    if ($tomato.attr('src') == ('andygiovanny.github.io/IMAGE FILE/Working Tomato 1.svg')){
-        $tomato.attr('src','andygiovanny.github.io/IMAGE FILE/Working Tomato 2.svg');
+    if ($tomato.attr('src') == ('/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Working Tomato 1.svg')){
+        $tomato.attr('src','/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Working Tomato 2.svg');
     }
     
-    else if($tomato.attr('src') == ('andygiovanny.github.io/IMAGE FILE/Chill Tomato.svg')){
-        $tomato.attr('src','andygiovanny.github.io/IMAGE FILE/Chill Tomato 2.svg');
+    else if($tomato.attr('src') == ('/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Chill Tomato.svg')){
+        $tomato.attr('src','/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Chill Tomato 2.svg');
     }
     
-    else if($tomato.attr('src') == ('andygiovanny.github.io/IMAGE FILE/Chill Tomato 2.svg')){
-        $tomato.attr('src','andygiovanny.github.io/IMAGE FILE/Chill Tomato.svg');
+    else if($tomato.attr('src') == ('/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Chill Tomato 2.svg')){
+        $tomato.attr('src','/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Chill Tomato.svg');
     }
     
-    else if($tomato.attr('src') == ('andygiovanny.github.io/IMAGE FILE/tea tomato.svg')){
-        $tomato.attr('src','andygiovanny.github.io/IMAGE FILE/tea tomato 2.svg');
+    else if($tomato.attr('src') == ('/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/tea tomato.svg')){
+        $tomato.attr('src','/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/tea tomato 2.svg');
     }
     
-    else if($tomato.attr('src') == ('andygiovanny.github.io/IMAGE FILE/tea tomato 2.svg')){
-        $tomato.attr('src','andygiovanny.github.io/IMAGE FILE/tea tomato.svg');
+    else if($tomato.attr('src') == ('/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/tea tomato 2.svg')){
+        $tomato.attr('src','/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/tea tomato.svg');
     }
     
     else{
-        $tomato.attr('src','andygiovanny.github.io/IMAGE FILE/Working Tomato 1.svg'); 
+        $tomato.attr('src','/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Working Tomato 1.svg'); 
     }  
   }
 
@@ -78,7 +78,7 @@ var remainingTime;
 
 var countdownHandle;
 
-var audio = new Audio('andygiovanny.github.io/sounds/beep.mp3');
+var audio = new Audio('./sounds/beep.mp3');
 
 $(document).ready(function() {   
   onPomodoroTimer();
