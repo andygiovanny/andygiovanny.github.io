@@ -78,7 +78,7 @@ var remainingTime;
 
 var countdownHandle;
 
-var audio = new Audio('./sounds/beep.mp3');
+var audio = new Audio('andygiovanny.github.io/sounds/beep.mp3');
 
 $(document).ready(function() {   
   onPomodoroTimer();
