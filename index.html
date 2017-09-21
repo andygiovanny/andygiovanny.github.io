@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">   
+ 
+  <title>Tomato Timers!</title>
+  <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+ 
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href="css/pomodoro-timer.css" rel="stylesheet">
+    
+  <link rel="stylesheet" type = "text/css" href="/Users/andygiovannyfebrianto/Desktop/tomatotimers/css/animate.css">
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu" rel="stylesheet">
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+</head>
+    
+    
+<body>
+  <div class="mainContent">
+      
+    <div class="pop-out"></div> 
+      
+        <div class="pop-out-text">
+            <img id="close-red"src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Close Button Red.svg">
+            <div class="inside-text">
+                <h2 class="title1" > About Pomodoro Technique</h2>
+                <p id="pomodoro-text">  Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s. This technique use timer to break down works into a set of intervals seperated by breaks. Pomodoro technique increase productivity by taking short scheduled breaks regularly.
+                </p>  
+               
+                <h2 class="title2"> How to use Tomato timers</h2>
+                <p id="how-to-use"> 
+                   1. Decide task to be done set timers to 25 minutes for one "Pomodoro" <br>
+                   2. Work on task until timer is complete <br>
+                   3. After timer completion. put a checkmark on a piece of paper<br>
+                   4. Take a 5 minutes short break <br>
+                   5. After four "Pomodoro" take a long break<br>
+                   6. Repeat to step 1 <br>
+                      <br>
+                </p>
+                
+                <p id="feedback">Send your's feedback and request <a href="mailto:andygiovannyfebrianto@gmail.com">here</a>.</p>
+                
+            </div> 
+         </div>   
+      
+      
+      
+    <div class="page-header">
+        
+        <img id="logo" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Logo.svg">
+        <img id="whatis"src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/What is Tomato Timer.svg">
+        
+    </div>
+    
+    <div class="time-control">  
+    <h2 class="text-center">
+        <span>
+            
+          <img class="button" id="pomodoroButton" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Pomodoro Button.svg" type="submit" onclick="onPomodoroTimer()">
+    
+          <img class="button" id="shortButton" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Short Break.svg" type="submit" onclick="onShortTimer()">
+            
+          <img class="button" id="longButton" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Long Break.svg" type="submit" onclick="onLongTimer()"> 
+            
+        </span>
+    </h2>  
+      </div>    
+      
+    <div class="panel panel-default">
+        
+      <img  id="tomato" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Working Tomato 1.svg"> 
+        
+      <div class="panel-body text-center">
+        <div class="timer-time timer-container">
+          <div class="timer-time-set timer-box" id="currentTime">
+            <span id="minutesValue">00</span><span>:</span><span id="secondsValue">00</span>
+          </div>
+          <div class="timer-time-set timer-box" id="nextTime">
+            <span id="minutesNext">00</span><span>:</span><span id="secondsNext">00</span>
+          </div>
+        </div>
+        </div>
+        
+        <div>
+            
+           <img class="navigation" id="restartButton" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Reset Button.svg" type="submit" onclick="onResetTimer()">    
+            
+           <img class="navigation" id="startButton" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Play Button.svg" type="submit" onclick="onStartTimer()"> 
+        
+           <img class="navigation" id="stopButton" src="/Users/andygiovannyfebrianto/Desktop/tomatotimers/IMAGE FILE/Stop Button.svg" type="submit" onclick="onStopTimer()"> 
+            
+        </div>
+        
+    </div>
+        
+    
+      
+  </div>
+    
+    <div id="footer-area">
+        
+    </div>
+      
+    
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+ <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="js/pomodoro-timer.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59bf5fb7954a0abb"></script> 
+    
+</body>
+</html>
