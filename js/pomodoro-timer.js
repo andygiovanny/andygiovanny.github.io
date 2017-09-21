@@ -51,7 +51,7 @@ $('.navigation').on('click', function(){
     
 
 $('#shortButton').on('click', function(){
-    $tomato.attr('src','/IMAGE FILE/Chill Tomato.svg');
+    $tomato.attr('src','/IMAGE FILE/Chill Tomato 2.svg');
     clearInterval();
   });
 
