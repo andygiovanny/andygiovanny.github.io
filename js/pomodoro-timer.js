@@ -51,7 +51,7 @@ $('.navigation').on('click', function(){
     
 
 $('#shortButton').on('click', function(){
-    $tomato.attr('src','IMAGE FILE/Chill Tomato.svg');
+    $tomato.attr('src','/IMAGE FILE/Chill Tomato.svg');
     clearInterval();
   });
 
@@ -78,7 +78,7 @@ var remainingTime;
 
 var countdownHandle;
 
-var audio = new Audio('./sounds/beep.mp3');
+var audio = new Audio('/sounds/beep.mp3');
 
 $(document).ready(function() {   
   onPomodoroTimer();
