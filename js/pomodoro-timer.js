@@ -83,14 +83,8 @@ var audio = new Audio('/sounds/beep.mp3');
 $(document).ready(function() {   
   onPomodoroTimer();
   dance();
-  
-  var documentTitle = document.title;     
-
-   function title() {
-    documentTitle = setInterval(function(){
-        documentTitle = gHours "First param"; }, 2000);
-}  
-  });
+  document.title = setInterval({gMinutes + ":"+ gSeconds},1000);    
+});
 
 function onPomodoroTimer(){
 
