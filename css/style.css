@@ -329,7 +329,11 @@
     font-size: 100%;
 }        
     
+
+#footer-area{
+   height: 30vh;
+   background-color: #ffd400;
 }
-
-
+    
+}
 
