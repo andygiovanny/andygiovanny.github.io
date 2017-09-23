@@ -257,11 +257,6 @@
 }
 
 
-
-/*
-
-
-
 @media screen and (max-width: 1159px){
     
 #what-is-text{
@@ -348,14 +343,14 @@
     text-align: center;
 }
  
-#shortButton h1{
+#short-button-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 60%;
     margin: auto;
     text-align: center;
 }
     
-#longButton h1{
+#long-button-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 60%;
     margin: auto;
@@ -419,11 +414,11 @@
     font-size: 40%;
 }    
     
-#shortButton h1{
+#short-button-text{
     font-size: 40%;
 }
     
-#longButton h1{
+#long-button-text1{
     font-size: 40%;
 }    
     
@@ -438,11 +433,11 @@
     margin-left: 20%;
 }    
     
-#shortButton h1{
+#short-button-text{
     font-size: 40%;
 }
     
-#longButton h1{
+#long-button-text{
     font-size: 40%;
 }    
     
@@ -457,11 +452,11 @@
     margin-left: 30%;
 }    
     
-#shortButton h1{
+#short-button-text{
     font-size: 30%;
 }
     
-#longButton h1{
+#long-button-text{
     font-size: 30%;
 }    
     
