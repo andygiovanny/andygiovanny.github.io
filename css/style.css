@@ -303,6 +303,7 @@
     margin-left: 20%;
     cursor: pointer;
 }
+    
 #shortButton{
     width: 15%;
     height: auto;
@@ -400,6 +401,7 @@
 }        
 }    
 @media screen and (max-width: 633px){
+    
 #pomodoro-button-text{
     font-size: 50%;
 }    
@@ -486,5 +488,10 @@
    height: 30vh;
    background-color: #ffd400;
 }
+
+#pomodoroButton{
+    margin-left: 10%;
+    width: 20%;
+}     
     
 }
