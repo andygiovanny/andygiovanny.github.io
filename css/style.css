@@ -86,84 +86,25 @@
     float: right;
     cursor: pointer;
     margin-bottom: 10%;
-    background-color: #ffece4;
-    color: #da4c56;
-    padding: 1% 0.7% 0.7% 0.7%;
-    border-radius: 20px;
-}
-
-#whatis h1{
-    font-family: 'Baloo Tammudu', cursive;
-    font-size: 120%;
-    margin: auto;
-    text-align: center;
 }
 
 #pomodoroButton{
-    width: 11%;
+    width: 10%;
     height: auto;
     margin-left: 20%;
     cursor: pointer;
-    background-color: #ffece4;
-    padding: 1.6% 1% 1% 1%;
-    border-radius: 20px;
-    color: #da4c56;
-    display: inline-block;
-}
-
-#pomodoroButton h1{
-    font-family: 'Baloo Tammudu', cursive;
-    font-size: 80%;
-    margin: auto;
-    text-align: center;
-}
-
-#pomodoroButton:hover{
-    background-color: #ffc9b6;
 }
 
 #shortButton{
-    width: 13%;
+    width: 10%;
     height: auto;
     cursor: pointer;
-    background-color: #ffece4;
-    padding: 1.6% 1% 1% 1%;
-    border-radius: 20px;
-    color: #da4c56;
-    display: inline-block;
-}
-
-#shortButton h1{
-    font-family: 'Baloo Tammudu', cursive;
-    font-size: 80%;
-    margin: auto;
-    text-align: center;
-}
-
-#shortButton:hover{
-    background-color: #ffc9b6;
 }
 
 #longButton{
-    width: 13%;
+    width: 10%;
     height: auto;
     cursor: pointer;
-    background-color: #ffece4;
-    padding: 1.6% 1% 1% 1%;
-    border-radius: 20px;
-    color: #da4c56;
-    display: inline-block;
-}
-
-#longButton h1{
-    font-family: 'Baloo Tammudu', cursive;
-    font-size: 80%;
-    margin: auto;
-    text-align: center;
-}
-
-#longButton:hover{
-    background-color: #ffc9b6;
 }
 
 .button{
@@ -270,46 +211,33 @@
     position: relative;
 }
 
-
-
-
-@media screen and (max-width: 1159px){
-    
-#whatis h1{
-    font-family: 'Baloo Tammudu', cursive;
-    font-size: 100%;
-    margin: auto;
-    text-align: center;
-}
-    
-    
+@media screen and (max-width: 1024px){
 .navigation{
    width: 5%;
 }
     
 #restartButton{
    margin-left: 42.5%;
-}    
-    
-#pomodoroButton h1{
-    font-size: 60%;
 }
     
 #pomodoroButton{
-    margin-left: 5%;
-}    
+    width: 15%;
+    height: auto;
+    margin-left: 20%;
+    cursor: pointer;
+}
 
-.button{
-    margin: auto;
+#shortButton{
+    width: 15%;
+    height: auto;
+    cursor: pointer;
 }
- 
-#shortButton h1{
-    font-size: 60%;
+
+#longButton{
+    width: 15%;
+    height: auto;
+    cursor: pointer;
 }
-    
-#longButton h1{
-    font-size: 60%;
-}    
     
 #logo{
     width: 20%;
@@ -340,13 +268,6 @@
 }
 
 @media screen and (max-width: 412px){
-    
-#whatis h1{
-    font-family: 'Baloo Tammudu', cursive;
-    font-size: 80%;
-    margin: auto;
-    text-align: center;
-}        
 
 #pomodoroButton{
     width: 30%;
@@ -413,27 +334,6 @@
    height: 30vh;
    background-color: #ffd400;
 }
-
-#pomodoroButton h1{
-    font-size: 40%;
-}
     
-#pomodoroButton{
-    margin-left: 0%;
-    width: 20%;
-}    
-
-.button{
-    margin: auto;
-}
- 
-#shortButton h1{
-    font-size: 40%;
-}
-    
-#longButton h1{
-    font-size: 40%;
-}    
-       
 }
 
