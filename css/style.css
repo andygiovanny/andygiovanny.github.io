@@ -276,7 +276,6 @@
 /*MEDIA QUERY*/
 
 /*
-
 @media screen and (max-width: 1159px){
     
 #what-is-text{
@@ -306,19 +305,16 @@
     margin-left: 20%;
     cursor: pointer;
 }
-
 #shortButton{
     width: 15%;
     height: auto;
     cursor: pointer;
 }
-
 #longButton{
     width: 15%;
     height: auto;
     cursor: pointer;
 }
-
 .button{
     margin: auto;
 }
@@ -338,7 +334,6 @@
 #logo{
     width: 20%;
 }
-
 #whatis{
     width: 20%;
 }    
@@ -346,11 +341,9 @@
 .title1{
     font-size: 100%;
 }
-
 .title2{
     font-size: 100%;
 }
-
 .inside-text{
     font-size: 100%;
 }
@@ -359,7 +352,6 @@
     font-size: 100%;
 }      
 }
-
     
 @media screen and (max-width: 957px){
 #pomodoro-button-text{
@@ -373,7 +365,6 @@
 #long-button-text{
     font-size: 70%;
 }    
-
 #pomodoroButton{
     width: 20%;
 }         
@@ -393,8 +384,6 @@
     font-size: 60%;
 }               
 }   
-
-
 @media screen and (max-width: 683px){
 #pomodoro-button-text{
     font-size: 55%;
@@ -407,20 +396,15 @@
 #long-button-text{
     font-size: 55%;
 }    
-
 #pomodoroButton{
     margin-left: 20%;
     width: 20%;
 }        
 }    
-
-
-
 @media screen and (max-width: 633px){
 #pomodoro-button-text{
     font-size: 50%;
 }    
-
 #pomodoroButton{
     margin-left: 20%;
     width: 20%;
@@ -454,7 +438,6 @@
 #long-button-text{
     font-size: 40%;
 }    
-
 #pomodoro-button-text{
     font-size: 40%;
 }   
@@ -510,4 +493,3 @@
 }
     
 }
-
