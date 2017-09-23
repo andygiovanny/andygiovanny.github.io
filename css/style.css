@@ -111,7 +111,7 @@
     display: inline-block;
 }
 
-#pomodoro-button-text{
+.pomodoro-button-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 80%;
     margin: auto;
@@ -134,7 +134,7 @@
     display: inline-block;
 }
 
-#short-button-text{
+.short-button-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 80%;
     margin: auto;
@@ -157,7 +157,7 @@
     display: inline-block;
 }
 
-#long-button-text{
+.long-button-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 80%;
     margin: auto;
@@ -446,15 +446,15 @@
     text-align: center;
 }        
 
-#short-button-text{
+.short-button-text{
     font-size: 40%;
 }
     
-#long-button-text{
+.long-button-text{
     font-size: 40%;
 }    
 
-#pomodoro-button-text{
+.pomodoro-button-text{
     font-size: 40%;
 }   
     
