@@ -272,6 +272,10 @@
     position: relative;
 }
 
+
+/*MEDIA QUERY*/
+
+
 @media screen and (max-width: 1159px){
     
 #what-is-text{
@@ -336,11 +340,68 @@
     
 #feedback{
     font-size: 100%;
+}      
+}
+
+
+
+
+    
+@media screen and (max-width: 793px){
+#pomodoro-button-text{
+    font-size: 40%;
 }    
     
-    
-    
+#short-button-text{
+    font-size: 40%;
 }
+    
+#long-button-text1{
+    font-size: 40%;
+}    
+}   
+
+
+
+@media screen and (max-width: 683px){
+#pomodoro-button-text{
+    font-size: 40%;
+}    
+
+#pomodoroButton{
+    margin-left: 20%;
+}    
+    
+#short-button-text{
+    font-size: 40%;
+}
+    
+#long-button-text{
+    font-size: 40%;
+}    
+}    
+
+
+
+@media screen and (max-width: 633px){
+#pomodoro-button-text{
+    font-size: 30%;
+}    
+
+#pomodoroButton{
+    margin-left: 30%;
+}    
+    
+#short-button-text{
+    font-size: 30%;
+}
+    
+#long-button-text{
+    font-size: 30%;
+}    
+}    
+       
+
 
 @media screen and (max-width: 412px){
     
@@ -423,57 +484,3 @@
     
 }
 
-    
-@media screen and (max-width: 793px){
-#pomodoro-button-text{
-    font-size: 40%;
-}    
-    
-#short-button-text{
-    font-size: 40%;
-}
-    
-#long-button-text1{
-    font-size: 40%;
-}    
-    
-}   
-
-@media screen and (max-width: 683px){
-#pomodoro-button-text{
-    font-size: 40%;
-}    
-
-#pomodoroButton{
-    margin-left: 20%;
-}    
-    
-#short-button-text{
-    font-size: 40%;
-}
-    
-#long-button-text{
-    font-size: 40%;
-}    
-    
-}    
-
-@media screen and (max-width: 633px){
-#pomodoro-button-text{
-    font-size: 30%;
-}    
-
-#pomodoroButton{
-    margin-left: 30%;
-}    
-    
-#short-button-text{
-    font-size: 30%;
-}
-    
-#long-button-text{
-    font-size: 30%;
-}    
-    
-}    
-       
