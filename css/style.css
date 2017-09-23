@@ -100,24 +100,71 @@
 }
 
 #pomodoroButton{
-    width: 10%;
+    width: 11%;
     height: auto;
     margin-left: 20%;
     cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#pomodoroButton h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#pomodoroButton:hover{
+    background-color: #ffc9b6;
 }
 
 #shortButton{
-    width: 10%;
+    width: 13%;
     height: auto;
     cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#shortButton h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#shortButton:hover{
+    background-color: #ffc9b6;
 }
 
 #longButton{
-    width: 10%;
+    width: 13%;
     height: auto;
     cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
 }
 
+#longButton h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#longButton:hover{
+    background-color: #ffc9b6;
+}
 .button{
     margin: 0px auto 10px auto;
     
