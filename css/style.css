@@ -92,7 +92,7 @@
     border-radius: 20px;
 }
 
-#whatis h1{
+#what-is-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 120%;
     margin: auto;
@@ -224,7 +224,7 @@
 
 @media screen and (max-width: 1024px){
     
-#whatis h1{
+#what-is-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 100%;
     margin: auto;
@@ -294,7 +294,7 @@
 
 @media screen and (max-width: 412px){
     
-#whatis h1{
+#what-is-text{
     font-family: 'Baloo Tammudu', cursive;
     font-size: 80%;
     margin: auto;
