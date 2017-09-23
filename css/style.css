@@ -86,6 +86,17 @@
     float: right;
     cursor: pointer;
     margin-bottom: 10%;
+    background-color: #ffece4;
+    color: #da4c56;
+    padding: 1% 0.7% 0.7% 0.7%;
+    border-radius: 20px;
+}
+
+#whatis h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 120%;
+    margin: auto;
+    text-align: center;
 }
 
 #pomodoroButton{
@@ -212,6 +223,20 @@
 }
 
 @media screen and (max-width: 1024px){
+    
+#whatis h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 100%;
+    margin: auto;
+    text-align: center;
+}   
+    
+#whatis{
+    width: 20%;
+    margin-bottom: 0%;
+    margin-top: 3%;
+}        
+    
 .navigation{
    width: 5%;
 }
@@ -268,6 +293,13 @@
 }
 
 @media screen and (max-width: 412px){
+    
+#whatis h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}        
 
 #pomodoroButton{
     width: 30%;
