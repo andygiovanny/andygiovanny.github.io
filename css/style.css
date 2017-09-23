@@ -121,7 +121,7 @@
 #pomodoroButton:hover{
     background-color: #ffc9b6;
 }
-
+/*
 #shortButton{
     width: 13%;
     height: auto;
@@ -143,8 +143,7 @@
 #shortButton:hover{
     background-color: #ffc9b6;
 }
-
-/*
+*/
 #longButton{
     width: 13%;
     height: auto;
@@ -166,7 +165,7 @@
 #longButton:hover{
     background-color: #ffc9b6;
 }
-*/
+
 
 .button{
     margin: 0px auto 10px auto;
