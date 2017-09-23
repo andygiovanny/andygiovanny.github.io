@@ -147,9 +147,25 @@
 
 
 #longButton{
-    width: 10%;
+    width: 13%;
     height: auto;
     cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#long-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#longButton:hover{
+    background-color: #ffc9b6;
 }
 
 .button{
