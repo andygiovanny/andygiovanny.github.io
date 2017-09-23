@@ -122,11 +122,29 @@
     background-color: #ffc9b6;
 }
 
+
 #shortButton{
-    width: 10%;
+    width: 13%;
     height: auto;
     cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
 }
+
+#short-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#shortButton:hover{
+    background-color: #ffc9b6;
+}
+
 
 #longButton{
     width: 10%;
@@ -238,7 +256,7 @@
     position: relative;
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 1159px){
     
 #what-is-text{
     font-family: 'Baloo Tammudu', cursive;
@@ -317,22 +335,26 @@
     text-align: center;
 }        
 
-#pomodoroButton{
-    width: 30%;
-    height: auto;
-    margin: 0%;
+#pomodoro-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 60%;
+    margin: auto;
+    text-align: center;
 }
-
-#shortButton{
-    width: 30%;
-    height: auto;
-    margin: 0%;
+ 
+#shortButton h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 60%;
+    margin: auto;
+    text-align: center;
 }
-
-#longButton{
-    width: 30%;
-    margin: 0%;
-}
+    
+#longButton h1{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 60%;
+    margin: auto;
+    text-align: center;
+}    
     
 #whatis{
     width: 40%;
@@ -385,3 +407,57 @@
     
 }
 
+    
+@media screen and (max-width: 793px){
+#pomodoro-button-text{
+    font-size: 40%;
+}    
+    
+#shortButton h1{
+    font-size: 40%;
+}
+    
+#longButton h1{
+    font-size: 40%;
+}    
+    
+}   
+
+@media screen and (max-width: 683px){
+#pomodoro-button-text{
+    font-size: 40%;
+}    
+
+#pomodoroButton{
+    margin-left: 20%;
+}    
+    
+#shortButton h1{
+    font-size: 40%;
+}
+    
+#longButton h1{
+    font-size: 40%;
+}    
+    
+}    
+
+@media screen and (max-width: 633px){
+#pomodoro-button-text{
+    font-size: 30%;
+}    
+
+#pomodoroButton{
+    margin-left: 30%;
+}    
+    
+#shortButton h1{
+    font-size: 30%;
+}
+    
+#longButton h1{
+    font-size: 30%;
+}    
+    
+}    
+       
