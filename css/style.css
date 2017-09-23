@@ -122,7 +122,7 @@
     background-color: #ffc9b6;
 }
 
-
+/*
 #shortButton{
     width: 13%;
     height: auto;
@@ -167,7 +167,7 @@
 #longButton:hover{
     background-color: #ffc9b6;
 }
-
+*/
 .button{
     margin: 0px auto 10px auto;
     
@@ -419,7 +419,6 @@
 }    
 }     
        
-*/
 
 @media screen and (max-width: 412px){
     
@@ -433,15 +432,13 @@
 #short-button-text{
     font-size: 40%;
 }
-
-/*    
+   
 #long-button-text{
     font-size: 40%;
 }    
 #pomodoro-button-text{
     font-size: 40%;
 }   
-*/
     
 #whatis{
     width: 40%;
