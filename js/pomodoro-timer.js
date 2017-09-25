@@ -1,3 +1,45 @@
+//FOR CHECKLIST
+         
+$(document).ready(function() {  
+        
+    $('#addButton').on('click', function(){
+      TaskManager();
+});
+   
+         
+    function TaskManager(){  
+      var newListItem = $('#addTo').val();
+    
+        if (newListItem.length > 0){
+            $('#toDoList').append('<li id="added">'+ newListItem + '</li>');
+            $('#addTo').val('');
+        };
+        
+        $('ul').on('click', 'li', function() {
+        $(this).remove();
+    
+    });
+};
+        
+    });
+       
+$(document).keypress(function(e) {
+         var newListItem = $('#addTo').val();
+     
+    if(e.which == 13) {
+        if (newListItem.length > 0){
+            $('#toDoList').append('<li id="added">'+ newListItem + '</li>');
+            $('#addTo').val('');
+        };
+    };
+        $('ul').on('click', 'li', function() {
+        $(this).remove();
+});
+});
+
+
+
+
 var $tomato = $('#tomato');
 var x = setInterval(dance,1000);
 
