@@ -501,8 +501,26 @@
 }    
 #pomodoroButton{
     width: 20%;
-}        
+}
+    
+#added{
+font-size: 140%; 
+margin-top: 5%;
 }   
+    
+#addButton{
+    padding-top: 2%; 
+}      
+    
+}   
+
+@media screen and (max-width: 521px){   
+        
+#ul{
+font-size: 140%; 
+margin-top: 10%;
+}  
+}
 
 
 @media screen and (max-width: 633px){
@@ -526,6 +544,18 @@
        
 
 @media screen and (max-width: 412px){
+    
+    
+    
+#added{
+font-size: 100%; 
+margin: 0%;
+}  
+    
+#footer-area{
+height: 30vh;
+}    
+       
     
 #what-is-text{
     font-family: 'Baloo Tammudu', cursive;
