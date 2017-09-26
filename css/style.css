@@ -545,7 +545,9 @@ margin-top: 10%;
 
 @media screen and (max-width: 412px){
     
-    
+#infographic{
+display: none;
+}    
     
 #added{
 font-size: 100%; 
