@@ -57,6 +57,7 @@
     width: 100%;
     height: auto;
     background-image: url('/IMAGE FILE/Background.svg');
+    background-repeat: no-repeat;
 }
 
 .page-header{
