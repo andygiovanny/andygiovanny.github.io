@@ -56,8 +56,9 @@
 .mainContent{
     width: 100%;
     height: auto;
-    background-image: url('/IMAGE FILE/Background.svg');
+    /*background-image: url('/IMAGE FILE/Background.svg');*/
     background-repeat: repeat-x;
+    background-color: #C55E5E;
 }
 
 .page-header{
