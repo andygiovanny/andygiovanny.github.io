@@ -626,8 +626,14 @@ overflow: scroll;
     
 #pomodoroButton{
     width: 15%;
-    
 }        
+    
+
+#footer-area{
+height: 70vh;
+overflow: scroll;
+}    
+    
 }   
 
 
