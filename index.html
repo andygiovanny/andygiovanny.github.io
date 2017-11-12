@@ -9,9 +9,9 @@
   <link href="css/jquerysctipttop.css" rel="stylesheet" type="text/css">
  
   <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link href="/css/style.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
     
-  <link rel="stylesheet" type = "text/css" href="/css/animate.css">
+  <link rel="stylesheet" type = "text/css" href="css/animate.css">
     
   <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu" rel="stylesheet">
     
@@ -42,7 +42,7 @@
     <div class="pop-out"></div> 
       
        <div class="pop-out-text">
-            <img id="close-red"src="/IMAGE FILE/Close Button Red.svg">
+            <img id="close-red"src="IMAGE FILE/Close Button Red.svg">
            
             <div class="inside-text">
                 <h2 class="title1" > About Pomodoro Technique</h2>
@@ -58,10 +58,27 @@
                    5. After four "Pomodoro" take a long break<br>
                    6. Repeat to step 1 <br>
                       <br>
+                    
+                   USE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW
+                    
                 </p>
                 
                 <h1 id="feedback">Like the Pomodoro Timer? Send your feedback and request <a href="mailto:andygiovannyfebrianto@gmail.com">here</a>.</h1>
                 
+            </div> 
+         </div>   
+		 
+		  <div class="pop-out-settings"></div> 
+      
+       <div class="pop-out-text-settings">
+            <img id="close-red-settings" src="IMAGE FILE/Close Button Red.svg">
+           
+            <div class="inside-text">
+				<h1>ENTER CUSTOM TIMER</h1>
+                <p>POMODORO<input id="pomodordVal" type="number"/></p>
+                <p>SHORT BREAK<input id="shortVal" type="number"/></p>
+				<p>LONG BREAK<input id="longVal" type="number"/></p>
+				<p><input type = "button" id = "SaveSet" value = "Save"/></p>
             </div> 
          </div>   
       
@@ -69,10 +86,13 @@
       
     <div class="page-header">
         
-        <img id="logo" src="/IMAGE FILE/Logo.svg">
+        <img id="logo" src="IMAGE FILE/Logo.svg">
         
         <div id="whatis">
         <h1 id="what-is-text"> WHAT IS POMODORO TIMER?</h1>
+        </div>
+		<div id="settings">
+        <h1 id="settings-text"> CUSTOM TIMER </h1>
         </div>
         
     </div>
@@ -82,7 +102,7 @@
         <span>
             
           <div class="button" id="pomodoroButton" type="submit"       onclick="onPomodoroTimer()">
-          <h1 id="pomodoro-button-text"> POMODORO </h1>
+          <h1 id="pomodoro-button-text"> POMODORO</h1>
           </div>  
             
           <div class="button" id="shortButton" type="submit" onclick="onShortTimer()">
@@ -91,6 +111,10 @@
             
           <div class="button" id="longButton" type="submit" onclick="onLongTimer()">
           <h1 id="long-button-text"> LONG BREAK</h1>
+          </div> 
+		  
+		   <div class="button" id="loopButton" type="submit" onclick="onLoopTimer()">
+          <h1 id="loop-button-text"> LOOP </h1>
           </div>  
             
         </span>
@@ -99,7 +123,7 @@
       
     <div class="panel panel-default">
         
-      <img  id="tomato" src="/IMAGE FILE/Working Tomato 1.svg"> 
+      <img  id="tomato" src="IMAGE FILE/Working Tomato 1.svg"> 
         
       <div class="panel-body text-center">
         <div class="timer-time timer-container">
@@ -114,11 +138,11 @@
         
         <div>
             
-           <img class="navigation" id="restartButton" src="/IMAGE FILE/Reset Button.svg"type="submit" onclick="onResetTimer()">   
+           <img class="navigation" id="restartButton" src="IMAGE FILE/Reset Button.svg"type="submit" onclick="onResetTimer()">   
             
-           <img class="navigation" id="startButton" src="/IMAGE FILE/Play Button.svg" type="submit" onclick="onStartTimer()"> 
+           <img class="navigation" id="startButton" src="IMAGE FILE/Play Button.svg" type="submit" onclick="onStartTimer()"> 
         
-           <img class="navigation" id="stopButton" src="/IMAGE FILE/Stop Button.svg" type="submit" onclick="onStopTimer()"> 
+           <img class="navigation" id="stopButton" src="IMAGE FILE/Stop Button.svg" type="submit" onclick="onStopTimer()"> 
             
         </div>
         
@@ -129,10 +153,10 @@
   </div>
     
     <div id="footer-area">
-        
-    <img id="infographic" src="/IMAGE FILE/Infographic.svg"> 
 
-    <img id="checklist-title" src="/IMAGE FILE/Checklist Title.svg">     
+    <a href="https://www.inkley.us/"><img id="infographic" src="IMAGE FILE/Infographic.svg"></a>
+        
+    <img id="checklist-title" src="IMAGE FILE/Checklist Title.svg">     
     
     <input type="text" id="addTo" placeholder="Enter task">
         
@@ -147,7 +171,7 @@
  <script src="js/jquery-1.12.0.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="js/bootstrap.min.js"></script>
-  <script src="/js/pomodoro-timer.js"></script>
+  <script src="js/pomodoro-timer.js"></script>
     
 <script type="text/javascript">
 
@@ -164,7 +188,7 @@
 
 </script>
   
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59bf5fb7954a0abb"></script> 
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59bf5fb7954a0abb"></script> 
     
 </body>
 </html>

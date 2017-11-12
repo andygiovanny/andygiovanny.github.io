@@ -56,7 +56,7 @@
 .mainContent{
     width: 100%;
     height: auto;
-    background-image: url('/IMAGE FILE/Background.svg');
+    background-image: url('../IMAGE FILE/Background.svg');
     background-repeat: repeat-x;
     background-color: #C55E5E;
 }
@@ -99,11 +99,32 @@
     margin: auto;
     text-align: center;
 }
+#settings{
+    position: relative;
+    width: 17%;
+    height: auto;
+    margin-right: 1%;
+    margin-top: 1%; 
+    float: right;
+    cursor: pointer;
+   
+    background-color: #ffece4;
+    color: #da4c56;
+    padding: 1% 0.7% 0.7% 0.7%;
+    border-radius: 20px;
+}
+
+#settings-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 120%;
+    margin: auto;
+    text-align: center;
+}
 
 #pomodoroButton{
     width: 11%;
     height: auto;
-    margin-left: 20%;
+    margin-left: 18%;
     cursor: pointer;
     background-color: #ffece4;
     padding: 1.6% 1% 1% 1%;
@@ -120,6 +141,15 @@
 }
 
 #pomodoroButton:hover{
+    background-color: #ffc9b6;
+}
+
+
+#whatis:hover{
+    background-color: #ffc9b6;
+}
+
+#settings:hover{
     background-color: #ffc9b6;
 }
 
@@ -163,7 +193,29 @@
     text-align: center;
 }
 
+#loopButton{
+    width: 13%;
+    height: auto;
+    cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#loop-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
 #longButton:hover{
+    background-color: #ffc9b6;
+}
+
+#loopButton:hover{
     background-color: #ffc9b6;
 }
 
@@ -218,6 +270,27 @@
     display: none;
 }
 
+.pop-out-settings{
+    width: 100%;
+    height: 169%;
+    background-color: black;
+    opacity: 0.3;
+    position: absolute;
+    z-index: 999;
+    display: none;
+}
+
+.pop-out-text-settings{
+    width: 50%;
+    height: auto;
+    background-color: #ffede5;
+    margin : 8% auto 0% 28%;
+    position: absolute;
+    padding-top: 2%;
+    z-index: 1000;
+    display: none;
+}
+
 .title1{
     margin: 1% auto 0% auto;
     color: #a32b34;
@@ -260,7 +333,45 @@
     cursor: pointer;
 }
 
+#close-red-settings{
+    width: 5%;
+    height: auto;
+    position: absolute;
+    margin-left: 90%;
+    top: 6%;
+    cursor: pointer;
+}
 
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input[type=number] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+#SaveSet{
+    width: 10%;
+    height: 5vh;
+    margin: auto;
+    background-color: #cf433b;
+    display: inline-block;
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 100%;
+    text-align: center;
+    padding-top: 1%;
+    color: #ffa900;
+    z-index: 1000;
+    cursor: pointer;
+    border: none;
+    
+}
 
 /*FOOTER AREA*/
 
@@ -342,15 +453,9 @@
     position: absolute;
     display: inline-block;
     margin: 15% 0% 0% 5%;
-    color: white;
-}
-
-#added{
-  font-family: 'Baloo Tammudu', cursive;
-  font-size: 200%;
-  text-align: left;
-  color: #cf433b;
-  cursor: pointer;
+    color: black;
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 150%;
 }
 
 #feedback{
@@ -366,6 +471,10 @@
     margin: 2% 5% 0% 5%;
 }
 
+input[type=checkbox] {
+	margin-right: 5%;
+}
+
 
 /*MEDIA QUERY*/
 
@@ -377,6 +486,21 @@
     margin: auto;
     text-align: center;
 }   
+
+#infographic{
+    display: none;
+}  
+
+#footer-area{
+height: 50vh;
+overflow: scroll;
+}        
+    
+
+#toDoList{
+    position: relative;
+    margin-top: 20%;
+}
     
 #whatis{
     width: 20%;
@@ -445,6 +569,13 @@
 #feedback{
     font-size: 100%;
 }      
+
+#settings{
+ position: relative;
+ margin-top: 3%;
+     
+} 
+    
 }
     
 @media screen and (max-width: 1167px){
@@ -458,25 +589,40 @@
     
 #long-button-text{
     font-size: 70%;
-}    
+}
+    
+#loop-button-text{
+    font-size: 70%;
+}        
 #pomodoroButton{
     width: 15%;
-}         
+}  
+    
+#settings{
+ position: relative;
+ margin-top: 3%;
+     
+}   
+    
 }    
     
     
 @media screen and (max-width: 1107px){
 #pomodoro-button-text{
-    font-size: 60%;
+    font-size: 55%;
 }    
     
 #short-button-text{
-    font-size: 60%;
+    font-size: 55%;
 }
     
 #long-button-text{
-    font-size: 60%;
+    font-size: 55%;
 }               
+
+#loop-button-text{
+   font-size: 55%; 
+}    
     
 #pomodoroButton{
     width: 15%;
@@ -487,18 +633,34 @@
 
 @media screen and (max-width: 740px){
 #pomodoro-button-text{
-    font-size: 55%;
+    font-size: 40%;
 }    
     
 #short-button-text{
-    font-size: 55%;
+    font-size: 40%;
+}
+
+#settings{
+    width: 20%;
+    }
+    
+#what-is-text{
+    font-size: 80%;
+}          
+
+#settings-text{
+    font-size: 80%;
 }
     
 #long-button-text{
-    font-size: 55%;
+    font-size: 40%;
 }    
 #pomodoroButton{
     width: 20%;
+}
+
+#loop-button-text{
+    font-size: 40%;
 }
     
 #added{
@@ -509,42 +671,86 @@ margin-top: 5%;
 #addButton{
     padding-top: 2%; 
 }      
+
+#toDoList{
+    position: relative;
+    margin-top: 23%;
+}    
     
 }   
+
+
+
+
+@media screen and (max-width: 633px){
+    
+#pomodoro-button-text{
+    font-size: 30%;
+}    
+    
+#short-button-text{
+    font-size: 30%;
+}
+
+#settings{
+    width: 20%;
+}
+    
+#what-is-text{
+    font-size: 60%;
+}  
+
+#settings-text{
+    font-size: 60%;
+}
+        
+    
+#long-button-text{
+    font-size: 30%;
+}    
+#pomodoroButton{
+    width: 20%;
+}
+
+#loop-button-text{
+    font-size: 30%;
+}
+    
+#added{
+font-size: 140%; 
+margin-top: 5%;
+}   
+    
+#addButton{
+    padding-top: 2%; 
+}   
+}         
 
 @media screen and (max-width: 521px){   
         
 #ul{
 font-size: 140%; 
 margin-top: 10%;
-}  
 }
 
-
-@media screen and (max-width: 633px){
-    
-#pomodoro-button-text{
-    font-size: 50%;
-}    
-#pomodoroButton{
-    margin-left: 20%;
-    width: 20%;
-}    
-    
-#short-button-text{
-    font-size: 50%;
-}
-    
-#long-button-text{
-    font-size: 50%;
-}    
+#toDoList{
+    position: relative;
+    margin-top: 23%;
 }     
-       
-
-@media screen and (max-width: 412px){
     
-#infographic{
-display: none;
+}
+
+
+
+@media screen and (max-width: 412px){ 
+
+#toDoList{
+    position: relative;
+    margin-top: 30%;
+} 
+
+#whatis{
+    display: none;
 }    
     
 #added{
@@ -553,7 +759,7 @@ margin: 0%;
 }  
     
 #footer-area{
-height: 30vh;
+height: 50vh;
 overflow: scroll;
 }    
     
