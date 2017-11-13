@@ -402,6 +402,7 @@ input[type=number] {
     background: #fffcf0;
     border: none;
     margin: 10% 0% 0% 5%;
+    padding-top: 1.5%;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -449,13 +450,18 @@ input[type=number] {
 
 #toDoList{
     width: 40%;
-    height: auto;
+    height: 40vh;
     position: absolute;
     display: inline-block;
     margin: 15% 0% 0% 5%;
     color: black;
     font-family: 'Baloo Tammudu', cursive;
     font-size: 150%;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+display: none;
 }
 
 #feedback{
