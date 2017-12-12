@@ -373,6 +373,36 @@ input[type=number] {
     
 }
 
+#app-link{
+    width: 100%;
+    background-image: url('../IMAGE FILE/app banner.svg');
+    height: 73vh;
+    padding-top: 3%;
+    padding-right: 3%;
+    padding-left: 3%;
+}
+
+#app-banner-logo{
+    width: 50%;
+    height: auto;
+    float: right;
+    margin-top: 5%;
+}
+
+#google{
+   position: absolute;    
+   width: 15%;
+   height: auto; 
+   margin-left: 10%;
+   margin-top: 15%;
+}
+
+#screenshot{
+    float: left;
+    width: 50%;
+    height: auto;
+}
+
 /*FOOTER AREA*/
 
 #footer-area{
