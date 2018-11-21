@@ -31,6 +31,7 @@
   background-color: hsl(0, 0%, 98%);
   font-size: var(--font-size);
   line-height: 1.5;
+  margin-left: 10%;
 }
 
 #carbonads a {
@@ -146,7 +147,7 @@
     position: relative;
     width: 25%;
     height: auto;
-    margin-left: 37%;
+    margin-left: 25%;
     display: inline-block;
 }
 
