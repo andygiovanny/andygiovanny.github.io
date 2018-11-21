@@ -50,7 +50,7 @@
 }
 
 #carbonads span {
-  position: relative;
+  position: absolute;
   display: block;
   overflow: hidden;
 }
