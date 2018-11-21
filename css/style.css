@@ -24,7 +24,8 @@
 #carbonads {
   --width: 180px;
   --font-size: 14px;
-  position: relative;
+    position: absolute;
+
 }
 
 #carbonads {
@@ -51,6 +52,7 @@
 }
 
 #carbonads span {
+  position: relative;
   display: block;
   overflow: hidden;
 }
