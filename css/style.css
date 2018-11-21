@@ -172,6 +172,7 @@
 .middle{
     position: relative;
     margin-left: 37%;
+    display: inline-block;
 }
 
 .timer-time {
