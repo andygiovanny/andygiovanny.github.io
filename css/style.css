@@ -147,6 +147,7 @@
     width: 25%;
     height: auto;
     margin-left: 37%;
+    display: inline-block;
 }
 
 .timer-time {
