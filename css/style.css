@@ -12,6 +12,10 @@
 
 
 
+@media screen and (max-width: 847px){
+    #carbonads{
+        display: none;
+    }
 
 
 #carbonads {
@@ -32,6 +36,9 @@
   font-size: var(--font-size);
   line-height: 1.5;
   margin-left: 15%;
+  margin-top: 5%;
+  margin-bottom: auto;
+  position: absolute;      
 }
 
 #carbonads a {
