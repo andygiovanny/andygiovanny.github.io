@@ -8,16 +8,6 @@
 
 
 
-
-
-
-
-@media screen and (max-width: 847px){
-    #carbonads{
-        display: none;
-    }
-
-
 #carbonads {
   --width: 180px;
   --font-size: 14px;
@@ -812,6 +802,12 @@ overflow: scroll;
     
 }   
 
+
+@media screen and (max-width: 847px){
+    #carbonads{
+        display: none;
+    }
+}
 
 @media screen and (max-width: 740px){
 #pomodoro-button-text{
