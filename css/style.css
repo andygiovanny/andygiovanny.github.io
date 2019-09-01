@@ -657,6 +657,12 @@ input[type=checkbox] {
     display: none;
 }  
 
+    
+#app-link{
+    display: none;
+}  
+    
+    
 #footer-area{
 height: 50vh;
 overflow: scroll;
