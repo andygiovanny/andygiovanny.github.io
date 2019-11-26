@@ -1,0 +1,503 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Baloo Tammudu', cursive;
+}
+
+.header-logo {
+    width: 75%;
+}
+
+.button-align {
+    padding-top: 22px;
+}
+
+.header-background {
+    background-color: #C55E5E;
+}
+
+.button-style {
+    background-color: #ffece4;
+    color: #da4c56;
+    text-transform: uppercase;
+    padding: 1% 0.7% 0.7% 0.7%;
+    width: 45%;
+    font-size: 18px;
+}
+
+.button-style:hover {
+    background-color: #ffc9b6;
+    color: #da4c56;
+    box-shadow: none;
+}
+
+.button-style:focus {
+    background-color: #ffc9b6;
+    color: #da4c56;
+    box-shadow: none;
+}
+
+.button-style-1 {
+    font-family: 'Baloo Tammudu', cursive;
+    background-color: #ffece4;
+    color: #da4c56;
+    text-transform: uppercase;
+    padding: 1% 0.7% 0.7% 0.7%;
+    width: 22%;
+    font-size: 18px;
+}
+
+.button-style-1:hover {
+    background-color: #ffc9b6;
+    color: #da4c56;
+    box-shadow: none;
+}
+
+.button-style-1:focus {
+    background-color: #ffc9b6;
+    color: #da4c56;
+    box-shadow: none;
+}
+
+.tomato-cartoon {
+    width: 40%;
+}
+
+.action-button {
+    width: 6%;
+}
+
+.timer-box {
+    /*font-size: 80px;*/
+    color: #fff;
+}
+
+.todo-background {
+    background-color: #ffa900;
+    padding: 2%;
+}
+
+.work-flow {
+    width: 100%;
+}
+
+.timer-font {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 900;
+}
+
+.footer-background {
+    background-color: #BA6463;
+    padding: 2%;
+}
+
+.footer-logo {
+    width: 100%;
+    position: relative;
+    display: block;
+}
+
+.screen-shot {
+    width: 100%;
+}
+
+.play-store {
+    width: 40%;
+}
+
+
+.popup-background {
+    background-color: #ffede5;
+}
+
+.header-font {
+    color: #a32b34;
+    font-weight: bold;
+}
+
+.text-color {
+    color: #c95b5e;
+    font-weight: 500;
+}
+
+.close {
+    width: 9%;
+}
+
+.submit-button {
+    background-color: #cf433b;
+    color: #ffa900;
+}
+
+.submit-button:hover {
+    background-color: #cf433b;
+    color: #ffa900;
+}
+
+.submit-button:focus {
+    background-color: #cf433b;
+    color: #ffa900;
+    box-shadow: none;
+}
+
+.todo-list-min-height {
+    height: 400px;
+}
+
+#to_do_data::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+#to_do_data::-webkit-scrollbar {
+    width: 12px;
+
+}
+
+#to_do_data::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #D62929;
+}
+
+
+.to-do-button {
+    background-color: #cf433b;
+    color: #fff !important;
+}
+
+.to-do-button:hover {
+    background-color: #cf433b;
+    color: #fff !important;
+}
+
+.to-do-button:focus {
+    background-color: #cf433b;
+    color: #fff !important;
+    box-shadow: none;
+}
+
+.modal-footer {
+    border-top-color: #cf433b;
+}
+
+.card-link {
+    color: #CF433B;
+}
+
+.modal-header {
+    border-bottom-color: #cf433b;
+}
+
+.form-control {
+    border-radius: unset;
+}
+
+.modal-content {
+    border-radius: unset;
+}
+
+.btn {
+    border-radius: unset;
+    padding: 2% 2% 0.7% 2%;
+    font-size: 18px;
+}
+
+.width-100 {
+    width: 100%;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 425px) {
+    .logo-mobile {
+        text-align: center;
+    }
+
+    .button-style {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button-style-1 {
+        width: 49%;
+        margin-bottom: 5px;
+        margin-right: 0px !important;
+        font-size: 14px;
+    }
+
+    .tomato-cartoon {
+        width: 65%;
+    }
+
+    .action-button {
+        width: 12%;
+    }
+
+    .close {
+        width: 18%;
+    }
+
+    .btn {
+        padding: 3% 0.7% 0.7% 0.7%;
+    }
+
+    #carbonads {
+        display: none !important;
+    }
+}
+
+
+@media only screen and (min-width: 768px) {
+    .button-style {
+        width: 48%;
+        font-size: 15px;
+        margin-right: 5px !important;
+    }
+
+    .close {
+        width: 15%;
+    }
+
+    #carbonads {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .button-style {
+        font-size: 18px;
+        width: 45%;
+        margin-right: 1.5rem !important;
+    }
+
+    .close {
+        width: 9%;
+    }
+
+    #carbonads {
+        display: inline !important;
+    }
+
+}
+
+@media only screen and (min-width: 1900px) {
+    .button-style {
+        font-size: 18px;
+        width: 45%;
+        margin-right: 1.5rem !important;
+    }
+
+    .close {
+        width: 9%;
+    }
+
+    #carbonads {
+        display: inline !important;
+    }
+}
+
+
+/* The container */
+.container1 {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container1 input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #dc3545;
+}
+
+/* On mouse-over, add a grey background color */
+.container1:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container1 input:checked ~ .checkmark {
+    background-color: #dc3545;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container1 input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container1 .checkmark:after {
+    left: 9px;
+    top: 7px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+
+#carbonads {
+    --width: 180px;
+    --font-size: 14px;
+}
+
+
+#carbonads {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: inline-block;
+    overflow: hidden;
+    margin-bottom: 20px;
+    max-width: var(--width);
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 0 0 1px hsla(0, 0%, 0%, .1);
+    background-color: hsl(0, 0%, 98%);
+    font-size: var(--font-size);
+    line-height: 1.5;
+    margin-left: 15%;
+    margin-top: 5%;
+    margin-bottom: auto;
+    position: absolute;
+}
+
+#carbonads a {
+    color: inherit;
+    text-decoration: none;
+}
+
+#carbonads a:hover {
+    color: inherit;
+}
+
+#carbonads span {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+
+.carbon-img {
+    display: block;
+    margin-bottom: 8px;
+    max-width: var(--width);
+    line-height: 1;
+}
+
+.carbon-img img {
+    display: block;
+    margin: 0 auto;
+    max-width: var(--width) !important;
+    width: var(--width);
+    height: auto;
+}
+
+.carbon-text {
+    display: block;
+    padding: 0 1em 8px;
+}
+
+.carbon-poweredby {
+    display: block;
+    padding: 10px var(--font-size);
+    background: repeating-linear-gradient(-45deg, transparent, transparent 5px, hsla(0, 0%, 0%, .025) 5px, hsla(0, 0%, 0%, .025) 10px) hsla(203, 11%, 95%, .4);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 600;
+    font-size: 9px;
+    line-height: 0;
+}
+
+/*
+.timer-box > span{
+    position: relative;
+}
+
+.timer-container {
+    height: 1em;
+    overflow: hidden;
+    position: relative;
+}
+.timer-time {
+    line-height: 1em;
+    font-size: 600%;
+    font-weight: 900;
+    background-color: transparent;
+    color: #ffede5;
+    border: none;
+    margin: auto;
+}
+.timer-box {
+    height: 1em;
+    margin: auto;
+    position: relative;
+}
+*/
+
+.animation {
+    -webkit-transform: translate(0, 100%);
+    -ms-transform: translate(0, 100%);
+    -o-transform: translate(0, 100%);
+    transform: translate(0, 100%);
+}
+
+.timer-box > span {
+    position: relative;
+}
+
+.timer-container {
+    height: 1em;
+    overflow: hidden;
+    position: relative;
+}
+
+.timer-time {
+    line-height: 1em;
+    font-size: 600%;
+    font-weight: 900;
+    background-color: transparent;
+    color: #ffede5;
+    border: none;
+    margin: auto;
+}
+
+.timer-box {
+    height: 1em;
+    margin: auto;
+    position: relative;
+}
+
+a:hover {
+    text-decoration: none;
+}
