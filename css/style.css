@@ -1,0 +1,1023 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+
+
+
+
+
+
+#carbonads {
+  --width: 180px;
+  --font-size: 14px;
+}
+
+#carbonads {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: inline-block;
+  overflow: hidden;
+  margin-bottom: 20px;
+  max-width: var(--width);
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0 0 0 1px hsla(0, 0%, 0%, .1);
+  background-color: hsl(0, 0%, 98%);
+  font-size: var(--font-size);
+  line-height: 1.5;
+  margin-left: 15%;
+  margin-top: 5%;
+  margin-bottom: auto;
+  position: absolute;      
+}
+
+#carbonads a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#carbonads a:hover {
+  color: inherit;
+}
+
+#carbonads span {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.carbon-img {
+  display: block;
+  margin-bottom: 8px;
+  max-width: var(--width);
+  line-height: 1;
+}
+
+.carbon-img img {
+  display: block;
+  margin: 0 auto;
+  max-width: var(--width) !important;
+  width: var(--width);
+  height: auto;
+}
+
+.carbon-text {
+  display: block;
+  padding: 0 1em 8px;
+}
+
+.carbon-poweredby {
+  display: block;
+  padding: 10px var(--font-size);
+  background: repeating-linear-gradient(-45deg, transparent, transparent 5px, hsla(0, 0%, 0%, .025) 5px, hsla(0, 0%, 0%, .025) 10px) hsla(203, 11%, 95%, .4);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-weight: 600;
+  font-size: 9px;
+  line-height: 0;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 759px) {
+  #carbonads {
+    float: none;
+    margin: 0 auto;
+    max-width: 330px;
+  }
+  #carbonads span {
+    position: relative;
+  }
+  #carbonads > span {
+    max-width: none;
+  }
+  .carbon-img {
+    float: left;
+    margin: 0;
+  }
+
+  .carbon-img img {
+    max-width: 130px !important;
+  }
+  .carbon-text {
+    float: left;
+    margin-bottom: 0;
+    padding: 8px 20px;
+    text-align: left;
+    max-width: calc(100% - 130px - 3em);
+  }
+  .carbon-poweredby {
+    left: 130px;
+    bottom: 0;
+    display: block;
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.panel-default{
+    background-color:transparent;
+    overflow: hidden;
+    width: 100%;
+    margin: 0% auto 0% auto;
+    border: none;
+}
+
+#tomato{
+    position: relative;
+    width: 25%;
+    height: auto;
+    margin-left: 37%;
+    display: inline-block;
+}
+
+.timer-time {
+    line-height:1em;
+    font-size: 600%;
+    font-weight: 900;
+    background-color:transparent;
+    color: #ffede5;
+    border: none;
+    margin: auto;
+}
+
+.timer-container {
+  height: 1em;
+  overflow: hidden;
+  position: relative;
+}
+
+.timer-box {
+  height: 1em;
+  margin: auto;
+  position: relative;
+}
+
+.timer-box > span {
+  position: relative;
+}
+
+.footer {
+  width: 100%;
+  height: 60px;
+}
+
+.footer .container {
+
+}
+
+.mainContent{
+    width: 100%;
+    height: auto;
+    background-image: url('../IMAGE FILE/Background.svg');
+    background-repeat: repeat-x;
+    background-color: #C55E5E;
+}
+
+.page-header{
+    margin:  0% auto 0% auto;
+    border: none;
+}
+
+.text-center{
+    margin-top: 0%;
+}
+
+#logo{
+    position: relative;
+    width: 15%;
+    height: auto;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+#whatis{
+    position: relative;
+    width: 17%;
+    height: auto;
+    margin-right: 1%;
+    margin-top: 1%; 
+    float: right;
+    cursor: pointer;
+    margin-bottom: 10%;
+    background-color: #ffece4;
+    color: #da4c56;
+    padding: 1% 0.7% 0.7% 0.7%;
+    border-radius: 20px;
+}
+
+#what-is-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 120%;
+    margin: auto;
+    text-align: center;
+}
+#settings{
+    position: relative;
+    width: 17%;
+    height: auto;
+    margin-right: 1%;
+    margin-top: 1%; 
+    float: right;
+    cursor: pointer;
+   
+    background-color: #ffece4;
+    color: #da4c56;
+    padding: 1% 0.7% 0.7% 0.7%;
+    border-radius: 20px;
+}
+
+#settings-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 120%;
+    margin: auto;
+    text-align: center;
+}
+
+#pomodoroButton{
+    width: 11%;
+    height: auto;
+    margin-left: 18%;
+    cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#pomodoro-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#pomodoroButton:hover{
+    background-color: #ffc9b6;
+}
+
+
+#whatis:hover{
+    background-color: #ffc9b6;
+}
+
+#settings:hover{
+    background-color: #ffc9b6;
+}
+
+#shortButton{
+    width: 13%;
+    height: auto;
+    cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#short-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#shortButton:hover{
+    background-color: #ffc9b6;
+}
+
+#longButton{
+    width: 13%;
+    height: auto;
+    cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#long-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#loopButton{
+    width: 13%;
+    height: auto;
+    cursor: pointer;
+    background-color: #ffece4;
+    padding: 1.6% 1% 1% 1%;
+    border-radius: 20px;
+    color: #da4c56;
+    display: inline-block;
+}
+
+#loop-button-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#longButton:hover{
+    background-color: #ffc9b6;
+}
+
+#loopButton:hover{
+    background-color: #ffc9b6;
+}
+
+
+.button{
+    margin: 0px auto 10px auto;
+    
+}
+
+.navigation{
+    margin-top: 0%;
+    margin-bottom: 1%;
+    width: 3%;
+}
+
+#restartButton{
+    height: auto;
+    cursor: pointer;
+    margin-left: 45%;
+}
+
+#startButton{
+    height: auto;
+    cursor: pointer;
+}
+
+#stopButton{
+    height: auto;
+    cursor: pointer;
+}
+
+/*POP-OUT*/
+
+.pop-out{
+    width: 100%;
+    height: 169%;
+    background-color: black;
+    opacity: 0.3;
+    position: absolute;
+    z-index: 999;
+    display: none;
+}
+
+.pop-out-text{
+    width: 50%;
+    height: auto;
+    background-color: #ffede5;
+    margin : 8% auto 0% 28%;
+    position: absolute;
+    padding-top: 2%;
+    z-index: 1000;
+    display: none;
+}
+
+.pop-out-settings{
+    width: 100%;
+    height: 169%;
+    background-color: black;
+    opacity: 0.3;
+    position: absolute;
+    z-index: 999;
+    display: none;
+}
+
+.pop-out-text-settings{
+    width: 50%;
+    height: auto;
+    background-color: #ffede5;
+    margin : 8% auto 0% 28%;
+    position: absolute;
+    padding-top: 2%;
+    z-index: 1000;
+    display: none;
+}
+
+.title1{
+    margin: 1% auto 0% auto;
+    color: #a32b34;
+    font-size: 130%;
+}
+
+.title2{
+    margin: 3% auto 0% auto;
+    color: #a32b34;
+    font-size: 130%;
+}
+
+.inside-text{
+    font-family: 'Baloo Tammudu', cursive;
+    color: #c95b5e;
+    width: 85%;
+    height: auto;
+    font-size: 110%;
+    margin-left: 5%;
+    margin-top: 0%;
+}
+
+#pomodoro-text{
+    line-height: 120%;
+    text-align: justify;
+    margin: auto;
+}
+
+#how-to-use{
+    line-height: 120%;
+    text-align: justify;
+}
+
+#close-red{
+    width: 5%;
+    height: auto;
+    position: absolute;
+    margin-left: 90%;
+    top: 6%;
+    cursor: pointer;
+}
+
+#close-red-settings{
+    width: 5%;
+    height: auto;
+    position: absolute;
+    margin-left: 90%;
+    top: 6%;
+    cursor: pointer;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input[type=number] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+#SaveSet{
+    width: 10%;
+    height: 5vh;
+    margin: auto;
+    background-color: #cf433b;
+    display: inline-block;
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 100%;
+    text-align: center;
+    padding-top: 1%;
+    color: #ffa900;
+    z-index: 1000;
+    cursor: pointer;
+    border: none;
+    
+}
+
+#app-link{
+    width: 100%;
+    background-image: url('../IMAGE FILE/app banner.svg');
+    height: 73vh;
+    padding-top: 3%;
+    padding-right: 3%;
+    padding-left: 3%;
+}
+
+#app-banner-logo{
+    width: 50%;
+    height: auto;
+    float: right;
+    margin-top: 5%;
+}
+
+#google{
+   position: absolute;    
+   width: 15%;
+   height: auto; 
+   margin-left: 15%;
+   margin-top: 15%;
+}
+
+#screenshot{
+    float: left;
+    width: 50%;
+    height: auto;
+}
+
+/*FOOTER AREA*/
+
+#footer-area{
+   width: 100%;
+   height: auto;
+   background-color: #ffa900;
+}
+
+
+#infographic{
+    width: 40%;
+    height: auto;
+    margin: 2.5% 2.5% 2.5% 2.5%;
+}
+
+#checklist-title{
+    width: 40%;
+    height: auto;
+    margin: 2% 5% 0% 5%;
+    position: absolute;
+}
+
+#addTo{
+    width: 30%;
+    height: 5vh;
+    position: absolute;
+    background: #fffcf0;
+    border: none;
+    margin: 10% 0% 0% 5%;
+    padding-top: 1.5%;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-family: 'Baloo Tammudu', cursive;
+  font-size: 100%;
+  text-align: center;
+}
+
+#addButton{
+    width: 10%;
+    height: 5vh;
+    position: absolute;
+    margin: 10% 0% 0% 35%;
+    background-color: #cf433b;
+    display: inline-block;
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 100%;
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    color: #ffa900;
+    z-index: 1000;
+    cursor: pointer;
+    border: none;
+}
+
+#addButton:hover{
+    width: 10%;
+    height: 5vh;
+    position: absolute;
+    margin: 10% 0% 0% 35%;
+    background-color: #bc2e2a;
+    display: inline-block;
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 100%;
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    color: #ffa900;
+    z-index: 1000;
+    cursor: pointer;
+    border: none;
+}
+
+
+#toDoList{
+    width: 40%;
+    height: 40vh;
+    position: absolute;
+    display: inline-block;
+    margin: 15% 0% 0% 5%;
+    color: black;
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 150%;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+display: none;
+}
+
+#feedback{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 130%;
+    position: relative;
+}
+
+#checklist-title{
+    width: 40%;
+    height: auto;
+    position: absolute;
+    margin: 2% 5% 0% 5%;
+}
+
+input[type=checkbox] {
+	margin-right: 5%;
+}
+
+
+/*MEDIA QUERY*/
+
+@media screen and (max-width: 1367px){
+    
+#what-is-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 100%;
+    margin: auto;
+    text-align: center;
+}   
+
+#infographic{
+    display: none;
+}  
+
+    
+#app-link{
+    display: none;
+}  
+    
+    
+#footer-area{
+height: 50vh;
+overflow: scroll;
+}        
+    
+
+#toDoList{
+    position: relative;
+    margin-top: 20%;
+}
+    
+#whatis{
+    width: 20%;
+    margin-bottom: 0%;
+    margin-top: 3%;
+}        
+    
+.navigation{
+   width: 5%;
+}
+    
+#restartButton{
+   margin-left: 42.5%;
+}
+    
+#pomodoroButton{
+    width: 15%;
+    height: auto;
+    margin-left: 0%;
+    cursor: pointer;
+}
+    
+#shortButton{
+    width: 15%;
+    height: auto;
+    cursor: pointer;
+}
+#longButton{
+    width: 15%;
+    height: auto;
+    cursor: pointer;
+}
+.button{
+    margin: auto;
+}
+ 
+#pomodoro-button-text{
+    font-size: 80%;
+}    
+    
+#short-button-text{
+    font-size: 80%;
+}
+    
+#long-button-text{
+    font-size: 80%;
+}   
+    
+#logo{
+    width: 20%;
+}
+#whatis{
+    width: 20%;
+}    
+    
+.title1{
+    font-size: 100%;
+}
+.title2{
+    font-size: 100%;
+}
+.inside-text{
+    font-size: 100%;
+}
+    
+#feedback{
+    font-size: 100%;
+}      
+
+#settings{
+ position: relative;
+ margin-top: 3%;
+     
+} 
+    
+}
+    
+@media screen and (max-width: 1167px){
+#pomodoro-button-text{
+    font-size: 70%;
+}    
+    
+#short-button-text{
+    font-size: 70%;
+}
+    
+#long-button-text{
+    font-size: 70%;
+}
+    
+#loop-button-text{
+    font-size: 70%;
+}        
+#pomodoroButton{
+    width: 15%;
+}  
+    
+#settings{
+ position: relative;
+ margin-top: 3%;
+     
+}   
+    
+}    
+    
+    
+@media screen and (max-width: 1107px){
+#pomodoro-button-text{
+    font-size: 55%;
+}    
+    
+#short-button-text{
+    font-size: 55%;
+}
+    
+#long-button-text{
+    font-size: 55%;
+}               
+
+#loop-button-text{
+   font-size: 55%; 
+}    
+    
+#pomodoroButton{
+    width: 15%;
+}        
+    
+
+#footer-area{
+height: 70vh;
+overflow: scroll;
+}    
+    
+}   
+
+
+@media screen and (max-width: 847px){
+    #carbonads{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 740px){
+#pomodoro-button-text{
+    font-size: 40%;
+}    
+    
+#short-button-text{
+    font-size: 40%;
+}
+
+#settings{
+    width: 20%;
+    }
+    
+#what-is-text{
+    font-size: 80%;
+}          
+
+#settings-text{
+    font-size: 80%;
+}
+    
+#long-button-text{
+    font-size: 40%;
+}    
+#pomodoroButton{
+    width: 20%;
+}
+
+#loop-button-text{
+    font-size: 40%;
+}
+    
+#added{
+font-size: 140%; 
+margin-top: 5%;
+}   
+    
+#addButton{
+    padding-top: 2%; 
+}      
+
+#toDoList{
+    position: relative;
+    margin-top: 23%;
+}    
+    
+}   
+
+
+
+
+@media screen and (max-width: 633px){
+    
+#pomodoro-button-text{
+    font-size: 30%;
+}    
+    
+#short-button-text{
+    font-size: 30%;
+}
+
+#settings{
+    width: 20%;
+}
+    
+#what-is-text{
+    font-size: 60%;
+}  
+
+#settings-text{
+    font-size: 60%;
+}
+        
+    
+#long-button-text{
+    font-size: 30%;
+}    
+#pomodoroButton{
+    width: 20%;
+}
+
+#loop-button-text{
+    font-size: 30%;
+}
+    
+#added{
+font-size: 140%; 
+margin-top: 5%;
+}   
+    
+#addButton{
+    padding-top: 2%; 
+}   
+}         
+
+@media screen and (max-width: 521px){   
+        
+#ul{
+font-size: 140%; 
+margin-top: 10%;
+}
+
+#toDoList{
+    position: relative;
+    margin-top: 23%;
+}     
+    
+}
+
+
+
+@media screen and (max-width: 412px){ 
+
+#toDoList{
+    position: relative;
+    margin-top: 30%;
+} 
+
+#whatis{
+    display: none;
+}    
+    
+#added{
+font-size: 100%; 
+margin: 0%;
+}  
+    
+#footer-area{
+height: 50vh;
+overflow: scroll;
+}    
+    
+#added{
+overflow: scroll;
+}    
+       
+    
+#what-is-text{
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 80%;
+    margin: auto;
+    text-align: center;
+}        
+
+#short-button-text{
+    font-size: 40%;
+}
+   
+#long-button-text{
+    font-size: 40%;
+}    
+#pomodoro-button-text{
+    font-size: 40%;
+}   
+    
+#whatis{
+    width: 40%;
+    margin-bottom: 0%;
+    margin-top: 3%;
+    padding-top: 3%;
+}     
+    
+#logo{
+    width: 40%;
+}    
+    
+.navigation{
+   width: 10%;  
+}    
+    
+#restartButton{
+   margin-left: 35%;
+}
+
+.title1{
+    font-size: 120%;
+    margin-bottom: 1%;
+}
+
+.title2{
+    margin-top: 2%;
+    font-size: 120%;
+    margin-bottom: 1%;
+}
+
+#tomato{
+    width: 50%;
+    height: auto;
+    margin-left: 25%;
+}    
+
+.inside-text{
+    font-size: 50%;
+}
+    
+#feedback{
+    font-size: 100%;
+}        
+    
+
+#pomodoroButton{
+    margin-left: 0%;
+    width: 20%;
+}     
+    
+}
