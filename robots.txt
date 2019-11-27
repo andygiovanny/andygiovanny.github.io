@@ -1,2 +1,3 @@
+Sitemap: http://www.tomatotimers.com/sitemap.xml
 User-Agent: *
 Disallow: 
