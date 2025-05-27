@@ -1,7 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 76.5 68.9" enable-background="new 0 0 76.5 68.9" xml:space="preserve">
-<polygon fill="#FFEDE5" points="25,9.3 25,59.4 62.9,34.3 "/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 477.3 482.2">
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #8e552b;
+      }
+
+      .st1 {
+        fill: #bc7f55;
+      }
+    </style>
+  </defs>
+  <path class="st0" d="M68.75,105.38v271.36c0,53.6,59.64,85.66,104.4,56.11l205.26-135.94c40.18-26.65,40.18-85.66,0-112.21L173.15,49.29c-44.65-29.46-104.3,2.6-104.3,56.11h-.11v-.02Z"/>
+  <path class="st1" d="M159.9,83.61h0c5.21-7.79,15.75-9.89,23.53-4.68l85.94,57.42c7.79,5.21,9.89,15.75,4.68,23.53h0c-5.21,7.79-15.75,9.89-23.53,4.68l-85.94-57.42c-7.79-5.21-9.89-15.75-4.68-23.53h0Z"/>
+  <path class="st1" d="M282.96,168.42h0c5.21-7.79,15.75-9.89,23.53-4.68l.61.4c7.79,5.21,9.89,15.75,4.68,23.53h0c-5.21,7.79-15.75,9.89-23.53,4.68l-.61-.4c-7.79-5.21-9.89-15.75-4.68-23.53Z"/>
 </svg>

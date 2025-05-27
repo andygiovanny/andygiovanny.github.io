@@ -1,10 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="168.7 407.8 477.3 482.2" enable-background="new 168.7 407.8 477.3 482.2" xml:space="preserve">
-<g>
-	<rect x="216.3" y="455.9" fill="#FFEDE5" width="136" height="382.1"/>
-	<rect x="467" y="455.9" fill="#FFEDE5" width="131.4" height="382.1"/>
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 477.3 482.2">
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #8e552b;
+      }
+
+      .st1 {
+        fill: #bc7f55;
+      }
+    </style>
+  </defs>
+  <g>
+    <rect class="st0" x="47.88" y="49.5" width="136" height="382.1" rx="37.45" ry="37.45"/>
+    <rect class="st0" x="298.02" y="50.6" width="131.4" height="382.1" rx="37.45" ry="37.45"/>
+  </g>
+  <rect class="st1" x="151.26" y="70.13" width="19.63" height="110.02" rx="9.81" ry="9.81"/>
+  <rect class="st1" x="395.08" y="70.13" width="19.63" height="110.02" rx="9.81" ry="9.81"/>
 </svg>
