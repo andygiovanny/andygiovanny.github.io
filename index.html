@@ -70,7 +70,43 @@
     
     
     
+    
+    <script>
+  document.getElementById('theme-toggle').addEventListener('change', function () {
+    document.body.classList.toggle('dark-theme');
+  });
+</script>
+    
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const themeToggle = document.getElementById('theme-toggle');
+    const headerBackground = document.querySelector('.header-background');
+
+    themeToggle.addEventListener('change', function () {
+      if (this.checked) {
+        // Duck theme
+        headerBackground.style.backgroundColor = '#ba6464';
+      } else {
+        // Tomato theme
+        headerBackground.style.backgroundColor = '#f0dcb9';
+      }
+    });
+  });
+</script>
+    
+    
+    
+    
+    
 </head>
+    
+    
+    
+    
+    
+    
+    
+    
 <body style="background-color: #fff; margin: 0; padding: 0;">
     
 
@@ -101,7 +137,7 @@
     <div class="container">
         <div class="row p-2">
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 logo-mobile">
-                <img src="assets/images/logo.svg" class="header-logo"/>
+                <img id="logo" src="assets/images/logo.svg" class="header-logo"/>
             </div>
 
             <div class="col-lg-8 col-md-8  col-sm-12 col-xs-12 text-right button-align">
@@ -112,7 +148,25 @@
                         data-target="#what-pomodoro-timer">What is pomodoro Timer?
                 </button>
             </div>
+            
+            
+            
+            
+            
+            
+<div class="theme-toggle-wrapper">
+  <label class="theme-switch">
+    <input type="checkbox" id="theme-toggle">
+    <span class="slider round"></span>
+  </label>
+  <span class="theme-label"> Duck/Tomato </span>
+</div>
 
+            
+            
+            
+            
+            
             <div class="col-lg-12 text-center mt-4">
                 <button type="button" class="btn button-style-1 rounded-pill mr-2"
                         onclick="onPomodoroTimer()" id="pomodoro_timer_button">
@@ -305,8 +359,6 @@
 
                 <p class="text-color">USE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW</p>
 
-                <p class="text-color">Pomodoro™ and Pomodoro Technique® are registered trademarks of Francesco Cirillo.
-                    This web app is not affiliated with Francesco Cirillo.</p>
             </div>
         </div>
     </div>

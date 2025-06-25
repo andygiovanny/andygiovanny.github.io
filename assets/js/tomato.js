@@ -21,24 +21,58 @@ $(document).ready(function () {
 
 });
 var audio = new Audio('assets/sounds/beep.mp3');
-
+let isDuckTheme = false;
 var $tomato = $('#tomato-cartoon');
 
 function imageDancing() {
-    if ($tomato.attr('src') == 'assets/images/tomato-cartoon.svg') {
-        $tomato.attr('src', 'assets/images/tomato-cartoon-1.svg');
-    } else if ($tomato.attr('src') == 'assets/images/chill-Tomato-cartoon.svg') {
-        $tomato.attr('src', 'assets/images/chill-Tomato-cartoon-1.svg');
-    } else if ($tomato.attr('src') == 'assets/images/chill-Tomato-cartoon-1.svg') {
-        $tomato.attr('src', 'assets/images/chill-Tomato-cartoon.svg');
-    } else if ($tomato.attr('src') == 'assets/images/tea-tomato-cartoon.svg') {
-        $tomato.attr('src', 'assets/images/tea-tomato-cartoon-1.svg');
-    } else if ($tomato.attr('src') == 'assets/images/tea-tomato-cartoon-1.svg') {
-        $tomato.attr('src', 'assets/images/tea-tomato-cartoon.svg');
+    const $tomato = $('#tomato-cartoon');
+    const isDuckTheme = $('#theme-toggle').is(':checked');
+
+    if (isDuckTheme) {
+        if (isPomClicked) {
+            if ($tomato.attr('src') === 'assets/images/tf.svg') {
+                $tomato.attr('src', 'assets/images/tf2.svg');
+            } else {
+                $tomato.attr('src', 'assets/images/tf.svg');
+            }
+        } else if (isShortCliked) {
+            if ($tomato.attr('src') === 'assets/images/dancingtomato.svg') {
+                $tomato.attr('src', 'assets/images/dancingtomato2.svg');
+            } else {
+                $tomato.attr('src', 'assets/images/dancingtomato.svg');
+            }
+        } else if (isLongClicked) {
+            if ($tomato.attr('src') === 'assets/images/tea1.svg') {
+                $tomato.attr('src', 'assets/images/tea2.svg');
+            } else {
+                $tomato.attr('src', 'assets/images/tea1.svg');
+            }
+        }
     } else {
-        $tomato.attr('src', 'assets/images/tomato-cartoon.svg');
+        if (isPomClicked) {
+            if ($tomato.attr('src') === 'assets/images/tomato-cartoon.svg') {
+                $tomato.attr('src', 'assets/images/tomato-cartoon-1.svg');
+            } else {
+                $tomato.attr('src', 'assets/images/tomato-cartoon.svg');
+            }
+        } else if (isShortCliked) {
+            if ($tomato.attr('src') === 'assets/images/chill-Tomato-cartoon.svg') {
+                $tomato.attr('src', 'assets/images/chill-Tomato-cartoon-1.svg');
+            } else {
+                $tomato.attr('src', 'assets/images/chill-Tomato-cartoon.svg');
+            }
+        } else if (isLongClicked) {
+            if ($tomato.attr('src') === 'assets/images/tea-tomato-cartoon.svg') {
+                $tomato.attr('src', 'assets/images/tea-tomato-cartoon-1.svg');
+            } else {
+                $tomato.attr('src', 'assets/images/tea-tomato-cartoon.svg');
+            }
+        }
     }
 }
+
+
+
 
 setInterval(imageDancing, 1000);
 
@@ -310,12 +344,12 @@ function onPomodoroTimer() {
 }
 
 function PomodoroTimer() {
-    $tomato.attr('src', 'assets/images/tomato-cartoon.svg');
     clearInterval(countdownHandle);
     isShortCliked = false;
     isLongClicked = false;
     isPomClicked = true;
-
+    
+    
     gHours = 0;
     gMinutes = pomodoroMin;
     gSeconds = 0;
@@ -330,7 +364,6 @@ function onShortTimer() {
 }
 
 function ShortTimer() {
-    $tomato.attr('src', 'assets/images/chill-Tomato-cartoon.svg');
     clearInterval(countdownHandle);
     isShortCliked = true;
     isLongClicked = false;
@@ -350,12 +383,13 @@ function onLongTimer() {
     LongTimer();
 }
 
+
 function LongTimer() {
-    $tomato.attr('src', 'assets/images/tea-tomato-cartoon.svg');
     clearInterval(countdownHandle);
     isShortCliked = false;
     isLongClicked = true;
     isPomClicked = false;
+
 
     gHours = 0;
     gMinutes = longMin;
@@ -489,15 +523,17 @@ function formatTime(intergerValue) {
 }
 
 function decrementTimer() {
+    remainingTime -= 1000;
 
-    remainingTime -= (1 * 1000);
-
-    if (remainingTime < 1000) {
-        onStopTimer();
+    if (remainingTime <= 0) {
+        remainingTime = 0;         // Set it to exactly 0
+        renderTimer();             // Make sure 00:00 is shown
+        onStopTimer();             // Then stop it
+    } else {
+        renderTimer();             // Render normally
     }
-
-    renderTimer();
 }
+
 
 
 function startTaskTimer() {
@@ -505,3 +541,68 @@ function startTaskTimer() {
     console.log("xxx");
     onStartTimer();
 }
+
+
+
+$('#theme-toggle').on('change', function () {
+    isDuckTheme = $(this).is(':checked');
+    $('body').toggleClass('duck-theme');
+
+    if (isDuckTheme) {
+        $('.header-background').css('background-color', '#ba6464');
+        $('.button-style').css({
+            'background-color': '#feece5',
+            'color': '#c65e5e'
+        });
+        $('.button-style-1').css({
+            'background-color': '#feece5',
+            'color': '#c65e5e'
+        });
+        $('.timer-box').css('color', '#feece5');
+
+
+    } else {
+        $('.header-background').css('background-color', '#f0dcb9');
+        $('.button-style').css({
+            'background-color': '#fff',
+            'color': '#8e552b'
+        });
+        $('.button-style-1').css({
+            'background-color': '#fff',
+            'color': '#8e552b'
+        });
+        $('.timer-box').css('color', '#8e552b');
+
+    }
+});
+
+$('#theme-toggle').on('change', function () {
+    isDuckTheme = $(this).is(':checked');
+    $('body').toggleClass('duck-theme');
+
+    if (isDuckTheme) {
+        $('#logo').attr('src', 'assets/images/tomato.svg');
+        // ... your existing duck styling
+    } else {
+        $('#logo').attr('src', 'assets/images/logo.svg');
+        // ... your existing normal styling
+    }
+});
+
+$('#theme-toggle').on('change', function () {
+    isDuckTheme = $(this).is(':checked');
+    $('body').toggleClass('duck-theme');
+
+    if (isDuckTheme) {
+        $('#logo').attr('src', 'assets/images/tomato.svg');
+        $('#resetButton').attr('src', 'assets/images/tomatoreset.svg');
+        $('#startButton').attr('src', 'assets/images/tomatoplay.svg');
+        $('#stopButton').attr('src', 'assets/images/tomatopause.svg');
+    } else {
+        $('#logo').attr('src', 'assets/images/logo.svg');
+        $('#resetButton').attr('src', 'assets/images/rest-button.svg');
+        $('#startButton').attr('src', 'assets/images/play-button.svg');
+        $('#stopButton').attr('src', 'assets/images/stop-button.svg');
+    }
+});
+

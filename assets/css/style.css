@@ -28,12 +28,6 @@ body {
     font-size: 18px;
 }
 
-.button-style:hover {
-    background-color: #f4e9d7;
-    color: #8e552b;
-    box-shadow: none;
-}
-
 .button-style:focus {
     background-color: #fff;
     color: #8e552b;
@@ -48,12 +42,6 @@ body {
     padding: 1% 0.7% 0.7% 0.7%;
     width: 22%;
     font-size: 18px;
-}
-
-.button-style-1:hover {
-    background-color: #f4e9d7;
-    color: #8e552b;
-    box-shadow: none;
 }
 
 .button-style-1:focus {
@@ -500,4 +488,152 @@ body {
 
 a:hover {
     text-decoration: none;
+}
+
+
+
+
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between toggle and label */
+  margin-left: 30px;
+}
+
+
+
+/* already styled switch */
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+  height: 100%;
+  width: 100%;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #a26a3a;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.theme-label {
+  font-family: 'Baloo Tammudu', cursive;
+  font-size: 16px;
+  color: #5a2a00; /* default tomato theme */
+}
+
+body.duck-theme .theme-label {
+  color: #feece5; /* duck theme */
+}
+
+.header-background {
+  transition: background-color 0.3s ease;
+}
+
+body.duck-theme .button-style:focus {
+  background-color: #feece5;
+  color: #c65e5e;
+  box-shadow: none;
+}
+
+body.duck-theme .button-style-1 {
+  background-color: #feece5;
+  color: #c65e5e;
+}
+
+body.duck-theme .button-style-1:hover {
+  background-color: #fbc8b6;
+  color: #c65e5e;
+  box-shadow: none;
+}
+
+body.duck-theme .button-style-1:focus {
+  background-color: #feece5;
+  color: #c65e5e;
+  box-shadow: none;
+}
+
+/* Duck theme override for .button-style */
+body.duck-theme .button-style {
+  background-color: #feece5;
+  color: #c65e5e;
+}
+
+body.duck-theme .timer-box {
+  color: #feece5;
+}
+
+.theme-switch input:checked + .slider {
+  background-color: #fbc8b6;
+}
+
+.slider {
+  transition: background-color 0.3s;
+}
+
+
+/* Tomato Theme (default) */
+.button-style,
+.button-style-1 {
+  background-color: #fff;
+  color: #8e552b;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button-style:focus,
+.button-style-1:focus {
+  background-color: #fff;
+  color: #8e552b;
+  box-shadow: none;
+}
+
+
+/* Duck Theme override */
+body.duck-theme .button-style,
+body.duck-theme .button-style-1 {
+  background-color: #feece5;
+  color: #c65e5e;
+}
+
+body.duck-theme .button-style:hover,
+body.duck-theme .button-style-1:hover {
+  background-color: #fbc8b6;
+  color: #c65e5e;
+}
+
+body.duck-theme .button-style:focus,
+body.duck-theme .button-style-1:focus {
+  background-color: #feece5;
+  color: #c65e5e;
+  box-shadow: none;
 }
