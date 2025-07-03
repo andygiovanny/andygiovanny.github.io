@@ -231,10 +231,6 @@ body {
     .btn {
         padding: 3% 0.7% 0.7% 0.7%;
     }
-
-    #carbonads {
-        display: none !important;
-    }
 }
 
 
@@ -248,10 +244,6 @@ body {
     .close {
         width: 15%;
     }
-
-    #carbonads {
-        display: none !important;
-    }
 }
 
 @media only screen and (min-width: 1024px) {
@@ -264,11 +256,6 @@ body {
     .close {
         width: 9%;
     }
-
-    #carbonads {
-        display: inline !important;
-    }
-
 }
 
 @media only screen and (min-width: 1900px) {
@@ -280,10 +267,6 @@ body {
 
     .close {
         width: 9%;
-    }
-
-    #carbonads {
-        display: inline !important;
     }
 }
 
@@ -354,46 +337,6 @@ body {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-}
-
-
-#carbonads {
-    --width: 180px;
-    --font-size: 14px;
-}
-
-
-#carbonads {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    display: inline-block;
-    overflow: hidden;
-    margin-bottom: 20px;
-    max-width: var(--width);
-    border-radius: 4px;
-    text-align: center;
-    box-shadow: 0 0 0 1px hsla(0, 0%, 0%, .1);
-    background-color: hsl(0, 0%, 98%);
-    font-size: var(--font-size);
-    line-height: 1.5;
-    margin-left: 15%;
-    margin-top: 5%;
-    margin-bottom: auto;
-    position: absolute;
-}
-
-#carbonads a {
-    color: inherit;
-    text-decoration: none;
-}
-
-#carbonads a:hover {
-    color: inherit;
-}
-
-#carbonads span {
-    position: relative;
-    display: block;
-    overflow: hidden;
 }
 
 .carbon-img {
