@@ -549,3 +549,41 @@ body.duck-theme .button-style-1:focus {
   color: #c65e5e;
   box-shadow: none;
 }
+
+/* Strong override to force 3×3 layout while keeping responsive sizing */
+.video-grid-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 10px 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* force 3 columns; use fractions so each column scales;
+   limit overall container to a comfortable width so it matches your original look */
+.video-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 20px !important;
+  width: 100% !important;
+  max-width: 1200px !important;   /* controls overall visual width */
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+}
+
+/* keep iframes proportional inside each grid column */
+.video-grid iframe {
+  width: 100% !important;
+  aspect-ratio: 16 / 9;
+  max-width: 420px;    /* prevents extreme stretching on very wide screens */
+  min-width: 260px;    /* keep them from collapsing to tiny on narrow containers */
+  border: 0 !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* When the page is narrower than ~3 * min-width + gaps, allow horizontal scroll
+   so items won't wrap to 2 columns. Remove if you prefer vertical stacking. */
+.video-grid-wrapper {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
