@@ -623,3 +623,32 @@ body.duck-theme .button-style-1:focus {
   opacity: 1;
 }
 
+.video-grid-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  overflow-x: hidden; /* stop side scroll */
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* ALWAYS 3 columns */
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px; /* adjust if needed */
+  margin: 0 auto;
+}
+
+.video-card {
+  width: 100%;
+}
+
+.video-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9; /* normalizes 480x250 */
+  object-fit: cover;
+  display: block;
+}
+
+
