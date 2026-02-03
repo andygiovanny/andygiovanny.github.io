@@ -652,3 +652,16 @@ body.duck-theme .button-style-1:focus {
 }
 
 
+/* critical fix */
+.video-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  width: 100% !important;
+}
+
+.video-card,
+.video-card img {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
