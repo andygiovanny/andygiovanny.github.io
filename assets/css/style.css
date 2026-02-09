@@ -1,5 +1,3 @@
-all css:
-
 * {
     margin: 0;
     padding: 0;
@@ -556,7 +554,6 @@ body.duck-theme .button-style-1:focus {
 .video-grid-wrapper {
   display: flex !important;
   justify-content: center !important;
-  padding: 10px 0 !important;
   box-sizing: border-box !important;
 }
 
@@ -628,14 +625,12 @@ body.duck-theme .button-style-1:focus {
 .video-grid-wrapper {
   display: flex;
   justify-content: center;
-  padding: 10px 0;
   overflow-x: hidden; /* stop side scroll */
 }
 
 .video-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* ALWAYS 3 columns */
-  gap: 20px;
   width: 100%;
   max-width: 1200px; /* adjust if needed */
   margin: 0 auto;
@@ -671,7 +666,6 @@ body.duck-theme .button-style-1:focus {
 .video-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
 
   /* 5 rows visible */
   grid-auto-rows: auto;
@@ -690,52 +684,7 @@ body.duck-theme .button-style-1:focus {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 250px;
-  gap: 16px;
 }
 
 
-/* === FINAL: preserve GIF size & enable vertical scroll === */
-
-.video-grid-wrapper {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-
-  max-height: calc((250px * 5) + (16px * 4)); /* 5 rows */
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.video-card img {
-  width: 100%;
-  height: auto;          /* 🔴 DO NOT FORCE HEIGHT */
-  max-width: 480px;      /* preserves original visual size */
-  display: block;
-}
-
-
-/* === HARD LOCK GIF SIZE, FIX RATIO, ENABLE SCROLL === */
-
-.video-grid {
-  grid-template-columns: repeat(3, 480px) !important;
-  justify-content: center !important;
-
-  max-height: calc((250px * 5) + (16px * 4)) !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-}
-
-.video-card img {
-  width: 480px !important;
-  height: 250px !important;
-  max-width: none !important;
-  aspect-ratio: auto !important;
-  object-fit: contain !important;
-  display: block;
-}
 
