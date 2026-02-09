@@ -642,8 +642,7 @@ body.duck-theme .button-style-1:focus {
 /* === VIDEO GRID (FINAL, CLEAN) === */
 
 .video-grid-wrapper {
-  display: flex;
-  justify-content: center;
+  width: 100%;
   padding: 12px 0;
 }
 
@@ -653,9 +652,8 @@ body.duck-theme .button-style-1:focus {
   gap: 16px;
 
   width: 100%;
-  max-width: 1200px;
 
-  /* show 3 rows, scroll after */
+  /* lock visible rows */
   max-height: calc((250px * 3) + (16px * 2));
   overflow-y: auto;
   overflow-x: hidden;
@@ -671,9 +669,7 @@ body.duck-theme .button-style-1:focus {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
-  border-radius: 10px;
 }
-
 
 
 
