@@ -686,5 +686,28 @@ body.duck-theme .button-style-1:focus {
   grid-auto-rows: 250px;
 }
 
+.video-card {
+    display: block !important;
+    width: 100% !important;
+    /* Remove the background color so gaps are invisible/white */
+    background-color: transparent !important; 
+    margin: 0 !important;
+    padding: 0 !important;
+    text-decoration: none;
+    line-height: 0 !important;
+    overflow: hidden;
+}
+
+.video-card img {
+    width: 100% !important;
+    /* Forces image to fill the card height exactly */
+    height: 100% !important; 
+    display: block !important;
+    /* This ensures the GIF stretches/crops to fill the space perfectly */
+    object-fit: cover !important; 
+    border-radius: 8px;
+    margin: 0 !important;
+}
+
 
 
