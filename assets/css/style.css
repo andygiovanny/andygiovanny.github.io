@@ -649,25 +649,21 @@ body.duck-theme .button-style-1:focus {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(3, 480px); /* EXACT gif width */
-  grid-auto-rows: 250px;                  /* EXACT gif height */
+  grid-template-columns: repeat(3, 1fr); /* fit screen */
   gap: 16px;
 
-  justify-content: center; /* keep original centered perspective */
-
-  /* 5 rows visible (15 gifs) */
   max-height: calc((250px * 5) + (16px * 4));
   overflow-y: auto;
 }
 
 .video-card {
-  width: 480px;
-  height: 250px;
+  width: 100%;
+  aspect-ratio: 480 / 250; /* keeps original GIF perspective */
 }
 
 .video-card img {
-  width: 480px;
-  height: 250px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* NOT cover → no crop */
   display: block;
 }
-
