@@ -684,6 +684,12 @@ body.duck-theme .button-style-1:focus {
   display: block;
 }
 
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 250px;
+  gap: 16px;
+}
 
 
 
