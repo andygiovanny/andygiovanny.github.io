@@ -665,3 +665,25 @@ body.duck-theme .button-style-1:focus {
   width: 100% !important;
 }
 
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  /* 5 rows visible */
+  grid-auto-rows: auto;
+  max-height: calc((250px * 5) + (12px * 4));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.video-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+
+
