@@ -693,7 +693,8 @@ body.duck-theme .button-style-1:focus {
   gap: 16px;
 }
 
-/* === KEEP EXISTING SIZE, JUST ADD SCROLL === */
+
+/* === FINAL: preserve GIF size & enable vertical scroll === */
 
 .video-grid-wrapper {
   width: 100%;
@@ -702,23 +703,18 @@ body.duck-theme .button-style-1:focus {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(3, 480px); /* SAME WIDTH AS BEFORE */
-  grid-auto-rows: 250px;                   /* SAME HEIGHT AS BEFORE */
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 
-  justify-content: center;
-
-  max-height: calc((250px * 5) + (16px * 4)); /* 15 items visible */
-  overflow-y: auto;   /* scroll DOWN */
-  overflow-x: hidden; /* no side scroll */
+  max-height: calc((250px * 5) + (16px * 4)); /* 5 rows */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.video-card,
 .video-card img {
-  width: 480px;
-  height: 250px;
-  object-fit: cover;
+  width: 100%;
+  height: auto;          /* 🔴 DO NOT FORCE HEIGHT */
+  max-width: 480px;      /* preserves original visual size */
   display: block;
 }
-
 
