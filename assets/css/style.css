@@ -653,23 +653,25 @@ body.duck-theme .button-style-1:focus {
 
   width: 100%;
 
-  /* lock visible rows */
-  max-height: calc((250px * 3) + (16px * 2));
+  /* FIXED row height */
+  grid-auto-rows: 250px;
+
+  /* 5 rows visible (15 items) */
+  max-height: calc((250px * 5) + (16px * 4));
+
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .video-card {
   width: 100%;
+  height: 100%;
 }
 
 .video-card img {
   width: 100%;
   height: 100%;
-  aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
 }
-
-
 
