@@ -1,3 +1,5 @@
+all css:
+
 * {
     margin: 0;
     padding: 0;
@@ -623,7 +625,21 @@ body.duck-theme .button-style-1:focus {
   opacity: 1;
 }
 
+.video-grid-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  overflow-x: hidden; /* stop side scroll */
+}
 
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* ALWAYS 3 columns */
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px; /* adjust if needed */
+  margin: 0 auto;
+}
 
 .video-card {
   width: 100%;
@@ -638,32 +654,71 @@ body.duck-theme .button-style-1:focus {
 }
 
 
+/* critical fix */
+.video-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  width: 100% !important;
+}
 
-/* === VIDEO GRID (FINAL, CLEAN) === */
+.video-card,
+.video-card img {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  /* 5 rows visible */
+  grid-auto-rows: auto;
+  max-height: calc((250px * 5) + (12px * 4));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.video-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 250px;
+  gap: 16px;
+}
+
+/* === KEEP EXISTING SIZE, JUST ADD SCROLL === */
 
 .video-grid-wrapper {
   width: 100%;
-  padding: 12px 0;
   overflow-x: hidden;
 }
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* fit screen */
+  grid-template-columns: repeat(3, 480px); /* SAME WIDTH AS BEFORE */
+  grid-auto-rows: 250px;                   /* SAME HEIGHT AS BEFORE */
   gap: 16px;
 
-  max-height: calc((250px * 5) + (16px * 4));
-  overflow-y: auto;
+  justify-content: center;
+
+  max-height: calc((250px * 5) + (16px * 4)); /* 15 items visible */
+  overflow-y: auto;   /* scroll DOWN */
+  overflow-x: hidden; /* no side scroll */
 }
 
-.video-card {
-  width: 100%;
-  aspect-ratio: 480 / 250; /* keeps original GIF perspective */
-}
-
+.video-card,
 .video-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* NOT cover → no crop */
+  width: 480px;
+  height: 250px;
+  object-fit: cover;
   display: block;
 }
+
+
