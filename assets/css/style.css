@@ -644,34 +644,30 @@ body.duck-theme .button-style-1:focus {
 .video-grid-wrapper {
   width: 100%;
   padding: 12px 0;
+  overflow-x: hidden;
 }
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 480px); /* EXACT gif width */
+  grid-auto-rows: 250px;                  /* EXACT gif height */
   gap: 16px;
 
-  width: 100%;
+  justify-content: center; /* keep original centered perspective */
 
-  /* FIXED row height */
-  grid-auto-rows: 250px;
-
-  /* 5 rows visible (15 items) */
+  /* 5 rows visible (15 gifs) */
   max-height: calc((250px * 5) + (16px * 4));
-
   overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .video-card {
-  width: 100%;
-  height: 100%;
+  width: 480px;
+  height: 250px;
 }
 
 .video-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 480px;
+  height: 250px;
   display: block;
 }
 
