@@ -51,7 +51,14 @@ body {
 }
 
 .tomato-cartoon {
-    width: 40%;
+    /* Kill the 40% rule */
+    width: 100% !important; 
+    
+    /* This makes it BIG (match the timer feel) */
+    max-width: 650px !important; 
+    
+    height: auto;
+    display: inline-block;
 }
 
 .action-button {
