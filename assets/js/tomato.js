@@ -280,17 +280,16 @@ function notify(message) {
 
 
 $('#SaveSet').on('click', function () {
-    pomodoroMin = $("#pomodoro_value").val();
-    longMin = $("#long_break_value").val();
-    shortMin = $("#short_break_value").val();
-    if (isLoopClicked)
-        onLoopTimer();
-    if (isPomClicked)
-        onPomodoroTimer();
-    if (isLongClicked)
-        onLongTimer();
-    if (isShortCliked)
-        onShortTimer();
+    // Use Number() to ensure it's not a string
+    pomodoroMin = Number($("#pomodoro_value").val());
+    longMin = Number($("#long_break_value").val());
+    shortMin = Number($("#short_break_value").val());
+
+    if (isPomClicked) gMinutes = pomodoroMin;
+    if (isLongClicked) gMinutes = longMin;
+    if (isShortCliked) gMinutes = shortMin;
+
+    resetTimer();
     $("#custom-timer").modal("hide");
 });
 
@@ -446,29 +445,34 @@ function stopTimer() {
 }
 
 function resetTimer() {
-
-    remainingTime = (gHours * 60 * 60 * 1000) +
-        (gMinutes * 60 * 1000) +
-        (gSeconds * 1000);
+    // Force math to ignore gHours and just use total minutes
+    remainingTime = (gMinutes * 60 * 1000) + (gSeconds * 1000);
     renderTimer();
     document.title = "Pomodoro Timer";
 }
 
 function renderTimer() {
-
     var deltaTime = remainingTime;
 
+    // 1. Calculate Hours
     var hoursValue = Math.floor(deltaTime / (1000 * 60 * 60));
     deltaTime = deltaTime % (1000 * 60 * 60);
 
+    // 2. Calculate Minutes
     var minutesValue = Math.floor(deltaTime / (1000 * 60));
     deltaTime = deltaTime % (1000 * 60);
 
-    var secondsValue = Math.floor(deltaTime / (1000));
-    document.title = "(" + minutesValue + ":" + secondsValue + ") Pomodoro Timer";
-    animateTime(hoursValue, minutesValue, secondsValue);
-};
+    // 3. Calculate Seconds
+    var secondsValue = Math.floor(deltaTime / 1000);
 
+    // Update the Browser Tab Title
+    // If hours > 0, show H:MM:SS, otherwise just MM:SS
+    var titleDisplay = (hoursValue > 0 ? hoursValue + ":" : "") + formatTime(minutesValue) + ":" + formatTime(secondsValue);
+    document.title = "(" + titleDisplay + ") Pomodoro Timer";
+
+    // Send all three values to your animation function
+    animateTime(hoursValue, minutesValue, secondsValue);
+}
 
 function animateTime(remainingHours, remainingMinutes, remainingSeconds) {
 

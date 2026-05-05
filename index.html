@@ -223,16 +223,18 @@
                     
             </div>
 
-            <div class="col-lg-12 text-center p-2">
-                <div class="timer-time timer-container">
-                    <div class="timer-box timer-font ">
-                        <span id="minutesValue">25</span><span>:</span><span id="secondsValue">00</span>
-                    </div>
-                    <div class="timer-time-set timer-box timer-font" id="nextTime">
-                        <span id="minutesNext">00</span><span>:</span><span id="secondsNext">00</span>
-                    </div>
-                </div>
-            </div>
+     <div class="col-lg-12 text-center p-2">
+    <div class="timer-time timer-container">
+        <!-- Main Display -->
+        <div class="timer-box timer-font ">
+            <span id="hoursValue">00</span><span>:</span><span id="minutesValue">25</span><span>:</span><span id="secondsValue">00</span>
+        </div>
+        <!-- Animation/Next Display -->
+        <div class="timer-time-set timer-box timer-font" id="nextTime">
+            <span id="hoursNext">00</span><span>:</span><span id="minutesNext">00</span><span>:</span><span id="secondsNext">00</span>
+        </div>
+    </div>
+</div>
 
             <div class="col-lg-12 text-center">
                 <a href="javascript:void(0)" onclick="onResetTimer()">
