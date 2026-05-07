@@ -716,5 +716,14 @@ body.duck-theme .button-style-1:focus {
     margin: 0 !important;
 }
 
-
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #cc5a44; 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #fdf5e6; 
+}
 
