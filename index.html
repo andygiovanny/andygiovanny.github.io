@@ -192,79 +192,70 @@
             
             
             
-            
-            <div class="col-lg-12 text-center mt-4">
-                <button type="button" class="btn button-style-1 rounded-pill mr-2"
-                        onclick="onPomodoroTimer()" id="pomodoro_timer_button">
-                    Pomodoro
-                </button>
-                <button type="button" class="btn button-style-1 rounded-pill mr-2"
-                        onclick="onShortTimer()" id="short_break_timer_button">Short Break
-                </button>
+<div class="col-lg-12 text-center mt-4">
+    <button type="button" class="btn button-style-1 rounded-pill mr-2"
+            onclick="onPomodoroTimer()" id="pomodoro_timer_button">
+        Pomodoro
+    </button>
+    <button type="button" class="btn button-style-1 rounded-pill mr-2"
+            onclick="onShortTimer()" id="short_break_timer_button">Short Break
+    </button>
+    <button type="button" class="btn button-style-1 rounded-pill mr-2"
+            onclick="onLongTimer()" id="long_break_timer_button">Long break
+    </button>
+    <button type="button" class="btn button-style-1 rounded-pill" onclick="onLoopTimer()"
+            id="loop_timer_button">Loop
+    </button>
+</div>
 
-                <button type="button" class="btn button-style-1 rounded-pill mr-2"
-                        onclick="onLongTimer()" id="long_break_timer_button">Long break
-                </button>
-                <button type="button" class="btn button-style-1 rounded-pill" onclick="onLoopTimer()"
-                        id="loop_timer_button">Loop
-                </button>
-            </div>
-          
-          <div class="col-12 mt-3">
-    <div class="row align-items-start justify-content-between">
-        
-        <div class="col-lg-2 d-none d-lg-flex justify-content-start">
-            <div style="width: 160px; height: 620px; overflow: hidden; border-radius: 12px;">
-                <ins class="adsbygoogle"
-                     style="display:inline-block; width: 160px; height: 620px;"
-                     data-ad-client="ca-pub-4915380526583895"
-                     data-ad-slot="2003793522"
-                     data-full-width-responsive="false"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
+<div class="col-12 mt-3 position-relative">
+
+    <div class="d-none d-lg-flex position-absolute start-0 top-0" style="width: 160px; height: 620px; overflow: hidden; border-radius: 12px;">
+        <ins class="adsbygoogle"
+             style="display:inline-block; width: 160px; height: 620px;"
+             data-ad-client="ca-pub-4915380526583895"
+             data-ad-slot="2003793522"
+             data-full-width-responsive="false"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="text-center pt-3">
+        <div style="min-height: 400px;" class="w-100 d-flex align-items-center justify-content-center">
+            <img src="assets/images/tomato-cartoon.svg" class="tomato-cartoon" id="tomato-cartoon" style="max-height: 400px; width: auto; margin: 0 auto 5px auto;">
         </div>
-
-        <div class="col-12 col-lg-6 text-center d-flex flex-column align-items-center justify-content-start pt-3">
-            <div style="min-height: 400px;" class="w-100 d-flex align-items-center justify-content-center">
-                <img src="assets/images/tomato-cartoon.svg" class="tomato-cartoon" id="tomato-cartoon" style="max-height: 400px; width: auto; margin: 0 auto 5px auto;">
-            </div>
-            <div class="w-100 p-2">
-                <div class="timer-time timer-container">
-                    <div class="timer-box timer-font ">
-                        <span id="hoursValue">00</span><span>:</span><span id="minutesValue">25</span><span>:</span><span id="secondsValue">00</span>
-                    </div>
-                    <div class="timer-time-set timer-box timer-font" id="nextTime">
-                        <span id="hoursNext">00</span><span>:</span><span id="minutesNext">00</span><span>:</span><span id="secondsNext">00</span>
-                    </div>
+        <div class="w-100 p-2">
+            <div class="timer-time timer-container">
+                <div class="timer-box timer-font ">
+                    <span id="hoursValue">00</span><span>:</span><span id="minutesValue">25</span><span>:</span><span id="secondsValue">00</span>
+                </div>
+                <div class="timer-time-set timer-box timer-font" id="nextTime">
+                    <span id="hoursNext">00</span><span>:</span><span id="minutesNext">00</span><span>:</span><span id="secondsNext">00</span>
                 </div>
             </div>
-            <div class="w-100 mt-3 d-flex justify-content-center align-items-center gap-4">
-                <a href="javascript:void(0)" onclick="onResetTimer()">
-                    <img src="assets/images/rest-button.svg" alt='Reset Button' class="action-button" id="resetButton" style="max-width: 65px; width: 100%; height: auto;">
-                </a>
-                <a href="javascript:void(0)" onclick="onStartTimer()">
-                    <img src="assets/images/play-button.svg" alt='Play Button' class="action-button" id="startButton" style="max-width: 65px; width: 100%; height: auto;">
-                </a>
-                <a href="javascript:void(0)" onclick="onStopTimer()">
-                    <img src="assets/images/stop-button.svg" alt='Pause Button' class="action-button" id="stopButton" style="max-width: 65px; width: 100%; height: auto;">
-                </a>
-            </div>
         </div>
-
-        <div class="col-lg-2 d-none d-lg-flex justify-content-end">
-            <div style="width: 160px; height: 620px; overflow: hidden; border-radius: 12px;">
-                <ins class="adsbygoogle"
-                     style="display:inline-block; width: 160px; height: 620px;"
-                     data-ad-client="ca-pub-4915380526583895"
-                     data-ad-slot="4438385174"
-                     data-full-width-responsive="false"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
+        <div class="w-100 mt-3 d-flex justify-content-center align-items-center gap-4">
+            <a href="javascript:void(0)" onclick="onResetTimer()">
+                <img src="assets/images/rest-button.svg" alt='Reset Button' class="action-button" id="resetButton" style="max-width: 65px; width: 100%; height: auto;">
+            </a>
+            <a href="javascript:void(0)" onclick="onStartTimer()">
+                <img src="assets/images/play-button.svg" alt='Play Button' class="action-button" id="startButton" style="max-width: 65px; width: 100%; height: auto;">
+            </a>
+            <a href="javascript:void(0)" onclick="onStopTimer()">
+                <img src="assets/images/stop-button.svg" alt='Pause Button' class="action-button" id="stopButton" style="max-width: 65px; width: 100%; height: auto;">
+            </a>
         </div>
-
     </div>
+
+    <div class="d-none d-lg-flex position-absolute end-0 top-0" style="width: 160px; height: 620px; overflow: hidden; border-radius: 12px;">
+        <ins class="adsbygoogle"
+             style="display:inline-block; width: 160px; height: 620px;"
+             data-ad-client="ca-pub-4915380526583895"
+             data-ad-slot="4438385174"
+             data-full-width-responsive="false"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
 </div>
-          
           
           
         </div>
