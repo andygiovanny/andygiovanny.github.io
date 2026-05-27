@@ -1,729 +1,79 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Baloo Tammudu', cursive;
-}
-
-.header-logo {
-    width: 75%;
-}
-
-.button-align {
-    padding-top: 22px;
-}
-
-.header-background {
-    background-color: #f0dcb9;
-}
-
-.button-style {
-    background-color: #fff;
-    color: #8e552b;
-    text-transform: uppercase;
-    padding: 1% 0.7% 0.7% 0.7%;
-    width: 45%;
-    font-size: 18px;
-}
-
-.button-style:focus {
-    background-color: #fff;
-    color: #8e552b;
-    box-shadow: none;
-}
-
-.button-style-1 {
-    font-family: 'Baloo Tammudu', cursive;
-    background-color: #fff;
-    color: #8e552b;
-    text-transform: uppercase;
-    padding: 1% 0.7% 0.7% 0.7%;
-    width: 22%;
-    font-size: 18px;
-}
-
-.button-style-1:focus {
-    background-color: #fff;
-    color: #8e552b;
-    box-shadow: none;
-}
-
-.tomato-cartoon {
-    /* Kill the 40% rule */
-    width: 100% !important; 
-    
-    /* This makes it BIG (match the timer feel) */
-    max-width: 650px !important; 
-    
-    height: auto;
-    display: inline-block;
-}
-
-.action-button {
-    width: 6%;
-}
-
-.timer-box {
-    /*font-size: 80px;*/
-    color: #8e552b;
-}
-
-.todo-background {
-    background-color: #ffa900;
-    padding: 2%;
-}
-
-.work-flow {
-    width: 100%;
-}
-
-.timer-font {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 900;
-}
-
-.footer-background {
-    background-color: #BA6463;
-    padding: 2%;
-}
-
-.footer-logo {
-    width: 100%;
-    position: relative;
-    display: block;
-}
-
-.screen-shot {
-    width: 100%;
-}
-
-.play-store {
-    width: 40%;
-}
-
-
-.popup-background {
-    background-color: #fff;
-}
-
-.header-font {
-    color: #a32b34;
-    font-weight: bold;
-}
-
-.text-color {
-    color: #8e552b;
-    font-weight: 500;
-}
-
-.close {
-    width: 9%;
-}
-
-.submit-button {
-    background-color: #cf433b;
-    color: #ffa900;
-}
-
-.submit-button:hover {
-    background-color: #cf433b;
-    color: #ffa900;
-}
-
-.submit-button:focus {
-    background-color: #cf433b;
-    color: #ffa900;
-    box-shadow: none;
-}
-
-.todo-list-min-height {
-    height: 400px;
-}
-
-#to_do_data::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background-color: #F5F5F5;
-}
-
-#to_do_data::-webkit-scrollbar {
-    width: 12px;
-
-}
-
-#to_do_data::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    background-color: #D62929;
-}
-
-
-.to-do-button {
-    background-color: #cf433b;
-    color: #fff !important;
-}
-
-.to-do-button:hover {
-    background-color: #cf433b;
-    color: #fff !important;
-}
-
-.to-do-button:focus {
-    background-color: #cf433b;
-    color: #fff !important;
-    box-shadow: none;
-}
-
-.modal-footer {
-    border-top-color: #cf433b;
-}
-
-.card-link {
-    color: #CF433B;
-}
-
-.modal-header {
-    border-bottom-color: #cf433b;
-}
-
-.form-control {
-    border-radius: unset;
-}
-
-.modal-content {
-    border-radius: unset;
-}
-
-.btn {
-    border-radius: unset;
-    padding: 2% 2% 0.7% 2%;
-    font-size: 18px;
-}
-
-.width-100 {
-    width: 100%;
-}
-
-@media only screen and (min-width: 320px) and (max-width: 425px) {
-    .logo-mobile {
-        text-align: center;
-    }
-
-    .button-style {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .button-style-1 {
-        width: 49%;
-        margin-bottom: 5px;
-        margin-right: 0px !important;
-        font-size: 14px;
-    }
-
-    .tomato-cartoon {
-        width: 65%;
-    }
-
-    .action-button {
-        width: 12%;
-    }
-
-    .close {
-        width: 18%;
-    }
-
-    .btn {
-        padding: 3% 0.7% 0.7% 0.7%;
-    }
-}
-
-
-@media only screen and (min-width: 768px) {
-    .button-style {
-        width: 48%;
-        font-size: 15px;
-        margin-right: 5px !important;
-    }
-
-    .close {
-        width: 15%;
-    }
-}
-
-@media only screen and (min-width: 1024px) {
-    .button-style {
-        font-size: 18px;
-        width: 45%;
-        margin-right: 1.5rem !important;
-    }
-
-    .close {
-        width: 9%;
-    }
-}
-
-@media only screen and (min-width: 1900px) {
-    .button-style {
-        font-size: 18px;
-        width: 45%;
-        margin-right: 1.5rem !important;
-    }
-
-    .close {
-        width: 9%;
-    }
-}
-
-
-/* The container */
-.container1 {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 22px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Hide the browser's default checkbox */
-.container1 input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #dc3545;
-}
-
-/* On mouse-over, add a grey background color */
-.container1:hover input ~ .checkmark {
-    background-color: #ccc;
-}
-
-/* When the checkbox is checked, add a blue background */
-.container1 input:checked ~ .checkmark {
-    background-color: #dc3545;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-/* Show the checkmark when checked */
-.container1 input:checked ~ .checkmark:after {
-    display: block;
-}
-
-/* Style the checkmark/indicator */
-.container1 .checkmark:after {
-    left: 9px;
-    top: 7px;
-    width: 6px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-/*
-.timer-box > span{
-    position: relative;
-}
-
-.timer-container {
-    height: 1em;
-    overflow: hidden;
-    position: relative;
-}
-.timer-time {
-    line-height: 1em;
-    font-size: 600%;
-    font-weight: 900;
-    background-color: transparent;
-    color: #ffede5;
-    border: none;
-    margin: auto;
-}
-.timer-box {
-    height: 1em;
-    margin: auto;
-    position: relative;
-}
-*/
-
-.animation {
-    -webkit-transform: translate(0, 100%);
-    -ms-transform: translate(0, 100%);
-    -o-transform: translate(0, 100%);
-    transform: translate(0, 100%);
-}
-
-.timer-box > span {
-    position: relative;
-}
-
-.timer-container {
-    height: 1em;
-    overflow: hidden;
-    position: relative;
-}
-
-.timer-time {
-    line-height: 1em;
-    font-size: 600%;
-    font-weight: 900;
-    background-color: transparent;
-    color: #ffede5;
-    border: none;
-    margin: auto;
-}
-
-.timer-box {
-    height: 1em;
-    margin: auto;
-    position: relative;
-}
-
-a:hover {
-    text-decoration: none;
-}
-
-
-
-
-.theme-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* space between toggle and label */
-  margin-left: 30px;
-}
-
-
-
-/* already styled switch */
-.theme-switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 26px;
-}
-
-.theme-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  background-color: #ccc;
-  border-radius: 34px;
-  transition: 0.4s;
-  height: 100%;
-  width: 100%;
-}
-
-.slider:before {
-  content: "";
-  position: absolute;
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 3px;
-  background-color: white;
-  border-radius: 50%;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #a26a3a;
-}
-
-input:checked + .slider:before {
-  transform: translateX(24px);
-}
-
-.theme-label {
-  font-family: 'Baloo Tammudu', cursive;
-  font-size: 16px;
-  color: #5a2a00; /* default tomato theme */
-}
-
-body.duck-theme .theme-label {
-  color: #feece5; /* duck theme */
-}
-
-.header-background {
-  transition: background-color 0.3s ease;
-}
-
-body.duck-theme .button-style:focus {
-  background-color: #feece5;
-  color: #c65e5e;
-  box-shadow: none;
-}
-
-body.duck-theme .button-style-1 {
-  background-color: #feece5;
-  color: #c65e5e;
-}
-
-body.duck-theme .button-style-1:hover {
-  background-color: #fbc8b6;
-  color: #c65e5e;
-  box-shadow: none;
-}
-
-body.duck-theme .button-style-1:focus {
-  background-color: #feece5;
-  color: #c65e5e;
-  box-shadow: none;
-}
-
-/* Duck theme override for .button-style */
-body.duck-theme .button-style {
-  background-color: #feece5;
-  color: #c65e5e;
-}
-
-body.duck-theme .timer-box {
-  color: #feece5;
-}
-
-.theme-switch input:checked + .slider {
-  background-color: #fbc8b6;
-}
-
-.slider {
-  transition: background-color 0.3s;
-}
-
-
-/* Tomato Theme (default) */
-.button-style,
-.button-style-1 {
-  background-color: #fff;
-  color: #8e552b;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.button-style:focus,
-.button-style-1:focus {
-  background-color: #fff;
-  color: #8e552b;
-  box-shadow: none;
-}
-
-
-/* Duck Theme override */
-body.duck-theme .button-style,
-body.duck-theme .button-style-1 {
-  background-color: #feece5;
-  color: #c65e5e;
-}
-
-body.duck-theme .button-style:hover,
-body.duck-theme .button-style-1:hover {
-  background-color: #fbc8b6;
-  color: #c65e5e;
-}
-
-body.duck-theme .button-style:focus,
-body.duck-theme .button-style-1:focus {
-  background-color: #feece5;
-  color: #c65e5e;
-  box-shadow: none;
-}
-
-/* Strong override to force 3×3 layout while keeping responsive sizing */
+/* --- Global Resets --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Baloo Tammudu', cursive; }
+a:hover { text-decoration: none; }
+
+/* --- Layout & Grid --- */
 .video-grid-wrapper {
-  display: flex !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-}
-
-/* force 3 columns; use fractions so each column scales;
-   limit overall container to a comfortable width so it matches your original look */
-.video-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 20px !important;
-  width: 100% !important;
-  max-width: 1200px !important;   /* controls overall visual width */
-  box-sizing: border-box !important;
-  margin: 0 auto !important;
-}
-
-/* keep iframes proportional inside each grid column */
-.video-grid iframe {
-  width: 100% !important;
-  aspect-ratio: 16 / 9;
-  max-width: 420px;    /* prevents extreme stretching on very wide screens */
-  min-width: 260px;    /* keep them from collapsing to tiny on narrow containers */
-  border: 0 !important;
-  display: block !important;
-  margin: 0 auto !important;
-}
-
-/* When the page is narrower than ~3 * min-width + gaps, allow horizontal scroll
-   so items won't wrap to 2 columns. Remove if you prefer vertical stacking. */
-.video-grid-wrapper {
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-
-.video-card {
-  display: block;
-  width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-}
-
-.video-card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
-}
-
-/* Optional hover effect */
-.video-card::after {
-  content: "▶";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  color: white;
-  background: rgba(0,0,0,0.25);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.video-card:hover::after {
-  opacity: 1;
-}
-
-.video-grid-wrapper {
-  display: flex;
-  justify-content: center;
-  overflow-x: hidden; /* stop side scroll */
+    width: 100% !important;
+    padding: 0 20px !important;
 }
 
 .video-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* ALWAYS 3 columns */
-  width: 100%;
-  max-width: 1200px; /* adjust if needed */
-  margin: 0 auto;
-}
-
-.video-card {
-  width: 100%;
-}
-
-.video-card img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9; /* normalizes 480x250 */
-  object-fit: cover;
-  display: block;
-}
-
-
-/* critical fix */
-.video-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  width: 100% !important;
-}
-
-.video-card,
-.video-card img {
-  min-width: 0 !important;
-  width: 100% !important;
-}
-
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-
-  /* 5 rows visible */
-  grid-auto-rows: auto;
-  max-height: calc((250px * 5) + (12px * 4));
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.video-grid img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 250px;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 250px;
+    gap: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
 }
 
 .video-card {
     display: block !important;
     width: 100% !important;
-    /* Remove the background color so gaps are invisible/white */
-    background-color: transparent !important; 
-    margin: 0 !important;
-    padding: 0 !important;
-    text-decoration: none;
-    line-height: 0 !important;
+    height: 100% !important;
+    background: transparent !important;
     overflow: hidden;
 }
 
 .video-card img {
     width: 100% !important;
-    /* Forces image to fill the card height exactly */
-    height: 100% !important; 
-    display: block !important;
-    /* This ensures the GIF stretches/crops to fill the space perfectly */
-    object-fit: cover !important; 
+    height: 100% !important;
+    object-fit: cover !important;
     border-radius: 8px;
-    margin: 0 !important;
 }
 
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-thumb {
-    background: #cc5a44; 
-    border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-    background: #fdf5e6; 
-}
+/* --- Header & Buttons --- */
+.header-background { background-color: #f0dcb9; transition: background-color 0.3s ease; }
+.header-logo { width: 75%; }
 
+.button-style, .button-style-1 {
+    background-color: #fff;
+    color: #8e552b;
+    text-transform: uppercase;
+    padding: 1% 0.7%;
+    font-size: 18px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: unset;
+}
+.button-style { width: 45%; }
+.button-style-1 { width: 22%; }
+.button-style:focus, .button-style-1:focus { box-shadow: none; }
+
+/* --- Tomato & Timer --- */
+.tomato-cartoon { width: 100% !important; max-width: 650px !important; height: auto; display: inline-block; }
+.timer-container { height: 1em; overflow: hidden; position: relative; }
+.timer-time { line-height: 1em; font-size: 600%; font-weight: 900; color: #ffede5; }
+.timer-box { color: #8e552b; }
+
+/* --- Theme Overrides (Duck Theme) --- */
+body.duck-theme .button-style, body.duck-theme .button-style-1 { background-color: #feece5; color: #c65e5e; }
+body.duck-theme .button-style:hover, body.duck-theme .button-style-1:hover { background-color: #fbc8b6; color: #c65e5e; }
+body.duck-theme .timer-box { color: #feece5; }
+body.duck-theme .theme-label { color: #feece5; }
+
+/* --- Utilities & Scrollbars --- */
+.todo-background { background-color: #ffa900; padding: 2%; }
+.footer-background { background-color: #BA6463; padding: 2%; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: #cc5a44; border-radius: 10px; }
+::-webkit-scrollbar-track { background: #fdf5e6; }
+
+/* --- Responsive Overrides --- */
+@media only screen and (max-width: 425px) {
+    .video-grid { grid-template-columns: 1fr !important; }
+    .button-style { width: 100%; margin-bottom: 10px; }
+    .button-style-1 { width: 49%; font-size: 14px; }
+    .tomato-cartoon { width: 65%; }
+}
