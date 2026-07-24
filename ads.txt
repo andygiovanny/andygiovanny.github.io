@@ -790,3 +790,4 @@ smartadserver.com,3262,RESELLER,060d053dcf45cbf3
 buysellads.com, 5054, DIRECT
 MANAGERDOMAIN=buysellads.com
 OWNERDOMAIN=tomatotimers.com
+google.com, pub-3646589367309037, DIRECT, f08c47fec0942fa0
