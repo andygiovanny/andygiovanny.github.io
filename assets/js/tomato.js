@@ -401,17 +401,28 @@ function LongTimer() {
 function onStartTimer() {
     stopTimer();
     startTimer();
-	
-};
+}
 
-$('.action-button').on('click', function () {
-    $(this).toggleClass('animated tada');
+$('.action-button, .button-style-1').on('click', function () {
+    var $btn = $(this);
+    $btn.removeClass('wiggle-me');
+    
+    requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+            $btn.addClass('wiggle-me');
+        });
+    });
 });
+
+$('.action-button, .button-style-1').on('animationend webkitAnimationEnd', function () {
+    $(this).removeClass('wiggle-me');
+});
+
 
 function onStopTimer() {
     stopTimer();
+}
 
-};
 
 function onResetTimer() {
     if (isLoopClicked == true) {
@@ -475,48 +486,19 @@ function renderTimer() {
 }
 
 function animateTime(remainingHours, remainingMinutes, remainingSeconds) {
+    var h = formatTime(remainingHours);
+    var m = formatTime(remainingMinutes);
+    var s = formatTime(remainingSeconds);
 
-    // position
-    $('#hoursValue').css('top', '0em');
-    $('#minutesValue').css('top', '0em');
-    $('#secondsValue').css('top', '0em');
+    // Update visible timer
+    $('#hoursValue').text(h);
+    $('#minutesValue').text(m);
+    $('#secondsValue').text(s);
 
-    $('#hoursNext').css('top', '0em');
-    $('#minutesNext').css('top', '0em');
-    $('#secondsNext').css('top', '0em');
-
-    var oldHoursString = $('#hoursNext').text();
-    var oldMinutesString = $('#minutesNext').text();
-    var oldSecondsString = $('#secondsNext').text();
-
-    var hoursString = formatTime(remainingHours);
-    var minutesString = formatTime(remainingMinutes);
-    var secondsString = formatTime(remainingSeconds);
-
-    $('#hoursValue').text(oldHoursString);
-    $('#minutesValue').text(oldMinutesString);
-    $('#secondsValue').text(oldSecondsString);
-
-    $('#hoursNext').text(hoursString);
-    $('#minutesNext').text(minutesString);
-    $('#secondsNext').text(secondsString);
-
-    // set and animate
-    /*if (oldHoursString !== hoursString) {
-        $('#hoursValue').animate({top: '-=1em'});
-        $('#hoursNext').animate({top: '-=1em'});
-    }
-
-    if (oldMinutesString !== minutesString) {
-        $('#minutesValue').animate({top: '-=1em'});
-        $('#minutesNext').animate({top: '-=1em'});
-    }
-
-    if (oldSecondsString !== secondsString) {
-
-        $('#secondsValue').animate({top: '-=1em'});
-        $('#secondsNext').animate({top: '-=1em'});
-    }*/
+    // Update hidden "next" timer too (keeps them in sync)
+    $('#hoursNext').text(h);
+    $('#minutesNext').text(m);
+    $('#secondsNext').text(s);
 }
 
 
@@ -547,66 +529,37 @@ function startTaskTimer() {
 }
 
 
-
 $('#theme-toggle').on('change', function () {
     isDuckTheme = $(this).is(':checked');
-    $('body').toggleClass('duck-theme');
+    $('body').toggleClass('duck-theme', isDuckTheme);
 
     if (isDuckTheme) {
-        $('.header-background').css('background-color', '#ba6464');
-        $('.button-style').css({
-            'background-color': '#feece5',
-            'color': '#c65e5e'
-        });
-        $('.button-style-1').css({
-            'background-color': '#feece5',
-            'color': '#c65e5e'
-        });
-        $('.timer-box').css('color', '#feece5');
-
-
-    } else {
-        $('.header-background').css('background-color', '#f0dcb9');
-        $('.button-style').css({
-            'background-color': '#fff',
-            'color': '#8e552b'
-        });
-        $('.button-style-1').css({
-            'background-color': '#fff',
-            'color': '#8e552b'
-        });
-        $('.timer-box').css('color', '#8e552b');
-
-    }
-});
-
-$('#theme-toggle').on('change', function () {
-    isDuckTheme = $(this).is(':checked');
-    $('body').toggleClass('duck-theme');
-
-    if (isDuckTheme) {
-        $('#logo').attr('src', 'assets/images/tomato.svg');
-        // ... your existing duck styling
-    } else {
-        $('#logo').attr('src', 'assets/images/logo.svg');
-        // ... your existing normal styling
-    }
-});
-
-$('#theme-toggle').on('change', function () {
-    isDuckTheme = $(this).is(':checked');
-    $('body').toggleClass('duck-theme');
-
-    if (isDuckTheme) {
+        // Image updates
         $('#logo').attr('src', 'assets/images/tomato.svg');
         $('#resetButton').attr('src', 'assets/images/tomatoreset.svg');
         $('#startButton').attr('src', 'assets/images/tomatoplay.svg');
         $('#stopButton').attr('src', 'assets/images/tomatopause.svg');
+
+        // Style updates
+        $('.header-background').css('background-color', '#ba6464');
+        $('.button-style, .button-style-1').css({
+            'background-color': '#feece5',
+            'color': '#c65e5e'
+        });
+        $('.timer-box').css('color', '#feece5');
     } else {
+        // Image updates
         $('#logo').attr('src', 'assets/images/logo.svg');
         $('#resetButton').attr('src', 'assets/images/rest-button.svg');
         $('#startButton').attr('src', 'assets/images/play-button.svg');
         $('#stopButton').attr('src', 'assets/images/stop-button.svg');
+
+        // Style updates
+        $('.header-background').css('background-color', '#f0dcb9');
+        $('.button-style, .button-style-1').css({
+            'background-color': '#fff',
+            'color': '#8e552b'
+        });
+        $('.timer-box').css('color', '#8e552b');
     }
 });
-
