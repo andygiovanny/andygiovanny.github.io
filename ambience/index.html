@@ -16,7 +16,7 @@
 </script>
     
     
-        <script src="https://apis.google.com/js/platform.js"></script> <!-- YT Subs button -->
+    <script src="https://apis.google.com/js/platform.js"></script> <!-- YT Subs button -->
     
     
     
@@ -298,9 +298,9 @@
         
         
         
-        .bsa-left-sidebar-wrapper,
+.bsa-left-sidebar-wrapper,
 .bsa-right-sidebar-wrapper {
-    position: fixed;
+    position: fixed;   /* ← locks to viewport */
     top: 80px;
     z-index: 1000;
     overflow: hidden;
@@ -310,10 +310,11 @@
 .bsa-left-sidebar-wrapper { left: 10px; }
 .bsa-right-sidebar-wrapper { right: 10px; }
 
+/* Hide on smaller screens */
 @media (max-width: 1200px) {
     .bsa-left-sidebar-wrapper,
     .bsa-right-sidebar-wrapper {
-        display: none;
+        display: none !important;
     }
 }
         
