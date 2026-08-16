@@ -17,6 +17,61 @@
         box-sizing: border-box !important;
     }
 </style>
+  
+  
+<style>
+    .button-align {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .button-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+    }
+    
+  .button-style {
+    padding: 16px 20px 10px 20px !important;  /* less top, more bottom */
+    font-size: 16px !important;
+    white-space: nowrap;
+    line-height: 1 !important;               /* remove extra font spacing */
+    display: inline-flex !important;         /* force true vertical center */
+    align-items: center !important;
+    justify-content: center !important;
+}
+      
+    .button-style:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    /* Top solo button stretches to match the pair below */
+    .button-row:first-child .button-style {
+        min-width: 340px;
+        text-align: center;
+    }
+    
+    /* Bottom pair match the top width combined */
+    .button-row:last-child .button-style {
+        min-width: 166px;
+        text-align: center;
+    }
+    
+    @media (max-width: 991px) {
+        .button-align {
+            margin-top: 10px;
+        }
+        .button-row:first-child .button-style,
+        .button-row:last-child .button-style {
+            min-width: auto;
+            flex: 1;
+        }
+    }
+</style>
     
     
     <title>Pomodoro Timer – Free, Cute &amp; Customizable | TomatoTimers</title>
@@ -236,15 +291,21 @@
                 <img id="logo" src="assets/images/logo.svg" class="header-logo" style="margin-left: 20px;"/>
             </div>
 
-            <div class="col-lg-8 col-md-8  col-sm-12 col-xs-12 text-right button-align">
-                <button type="button" class="btn button-style rounded-pill mr-4 button-animate" data-toggle="modal"
-                        data-target="#custom-timer">Custom Timer
-                </button>
-                <button type="button" class="btn button-style rounded-pill button-animate" data-toggle="modal"
-                        data-target="#what-pomodoro-timer">What is pomodoro Timer?
-                </button>
-            </div>
-            
+ <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-right button-align">
+    <div class="button-row">
+        <button type="button" class="btn button-style rounded-pill button-animate" data-toggle="modal"
+                data-target="#what-pomodoro-timer">What is Pomodoro Timer?
+        </button>
+    </div>
+    <div class="button-row">
+        <button type="button" class="btn button-style rounded-pill button-animate" data-toggle="modal"
+                data-target="#custom-timer">Custom Timer
+        </button>
+        <a href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener noreferrer"
+           class="btn button-style rounded-pill button-animate">Ambience Studio 🎵
+        </a>
+    </div>
+</div>
             
             
             
