@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    
+    
+    
+    <script type="text/javascript">
+(function(){
+    var bsa_optimize=document.createElement('script');
+    bsa_optimize.type='text/javascript';
+    bsa_optimize.async=true;
+    bsa_optimize.src='https://cdn4.buysellads.net/pub/tomatotimers.js?'+(new Date()-new Date()%600000);
+    (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+})();
+</script>
+    
+    
+    
+    
+    
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tomato Timer - Ambient Sound Studio 🎧</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu:wght@400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-hero: #F0E0BF;
+            --bg-body: #FFFFFF;
+            --text-brown: #58240E;
+            --text-muted: #8C5A3E;
+            --accent-tomato: #DE4B3A;
+            --accent-yellow: #FFA33C;
+            --accent-green: #68B04D;
+            --radius-pill: 50px;
+            --radius-card: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: 'Baloo Tammudu', cursive;
+            background-color: var(--bg-body);
+            color: var(--text-brown);
+        }
+
+        .page-wrapper {
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--bg-body);
+            position: relative;
+        }
+
+        .cream-hero-container {
+            width: 100%;
+            background-color: var(--bg-hero);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 50px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 6px 20px rgba(88, 36, 14, 0.04);
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            padding: 24px 0 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-avatar {
+            height: 80px;
+            width: auto;
+            max-width: 300px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .logo-group:hover .logo-avatar {
+            transform: scale(1.03);
+        }
+
+        .nav-links-right {
+            display: flex;
+            gap: 16px;
+        }
+
+        .pill-btn {
+            background-color: #FFFFFF;
+            border: none;
+            color: var(--text-brown);
+            padding: 20px 24px 12px 24px;
+            border-radius: var(--radius-pill);
+            font-size: 15px;
+            font-weight: 400;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Baloo Tammudu', cursive;
+            line-height: 1;
+        }
+
+        .pill-btn:hover {
+            transform: translateY(-1px);
+            background-color: #FFFFFF;
+            color: var(--accent-tomato);
+        }
+
+        .pill-btn.active {
+            color: var(--accent-tomato);
+        }
+
+        .mode-pills-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .mode-pill {
+            background-color: #FFFFFF;
+            border: none;
+            color: var(--text-brown);
+            padding: 20px 24px 12px 24px;
+            border-radius: var(--radius-pill);
+            font-size: 15px;
+            font-weight: 400;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            max-width: 210px;
+            text-align: center;
+            font-family: 'Baloo Tammudu', cursive;
+            line-height: 1;
+        }
+
+        .mode-pill:hover {
+            transform: translateY(-1px);
+            color: var(--accent-tomato);
+        }
+
+        .mode-pill.active {
+            color: var(--accent-tomato);
+        }
+
+        .mascot-hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .mascot-img-box {
+            width: 600px;
+            height: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .hero-status-title {
+            font-size: 40px;
+            font-weight: 400;
+            color: var(--text-brown);
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .hero-controls {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            margin-bottom: 12px;
+        }
+
+        .icon-btn-circle {
+            background: transparent;
+            border: none;
+            color: var(--text-brown);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+
+        .icon-btn-circle:hover {
+            transform: scale(1.1);
+            color: var(--accent-tomato);
+        }
+
+        .mascot-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .btn-play-master {
+            width: 56px;
+            height: 56px;
+            background-color: var(--text-brown);
+            color: #FFFFFF;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-play-master:hover {
+            transform: scale(1.05);
+            background-color: var(--accent-tomato);
+        }
+
+        .hero-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sleep-timer-pill {
+            background-color: #FFFFFF;
+            border: none;
+            padding: 20px 24px 12px 20px;
+            border-radius: var(--radius-pill);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text-brown);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+        }
+        
+        
+        
+        .bsa-left-sidebar-wrapper,
+.bsa-right-sidebar-wrapper {
+    position: fixed;
+    top: 80px;
+    z-index: 1000;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: transparent;
+}
+.bsa-left-sidebar-wrapper { left: 10px; }
+.bsa-right-sidebar-wrapper { right: 10px; }
+
+@media (max-width: 1200px) {
+    .bsa-left-sidebar-wrapper,
+    .bsa-right-sidebar-wrapper {
+        display: none;
+    }
+}
+        
+
+.sleep-input {
+    border: 1px solid #E2D0AF;      /* subtle border */
+    background: #FAF5EB;            /* cream tint, slightly different from pill */
+    border-radius: 8px;
+    padding: 2px 6px;
+    width: 56px;
+    text-align: center;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-brown);
+    cursor: text;                   /* shows the I-beam on hover */
+    outline: none;
+    -moz-appearance: textfield;
+    transition: all 0.15s ease;
+}
+
+.sleep-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.9;
+}
+
+.sleep-input:focus {
+    border-color: var(--accent-tomato);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 2px rgba(222, 75, 58, 0.15);
+}
+
+/* hide number spinners */
+.sleep-input::-webkit-outer-spin-button,
+.sleep-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide number spinners */
+.sleep-input::-webkit-outer-spin-button,
+.sleep-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.sleep-unit {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+        .master-vol-group {
+            background-color: #FFFFFF;
+            border: none;
+            padding: 8px 20px;
+            border-radius: var(--radius-pill);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text-brown);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+            width: 220px;
+        }
+
+        .master-vol-group svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-brown);
+            flex-shrink: 0;
+        }
+
+        .master-vol-group input[type="range"] {
+            flex: 1;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .content-section {
+            width: 100%;
+            max-width: 1000px;
+            padding: 50px 24px 60px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--bg-body);
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header-title {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-brown);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            align-self: flex-start;
+        }
+
+        .sound-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 36px 32px;
+            width: 100%;
+        }
+
+        .sound-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 24px;
+            border-radius: 20px;
+            background-color: #FAF5EB;
+            transition: all 0.2s ease;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(88, 36, 14, 0.02);
+        }
+
+        .sound-icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #F8EEDC;
+            border: 3px solid rgba(88, 36, 14, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #E2D0AF;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            color: var(--text-brown);
+        }
+
+        .sound-icon-circle:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 7px 0 #E2D0AF;
+            border-color: var(--accent-tomato);
+        }
+
+        .sound-item.active .sound-icon-circle {
+            background-color: var(--accent-tomato);
+            border-color: var(--text-brown);
+            box-shadow: 0 5px 0 var(--text-brown);
+            transform: translateY(-2px);
+            color: #FFFFFF;
+        }
+
+        .sound-icon-circle svg {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.2s ease;
+            stroke: currentColor;
+        }
+
+        .sound-item.active .sound-icon-circle svg {
+            transform: scale(1.1);
+        }
+
+        .sound-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .sound-name {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-brown);
+            text-align: center;
+        }
+
+        .badge-status {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-muted);
+            background-color: #F8EEDC;
+            padding: 3px 10px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .sound-item.active .badge-status {
+            background-color: var(--accent-tomato);
+            color: #FFFFFF;
+        }
+
+        .slider-container {
+            width: 90%;
+            padding: 0;
+            opacity: 0.5;
+            transition: opacity 0.2s ease;
+        }
+
+        .sound-item.active .slider-container {
+            opacity: 1;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #E2D0AF;
+            border-radius: 6px;
+        }
+
+        .sound-item.active input[type=range]::-webkit-slider-runnable-track {
+            background: #F1E2C3;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: var(--text-brown);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: transform 0.15s ease;
+        }
+
+        .sound-item.active input[type=range]::-webkit-slider-thumb {
+            background: var(--accent-tomato);
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 400;
+            padding-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .sound-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sound-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .header-top-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links-right {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .main-container, .content-section {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    
+    
+    <div style="background-color: #752222; padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-radius: 6px; margin-top: 0px; flex-wrap: wrap;">
+  <div style="display: flex; align-items: center; gap: 12px;">
+     <a href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w" target="_blank" rel="noopener noreferrer">
+      <img src="assets/images/YT.png" alt="Subscribe" style="height: 28px;">
+    </a>
+    <span style="font-size: 15px; color: #fff;">
+      Support the channel and check out our channel by clicking the youtube button on the left 
+    </span>
+  </div>
+  <div class="g-ytsubscribe" 
+       data-channelid="UC-u-z82nVkW81veR76iFx_w" 
+       data-layout="default" 
+       data-count="default">
+  </div>
+</div>
+    
+    <div class="bsa-left-sidebar-wrapper">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785230759691-0_123456"></div>
+</div>
+    
+    
+    <div class="bsa-right-sidebar-wrapper">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785233220314-9_123456"></div>
+</div>
+    
+    
+    
+    
+    <div class="page-wrapper">
+        <div class="cream-hero-container">
+            <div class="main-container">
+                <header>
+                    <div class="header-top-row">
+                        <a href="#" class="logo-group" title="Go to Main Pomodoro Timer">
+                            <img src="../assets/images/logo ambience.svg" alt="Tomato Timer Logo" class="logo-avatar" onerror="this.onerror=null; this.src='https://placehold.co/200x64/F0E0BF/58240E?text=Tomato+Timer';">
+                        </a>
+
+                        <div class="nav-links-right">
+    <a href="https://www.tomatotimers.com/" target="_blank" rel="noopener noreferrer" class="pill-btn">Main Timer</a>
+</div>
+                    </div>
+
+                    <div class="mode-pills-row">
+                        <button class="mode-pill active" onclick="applyPreset('rainy')">Rainy Focus</button>
+                        <button class="mode-pill" onclick="applyPreset('cafe')">Cozy Cafe</button>
+                        <button class="mode-pill" onclick="applyPreset('night')">Campfire Night</button>
+                        <button class="mode-pill" onclick="applyPreset('ocean')">Ocean Breeze</button>
+                    </div>
+                </header>
+
+                <section class="mascot-hero-section">
+                    <div class="mascot-img-box">
+                       <video id="mascotVideo" class="mascot-video" autoplay muted loop playsinline>
+                            <source src="../assets/images/ambience.mp4" type="video/mp4">
+                       </video>
+                        
+                        <svg id="mascotFallbackSvg" width="160" height="160" viewBox="0 0 200 200" fill="none" style="display:none;">
+                            <path d="M45 105 C45 35, 155 35, 155 105" stroke="#58240E" stroke-width="12" stroke-linecap="round" fill="none"/>
+                            <circle cx="100" cy="115" r="55" fill="#FFF2CE"/>
+                            <circle cx="100" cy="115" r="55" stroke="#58240E" stroke-width="6"/>
+                            <path d="M70 72 C70 48, 130 48, 130 72 Z" fill="#DE4B3A" stroke="#58240E" stroke-width="5"/>
+                            <path d="M100 52 Q94 40 86 44 Q96 46 100 52 Z" fill="#68B04D" stroke="#58240E" stroke-width="3"/>
+                            <path d="M100 52 Q106 40 114 44 Q104 46 100 52 Z" fill="#68B04D" stroke="#58240E" stroke-width="3"/>
+                            <rect x="32" y="92" width="22" height="38" rx="11" fill="#DE4B3A" stroke="#58240E" stroke-width="5"/>
+                            <rect x="146" y="92" width="22" height="38" rx="11" fill="#DE4B3A" stroke="#58240E" stroke-width="5"/>
+                            <circle cx="76" cy="120" r="7" fill="#FFB0A3"/>
+                            <circle cx="124" cy="120" r="7" fill="#FFB0A3"/>
+                            <ellipse cx="82" cy="108" rx="4" ry="6" fill="#58240E"/>
+                            <ellipse cx="118" cy="108" rx="4" ry="6" fill="#58240E"/>
+                            <path d="M90 116 C90 126, 110 126, 110 116 Z" fill="#FFA33C" stroke="#58240E" stroke-width="4"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="hero-controls">
+                        <button class="icon-btn-circle" id="clearAllBtn" title="Clear All Sounds">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                        </button>
+
+                        <button class="btn-play-master" id="masterPlayBtn" title="Play / Pause All">
+                            <svg id="playIcon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            <svg id="pauseIcon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="hero-toolbar">
+                      <div class="sleep-timer-pill">
+    <span>🌙 Auto-Off:</span>
+    <input type="number" class="sleep-input" id="sleepInput" placeholder="Off" min="0">
+    <span class="sleep-unit">mins</span>
+</div>
+
+                       <div class="master-vol-group">
+                            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                            <input type="range" id="masterVolSlider" min="0" max="100" value="80" title="Master Volume">
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header-title">
+                <span>Ambient Soundscapes</span> 🎧
+            </div>
+
+            <main class="sound-grid" id="soundGrid">
+                <!-- Dynamic Sound Cards render here -->
+            </main>
+
+            <footer>
+                Tomato Timer: Ambience Studio
+            </footer>
+        </div>
+    </div>
+
+   <script>
+    const SOUNDS = [
+        { id: 'rain',    name: 'Rain',    file: 'audio/rain.ogg',    icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M16 13 C14 13, 12 11, 12 9 C12 7, 16 3, 16 3 C16 3, 20 7, 20 9 C20 11, 18 13, 16 13 Z"/><path d="M8 21 C6 21, 4 19, 4 17 C4 15, 8 11, 8 11 C8 11, 12 15, 12 17 C12 19, 10 21, 8 21 Z"/></svg>` },
+        { id: 'thunder', name: 'Thunder',      file: 'audio/thunder.ogg', icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>` },
+        { id: 'wind',    name: 'Wind',    file: 'audio/wind.ogg',    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-1.5 3-5 6-5 10 0 3 2.5 5 5 5s5-2 5-5c0-4-3.5-7-5-10z"/><path d="M12 7c-1 1.5-2 3-2 4.5a2 2 0 0 0 4 0C14 10 13 8.5 12 7z"/><path d="M7 19l4-3"/><path d="M17 19l-4-3"/></svg>` },
+        { id: 'campfire',name: 'Campfire',     file: 'audio/campfire.ogg',icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2C12 2 7 8 7 13a5 5 0 0 0 10 0c0-5-5-11-5-11z"/><path d="M12 12c-1.5 0-3 1.2-3 2.8A2.8 2.8 0 0 0 12 17.5a2.8 2.8 0 0 0 3-2.7c0-1.6-1.5-2.8-3-2.8z"/></svg>` },
+        { id: 'waves',   name: 'Ocean Waves',  file: 'audio/waves.ogg',   icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M2 12c3-2 6-2 9 0s6 2 9 0"/><path d="M2 17c3-2 6-2 9 0s6 2 9 0"/></svg>` },
+        { id: 'cafe',    name: 'Coffee Shop',  file: 'audio/cafe.ogg',    icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>` },
+        { id: 'birds',   name: 'Seagull',        file: 'audio/birds.ogg',   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13c3-4 6-2 8 0s5-4 8-2 3 2 4 1"/><path d="M8 11c1.5-1 3.5-1 5 0"/><path d="M16 9l2-2"/></svg>` },
+        { id: 'night',   name: 'Mountain Night',     file: 'audio/night.ogg',   icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>` },
+        { id: 'typing',  name: 'Keyboard',     file: 'audio/typing.ogg',  icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"/></svg>` }
+    ];
+
+    /* ─── Web Audio API Setup ─── */
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    const soundBuffers = {};   // id -> decoded AudioBuffer
+    const activeNodes = {};    // id -> { source, gain }
+
+    const masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.8;
+    masterGain.connect(audioCtx.destination);
+
+    let isPlaying = false;
+    let masterVolume = 0.8;
+
+    /* Load every .ogg into memory once */
+    async function preloadSound(sound) {
+        if (soundBuffers[sound.id]) return;
+        try {
+            const res = await fetch(sound.file);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const arrayBuffer = await res.arrayBuffer();
+            soundBuffers[sound.id] = await audioCtx.decodeAudioData(arrayBuffer);
+            console.log('Buffered:', sound.file);
+        } catch (err) {
+            console.error('Failed to load', sound.file, err);
+        }
+    }
+
+    /* Start a sound (gapless loop) */
+    function startSound(sound) {
+        // Browsers suspend AudioContext until first user gesture
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        // If buffer isn't ready yet, load then auto-start
+        if (!soundBuffers[sound.id]) {
+            preloadSound(sound).then(() => {
+                if (sound.active) startSound(sound);
+            });
+            return;
+        }
+
+        // Stop previous instance if any (source nodes are one-shot)
+        stopSound(sound.id);
+
+        const source = audioCtx.createBufferSource();
+        source.buffer = soundBuffers[sound.id];
+        source.loop = true;                 // ← seamless sample-accurate loop
+
+        const gainNode = audioCtx.createGain();
+        const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
+        gainNode.gain.value = vol;
+
+        source.connect(gainNode);
+        gainNode.connect(masterGain);
+
+        source.start(0);
+        activeNodes[sound.id] = { source, gain: gainNode };
+    }
+
+    /* Stop a sound */
+    function stopSound(soundId) {
+        if (activeNodes[soundId]) {
+            try { activeNodes[soundId].source.stop(); } catch (e) {}
+            activeNodes[soundId].source.disconnect();
+            activeNodes[soundId].gain.disconnect();
+            delete activeNodes[soundId];
+        }
+    }
+
+    /* Update individual volume */
+    function updateSoundVolume(sound) {
+        if (activeNodes[sound.id]) {
+            const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
+            activeNodes[sound.id].gain.gain.value = vol;
+        }
+    }
+
+    /* ─── UI Rendering (unchanged logic) ─── */
+    const gridEl = document.getElementById('soundGrid');
+
+    function renderGrid() {
+        gridEl.innerHTML = '';
+        SOUNDS.forEach(sound => {
+            if (sound.volume === undefined) sound.volume = 50;
+
+            const item = document.createElement('div');
+            item.className = `sound-item ${sound.active ? 'active' : ''}`;
+            item.id = `item-${sound.id}`;
+
+            item.innerHTML = `
+                <div class="sound-icon-circle" title="Toggle ${sound.name}">
+                    ${sound.icon}
+                </div>
+                <div class="sound-meta">
+                    <span class="sound-name">${sound.name}</span>
+                    <span class="badge-status" id="badge-${sound.id}">${sound.active ? sound.volume + '%' : 'Off'}</span>
+                </div>
+                <div class="slider-container" onclick="event.stopPropagation()">
+                    <input type="range" min="0" max="100" value="${sound.volume}" id="vol-${sound.id}">
+                </div>
+            `;
+
+            const circleBtn = item.querySelector('.sound-icon-circle');
+            circleBtn.addEventListener('click', () => {
+                sound.active = !sound.active;
+                if (sound.active) {
+                    isPlaying = true;
+                    startSound(sound);
+                } else {
+                    stopSound(sound.id);
+                }
+                renderGrid();
+            });
+
+            const volInput = item.querySelector(`#vol-${sound.id}`);
+            volInput.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value);
+                sound.volume = val;
+                const badge = item.querySelector(`#badge-${sound.id}`);
+                if (sound.active) badge.textContent = val + '%';
+                updateSoundVolume(sound);
+            });
+
+            gridEl.appendChild(item);
+        });
+    }
+
+    /* ─── Master Controls ─── */
+    const masterPlayBtn = document.getElementById('masterPlayBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+
+    masterPlayBtn.addEventListener('click', () => {
+        const active = SOUNDS.filter(s => s.active);
+        if (active.length === 0) {
+            SOUNDS[0].active = true;
+        }
+
+        isPlaying = !isPlaying;
+        SOUNDS.forEach(s => {
+            if (s.active) {
+                isPlaying ? startSound(s) : stopSound(s.id);
+            }
+        });
+        renderGrid();
+
+        playIcon.style.display = isPlaying ? 'none' : 'block';
+        pauseIcon.style.display = isPlaying ? 'block' : 'none';
+    });
+
+    document.getElementById('clearAllBtn').addEventListener('click', () => {
+        SOUNDS.forEach(s => {
+            s.active = false;
+            stopSound(s.id);
+        });
+        isPlaying = false;
+        renderGrid();
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    });
+
+    window.applyPreset = function(type) {
+        SOUNDS.forEach(s => { s.active = false; stopSound(s.id); });
+
+        const set = (id, vol) => {
+            const s = SOUNDS.find(x => x.id === id);
+            if (s) { s.active = true; s.volume = vol; startSound(s); }
+        };
+
+        if (type === 'rainy')  { set('rain', 70); set('thunder', 40); }
+        else if (type === 'cafe')   { set('cafe', 75); set('typing', 50); }
+        else if (type === 'night')  { set('campfire', 80); set('night', 60); }
+        else if (type === 'ocean')  { set('waves', 80); set('wind', 40); }
+
+        isPlaying = true;
+        renderGrid();
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+    };
+
+    document.getElementById('masterVolSlider').addEventListener('input', (e) => {
+        masterVolume = parseInt(e.target.value) / 100;
+        masterGain.gain.value = masterVolume;
+    });
+
+let sleepTimerTimeout = null;
+const sleepInput = document.getElementById('sleepInput');
+
+sleepInput.addEventListener('change', () => {
+    let mins = parseInt(sleepInput.value);
+    if (isNaN(mins) || mins <= 0) {
+        sleepInput.value = '';
+        if (sleepTimerTimeout) clearTimeout(sleepTimerTimeout);
+        return;
+    }
+
+    if (sleepTimerTimeout) clearTimeout(sleepTimerTimeout);
+
+    sleepTimerTimeout = setTimeout(() => {
+        document.getElementById('clearAllBtn').click();
+        sleepInput.value = ''; // reset to Off after firing
+    }, mins * 60 * 1000);
+});
+
+    /* ─── Init ─── */
+    window.addEventListener('DOMContentLoaded', () => {
+        renderGrid();
+        SOUNDS.forEach(s => preloadSound(s)); // start buffering in background
+    });
+</script>
+</body>
+</html>
