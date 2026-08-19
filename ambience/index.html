@@ -411,45 +411,21 @@
             box-shadow: 0 4px 12px rgba(88, 36, 14, 0.02);
         }
 
-        .sound-icon-circle {
+        .sound-icon-img {
             width: 80px;
             height: 80px;
-            border-radius: 50%;
-            background-color: #F8EEDC;
-            border: 3px solid rgba(88, 36, 14, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            object-fit: contain;
             cursor: pointer;
-            box-shadow: 0 4px 0 #E2D0AF;
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            color: var(--text-brown);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
         }
 
-        .sound-icon-circle:hover {
+        .sound-icon-img:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 7px 0 #E2D0AF;
-            border-color: var(--accent-tomato);
         }
 
-        .sound-item.active .sound-icon-circle {
-            background-color: var(--accent-tomato);
-            border-color: var(--text-brown);
-            box-shadow: 0 5px 0 var(--text-brown);
-            transform: translateY(-2px);
-            color: #FFFFFF;
-        }
-
-        .sound-icon-circle svg {
-            width: 40px;
-            height: 40px;
-            transition: transform 0.2s ease;
-            stroke: currentColor;
-        }
-
-        .sound-item.active .sound-icon-circle svg {
-            transform: scale(1.1);
+        .sound-item.active .sound-icon-img {
+            transform: translateY(-2px) scale(1.08);
+            filter: drop-shadow(0 0 8px rgba(222, 75, 58, 0.55));
         }
 
         .sound-meta {
@@ -550,7 +526,7 @@
         .bsa-left-sidebar-wrapper,
         .bsa-right-sidebar-wrapper {
             position: absolute;
-            top: 80px;
+            top: 40px;
             z-index: 1000;
             overflow: hidden;
             border-radius: 12px;
@@ -684,7 +660,6 @@
             }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -705,33 +680,34 @@
   </div>
 </div>
 
-<!-- BSA Left Sidebar -->
-<div class="bsa-left-sidebar-wrapper">
-    <style>
-        @media only screen and (min-width: 0px) and (min-height: 0px) {
-            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
-        }
-        @media only screen and (min-width: 990px) and (min-height: 0px) {
-            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
-        }
-    </style>
-    <div id="bsa-zone_1785230759691-0_123456"></div>
-</div>
-
-<!-- BSA Right Sidebar -->
-<div class="bsa-right-sidebar-wrapper">
-    <style>
-        @media only screen and (min-width: 0px) and (min-height: 0px) {
-            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
-        }
-        @media only screen and (min-width: 990px) and (min-height: 0px) {
-            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
-        }
-    </style>
-    <div id="bsa-zone_1785233220314-9_123456"></div>
-</div>
-
     <div class="page-wrapper">
+
+        <!-- BSA Left Sidebar (inside page-wrapper so it scrolls with the page) -->
+        <div class="bsa-left-sidebar-wrapper">
+            <style>
+                @media only screen and (min-width: 0px) and (min-height: 0px) {
+                    div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
+                }
+                @media only screen and (min-width: 990px) and (min-height: 0px) {
+                    div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+                }
+            </style>
+            <div id="bsa-zone_1785230759691-0_123456"></div>
+        </div>
+
+        <!-- BSA Right Sidebar (inside page-wrapper so it scrolls with the page) -->
+        <div class="bsa-right-sidebar-wrapper">
+            <style>
+                @media only screen and (min-width: 0px) and (min-height: 0px) {
+                    div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
+                }
+                @media only screen and (min-width: 990px) and (min-height: 0px) {
+                    div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
+                }
+            </style>
+            <div id="bsa-zone_1785233220314-9_123456"></div>
+        </div>
+
         <div class="cream-hero-container">
             <div class="main-container">
                 <header>
@@ -823,44 +799,38 @@
 <div class="modal-overlay" id="howItWorksModal">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="howItWorksTitle">
         <button type="button" class="modal-close" id="howItWorksClose" aria-label="Close">&times;</button>
-        
-        <h2 class="modal-title" id="howItWorksTitle">How to use Tomato Timers Ambience Studio?</h2>
+        <h2 class="modal-title" id="howItWorksTitle">How Does This Website Work?</h2>
 
-        <h3 class="modal-subheading">Custom Ambient Sound Generator for Focus and Relaxation</h3>
-        <p>Tomato Timer Ambient Sound Studio is a free background noise generator designed to help you focus, study, reduce anxiety, and sleep better. Mix and match 9 high-quality ambient soundscapes to create your ideal environment for deep work or relaxation.</p>
+        <h3 class="modal-subheading">Lorem Ipsum Dolor</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
 
-        <h3 class="modal-subheading">Combine 9 High-Quality Ambient Soundscapes</h3>
-        <p>Custom-tailor your atmosphere by mixing individual volume sliders. Our curated sound library includes:</p>
-        <ul>
-            <li><strong>Rain and Thunder:</strong> Relaxing heavy rain on a window, thunder rolls, and storm ambience.</li>
-            <li><strong>Nature and Outdoors:</strong> Soothing ocean waves, mountain night sounds, seagull calls, and gentle wind.</li>
-            <li><strong>Cozy Interiors:</strong> Warm campfire crackles, coffee shop background chatter, and mechanical keyboard typing noise.</li>
-        </ul>
+        <h3 class="modal-subheading">Sit Amet Consectetur</h3>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
         <h3 class="modal-subheading">How To Use It</h3>
         <ul>
-            <li><strong>Mix Sounds:</strong> Toggle any sound on and adjust individual volume sliders to blend your custom soundscape.</li>
-            <li><strong>Set the Auto-Off Timer:</strong> Choose a custom countdown duration so the audio stops automatically when you take a break or go to sleep.</li>
-            <li><strong>Use Presets:</strong> Click quick-start presets like <em>Rainy Focus</em>, <em>Cozy Cafe</em>, <em>Campfire Night</em>, or <em>Ocean Breeze</em> for instant sound combinations.</li>
-            <li><strong>100% Free and Browser-Based:</strong> No signup, downloads, or apps required. Runs continuously in your browser.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+            <li>Sed do eiusmod tempor incididunt ut labore</li>
+            <li>Ut enim ad minim veniam, quis nostrud exercitation</li>
+            <li>Duis aute irure dolor in reprehenderit in voluptate</li>
+            <li>Excepteur sint occaecat cupidatat non proident</li>
         </ul>
 
-        <p class="modal-note">More ambience will be added slowly!</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
 </div>
-    
-    
+
    <script>
     const SOUNDS = [
-        { id: 'rain',    name: 'Rain',    file: 'audio/rain.ogg',    icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M16 13 C14 13, 12 11, 12 9 C12 7, 16 3, 16 3 C16 3, 20 7, 20 9 C20 11, 18 13, 16 13 Z"/><path d="M8 21 C6 21, 4 19, 4 17 C4 15, 8 11, 8 11 C8 11, 12 15, 12 17 C12 19, 10 21, 8 21 Z"/></svg>` },
-        { id: 'thunder', name: 'Thunder',      file: 'audio/thunder.ogg', icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>` },
-        { id: 'wind',    name: 'Wind',    file: 'audio/wind.ogg',    icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9.5 8.5 T14 8.5 A2.5 2.5 0 1 1 11.5 11"/><path d="M4 12.5 T17 12.5 A2.5 2.5 0 1 1 14.5 15"/><path d="M7 16.5 T12 16.5"/></svg>` },
-        { id: 'campfire',name: 'Campfire',     file: 'audio/campfire.ogg',icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-1.5 3-5 6-5 10 0 3 2.5 5 5 5s5-2 5-5c0-4-3.5-7-5-10z"/><path d="M12 7c-1 1.5-2 3-2 4.5a2 2 0 0 0 4 0C14 10 13 8.5 12 7z"/><path d="M7 19l4-3"/><path d="M17 19l-4-3"/></svg>` },
-        { id: 'waves',   name: 'Ocean Waves',  file: 'audio/waves.ogg',   icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M2 12c3-2 6-2 9 0s6 2 9 0"/><path d="M2 17c3-2 6-2 9 0s6 2 9 0"/></svg>` },
-        { id: 'cafe',    name: 'Coffee Shop',  file: 'audio/cafe.ogg',    icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>` },
-        { id: 'birds',   name: 'Seagull',        file: 'audio/birds.ogg',   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13c3-4 6-2 8 0s5-4 8-2 3 2 4 1"/><path d="M8 11c1.5-1 3.5-1 5 0"/><path d="M16 9l2-2"/></svg>` },
-        { id: 'night',   name: 'Mountain Night',     file: 'audio/night.ogg',   icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>` },
-        { id: 'typing',  name: 'Keyboard',     file: 'audio/typing.ogg',  icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"/></svg>` }
+ { id: 'rain', name: 'Rain', file: 'audio/rain.ogg', icon: 'icons/rain.svg' },
+ { id: 'thunder', name: 'Thunder', file: 'audio/thunder.ogg', icon: 'icons/thunder.svg' },
+ { id: 'wind', name: 'Wind', file: 'audio/wind.ogg', icon: 'icons/wind.svg' },
+ { id: 'campfire',name: 'Campfire', file: 'audio/campfire.ogg',icon: 'icons/campfire.svg' },
+ { id: 'waves', name: 'Ocean Waves', file: 'audio/waves.ogg', icon: 'icons/waves.svg' },
+ { id: 'cafe', name: 'Coffee Shop', file: 'audio/cafe.ogg', icon: 'icons/cafe.svg' },
+ { id: 'birds', name: 'Seagull', file: 'audio/birds.ogg', icon: 'icons/birds.svg' },
+ { id: 'night', name: 'Mountain Night', file: 'audio/night.ogg', icon: 'icons/night.svg' },
+ { id: 'typing', name: 'Keyboard', file: 'audio/typing.ogg', icon: 'icons/typing.svg' }
     ];
 
     /* ─── Web Audio API Setup ─── */
@@ -953,9 +923,7 @@
             item.id = `item-${sound.id}`;
 
             item.innerHTML = `
-                <div class="sound-icon-circle" title="Toggle ${sound.name}">
-                    ${sound.icon}
-                </div>
+                <img class="sound-icon-img" src="${sound.icon}" alt="${sound.name} icon" title="Toggle ${sound.name}">
                 <div class="sound-meta">
                     <span class="sound-name">${sound.name}</span>
                     <span class="badge-status" id="badge-${sound.id}">${sound.active ? sound.volume + '%' : 'Off'}</span>
@@ -965,8 +933,8 @@
                 </div>
             `;
 
-            const circleBtn = item.querySelector('.sound-icon-circle');
-            circleBtn.addEventListener('click', () => {
+            const iconBtn = item.querySelector('.sound-icon-img');
+            iconBtn.addEventListener('click', () => {
                 sound.active = !sound.active;
                 if (sound.active) {
                     isPlaying = true;
