@@ -56,7 +56,70 @@
     });
 </script>
     
+    
+    
     <style>
+        
+        /* Wrapper for the section */
+  .video-grid-wrapper {
+    width: 100% !important;
+    max-width: 1200px; /* Wider to allow space for 3 columns */
+    margin: 0 auto;
+  }
+
+ /* FORCING THE GRID */
+.video-grid {
+  display: grid !important; 
+  /* Force 3 columns */
+  grid-template-columns: repeat(3, 1fr) !important; 
+  
+  /* Add gap between items */
+  gap: 16px !important;
+  
+  /* Scrollable height for rows */
+  max-height: 80vh; 
+  overflow-y: auto;
+  
+  /* Add padding so the scrollbar doesn't clip your cards */
+  padding-right: 8px;
+}
+
+  /* Targeting your <a> tags */
+  .video-card {
+    display: block !important;
+    width: 100% !important;
+    aspect-ratio: 16 / 9; /* Ensures uniform size */
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #000;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+
+  .video-card:hover {
+    transform: scale(1.02);
+  }
+
+  /* Targeting your <img> tags */
+  .video-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover; 
+    display: block;
+  }
+
+  /* Responsive: Switch to 1 column only on very small mobile screens */
+  @media (max-width: 576px) {
+    .video-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+        
+        
+        
+        
+        
+        
         :root {
             --bg-hero: #F0E0BF;
             --bg-body: #FFFFFF;
@@ -812,6 +875,55 @@
             <main class="sound-grid" id="soundGrid">
                 <!-- Dynamic Sound Cards render here -->
             </main>
+           
+           <div class="container" style="background-color: #fff; padding: 0.5rem 1rem; border-radius: 12px; margin-top: 1rem; margin-bottom: 1rem;">
+<h2 style="font-size: 24px; font-weight: 700; color: var(--text-brown); margin-bottom: 28px;">
+  Study Videos with Ambience 🎨
+</h2>
+
+  <div class="video-grid-wrapper">
+    <div class="video-grid">
+
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=6u2QZ5R6Bok" target="_blank" rel="noopener">
+        <img src="/assets/gifs/office.gif" alt="Cozy Office Work Pomodoro Timer Online" loading="lazy">
+      </a>
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=EZ66BuJsTm0" target="_blank" rel="noopener">
+        <img src="/assets/gifs/train.gif" alt="Scenic Train Ride Ambient Study Timer" loading="lazy">
+      </a>
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=5sWWzgmIgfU" target="_blank" rel="noopener">
+        <img src="/assets/gifs/camping.gif" alt="Outdoor Camping Ambient Pomodoro Timer" loading="lazy">
+      </a>
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=wBENuwsH0qc" target="_blank" rel="noopener">
+        <img src="/assets/gifs/raining.gif" alt="Rainy Day Lofi Study Timer Pomodoro" loading="lazy">
+      </a>
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=fGf1NF6iSME" target="_blank" rel="noopener">
+        <img src="/assets/gifs/farm.gif" alt="Peaceful Farm Life Focus Study Timer" loading="lazy">
+      </a>
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=svz09jz_NJU" target="_blank" rel="noopener">
+        <img src="/assets/gifs/autumn.gif" alt="Autumn Season Aesthetic Study Timer" loading="lazy">
+      </a>
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=diz-BixQp7A" target="_blank" rel="noopener">
+        <img src="/assets/gifs/airplane.gif" alt="In-Flight Cabin Window Study Timer" loading="lazy">
+      </a>
+    
+      <a class="video-card" href="https://www.youtube.com/watch?v=Tqy6h1R2Q7U" target="_blank" rel="noopener">
+        <img src="/assets/gifs/school.gif" alt="Classroom Study Session Pomodoro Online" loading="lazy">
+      </a>
+      
+      <a class="video-card" href="https://www.youtube.com/watch?v=kHAmVm3gUtY&pp=2AYC" target="_blank" rel="noopener">
+        <img src="/assets/gifs/beach 2.gif" alt="Tropical Sunset Beach Study Timer" loading="lazy">
+      </a>
+      
+    </div>
+  </div>
+</div>
 
             <footer>
                 Tomato Timer Ambient Sound Studio
@@ -1091,5 +1203,8 @@
         SOUNDS.forEach(s => preloadSound(s));
     });
 </script>
+    
+    
+    
 </body>
 </html>
