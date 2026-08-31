@@ -1035,8 +1035,9 @@
             console.error('Failed to load', sound.file, err);
         }
     }
+    /* ─── Single-source loop with Chrome OGG tail trim ─── */
+    const activeNodes = {};    // id -> { source, gain }
 
-    /* Start a sound with crossfade loop (fixes Chrome OGG ringing) */
     function startSound(sound) {
         if (audioCtx.state === 'suspended') audioCtx.resume();
 
@@ -1047,131 +1048,61 @@
             return;
         }
 
-        if (activeLoops[sound.id]) return;
+        // Prevent stacking duplicates
+        if (activeNodes[sound.id]) {
+            stopSound(sound.id);
+        }
 
-        const buf = soundBuffers[sound.id];
-        const duration = buf.duration;
+        const source = audioCtx.createBufferSource();
+        source.buffer = soundBuffers[sound.id];
+        source.loop = true;
+        source.loopStart = 0;
+
+        /* Chrome OGG fix: trim last 100ms to skip decoder padding */
+        const trim = 0.10;
+        source.loopEnd = Math.max(source.buffer.duration - trim, source.buffer.duration * 0.98);
+
+        const gainNode = audioCtx.createGain();
         const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
 
-        const gainA = audioCtx.createGain();
-        const gainB = audioCtx.createGain();
-        gainA.connect(masterGain);
-        gainB.connect(masterGain);
+        // Fade in 50ms so loop boundary is silky
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.05);
 
-        const srcA = audioCtx.createBufferSource();
-        srcA.buffer = buf;
-        srcA.loop = false;
-        srcA.connect(gainA);
+        source.connect(gainNode);
+        gainNode.connect(masterGain);
+        source.start(0);
 
-        const now = audioCtx.currentTime;
-        srcA.start(now);
-        gainA.gain.setValueAtTime(0, now);
-        gainA.gain.linearRampToValueAtTime(vol, now + FADE_TIME);
-
-        const loop = {
-            srcA, gainA, gainB,
-            nextIsB: true,
-            nextTime: now + duration - FADE_TIME,
-            timeout: null,
-            vol, duration, buf
-        };
-        activeLoops[sound.id] = loop;
-
-        const scheduleNext = () => {
-            const l = activeLoops[sound.id];
-            if (!l) return;
-
-            const t = l.nextTime;
-
-            if (l.nextIsB) {
-                const srcB = audioCtx.createBufferSource();
-                srcB.buffer = l.buf;
-                srcB.loop = false;
-                srcB.connect(l.gainB);
-                srcB.start(t);
-
-                l.gainA.gain.setValueAtTime(l.vol, t - 0.01);
-                l.gainA.gain.linearRampToValueAtTime(0, t + FADE_TIME);
-
-                l.gainB.gain.setValueAtTime(0, t);
-                l.gainB.gain.linearRampToValueAtTime(l.vol, t + FADE_TIME);
-
-                setTimeout(() => {
-                    try { if(l.srcA) l.srcA.stop(); } catch(e) {}
-                }, (t + FADE_TIME - audioCtx.currentTime) * 1000 + 100);
-            } else {
-                const newSrcA = audioCtx.createBufferSource();
-                newSrcA.buffer = l.buf;
-                newSrcA.loop = false;
-                newSrcA.connect(l.gainA);
-                newSrcA.start(t);
-
-                l.gainB.gain.setValueAtTime(l.vol, t - 0.01);
-                l.gainB.gain.linearRampToValueAtTime(0, t + FADE_TIME);
-
-                l.gainA.gain.setValueAtTime(0, t);
-                l.gainA.gain.linearRampToValueAtTime(l.vol, t + FADE_TIME);
-
-                setTimeout(() => {
-                    try { if(l.srcB) l.srcB.stop(); } catch(e) {}
-                }, (t + FADE_TIME - audioCtx.currentTime) * 1000 + 100);
-
-                l.srcA = newSrcA;
-            }
-
-            l.nextIsB = !l.nextIsB;
-            l.nextTime += l.duration - FADE_TIME;
-
-            const lookAhead = 1.0;
-            const delay = (l.nextTime - audioCtx.currentTime - lookAhead) * 1000;
-            l.timeout = setTimeout(scheduleNext, Math.max(50, delay));
-        };
-
-        const firstDelay = (loop.nextTime - audioCtx.currentTime - 1.0) * 1000;
-        loop.timeout = setTimeout(scheduleNext, Math.max(50, firstDelay));
+        activeNodes[sound.id] = { source, gain: gainNode };
     }
 
-    /* Stop a sound */
     function stopSound(soundId) {
-        const loop = activeLoops[soundId];
-        if (!loop) return;
+        const node = activeNodes[soundId];
+        if (!node) return;
 
-        clearTimeout(loop.timeout);
         const now = audioCtx.currentTime;
 
-        try {
-            loop.gainA.gain.cancelScheduledValues(now);
-            loop.gainA.gain.setValueAtTime(loop.gainA.gain.value, now);
-            loop.gainA.gain.linearRampToValueAtTime(0, now + 0.1);
-        } catch(e) {}
+        // Fade out 50ms then stop (no harsh digital cut)
+        node.gain.gain.cancelScheduledValues(now);
+        node.gain.gain.setValueAtTime(node.gain.gain.value, now);
+        node.gain.gain.linearRampToValueAtTime(0, now + 0.05);
 
-        try {
-            loop.gainB.gain.cancelScheduledValues(now);
-            loop.gainB.gain.setValueAtTime(loop.gainB.gain.value, now);
-            loop.gainB.gain.linearRampToValueAtTime(0, now + 0.1);
-        } catch(e) {}
+        try { node.source.stop(now + 0.06); } catch (e) {}
 
+        // Disconnect after fade completes
         setTimeout(() => {
-            try { loop.srcA.stop(); } catch(e) {}
-            try { if(loop.srcB) loop.srcB.stop(); } catch(e) {}
-            try { loop.srcA.disconnect(); } catch(e) {}
-            try { if(loop.srcB) loop.srcB.disconnect(); } catch(e) {}
-            try { loop.gainA.disconnect(); } catch(e) {}
-            try { loop.gainB.disconnect(); } catch(e) {}
-        }, 150);
+            try { node.source.disconnect(); } catch(e) {}
+            try { node.gain.disconnect(); } catch(e) {}
+        }, 80);
 
-        delete activeLoops[soundId];
+        delete activeNodes[soundId];
     }
 
-    /* Update individual volume */
     function updateSoundVolume(sound) {
-        const loop = activeLoops[sound.id];
-        if (!loop) return;
+        const node = activeNodes[sound.id];
+        if (!node) return;
         const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
-        loop.vol = vol;
-        const now = audioCtx.currentTime;
-        loop.gainA.gain.setValueAtTime(vol, now);
-        loop.gainB.gain.setValueAtTime(vol, now);
+        node.gain.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.05);
     }
 
     /* ─── UI Rendering (unchanged logic) ─── */
