@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ambient Sound Generator and Focus Noise Studio - Tomato Timer</title>
+    <title>[FREE] Ambient Sound Generator 🎧 Custom Focus Noise Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu:wght@400&display=swap" rel="stylesheet">
     <meta name="description" content="Custom ambient sound generator for focus, study, and relaxation. Mix rain, thunder, ocean waves, and cafe sounds with an auto-off timer.">
     <link rel="canonical" href="https://www.tomatotimers.com/ambience/" />
-    
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png"/>
     <script src="https://apis.google.com/js/platform.js"></script>
     
     <script type="text/javascript">
@@ -22,15 +22,42 @@
     })();
     </script>
     
-    <script type="application/ld+json">
+   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Tomato Timer Ambient Sound Studio",
   "url": "https://www.tomatotimers.com/ambience/",
   "description": "Custom ambient sound generator for focus, study, and relaxation. Mix rain, thunder, ocean waves, and cafe sounds with an auto-off timer.",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "All"
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Pomodoro Timer",
+      "item": "https://www.tomatotimers.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Ambience Studio",
+      "item": "https://www.tomatotimers.com/ambience/"
+    }
+  ]
 }
 </script>
     
@@ -114,7 +141,6 @@
       grid-template-columns: 1fr !important;
     }
   }
-        
         
         
         
@@ -925,9 +951,15 @@
   </div>
 </div>
 
-            <footer>
-                Tomato Timer Ambient Sound Studio
-            </footer>
+            <footer style="margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 15px; font-weight: 400; padding-bottom: 25px; width: 100%; position: relative; z-index: 1;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span>Tomato Timer Ambience Sound Studio</span>
+        <span>•</span>
+        <a href="https://optimize-tomatotimers.bsa-whitelabel.com/checkout/new" target="_blank" rel="noopener noreferrer" style="color: var(--accent-tomato); text-decoration: none; font-weight: 700; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1.0'">
+            Advertise Here 🎯
+        </a>
+    </div>
+</footer>
         </div>
     </div>
 
@@ -980,7 +1012,7 @@
     const audioCtx = new AudioContext();
 
     const soundBuffers = {};   // id -> decoded AudioBuffer
-    const activeNodes = {};    // id -> { source, gain }
+    const activeLoops = {};    // id -> crossfade loop state
 
     const masterGain = audioCtx.createGain();
     masterGain.gain.value = 0.8;
@@ -988,6 +1020,7 @@
 
     let isPlaying = false;
     let masterVolume = 0.8;
+    const FADE_TIME = 0.15;    // 150ms crossfade overlap
 
     /* Load every .ogg into memory once */
     async function preloadSound(sound) {
@@ -1003,12 +1036,10 @@
         }
     }
 
-    /* Start a sound (gapless loop) */
+    /* Start a sound with crossfade loop (fixes Chrome OGG ringing) */
     function startSound(sound) {
-        // Browsers suspend AudioContext until first user gesture
         if (audioCtx.state === 'suspended') audioCtx.resume();
 
-        // If buffer isn't ready yet, load then auto-start
         if (!soundBuffers[sound.id]) {
             preloadSound(sound).then(() => {
                 if (sound.active) startSound(sound);
@@ -1016,40 +1047,131 @@
             return;
         }
 
-        // Stop previous instance if any (source nodes are one-shot)
-        stopSound(sound.id);
+        if (activeLoops[sound.id]) return;
 
-        const source = audioCtx.createBufferSource();
-        source.buffer = soundBuffers[sound.id];
-        source.loop = true;                 // ← seamless sample-accurate loop
-
-        const gainNode = audioCtx.createGain();
+        const buf = soundBuffers[sound.id];
+        const duration = buf.duration;
         const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
-        gainNode.gain.value = vol;
 
-        source.connect(gainNode);
-        gainNode.connect(masterGain);
+        const gainA = audioCtx.createGain();
+        const gainB = audioCtx.createGain();
+        gainA.connect(masterGain);
+        gainB.connect(masterGain);
 
-        source.start(0);
-        activeNodes[sound.id] = { source, gain: gainNode };
+        const srcA = audioCtx.createBufferSource();
+        srcA.buffer = buf;
+        srcA.loop = false;
+        srcA.connect(gainA);
+
+        const now = audioCtx.currentTime;
+        srcA.start(now);
+        gainA.gain.setValueAtTime(0, now);
+        gainA.gain.linearRampToValueAtTime(vol, now + FADE_TIME);
+
+        const loop = {
+            srcA, gainA, gainB,
+            nextIsB: true,
+            nextTime: now + duration - FADE_TIME,
+            timeout: null,
+            vol, duration, buf
+        };
+        activeLoops[sound.id] = loop;
+
+        const scheduleNext = () => {
+            const l = activeLoops[sound.id];
+            if (!l) return;
+
+            const t = l.nextTime;
+
+            if (l.nextIsB) {
+                const srcB = audioCtx.createBufferSource();
+                srcB.buffer = l.buf;
+                srcB.loop = false;
+                srcB.connect(l.gainB);
+                srcB.start(t);
+
+                l.gainA.gain.setValueAtTime(l.vol, t - 0.01);
+                l.gainA.gain.linearRampToValueAtTime(0, t + FADE_TIME);
+
+                l.gainB.gain.setValueAtTime(0, t);
+                l.gainB.gain.linearRampToValueAtTime(l.vol, t + FADE_TIME);
+
+                setTimeout(() => {
+                    try { if(l.srcA) l.srcA.stop(); } catch(e) {}
+                }, (t + FADE_TIME - audioCtx.currentTime) * 1000 + 100);
+            } else {
+                const newSrcA = audioCtx.createBufferSource();
+                newSrcA.buffer = l.buf;
+                newSrcA.loop = false;
+                newSrcA.connect(l.gainA);
+                newSrcA.start(t);
+
+                l.gainB.gain.setValueAtTime(l.vol, t - 0.01);
+                l.gainB.gain.linearRampToValueAtTime(0, t + FADE_TIME);
+
+                l.gainA.gain.setValueAtTime(0, t);
+                l.gainA.gain.linearRampToValueAtTime(l.vol, t + FADE_TIME);
+
+                setTimeout(() => {
+                    try { if(l.srcB) l.srcB.stop(); } catch(e) {}
+                }, (t + FADE_TIME - audioCtx.currentTime) * 1000 + 100);
+
+                l.srcA = newSrcA;
+            }
+
+            l.nextIsB = !l.nextIsB;
+            l.nextTime += l.duration - FADE_TIME;
+
+            const lookAhead = 1.0;
+            const delay = (l.nextTime - audioCtx.currentTime - lookAhead) * 1000;
+            l.timeout = setTimeout(scheduleNext, Math.max(50, delay));
+        };
+
+        const firstDelay = (loop.nextTime - audioCtx.currentTime - 1.0) * 1000;
+        loop.timeout = setTimeout(scheduleNext, Math.max(50, firstDelay));
     }
 
     /* Stop a sound */
     function stopSound(soundId) {
-        if (activeNodes[soundId]) {
-            try { activeNodes[soundId].source.stop(); } catch (e) {}
-            activeNodes[soundId].source.disconnect();
-            activeNodes[soundId].gain.disconnect();
-            delete activeNodes[soundId];
-        }
+        const loop = activeLoops[soundId];
+        if (!loop) return;
+
+        clearTimeout(loop.timeout);
+        const now = audioCtx.currentTime;
+
+        try {
+            loop.gainA.gain.cancelScheduledValues(now);
+            loop.gainA.gain.setValueAtTime(loop.gainA.gain.value, now);
+            loop.gainA.gain.linearRampToValueAtTime(0, now + 0.1);
+        } catch(e) {}
+
+        try {
+            loop.gainB.gain.cancelScheduledValues(now);
+            loop.gainB.gain.setValueAtTime(loop.gainB.gain.value, now);
+            loop.gainB.gain.linearRampToValueAtTime(0, now + 0.1);
+        } catch(e) {}
+
+        setTimeout(() => {
+            try { loop.srcA.stop(); } catch(e) {}
+            try { if(loop.srcB) loop.srcB.stop(); } catch(e) {}
+            try { loop.srcA.disconnect(); } catch(e) {}
+            try { if(loop.srcB) loop.srcB.disconnect(); } catch(e) {}
+            try { loop.gainA.disconnect(); } catch(e) {}
+            try { loop.gainB.disconnect(); } catch(e) {}
+        }, 150);
+
+        delete activeLoops[soundId];
     }
 
     /* Update individual volume */
     function updateSoundVolume(sound) {
-        if (activeNodes[sound.id]) {
-            const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
-            activeNodes[sound.id].gain.gain.value = vol;
-        }
+        const loop = activeLoops[sound.id];
+        if (!loop) return;
+        const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
+        loop.vol = vol;
+        const now = audioCtx.currentTime;
+        loop.gainA.gain.setValueAtTime(vol, now);
+        loop.gainB.gain.setValueAtTime(vol, now);
     }
 
     /* ─── UI Rendering (unchanged logic) ─── */
@@ -1188,12 +1310,10 @@
         howItWorksModal.classList.remove('open');
     });
 
-    // Click on the dark backdrop closes the popup
     howItWorksModal.addEventListener('click', (e) => {
         if (e.target === howItWorksModal) howItWorksModal.classList.remove('open');
     });
 
-    // Escape key closes the popup
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') howItWorksModal.classList.remove('open');
     });
