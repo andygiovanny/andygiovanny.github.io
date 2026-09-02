@@ -315,6 +315,109 @@
             color: var(--accent-tomato);
         }
 
+        /* ─── Preset Modal Styles ─── */
+        .preset-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .preset-tab {
+            background-color: #FFFFFF;
+            border: none;
+            color: var(--text-brown);
+            padding: 10px 16px 6px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Baloo Tammudu', cursive;
+            line-height: 1;
+        }
+        .preset-tab:hover {
+            transform: translateY(-1px);
+            color: var(--accent-tomato);
+        }
+        .preset-tab.active {
+            background-color: var(--accent-tomato);
+            color: #FFFFFF;
+        }
+        .preset-rename-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .preset-rename-row label {
+            font-size: 15px;
+            color: var(--text-brown);
+            white-space: nowrap;
+        }
+        .preset-name-input {
+            flex: 1;
+            border: 1px solid #E2D0AF;
+            background: #FAF5EB;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-brown);
+            outline: none;
+            min-width: 120px;
+        }
+        .preset-name-input:focus {
+            border-color: var(--accent-tomato);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 2px rgba(222, 75, 58, 0.15);
+        }
+        .preset-sounds-list {
+            max-height: 320px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 4px;
+        }
+        .preset-sound-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #E2D0AF;
+        }
+        .preset-sound-row:last-child {
+            border-bottom: none;
+        }
+        .preset-sound-name {
+            font-size: 15px;
+            color: var(--text-brown);
+            width: 110px;
+            flex-shrink: 0;
+        }
+        .preset-sound-row input[type=range] {
+            flex: 1;
+        }
+        .preset-vol-val {
+            font-size: 13px;
+            color: var(--text-muted);
+            width: 36px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .preset-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .preset-actions .pill-btn {
+            padding: 14px 20px 10px 20px;
+            font-size: 14px;
+        }
+
         .mascot-hero-section {
             display: flex;
             flex-direction: column;
@@ -740,12 +843,12 @@
             margin: 6px 0 6px 22px;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 991px) {
             .bsa-left-sidebar-wrapper,
             .bsa-right-sidebar-wrapper {
                 display: none !important;
-            }
         }
+            }
 
         @media (max-width: 900px) {
             .sound-grid {
@@ -830,16 +933,17 @@
                         </a>
 
                         <div class="nav-links-right">
+                            <button type="button" class="pill-btn" id="customPresetsBtn">Custom Ambience </button>
                             <button type="button" class="pill-btn" id="howItWorksBtn">How It Works?</button>
                             <a href="https://www.tomatotimers.com/" target="_blank" rel="noopener noreferrer" class="pill-btn">Main Timer</a>
                         </div>
                     </div>
 
                  <div class="mode-pills-row">
-    <button class="mode-pill" onclick="applyPreset('rainy')">Rainy Focus</button>
-    <button class="mode-pill" onclick="applyPreset('cafe')">Cozy Cafe</button>
-    <button class="mode-pill" onclick="applyPreset('night')">Campfire Night</button>
-    <button class="mode-pill" onclick="applyPreset('ocean')">Ocean Breeze</button>
+    <button class="mode-pill" data-preset="1" onclick="applyPreset(1)">Rainy Focus</button>
+    <button class="mode-pill" data-preset="2" onclick="applyPreset(2)">Cozy Cafe</button>
+    <button class="mode-pill" data-preset="3" onclick="applyPreset(3)">Campfire Night</button>
+    <button class="mode-pill" data-preset="4" onclick="applyPreset(4)">Ocean Breeze</button>
 </div>
                 </header>
 
@@ -993,6 +1097,36 @@
     </div>
 </div>
 
+<!-- Custom Presets Modal -->
+<div class="modal-overlay" id="presetsModal">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="presetsTitle">
+        <button type="button" class="modal-close" id="presetsClose" aria-label="Close">&times;</button>
+        <h2 class="modal-title" id="presetsTitle">Customize Presets</h2>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Pick a slot, set volumes (0 = off), name it, and save.</p>
+        
+        <div class="preset-tabs">
+            <button class="preset-tab active" data-slot="1">Preset 1</button>
+            <button class="preset-tab" data-slot="2">Preset 2</button>
+            <button class="preset-tab" data-slot="3">Preset 3</button>
+            <button class="preset-tab" data-slot="4">Preset 4</button>
+        </div>
+        
+        <div class="preset-rename-row">
+            <label>Preset Name</label>
+            <input type="text" class="preset-name-input" id="presetNameInput" maxlength="20" placeholder="My Mix">
+        </div>
+        
+        <div class="preset-sounds-list" id="presetSoundsList">
+            <!-- Dynamic rows -->
+        </div>
+        
+        <div class="preset-actions">
+            <button class="pill-btn" id="savePresetBtn"> Save Preset</button>
+            <button class="pill-btn" id="resetPresetBtn" style="background:#F8EEDC;color:var(--text-muted);"> Reset Default</button>
+        </div>
+    </div>
+</div>
+
    <script>
     const SOUNDS = [
  { id: 'rain', name: 'Rain', file: 'audio/rain.ogg', icon: 'icons/rain.svg' },
@@ -1012,7 +1146,7 @@
     const audioCtx = new AudioContext();
 
     const soundBuffers = {};   // id -> decoded AudioBuffer
-    const activeLoops = {};    // id -> crossfade loop state
+    const activeNodes = {};    // id -> { source, gain }
 
     const masterGain = audioCtx.createGain();
     masterGain.gain.value = 0.8;
@@ -1020,7 +1154,6 @@
 
     let isPlaying = false;
     let masterVolume = 0.8;
-    const FADE_TIME = 0.15;    // 150ms crossfade overlap
 
     /* Load every .ogg into memory once */
     async function preloadSound(sound) {
@@ -1035,9 +1168,8 @@
             console.error('Failed to load', sound.file, err);
         }
     }
-    /* ─── Single-source loop with Chrome OGG tail trim ─── */
-    const activeNodes = {};    // id -> { source, gain }
 
+    /* ─── Single-source loop with Chrome OGG tail trim ─── */
     function startSound(sound) {
         if (audioCtx.state === 'suspended') audioCtx.resume();
 
@@ -1104,6 +1236,162 @@
         const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
         node.gain.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.05);
     }
+
+    /* ─── Presets System ─── */
+    const PRESETS_KEY = 'tt_ambience_presets_v1';
+    const DEFAULT_PRESETS = {
+        1: { name: 'Rainy Focus', sounds: { rain: {active: true, vol: 70}, thunder: {active: true, vol: 40} } },
+        2: { name: 'Cozy Cafe', sounds: { cafe: {active: true, vol: 75}, typing: {active: true, vol: 50} } },
+        3: { name: 'Campfire Night', sounds: { campfire: {active: true, vol: 80}, night: {active: true, vol: 60} } },
+        4: { name: 'Ocean Breeze', sounds: { waves: {active: true, vol: 80}, wind: {active: true, vol: 40} } }
+    };
+    let currentEditingSlot = 1;
+
+    function loadPresets() {
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+    }
+
+    function savePresetsToStorage(presets) {
+        try {
+            localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
+        } catch(e) {}
+    }
+
+    function getPreset(slot) {
+        const presets = loadPresets();
+        if (!presets[slot]) {
+            presets[slot] = JSON.parse(JSON.stringify(DEFAULT_PRESETS[slot]));
+            savePresetsToStorage(presets);
+        }
+        return presets[slot];
+    }
+
+    window.applyPreset = function(slot) {
+        const preset = getPreset(slot);
+        if (!preset) return;
+
+        SOUNDS.forEach(s => { s.active = false; stopSound(s.id); });
+
+        SOUNDS.forEach(s => {
+            const cfg = preset.sounds[s.id];
+            if (cfg && cfg.active && cfg.vol > 0) {
+                s.active = true;
+                s.volume = cfg.vol;
+                startSound(s);
+            } else if (cfg) {
+                s.active = false;
+                s.volume = cfg.vol || 0;
+            } else {
+                s.active = false;
+            }
+        });
+
+        isPlaying = true;
+        renderGrid();
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+    };
+
+    function updatePresetButtonLabels() {
+        const presets = loadPresets();
+        document.querySelectorAll('.mode-pill[data-preset]').forEach(btn => {
+            const slot = btn.getAttribute('data-preset');
+            if (presets[slot] && presets[slot].name) {
+                btn.textContent = presets[slot].name;
+            }
+        });
+    }
+
+    /* ─── Preset Modal Logic ─── */
+    const presetsModal = document.getElementById('presetsModal');
+    const presetNameInput = document.getElementById('presetNameInput');
+    const presetSoundsList = document.getElementById('presetSoundsList');
+
+    function openPresetsModal() {
+        renderPresetEditor(1);
+        presetsModal.classList.add('open');
+    }
+
+    function renderPresetEditor(slot) {
+        currentEditingSlot = slot;
+        const preset = getPreset(slot);
+
+        presetNameInput.value = preset.name || `Preset ${slot}`;
+
+        document.querySelectorAll('.preset-tab').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.slot == slot);
+        });
+
+        presetSoundsList.innerHTML = '';
+        SOUNDS.forEach(sound => {
+            const cfg = preset.sounds[sound.id] || {active: false, vol: 0};
+            const row = document.createElement('div');
+            row.className = 'preset-sound-row';
+            row.innerHTML = `
+                <span class="preset-sound-name">${sound.name}</span>
+                <input type="range" min="0" max="100" value="${cfg.vol}" 
+                       data-sound="${sound.id}" class="preset-vol-slider">
+                <span class="preset-vol-val">${cfg.vol}%</span>
+            `;
+            const slider = row.querySelector('.preset-vol-slider');
+            const valSpan = row.querySelector('.preset-vol-val');
+            slider.addEventListener('input', (e) => {
+                valSpan.textContent = e.target.value + '%';
+            });
+            presetSoundsList.appendChild(row);
+        });
+    }
+
+    function saveCurrentPreset() {
+        const slot = currentEditingSlot;
+        const presets = loadPresets();
+        const name = presetNameInput.value.trim() || `Preset ${slot}`;
+
+        const sounds = {};
+        document.querySelectorAll('.preset-vol-slider').forEach(slider => {
+            const id = slider.dataset.sound;
+            const vol = parseInt(slider.value) || 0;
+            sounds[id] = { active: vol > 0, vol: vol };
+        });
+
+        presets[slot] = { name, sounds };
+        savePresetsToStorage(presets);
+
+        const btn = document.querySelector(`.mode-pill[data-preset="${slot}"]`);
+        if (btn) btn.textContent = name;
+
+        const saveBtn = document.getElementById('savePresetBtn');
+        const original = saveBtn.textContent;
+        saveBtn.textContent = '✓ Saved!';
+        setTimeout(() => saveBtn.textContent = original, 1200);
+    }
+
+    function resetCurrentPreset() {
+        const slot = currentEditingSlot;
+        const presets = loadPresets();
+        presets[slot] = JSON.parse(JSON.stringify(DEFAULT_PRESETS[slot]));
+        savePresetsToStorage(presets);
+
+        const btn = document.querySelector(`.mode-pill[data-preset="${slot}"]`);
+        if (btn) btn.textContent = DEFAULT_PRESETS[slot].name;
+
+        renderPresetEditor(slot);
+    }
+
+    document.getElementById('customPresetsBtn').addEventListener('click', openPresetsModal);
+    document.getElementById('presetsClose').addEventListener('click', () => presetsModal.classList.remove('open'));
+    presetsModal.addEventListener('click', (e) => {
+        if (e.target === presetsModal) presetsModal.classList.remove('open');
+    });
+    document.getElementById('savePresetBtn').addEventListener('click', saveCurrentPreset);
+    document.getElementById('resetPresetBtn').addEventListener('click', resetCurrentPreset);
+    document.querySelectorAll('.preset-tab').forEach(btn => {
+        btn.addEventListener('click', () => renderPresetEditor(parseInt(btn.dataset.slot)));
+    });
 
     /* ─── UI Rendering (unchanged logic) ─── */
     const gridEl = document.getElementById('soundGrid');
@@ -1187,25 +1475,6 @@
         pauseIcon.style.display = 'none';
     });
 
-    window.applyPreset = function(type) {
-        SOUNDS.forEach(s => { s.active = false; stopSound(s.id); });
-
-        const set = (id, vol) => {
-            const s = SOUNDS.find(x => x.id === id);
-            if (s) { s.active = true; s.volume = vol; startSound(s); }
-        };
-
-        if (type === 'rainy')  { set('rain', 70); set('thunder', 40); }
-        else if (type === 'cafe')   { set('cafe', 75); set('typing', 50); }
-        else if (type === 'night')  { set('campfire', 80); set('night', 60); }
-        else if (type === 'ocean')  { set('waves', 80); set('wind', 40); }
-
-        isPlaying = true;
-        renderGrid();
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-    };
-
     document.getElementById('masterVolSlider').addEventListener('input', (e) => {
         masterVolume = parseInt(e.target.value) / 100;
         masterGain.gain.value = masterVolume;
@@ -1246,12 +1515,16 @@
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') howItWorksModal.classList.remove('open');
+        if (e.key === 'Escape') {
+            howItWorksModal.classList.remove('open');
+            presetsModal.classList.remove('open');
+        }
     });
 
     /* ─── Init ─── */
     window.addEventListener('DOMContentLoaded', () => {
         renderGrid();
+        updatePresetButtonLabels();
         SOUNDS.forEach(s => preloadSound(s));
     });
 </script>
