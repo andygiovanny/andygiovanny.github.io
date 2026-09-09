@@ -529,6 +529,12 @@
   
   
 </style>
+  
+  
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
     
     
@@ -542,7 +548,7 @@
       <img src="assets/images/YT.png" alt="Subscribe" style="height: 28px;">
     </a>
     <span style="font-size: 15px; color: #fff;">
-      Ambient sounds is available now, customize it at ambience studio and set it at custom timers! Check out our YT videos below!
+      Support the channel and check out our videos below, thank you! 
     </span>
   </div>
   <div class="g-ytsubscribe" 
@@ -1174,7 +1180,7 @@
                     <li>Use custom timer to adjust the timer and click the refresh button beside the play button to change the time</li>
                 </ul>
 
-                <p class="text-color">USE THE LOOP BUTTON TO DO EVERYTHING IN A ROW</p>
+                <p class="text-color">USE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW</p>
 
             </div>
         </div>
@@ -1422,7 +1428,8 @@
                 s._active = false; if (cfg) s.volume = cfg.vol || 0;
             }
         });
-        updatePresetLabel(preset.name || 'Unnamed');
+        _lastPresetName = preset.name || 'Unnamed';
+        updatePresetLabel(_lastPresetName);
     }
 
     // ---- Settings ----
@@ -1491,10 +1498,13 @@
             if (val > 0) preMuteVolume = val;
             saveSettings(s);
             updatePillUI();
-            if (masterGain) {
+            if (audioCtx && masterGain) {
                 masterGain.gain.setTargetAtTime(val / 100, audioCtx.currentTime, 0.05);
             }
-            if (val <= 0) { stopAll(); clearPresetLabel(); }
+            // Mute = keep nodes playing at 0% volume; never stop them.
+            if (val <= 0) { clearPresetLabel(); }
+            else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
+            else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
         });
     }
 
@@ -1510,10 +1520,13 @@
             }
             saveSettings(s);
             updatePillUI();
-            if (masterGain) {
+            if (audioCtx && masterGain) {
                 masterGain.gain.setTargetAtTime(getVolume() / 100, audioCtx.currentTime, 0.05);
             }
-            if (getVolume() <= 0) { stopAll(); clearPresetLabel(); }
+            // Mute = keep nodes playing at 0% volume; never stop them.
+            if (getVolume() <= 0) { clearPresetLabel(); }
+            else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
+            else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
             return false;
         });
     }
@@ -1528,7 +1541,8 @@
     }
 
     function playForCurrentMode() {
-        if (isMuted()) { stopAll(); clearPresetLabel(); return; }
+        // Always start the sound nodes, even when muted — "mute" just means
+        // masterGain at 0%, so unmuting is instant (no pause/play needed).
         const s = loadSettings();
         const mode = detectMode();
         let slot = '0';
@@ -1540,8 +1554,10 @@
     }
 
     // ---- State Control ----
+    let _lastPresetName = '';
+
     function startAmbience() {
-        if (!isMuted()) playForCurrentMode();
+        playForCurrentMode();  // nodes always play; volume 0 = silent, not stopped
     }
     function pauseAmbience() {
         if (audioCtx && audioCtx.state === 'running') {
@@ -1553,7 +1569,7 @@
         if (audioCtx && audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
-        if (!isMuted()) updatePresetLabel(detectMode());
+        if (!isMuted()) updatePresetLabel(_lastPresetName);
     }
     function stopAmbience() {
         stopAll();
@@ -1604,10 +1620,8 @@
                 // so `ticking` stays false and we stay silent.
                 if (ticking || _wasRunning) {
                     _wasRunning = true;
-                    if (!isMuted()) {
-                        stopAll();
-                        playForCurrentMode();
-                    }
+                    stopAll();
+                    playForCurrentMode();
                 } else {
                     _wasRunning = false;
                 }
@@ -1618,12 +1632,10 @@
             if (isRunning && !_wasRunning) {
                 _wasRunning = true;
                 _lastMode = mode;
-                if (!isMuted()) {
-                    if (audioCtx && audioCtx.state === 'suspended' && Object.keys(activeNodes).length > 0) {
-                        resumeAmbience();
-                    } else {
-                        startAmbience();
-                    }
+                if (audioCtx && audioCtx.state === 'suspended' && Object.keys(activeNodes).length > 0) {
+                    resumeAmbience();
+                } else {
+                    startAmbience();
                 }
             }
 
@@ -1636,7 +1648,7 @@
             // Mode changed (manual mode-button click); switch live if running
             if (mode !== _lastMode) {
                 _lastMode = mode;
-                if (isRunning && !isMuted()) {
+                if (isRunning) {
                     stopAll();
                     playForCurrentMode();
                 }
@@ -1684,7 +1696,7 @@
                 if (!_wasRunning) {
                     _wasRunning = true;
                     _lastMode = detectMode();
-                    if (!isMuted()) startAmbience();
+                    startAmbience();
                 }
             }
         }, 0);
