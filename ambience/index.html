@@ -876,6 +876,7 @@
             }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -1235,6 +1236,10 @@
         delete activeNodes[soundId];
     }
 
+    function stopAllSounds() {
+        Object.keys(activeNodes).forEach(id => stopSound(id));
+    }
+
     function updateSoundVolume(sound) {
         const node = activeNodes[sound.id];
         if (!node) return;
@@ -1317,8 +1322,50 @@
     const presetSoundsList = document.getElementById('presetSoundsList');
 
     function openPresetsModal() {
+        stopAllSounds(); // pause main ambience
         renderPresetEditor(1);
         presetsModal.classList.add('open');
+        // Play full preset preview after a short delay for UI to render
+        setTimeout(() => playPreviewForSlot(1), 100);
+    }
+
+    let previewSlot = null;
+
+    function playPreviewForSlot(slot) {
+        previewSlot = slot;
+        const preset = getPreset(slot);
+        if (!preset) return;
+        stopAllSounds();
+        SOUNDS.forEach(sound => {
+            const cfg = preset.sounds[sound.id];
+            if (cfg && cfg.active && cfg.vol > 0) {
+                sound.active = true;
+                sound.volume = cfg.vol;
+                startSound(sound);
+            } else {
+                sound.active = false;
+                if (cfg) sound.volume = cfg.vol || 0;
+            }
+        });
+    }
+
+    function updatePreviewSound(soundId, vol) {
+        const sound = SOUNDS.find(s => s.id === soundId);
+        if (!sound) return;
+        if (vol > 0) {
+            sound.active = true;
+            sound.volume = vol;
+            const node = activeNodes[sound.id];
+            if (node) {
+                // Just update volume if already playing
+                node.gain.gain.setTargetAtTime(vol / 100, audioCtx.currentTime, 0.05);
+            } else {
+                startSound(sound);
+            }
+        } else {
+            stopSound(sound.id);
+            sound.active = false;
+        }
     }
 
     function renderPresetEditor(slot) {
@@ -1345,7 +1392,10 @@
             const slider = row.querySelector('.preset-vol-slider');
             const valSpan = row.querySelector('.preset-vol-val');
             slider.addEventListener('input', (e) => {
-                valSpan.textContent = e.target.value + '%';
+                const val = parseInt(e.target.value);
+                valSpan.textContent = val + '%';
+                // Live preview: update volume in real-time
+                updatePreviewSound(slider.dataset.sound, val);
             });
             presetSoundsList.appendChild(row);
         });
@@ -1388,14 +1438,36 @@
     }
 
     document.getElementById('customPresetsBtn').addEventListener('click', openPresetsModal);
-    document.getElementById('presetsClose').addEventListener('click', () => presetsModal.classList.remove('open'));
-    presetsModal.addEventListener('click', (e) => {
-        if (e.target === presetsModal) presetsModal.classList.remove('open');
+    document.getElementById('presetsClose').addEventListener('click', () => {
+        stopAllSounds();
+        previewSlot = null;
+        presetsModal.classList.remove('open');
     });
-    document.getElementById('savePresetBtn').addEventListener('click', saveCurrentPreset);
-    document.getElementById('resetPresetBtn').addEventListener('click', resetCurrentPreset);
+    presetsModal.addEventListener('click', (e) => {
+        if (e.target === presetsModal) {
+            stopAllSounds();
+            previewSlot = null;
+            presetsModal.classList.remove('open');
+        }
+    });
+    document.getElementById('savePresetBtn').addEventListener('click', () => {
+        stopAllSounds();
+        previewSlot = null;
+        saveCurrentPreset();
+    });
+    document.getElementById('resetPresetBtn').addEventListener('click', () => {
+        stopAllSounds();
+        previewSlot = null;
+        resetCurrentPreset();
+        // Play the reset preset
+        setTimeout(() => playPreviewForSlot(currentEditingSlot), 100);
+    });
     document.querySelectorAll('.preset-tab').forEach(btn => {
-        btn.addEventListener('click', () => renderPresetEditor(parseInt(btn.dataset.slot)));
+        btn.addEventListener('click', () => {
+            const slot = parseInt(btn.dataset.slot);
+            renderPresetEditor(slot);
+            playPreviewForSlot(slot);
+        });
     });
 
     /* ─── UI Rendering (unchanged logic) ─── */
@@ -1522,7 +1594,11 @@
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             howItWorksModal.classList.remove('open');
-            presetsModal.classList.remove('open');
+            if (presetsModal.classList.contains('open')) {
+                stopAllSounds();
+                previewSlot = null;
+                presetsModal.classList.remove('open');
+            }
         }
     });
 

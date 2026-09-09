@@ -56,6 +56,258 @@
 * {
         box-sizing: border-box !important;
     }
+
+    /* ---- Ambience Integration v9 ---- */
+    .ambience-master-pill {
+        background-color: #FFFFFF;
+        border-radius: 50px;
+        padding: 8px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+        margin-top: 14px;
+    }
+    .ambience-master-pill svg {
+        width: 22px;
+        height: 22px;
+        fill: #58240E;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: fill 0.2s ease, transform 0.15s ease;
+    }
+    .ambience-master-pill svg:hover {
+        transform: scale(1.15);
+    }
+    .ambience-master-pill.muted svg {
+        fill: #8C5A3E;
+        opacity: 0.5;
+    }
+    .ambience-master-pill input[type="range"] {
+        -webkit-appearance: none;
+        width: 140px;
+        background: transparent;
+        cursor: pointer;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        margin-top: -6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+    }
+    .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-thumb {
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .ambience-master-pill.active input[type="range"]::-moz-range-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-preset-label {
+        text-align: center;
+        font-size: 14px;
+        font-family: 'Baloo Tammudu', cursive;
+        margin-top: 4px;
+        min-height: 20px;
+    }
+    .ambience-preset-label .play-icon {
+        color: #68B04D;
+        margin-right: 6px;
+    }
+    .ambience-preset-label .preset-name {
+        color: #58240E;
+    }
+    .ambience-select {
+        background-color: #FAF5EB !important;
+        border: 2px solid #E2D0AF !important;
+        color: #58240E;
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 16px;
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        height: auto !important;
+        cursor: pointer;
+        appearance: auto;
+        -webkit-appearance: menulist;
+    }
+    .ambience-select:focus {
+        border-color: #DE4B3A !important;
+        box-shadow: 0 0 0 3px rgba(222, 75, 58, 0.15);
+        background-color: #FFFFFF !important;
+        outline: none;
+    }
+    .ambience-divider {
+        border: none;
+        border-top: 2px dashed #E2D0AF;
+        margin: 20px 0 16px;
+    }
+    .ambience-section-title {
+        color: #58240E;
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+    .ambience-section-desc {
+        color: #8C5A3E;
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+    .ambience-section-desc a {
+        color: #DE4B3A;
+        text-decoration: underline;
+    }
+
+    /* ---- Ambience Integration ---- */
+    .ambience-master-pill {
+        background-color: #FFFFFF;
+        border-radius: 50px;
+        padding: 8px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+        margin-top: 14px;
+    }
+    .ambience-master-pill svg {
+        width: 22px;
+        height: 22px;
+        fill: #58240E;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: fill 0.2s ease, transform 0.15s ease;
+    }
+    .ambience-master-pill svg:hover {
+        transform: scale(1.15);
+    }
+    .ambience-master-pill.muted svg {
+        fill: #8C5A3E;
+        opacity: 0.5;
+    }
+    .ambience-master-pill input[type="range"] {
+        -webkit-appearance: none;
+        width: 140px;
+        background: transparent;
+        cursor: pointer;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        margin-top: -6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+    }
+    .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-thumb {
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .ambience-master-pill.active input[type="range"]::-moz-range-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-preset-label {
+        text-align: center;
+        font-size: 14px;
+        font-family: 'Baloo Tammudu', cursive;
+        margin-top: 4px;
+        min-height: 20px;
+    }
+    .ambience-preset-label .play-icon {
+        color: #68B04D;
+        margin-right: 6px;
+    }
+    .ambience-preset-label .preset-name {
+        color: #58240E;
+    }
+    .ambience-select {
+        background-color: #FAF5EB !important;
+        border: 2px solid #E2D0AF !important;
+        color: #58240E;
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 16px;
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        height: auto !important;
+        cursor: pointer;
+        appearance: auto;
+        -webkit-appearance: menulist;
+    }
+    .ambience-select:focus {
+        border-color: #DE4B3A !important;
+        box-shadow: 0 0 0 3px rgba(222, 75, 58, 0.15);
+        background-color: #FFFFFF !important;
+        outline: none;
+    }
+    .ambience-divider {
+        border: none;
+        border-top: 2px dashed #E2D0AF;
+        margin: 20px 0 16px;
+    }
+    .ambience-section-title {
+        color: #58240E;
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+    .ambience-section-desc {
+        color: #8C5A3E;
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+    .ambience-section-desc a {
+        color: #DE4B3A;
+        text-decoration: underline;
+    }
 </style>
   
   
@@ -151,7 +403,6 @@
     <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
     
 
-    
 <style>
   /* Wrapper for the section */
   .video-grid-wrapper {
@@ -203,11 +454,6 @@
   }
 </style>
     
-    
-    
-    
-    
-   
     
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -285,16 +531,11 @@
 </style>
   
   
-  
-
-    
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
-    
-    
-    
-    
-    
-    
     
     
 <body style="background-color: #fff; margin: 0; padding: 0;">
@@ -316,10 +557,6 @@
        data-count="default">
   </div>
 </div>
-    
-    
-    
-    
     
     
 <input type="hidden" id="timer_type" value="Pomodoro">
@@ -347,9 +584,6 @@
 </div>
             
             
-            
-            
-            
 <div class="theme-toggle-wrapper" style="padding-left: 30px !important;">
   <label class="theme-switch">
     <input type="checkbox" id="theme-toggle">
@@ -358,9 +592,6 @@
   <span class="theme-label"> Classic Tomato Theme </span>
 </div>
 
-            
-            
-            
             
 <div class="col-lg-12 text-center mt-4">
     <button type="button" class="btn button-style-1 rounded-pill mr-2" onclick="onPomodoroTimer()" id="pomodoro_timer_button">Pomodoro</button>
@@ -388,8 +619,6 @@
 </div>
           
           
-          
-          
 <!-- YouTube Promo Banner 
 <div style="position: absolute; left: 10px; top: 80px; z-index: 1000;" class="d-none d-lg-block">
     <div style="width: 160px; height: 620px; overflow: hidden; border-radius: 12px; background-color: transparent;">
@@ -411,7 +640,6 @@
     </div>
 </div>
 -->
-          
           
           
 <div class="container mt-1" style="position: relative;">
@@ -437,22 +665,26 @@
 <a href="javascript:void(0)" onclick="onResetTimer()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
     <img id="resetButton" src="assets/images/rest-button.svg" alt='Reset' style="width: 50px; height: auto;">
 </a>
-<a href="javascript:void(0)" onclick="onStartTimer()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
+<a href="javascript:void(0)" onclick="onPlayClick()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
     <img id="startButton" src="assets/images/play-button.svg" alt='Play' style="width: 50px; height: auto;">
 </a>
 <a href="javascript:void(0)" onclick="onStopTimer()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
     <img id="stopButton" src="assets/images/stop-button.svg" alt='Pause' style="width: 50px; height: auto;">
 </a>
 </div>
+<!-- Ambience Master Control -->
+<div style="text-align:center;">
+    <div class="ambience-master-pill" id="ambienceMasterPill">
+        <svg id="ambienceVolIcon" viewBox="0 0 24 24" title="Click to mute/unmute">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+        </svg>
+        <input type="range" id="ambienceVolSlider" min="0" max="100" value="80" title="Ambience Volume">
+    </div>
+    <div class="ambience-preset-label" id="ambiencePresetLabel"></div>
+</div>
         </div>
     </div>
 </div>
-          
-          
-          
-          
-          
-          
           
           
           <!-- Tomatotimers_S2S_Rightsidebar_ROS -->
@@ -471,22 +703,6 @@
     </style>
     <div id="bsa-zone_1785233220314-9_123456"></div>
 </div>
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
           
           
         </div>
@@ -512,7 +728,6 @@
     
 -->
     
-
 
 <div class="video-grid-wrapper">
   <div class="video-grid">
@@ -557,7 +772,6 @@
         </a>
     
   
-    
              <a
           class="video-card"
           href="https://www.youtube.com/watch?v=6u2QZ5R6Bok"
@@ -584,8 +798,6 @@
             loading="lazy"
           >
         </a>
-    
-    
     
     
             <a
@@ -630,7 +842,6 @@
         </a>
     
 
-    
                <a
           class="video-card"
           href="https://www.youtube.com/watch?v=7NPbGRohvm4"
@@ -645,7 +856,6 @@
         </a>
     
 
-    
               <a
           class="video-card"
           href="https://www.youtube.com/watch?v=wBENuwsH0qc"
@@ -658,9 +868,6 @@
             loading="lazy"
           >
         </a>
-    
-    
-    
     
     
           <a
@@ -677,8 +884,6 @@
         </a>
     
 
-
-
          <a
           class="video-card"
           href="https://www.youtube.com/watch?v=XRLRi7f4fb0"
@@ -691,8 +896,6 @@
             loading="lazy"
           >
         </a>
-
-
 
 
       <a
@@ -722,7 +925,6 @@
         </a>
     
     
-    
      <a
           class="video-card"
           href="https://www.youtube.com/watch?v=fGf1NF6iSME"
@@ -749,7 +951,6 @@
             loading="lazy"
           >
         </a>
-      
       
       
          <a
@@ -822,9 +1023,6 @@
         </a>
       
       
-
-      
-      
               <a
           class="video-card"
           href="https://www.youtube.com/watch?v=diz-BixQp7A"
@@ -837,10 +1035,6 @@
             loading="lazy"
           >
         </a>
-      
-      
-      
-      
       
       
                    <a
@@ -857,7 +1051,6 @@
         </a>
       
       
-      
                   <a
           class="video-card"
           href="https://www.youtube.com/watch?v=Tqy6h1R2Q7U"
@@ -870,7 +1063,6 @@
             loading="lazy"
           >
         </a>
-      
       
       
                     <a
@@ -887,7 +1079,6 @@
         </a>
       
       
-      
                     <a
           class="video-card"
           href="https://www.youtube.com/watch?v=pznR917uHR0&pp=2AYC0gcJCZEKAYcqIYzv"
@@ -900,13 +1091,6 @@
             loading="lazy"
           >
         </a>
-      
-      
-      
-
-      
-      
-      
       
       
   </div>
@@ -996,7 +1180,7 @@
                     <li>Use custom timer to adjust the timer and click the refresh button beside the play button to change the time</li>
                 </ul>
 
-                <p class="text-color">USE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW</p>
+                <p class="text-color">USE THE LOOP BUTTON TO DO EVERYTHING IN A ROW</p>
 
             </div>
         </div>
@@ -1030,6 +1214,25 @@
                                value="15"/>
                     </div>
 
+                    <hr class="ambience-divider">
+                    <div class="ambience-section-title">🎧 Focus Ambience</div>
+                    <div class="ambience-section-desc">
+                        Assign ambience presets to each timer mode. Presets are shared with the 
+                        <a href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener">Ambience Studio</a> 
+                        and sync both ways.
+                    </div>
+                    <div class="form-group">
+                        <label for="pomodoro_ambience" class="text-color">POMODORO AMBIENCE</label>
+                        <select id="pomodoro_ambience" class="form-control ambience-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="short_break_ambience" class="text-color">SHORT BREAK AMBIENCE</label>
+                        <select id="short_break_ambience" class="form-control ambience-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="long_break_ambience" class="text-color">LONG BREAK AMBIENCE</label>
+                        <select id="long_break_ambience" class="form-control ambience-select"></select>
+                    </div>
                     <div class="checkbox_listing"></div>
 
 
@@ -1116,6 +1319,483 @@
     </div>
 </footer>
 
+
+<script>
+/* ============================================================
+   AMBIENCE INTEGRATION v12 — Loop-safe mode detection.
+   Reads tomato.js globals (mode flags + loopCounter + remainingTime).
+   No function hooks. No button wrapping. No DOM polling.
+   ============================================================ */
+(function() {
+    'use strict';
+
+    const PRESETS_KEY = 'tt_ambience_presets_v1';
+    const TIMER_AMBIENCE_KEY = 'tt_timer_ambience_settings_v1';
+    const DEFAULT_PRESETS = {
+        1: { name: 'Rainy Focus',    sounds: { rain: {active:true, vol:70}, thunder: {active:true, vol:40} } },
+        2: { name: 'Cozy Cafe',      sounds: { cafe: {active:true, vol:75}, typing:  {active:true, vol:50} } },
+        3: { name: 'Campfire Night', sounds: { campfire: {active:true, vol:80}, night: {active:true, vol:60} } },
+        4: { name: 'Ocean Breeze',   sounds: { waves: {active:true, vol:80}, wind:   {active:true, vol:40} } }
+    };
+
+    const SOUNDS = [
+        { id:'rain',     file:'ambience/audio/rain.ogg' },
+        { id:'thunder',  file:'ambience/audio/thunder.ogg' },
+        { id:'wind',     file:'ambience/audio/wind.ogg' },
+        { id:'campfire', file:'ambience/audio/campfire.ogg' },
+        { id:'waves',    file:'ambience/audio/waves.ogg' },
+        { id:'cafe',     file:'ambience/audio/cafe.ogg' },
+        { id:'birds',    file:'ambience/audio/birds.ogg' },
+        { id:'night',    file:'ambience/audio/night.ogg' },
+        { id:'typing',   file:'ambience/audio/typing.ogg' },
+        { id:'Train',    file:'ambience/audio/train.ogg' },
+        { id:'Airplane', file:'ambience/audio/airplane.ogg' },
+        { id:'Metro',    file:'ambience/audio/metro.ogg' },
+        { id:'Cricket',  file:'ambience/audio/cricket.ogg' },
+        { id:'River',    file:'ambience/audio/river.ogg' },
+        { id:'bird',     file:'ambience/audio/bird.ogg' }
+    ];
+
+    // ---- Audio Engine ----
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null, masterGain = null;
+    const buffers = {}, activeNodes = {};
+
+    function ensureAudio() {
+        if (audioCtx) return;
+        try {
+            audioCtx = new AudioContext();
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = getVolume() / 100;
+            masterGain.connect(audioCtx.destination);
+            SOUNDS.forEach(function(s){ preload(s); });
+        } catch(e){ console.error('[Ambience] Audio init failed', e); }
+    }
+    async function preload(sound) {
+        if (buffers[sound.id]) return;
+        try {
+            const res = await fetch(sound.file);
+            if (!res.ok) throw new Error(res.status);
+            buffers[sound.id] = await audioCtx.decodeAudioData(await res.arrayBuffer());
+        } catch(err){ console.error('[Ambience] Load fail', sound.file, err); }
+    }
+    function playSound(sound) {
+        if (!audioCtx) ensureAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (!buffers[sound.id]) {
+            preload(sound).then(function(){ if (sound._active) playSound(sound); });
+            return;
+        }
+        if (activeNodes[sound.id]) stopSound(sound.id);
+        const src = audioCtx.createBufferSource();
+        src.buffer = buffers[sound.id];
+        src.loop = true; src.loopStart = 0;
+        const trim = 0.10;
+        src.loopEnd = Math.max(src.buffer.duration - trim, src.buffer.duration * 0.98);
+        const gain = audioCtx.createGain();
+        const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.05);
+        src.connect(gain); gain.connect(masterGain); src.start(0);
+        activeNodes[sound.id] = { src: src, gain: gain };
+    }
+    function stopSound(id) {
+        const node = activeNodes[id]; if (!node) return;
+        const now = audioCtx.currentTime;
+        node.gain.gain.cancelScheduledValues(now);
+        node.gain.gain.setValueAtTime(node.gain.gain.value, now);
+        node.gain.gain.linearRampToValueAtTime(0, now + 0.05);
+        try { node.src.stop(now + 0.06); } catch(e){}
+        setTimeout(function(){ try{ node.src.disconnect(); node.gain.disconnect(); }catch(e){} }, 80);
+        delete activeNodes[id];
+    }
+    function stopAll() { Object.keys(activeNodes).forEach(function(id){ stopSound(id); }); }
+
+    function applyPreset(slot) {
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        const preset = presets[slot] || DEFAULT_PRESETS[slot];
+        if (!preset) return;
+        stopAll();
+        SOUNDS.forEach(function(s){
+            const cfg = preset.sounds[s.id];
+            if (cfg && cfg.active && cfg.vol > 0) {
+                s._active = true; s.volume = cfg.vol; playSound(s);
+            } else {
+                s._active = false; if (cfg) s.volume = cfg.vol || 0;
+            }
+        });
+        updatePresetLabel(preset.name || 'Unnamed');
+    }
+
+    // ---- Settings ----
+    function loadSettings() {
+        try {
+            const raw = localStorage.getItem(TIMER_AMBIENCE_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch(e){}
+        return { pomodoro: '1', shortBreak: '2', longBreak: '3', volume: 0 };
+    }
+    function saveSettings(s) {
+        try { localStorage.setItem(TIMER_AMBIENCE_KEY, JSON.stringify(s)); } catch(e){}
+    }
+    function getVolume() {
+        const s = loadSettings();
+        return (s.volume !== undefined) ? s.volume : 0;
+    }
+    function isMuted() {
+        return getVolume() <= 0;
+    }
+
+    // ---- UI: Preset Label ----
+    const presetLabel = document.getElementById('ambiencePresetLabel');
+    function updatePresetLabel(name) {
+        if (!presetLabel) return;
+        if (name && !isMuted()) {
+            presetLabel.innerHTML = '<span class="play-icon">▶</span><span class="preset-name">' + name + '</span>';
+        } else {
+            presetLabel.innerHTML = '';
+        }
+    }
+    function clearPresetLabel() {
+        if (presetLabel) presetLabel.innerHTML = '';
+    }
+
+    // ---- UI: Volume Slider & Icon ----
+    const pill = document.getElementById('ambienceMasterPill');
+    const volIcon = document.getElementById('ambienceVolIcon');
+    const volSlider = document.getElementById('ambienceVolSlider');
+    let preMuteVolume = 80;
+
+    function updatePillUI() {
+        const vol = getVolume();
+        if (volSlider) volSlider.value = vol;
+        if (pill) {
+            pill.classList.toggle('active', vol > 0);
+            pill.classList.toggle('muted', vol <= 0);
+        }
+        if (volIcon) {
+            if (vol <= 0) {
+                volIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            } else if (vol < 50) {
+                volIcon.innerHTML = '<path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>';
+            } else {
+                volIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            }
+        }
+    }
+
+    if (volSlider) {
+        volSlider.value = getVolume();
+        volSlider.addEventListener('input', function(e) {
+            const val = parseInt(e.target.value);
+            const s = loadSettings();
+            s.volume = val;
+            if (val > 0) preMuteVolume = val;
+            saveSettings(s);
+            updatePillUI();
+            if (masterGain) {
+                masterGain.gain.setTargetAtTime(val / 100, audioCtx.currentTime, 0.05);
+            }
+            if (val <= 0) { stopAll(); clearPresetLabel(); }
+        });
+    }
+
+    if (volIcon) {
+        volIcon.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            const s = loadSettings();
+            if (getVolume() > 0) {
+                preMuteVolume = getVolume();
+                s.volume = 0;
+            } else {
+                s.volume = preMuteVolume || 80;
+            }
+            saveSettings(s);
+            updatePillUI();
+            if (masterGain) {
+                masterGain.gain.setTargetAtTime(getVolume() / 100, audioCtx.currentTime, 0.05);
+            }
+            if (getVolume() <= 0) { stopAll(); clearPresetLabel(); }
+            return false;
+        });
+    }
+
+    // ---- Mode Detection ----
+    function detectMode() {
+        if (typeof isShortCliked !== 'undefined' && isShortCliked) return 'Short Break';
+        if (typeof isLongClicked !== 'undefined' && isLongClicked) return 'Long Break';
+        if (typeof isPomClicked !== 'undefined' && isPomClicked) return 'Pomodoro';
+        const el = document.getElementById('timer_type');
+        return el ? el.value : 'Pomodoro';
+    }
+
+    function playForCurrentMode() {
+        if (isMuted()) { stopAll(); clearPresetLabel(); return; }
+        const s = loadSettings();
+        const mode = detectMode();
+        let slot = '0';
+        if (mode === 'Pomodoro') slot = s.pomodoro;
+        else if (mode === 'Short Break') slot = s.shortBreak;
+        else if (mode === 'Long Break') slot = s.longBreak;
+        if (slot === '0' || !slot) { stopAll(); clearPresetLabel(); return; }
+        applyPreset(parseInt(slot));
+    }
+
+    // ---- State Control ----
+    function startAmbience() {
+        if (!isMuted()) playForCurrentMode();
+    }
+    function pauseAmbience() {
+        if (audioCtx && audioCtx.state === 'running') {
+            audioCtx.suspend();
+        }
+        clearPresetLabel();
+    }
+    function resumeAmbience() {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        if (!isMuted()) updatePresetLabel(detectMode());
+    }
+    function stopAmbience() {
+        stopAll();
+        clearPresetLabel();
+    }
+
+    // ---- Main Poller: watches tomato.js globals (mode flags + loopCounter + remainingTime) ----
+    // countdownHandle is NEVER nulled by tomato.js stopTimer(), so it cannot detect
+    // "stopped". Reliable signals instead:
+    //   mode    = window.isPomClicked / isShortCliked / isLongClicked
+    //             (tomato.js sets them synchronously during loop auto-transitions)
+    //   step    = window.loopCounter (increments exactly once per loop auto-transition)
+    //   running = window.remainingTime is actually ticking (~1s cadence)
+    let _wasRunning = false;
+    let _lastMode = detectMode();
+    let _lastRt = (typeof window.remainingTime === 'number') ? window.remainingTime : null;
+    let _lastTickAt = 0, _prevTickAt = 0;
+    let _lastStep = window.isLoopClicked ? (window.loopCounter | 0) : -1;
+
+    setInterval(function() {
+        try {
+            var now  = Date.now();
+            var rt   = window.remainingTime;
+            var mode = detectMode();
+            var len  = (window.loopArray && window.loopArray.length) || 8;
+            var step = window.isLoopClicked ? (window.loopCounter | 0) : -1;
+
+            if (rt !== _lastRt) { _prevTickAt = _lastTickAt; _lastTickAt = now; _lastRt = rt; }
+            // ticking = two distinct ticks, recent, ~1s apart.
+            // A one-shot reset while stopped changes rt only once -> not "ticking".
+            var ticking = _lastTickAt > 0 && (now - _lastTickAt) < 2000 &&
+                          (_lastTickAt - _prevTickAt) < 2500;
+
+            var loopStepped = (step !== _lastStep) && step >= 0 && step < len;
+            var loopEnded   = window.isLoopClicked && step >= len; // final Long Break finished
+            _lastStep = step;
+
+            var isRunning = loopStepped ? true : (loopEnded ? false : ticking);
+
+            // Loop auto-transition: tomato.js has already updated the mode flags
+            // synchronously at this point. Trigger on loopCounter (not mode),
+            // because the loop sequence repeats Pomodoro (P->S->P->...).
+            if (loopStepped) {
+                _lastMode = mode;
+                // Only switch presets if the timer is genuinely running through
+                // this step. Clicking the Loop button also bumps loopCounter
+                // (arm, -1 -> 0) but does NOT start the timer — no ticks follow,
+                // so `ticking` stays false and we stay silent.
+                if (ticking || _wasRunning) {
+                    _wasRunning = true;
+                    if (!isMuted()) {
+                        stopAll();
+                        playForCurrentMode();
+                    }
+                } else {
+                    _wasRunning = false;
+                }
+                return;
+            }
+
+            // Timer just started
+            if (isRunning && !_wasRunning) {
+                _wasRunning = true;
+                _lastMode = mode;
+                if (!isMuted()) {
+                    if (audioCtx && audioCtx.state === 'suspended' && Object.keys(activeNodes).length > 0) {
+                        resumeAmbience();
+                    } else {
+                        startAmbience();
+                    }
+                }
+            }
+
+            // Timer just stopped / paused / loop finished
+            if (!isRunning && _wasRunning) {
+                _wasRunning = false;
+                pauseAmbience();
+            }
+
+            // Mode changed (manual mode-button click); switch live if running
+            if (mode !== _lastMode) {
+                _lastMode = mode;
+                if (isRunning && !isMuted()) {
+                    stopAll();
+                    playForCurrentMode();
+                }
+            }
+        } catch(err) { console.error('[Ambience] Poll error', err); }
+    }, 300);
+
+    // ---- Play at 00:00 replays the current section instead of ringing again ----
+    // tomato.js: onStartTimer() -> stopTimer() -> startAlarm(), which rings
+    // whenever remainingTime < 1000. So at 00:00, Play used to just beep+stop.
+    // Refilling the timer BEFORE onStartTimer() means startAlarm() sees a full
+    // timer and stays silent, and the countdown replays the current section
+    // (gMinutes still holds the active mode's minutes, custom values included).
+    // Loop auto-transitions call onStartTimer() directly, never this function,
+    // so the Pomodoro -> Break chain is unaffected.
+    window.onPlayClick = function() {
+        if ((window.remainingTime || 0) <= 0 && typeof resetTimer === 'function') {
+            resetTimer();
+        }
+        onStartTimer();
+    };
+
+    // ---- Instant start/stop response on real user clicks ----
+    // Listener only: it does NOT wrap or replace any onclick attribute, and
+    // reads state AFTER tomato.js handlers have run (setTimeout 0).
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        var startish = t.closest('a[onclick*="onPlayClick"], a[onclick*="onStartTimer"], .to-do-button[onclick*="startTaskTimer"]');
+        // NOTE: #loop_timer_button is STOPPISH, not startish — tomato.js onLoop()
+        // skips onStartTimer() for the first step (loopCounter == 0), so clicking
+        // Loop only ARMS loop mode (resets to Pomodoro) without starting the timer.
+        var stopish  = t.closest('a[onclick*="onStopTimer"], a[onclick*="onResetTimer"], #loop_timer_button');
+        if (!startish && !stopish) return;
+        setTimeout(function() {
+            if (stopish) {
+                _wasRunning = false;
+                _lastTickAt = 0; _prevTickAt = 0;
+                _lastRt = window.remainingTime;
+                _lastMode = detectMode();
+                pauseAmbience();
+            } else if ((window.remainingTime || 0) > 0 || window.isLoopClicked) {
+                _lastTickAt = Date.now(); _prevTickAt = Date.now(); // hold until real ticks take over
+                _lastRt = window.remainingTime;
+                if (!_wasRunning) {
+                    _wasRunning = true;
+                    _lastMode = detectMode();
+                    if (!isMuted()) startAmbience();
+                }
+            }
+        }, 0);
+    }, true);
+
+    // ---- Windows blank tab fix (run FIRST, before anything else) ----
+    (function fixBaseTargetBlank() {
+        document.querySelectorAll('a[href="javascript:void(0)"]').forEach(function(link) {
+            if (!link.hasAttribute('target')) {
+                link.setAttribute('target', '_self');
+            }
+        });
+    })();
+
+    // Dynamic links (todo Edit/Delete etc.) are injected AFTER page load, so the
+    // one-time patch above never sees them. Block the blank navigation at click
+    // time instead — the link's own onclick (editTodo/deleteTodo) still runs,
+    // because preventDefault only cancels the navigation, not event handlers.
+    document.addEventListener('click', function(e) {
+        var a = e.target && e.target.closest ? e.target.closest('a[href^="javascript:"]') : null;
+        if (a) e.preventDefault();
+    }, true);
+
+    // ---- Todo Start button patch ----
+    (function patchTodoButtons() {
+        var todoContainer = document.getElementById('to_do_data');
+        if (!todoContainer) return;
+        function patchButtons() {
+            todoContainer.querySelectorAll('.to-do-button').forEach(function(btn) {
+                if (btn._ambiencePatched) return;
+                btn._ambiencePatched = true;
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onLoopTimer();
+                    onStartTimer();
+                    return false;
+                };
+            });
+        }
+        patchButtons();
+        var observer = new MutationObserver(patchButtons);
+        observer.observe(todoContainer, { childList: true, subtree: true });
+    })();
+
+    // ---- UI: Dropdowns ----
+    function populateDropdowns() {
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        const s = loadSettings();
+        [
+            { el:'pomodoro_ambience',     key:'pomodoro' },
+            { el:'short_break_ambience',  key:'shortBreak' },
+            { el:'long_break_ambience',   key:'longBreak' }
+        ].forEach(function(item){
+            const sel = document.getElementById(item.el);
+            if (!sel) return;
+            const oldVal = sel.value;
+            sel.innerHTML = '';
+            const none = document.createElement('option');
+            none.value = '0'; none.textContent = 'None / Off'; sel.appendChild(none);
+            for (let i = 1; i <= 4; i++) {
+                const opt = document.createElement('option');
+                opt.value = String(i);
+                const name = (presets[i] && presets[i].name) ? presets[i].name : DEFAULT_PRESETS[i].name;
+                opt.textContent = 'Preset ' + i + ': ' + name;
+                sel.appendChild(opt);
+            }
+            sel.value = s[item.key] || '0';
+            if (oldVal && sel.querySelector('option[value="' + oldVal + '"]')) sel.value = oldVal;
+        });
+    }
+
+    const saveBtn = document.getElementById('SaveSet');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+            try {
+                const s = loadSettings();
+                const p = document.getElementById('pomodoro_ambience');
+                const sb = document.getElementById('short_break_ambience');
+                const lb = document.getElementById('long_break_ambience');
+                if (p)  s.pomodoro    = p.value;
+                if (sb) s.shortBreak  = sb.value;
+                if (lb) s.longBreak   = lb.value;
+                saveSettings(s);
+            } catch(err) { console.error('[Ambience] Save error', err); }
+        });
+    }
+    if (typeof $ !== 'undefined') {
+        $('#custom-timer').on('show.bs.modal', populateDropdowns);
+    }
+    window.addEventListener('focus', populateDropdowns);
+    window.addEventListener('storage', function(e) {
+        if (e.key === PRESETS_KEY) populateDropdowns();
+    });
+
+    // Init
+    updatePillUI();
+    populateDropdowns();
+    console.log('[Ambience] v12 loaded. Vol:', getVolume(), 'Mode:', detectMode());
+})();
+</script>
 </body>
 
 </html>
