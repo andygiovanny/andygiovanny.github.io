@@ -588,6 +588,7 @@
 </style>
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
     
     
@@ -1836,6 +1837,26 @@
         var a = e.target && e.target.closest ? e.target.closest('a[href^="javascript:"]') : null;
         if (a) e.preventDefault();
     }, true);
+
+    // ---- Notification permission fix ----
+    // tomato.js requests Notification permission at page load. Firefox and
+    // Safari REQUIRE a user gesture for requestPermission(), so the page-load
+    // request is silently ignored on the live site and permission stays
+    // 'default' forever -> new Notification() does nothing at timer end.
+    // (It works on localhost only because permission was granted there once
+    // and persists in your browser profile.)
+    // Fix: ask again on the first real user interaction with the page.
+    (function fixNotificationPermission() {
+        function ask() {
+            try {
+                if (window.Notification && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            } catch (e) {}
+            document.removeEventListener('click', ask, true);
+        }
+        document.addEventListener('click', ask, true);
+    })();
 
     // ---- Todo Start button patch ----
     (function patchTodoButtons() {
