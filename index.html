@@ -1858,6 +1858,31 @@
         document.addEventListener('click', ask, true);
     })();
 
+    // ---- Safari completion-beep unlock ----
+    // tomato.js plays the timer-end beep via audio.play() from a setInterval
+    // callback. Safari (and iOS) block HTMLAudioElement.play() unless the
+    // element was first unlocked by a real user gesture. Warm it up on the
+    // first click anywhere: play it MUTED for a tick, then restore.
+    // Inaudible, one-time. ('audio' is tomato.js's global beep element.)
+    (function unlockTimerBeep() {
+        function unlock() {
+            try {
+                var beep = window.audio;
+                if (beep && beep.paused) {
+                    beep.muted = true;
+                    var p = beep.play();
+                    var restore = function() {
+                        try { beep.pause(); beep.currentTime = 0; } catch (e) {}
+                        beep.muted = false;
+                    };
+                    if (p && p.then) { p.then(restore).catch(restore); } else { restore(); }
+                }
+            } catch (e) {}
+            document.removeEventListener('click', unlock, true);
+        }
+        document.addEventListener('click', unlock, true);
+    })();
+
     // ---- Todo Start button patch ----
     (function patchTodoButtons() {
         var todoContainer = document.getElementById('to_do_data');
