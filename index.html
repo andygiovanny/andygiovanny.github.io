@@ -1,6 +1,7 @@
     <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
   
   
   <script type="application/ld+json">
@@ -589,6 +590,344 @@
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<style>
+/* ---- Task Manager (card to-do list) v1 ---- */
+/* Local d-none fallback so components don't depend on Bootstrap's CDN copy */
+.tm-zero-overlay.d-none,
+.tm-done-wrap.d-none { display: none !important; }
+
+/* Legacy stylesheet fixes this at 400px (old scrollable list). Let cards grow
+   naturally so the section pushes the content below it down instead. */
+.todo-list-min-height { height: auto !important; min-height: 400px; }
+
+.tm-active-line {
+    min-height: 22px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #8C5A3E;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+.tm-active-line strong { color: #58240E; }
+.tm-active-line .tm-est-left { color: #DE4B3A; font-weight: 700; }
+
+#tm_add_form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.tm-input {
+    border: 2px solid rgba(140, 90, 62, 0.18);
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    color: #58240E;
+    background: #FFFFFF;
+    outline: none;
+    transition: border-color 0.15s ease;
+    min-width: 0;
+}
+.tm-input:focus { border-color: #DE4B3A; }
+#tm_add_title { flex: 1; }
+.tm-estimate-input { width: 110px; flex-shrink: 0; }
+.tm-add-btn { flex-shrink: 0; padding: 8px 20px !important; font-size: 0.9rem !important; }
+
+.tm-section-title {
+    font-family: 'Baloo Tammudu', cursive, sans-serif;
+    color: #7A1F0F;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 6px 0 16px;
+}
+.tm-color-picker { display: flex; gap: 6px; align-items: center; flex-shrink: 0; padding-right: 2px; }
+.tm-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(88, 36, 14, 0.15);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.12s ease;
+}
+.tm-swatch:hover { transform: scale(1.15); }
+.tm-swatch.tm-swatch-selected { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #58240E; }
+
+.tm-cards { display: flex; flex-direction: column; gap: 10px; }
+
+.tm-card {
+    background: #FFFFFF;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(88, 36, 14, 0.10);
+    padding: 12px 14px 12px 16px;
+    border: 1px solid rgba(88, 36, 14, 0.12);
+    border-left: 5px solid #E8D5C0;
+    position: relative;
+    transition: border-color 0.2s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+    cursor: grab;
+}
+.tm-card:active { cursor: grabbing; }
+.tm-card.dragging { opacity: 0.45; }
+.tm-card.dragover { box-shadow: 0 -3px 0 0 #DE4B3A, 0 2px 8px rgba(88, 36, 14, 0.08); }
+.tm-card.tm-active { border-left-color: #DE4B3A; }
+.tm-card.tm-done {
+    border-left-color: #5FA46A;
+    cursor: default;
+    background: #F2F7F2;
+    border-style: dashed;
+    border-left-style: solid;
+    box-shadow: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    opacity: 0.85;
+}
+
+/* Invisible click strip over the colored left edge: click to cycle task color */
+.tm-color-edge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    border-radius: 14px 0 0 14px;
+    cursor: pointer;
+}
+.tm-color-edge:hover { box-shadow: inset 0 0 0 2px rgba(88, 36, 14, 0.25); }
+
+.tm-card-top { display: flex; align-items: center; gap: 8px; }
+.tm-title {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #58240E;
+    word-break: break-word;
+    cursor: text;
+    border-radius: 6px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+}
+.tm-title:hover { background: rgba(222, 75, 58, 0.06); }
+.tm-title-input {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #58240E;
+    border: 2px solid #DE4B3A;
+    border-radius: 8px;
+    padding: 2px 6px;
+    font-family: inherit;
+    outline: none;
+    min-width: 0;
+}
+.tm-done .tm-title { text-decoration: line-through; opacity: 0.6; }
+
+.tm-est-chip {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #8C5A3E;
+    background: rgba(140, 90, 62, 0.10);
+    border-radius: 50px;
+    padding: 3px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: none;
+    font-family: inherit;
+}
+.tm-est-chip:hover { background: rgba(222, 75, 58, 0.14); color: #DE4B3A; }
+.tm-est-chip.tm-est-empty { color: rgba(140, 90, 62, 0.45); background: transparent; border: 1.5px dashed rgba(140, 90, 62, 0.3); }
+.tm-est-input {
+    width: 84px;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    border: 2px solid #DE4B3A;
+    border-radius: 50px;
+    padding: 2px 10px;
+    font-family: inherit;
+    color: #58240E;
+    outline: none;
+    text-align: center;
+}
+
+.tm-start-btn {
+    flex-shrink: 0;
+    background: #DE4B3A;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+.tm-start-btn:hover { background: #C23A2B; }
+.tm-start-btn:active { transform: scale(0.95); }
+.tm-start-btn.tm-focusing { background: #5FA46A; }
+
+.tm-icon-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(140, 90, 62, 0.55);
+    font-size: 0.9rem;
+    padding: 3px 5px;
+    border-radius: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+    line-height: 1;
+}
+.tm-icon-btn:hover { color: #DE4B3A; background: rgba(222, 75, 58, 0.08); }
+
+.tm-card-detail { margin-top: 8px; }
+.tm-notes {
+    width: 100%;
+    border: 2px solid rgba(140, 90, 62, 0.14);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-family: inherit;
+    color: #58240E;
+    background: rgba(140, 90, 62, 0.04);
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+}
+.tm-notes:focus { border-color: #DE4B3A; background: #fff; }
+
+.tm-subtasks { list-style: none; margin: 6px 0 0; padding: 0; }
+.tm-subtask { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 0.86rem; color: #58240E; }
+.tm-subtask input[type="checkbox"] { width: 16px; height: 16px; accent-color: #DE4B3A; cursor: pointer; flex-shrink: 0; }
+.tm-subtask .tm-sub-text { flex: 1; word-break: break-word; }
+.tm-subtask.tm-sub-done .tm-sub-text { text-decoration: line-through; opacity: 0.5; }
+.tm-sub-add { display: flex; gap: 6px; margin-top: 6px; }
+.tm-sub-add .tm-input { flex: 1; padding: 5px 10px; font-size: 0.82rem; border-radius: 8px; }
+.tm-sub-add button { flex-shrink: 0; }
+
+.tm-detail-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: rgba(140, 90, 62, 0.6);
+    padding: 2px 0;
+    font-family: inherit;
+}
+.tm-detail-toggle:hover { color: #DE4B3A; }
+
+/* Estimate-hit-zero overlay (covers the countdown so the pause is explained) */
+.tm-zero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 246, 236, 0.82);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border-radius: 18px;
+    padding: 16px;
+}
+.tm-zero-box {
+    background: #FFFFFF;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(88, 36, 14, 0.22);
+    border: 2px solid rgba(222, 75, 58, 0.35);
+    padding: 20px 22px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+}
+.tm-zero-box .tm-zero-text { font-size: 0.95rem; color: #58240E; font-weight: 600; margin-bottom: 14px; line-height: 1.5; }
+.tm-zero-box .tm-zero-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.tm-zero-box .tm-input { width: 100px; padding: 7px 12px; font-size: 0.85rem; background: #fff; text-align: center; }
+.tm-zero-btn {
+    border: none;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+.tm-zero-btn.tm-zero-add { background: #DE4B3A; color: #fff; }
+.tm-zero-btn.tm-zero-add:hover { background: #C23A2B; }
+.tm-zero-btn.tm-zero-done { background: rgba(140, 90, 62, 0.12); color: #8C5A3E; }
+.tm-zero-btn.tm-zero-done:hover { background: rgba(140, 90, 62, 0.2); }
+
+/* Done section + toolbar */
+.tm-done-wrap { margin-top: 16px; }
+.tm-done-header {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(140, 90, 62, 0.6);
+    margin-bottom: 8px;
+}
+.tm-toolbar { display: flex; justify-content: space-between; margin-top: 14px; }
+.tm-tool-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: rgba(140, 90, 62, 0.65);
+    font-family: inherit;
+    padding: 4px 6px;
+    border-radius: 8px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+.tm-tool-btn:hover { color: #58240E; background: rgba(140, 90, 62, 0.08); }
+.tm-tool-danger:hover { color: #DE4B3A; background: rgba(222, 75, 58, 0.08); }
+
+/* Undo toast */
+.tm-toast {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    background: #58240E;
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 0.88rem;
+    box-shadow: 0 6px 24px rgba(88, 36, 14, 0.25);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    pointer-events: none;
+}
+.tm-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+.tm-toast button {
+    background: none;
+    border: none;
+    color: #FFB4A2;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: inherit;
+    padding: 0;
+}
+.tm-toast button:hover { color: #fff; }
+
+@media (max-width: 576px) {
+    .tm-estimate-input { width: 84px; }
+    #tm_add_form { flex-wrap: wrap; }
+    #tm_add_title { flex: 1 1 100%; }
+}
+</style>
+<base target="_blank">
 </head>
     
     
@@ -602,7 +941,7 @@
       <img src="assets/images/YT.png" alt="Subscribe" style="height: 28px;">
     </a>
     <span style="font-size: 15px; color: #fff;">
-      Ambient sounds is now available! Customize it on Ambience Studio and set it at Custom Timers! Check out YT videos below
+      New Todo List is here! Use custom timer and ambience studio to attach ambience, Support the channel and check out the videos below!
     </span>
   </div>
   <div class="g-ytsubscribe" 
@@ -697,6 +1036,16 @@
           
           
 <div class="container mt-1" style="position: relative;">
+    <div class="tm-zero-overlay d-none" id="tm_zero_overlay" role="alertdialog" aria-live="assertive">
+        <div class="tm-zero-box">
+            <div class="tm-zero-text" id="tm_zero_text"></div>
+            <div class="tm-zero-row">
+                <input type="text" id="tm_zero_input" class="tm-input" placeholder="e.g. 25m" aria-label="Add more time">
+                <button type="button" class="tm-zero-btn tm-zero-add" id="tm_zero_add">Add time &amp; resume</button>
+                <button type="button" class="tm-zero-btn tm-zero-done" id="tm_zero_done">Mark done</button>
+            </div>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-12 col-lg-7 text-center d-flex flex-column align-items-center justify-content-start pt-1">
             
@@ -735,6 +1084,7 @@
         <input type="range" id="ambienceVolSlider" min="0" max="100" value="80" title="Ambience Volume">
     </div>
     <div class="ambience-preset-label" id="ambiencePresetLabel"></div>
+    <div class="tm-active-line" id="tm_active_line" aria-live="polite"></div>
 </div>
         </div>
     </div>
@@ -764,6 +1114,41 @@
 </div>
     
 
+<div class="container-fluid todo-background" style="background-color: #FFFFFF;">
+    <div class="container" style="max-width: 1200px;">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h2 class="tm-section-title">Your To-Do List</h2>
+                <div class="todo-list-min-height" id="task_manager">
+                    <form id="tm_add_form" autocomplete="off">
+                        <div class="tm-color-picker" id="tm_color_picker" role="radiogroup" aria-label="Task color">
+                            <button type="button" class="tm-swatch tm-swatch-selected" data-color="" style="background:#E8D5C0" title="Default" aria-label="Default color"></button>
+                            <button type="button" class="tm-swatch" data-color="#DE4B3A" style="background:#DE4B3A" title="Red" aria-label="Red"></button>
+                            <button type="button" class="tm-swatch" data-color="#FFA900" style="background:#FFA900" title="Orange" aria-label="Orange"></button>
+                            <button type="button" class="tm-swatch" data-color="#5FA46A" style="background:#5FA46A" title="Green" aria-label="Green"></button>
+                            <button type="button" class="tm-swatch" data-color="#4A90D9" style="background:#4A90D9" title="Blue" aria-label="Blue"></button>
+                            <button type="button" class="tm-swatch" data-color="#9B59B6" style="background:#9B59B6" title="Purple" aria-label="Purple"></button>
+                        </div>
+                        <input type="text" id="tm_add_title" class="tm-input" placeholder="Add a task…" maxlength="120" aria-label="Task title">
+                        <input type="text" id="tm_add_estimate" class="tm-input tm-estimate-input" placeholder="est. e.g. 45m" maxlength="12" aria-label="Estimated time (optional)">
+                        <button type="submit" class="to-do-button btn rounded-pill tm-add-btn">Add</button>
+                    </form>
+                    <div id="tm_cards" class="tm-cards"></div>
+                    <div id="tm_done_wrap" class="tm-done-wrap d-none">
+                        <div class="tm-done-header">Done <span id="tm_done_count"></span></div>
+                        <div id="tm_done_cards" class="tm-cards"></div>
+                    </div>
+                    <div class="tm-toolbar">
+                        <button type="button" id="tm_clear_done" class="tm-tool-btn">Clear completed</button>
+                        <button type="button" id="tm_reset" class="tm-tool-btn tm-tool-danger">Reset list</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container" style="background-color: #fff; padding: 0.5rem 1rem; border-radius: 12px; margin-top: 1rem; margin-bottom: 1rem;">
   <h2 class="text-center" style="color: #000000; font-size: 1.5rem; margin-bottom: 0.5rem;"> 
     Animated Video Timers 🎨
@@ -782,6 +1167,8 @@
     
 -->
     
+
+</div>
 
 <div class="video-grid-wrapper">
   <div class="video-grid">
@@ -1152,50 +1539,25 @@
 
 
 </div>
-    
-</div>
-    
-    
-<div class="container-fluid todo-background">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <img src="assets/images/tomato-work-flow.svg" class="work-flow"/>
-            </div>
-            <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12"></div>
-
-            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 text-right col-xs-12 mb-2">
-                        <img src="assets/images/todo-label.svg" class="work-flow"/>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 overflow-auto todo-list-min-height"
-                         id="to_do_data">
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right mt-2">
-                        <button type="button" class="to-do-button btn btn-lg rounded-pill" data-toggle="modal"
-                                data-target="#add-to-do-modal">Add To Do
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- SEO Content Section -->
-<div id="pomodoro-guide" class="container" style="max-width: 900px; margin: 50px auto; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; color: #58240E; line-height: 1.7;">
+<div style="background-color: #FFA900; padding: 50px 0 40px;">
+<div id="pomodoro-guide" class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; color: #58240E; line-height: 1.7;">
 <h1 style="text-align:center; color:#58240E; font-family:'Baloo Tammudu', cursive; font-size:1.7rem; margin:20px 0 8px;">Free Online Pomodoro Timer & Study Timer</h1>
-  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 8px; color: #58240E;">Learn the Tomato Method 🍅</h2>
-  <p style="text-align: center; color: #8C5A3E; font-size: 1rem; margin-bottom: 40px;">Boost your productivity with our customizable Pomodoro timer, cute themes, and focus ambience.</p>
+  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 8px; color: #7A1F0F;">Learn the Tomato Method 🍅</h2>
+  <p style="text-align: center; color: #58240E; font-size: 1rem; margin-bottom: 24px;">Boost your productivity with our customizable Pomodoro timer, cute themes, and focus ambience.</p>
 
-  <h2 style="font-size: 1.4rem; color: #58240E; margin-top: 30px; margin-bottom: 12px;">What is the Pomodoro Technique?</h2>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 20px;">The <strong>Pomodoro Technique</strong> is a time management method developed by Francesco Cirillo in the late 1980s. It uses a timer to break work into focused intervals — traditionally <strong>25 minutes</strong> — separated by short breaks. Our free <strong>online Pomodoro timer</strong> makes it easy to implement this technique with customizable intervals, cute themes, and soothing <strong>lofi ambience</strong> sounds.</p>
+  <div style="text-align: center; margin: 10px auto 40px; max-width: 720px;">
+    <img src="assets/images/tomato-work-flow.svg" class="work-flow" style="max-width: 100%; height: auto;" alt="Pomodoro Technique workflow infographic: pick a task, set the timer for 25 minutes, work until it rings, take a 5-minute break, and after four Pomodoros take a longer 15-30 minute break" loading="lazy"/>
+    <p style="color: #58240E; font-size: 0.9rem; margin-top: 10px;">The Pomodoro workflow at a glance — pick a task, focus for 25 minutes, break for 5, repeat.</p>
+  </div>
 
-  <h2 style="font-size: 1.4rem; color: #58240E; margin-top: 30px; margin-bottom: 12px;">How to Use Our Free Pomodoro Timer</h2>
-  <ol style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 20px; padding-left: 20px;">
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">What is the Pomodoro Technique?</h2>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px;">The <strong>Pomodoro Technique</strong> is a time management method developed by Francesco Cirillo in the late 1980s. It uses a timer to break work into focused intervals — traditionally <strong>25 minutes</strong> — separated by short breaks. Our free <strong>online Pomodoro timer</strong> makes it easy to implement this technique with customizable intervals, cute themes, and soothing <strong>lofi ambience</strong> sounds.</p>
+
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">How to Use Our Free Pomodoro Timer</h2>
+  <ol style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px; padding-left: 20px;">
     <li>Pick a task you want to focus on</li>
     <li>Click <strong>Pomodoro</strong> to start a 25-minute focus session</li>
     <li>Work until the timer rings — no distractions!</li>
@@ -1204,8 +1566,8 @@
     <li>Use the <strong>Loop</strong> button to automate the entire cycle</li>
   </ol>
 
-  <h2 style="font-size: 1.4rem; color: #58240E; margin-top: 30px; margin-bottom: 12px;">Why TomatoTimers is the Best Study Timer</h2>
-  <ul style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 20px; padding-left: 20px;">
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Why TomatoTimers is the Best Study Timer</h2>
+  <ul style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px; padding-left: 20px;">
     <li><strong>Free & No Sign-up:</strong> Start focusing instantly — no account needed</li>
     <li><strong>Cute & Aesthetic:</strong> Multiple themes including Classic Tomato, Duck, and seasonal designs</li>
     <li><strong>Custom Intervals:</strong> Adjust Pomodoro, short break, and long break times to fit your workflow</li>
@@ -1214,34 +1576,35 @@
     <li><strong>Works Everywhere:</strong> Desktop, mobile, tablet — any browser, any device</li>
   </ul>
 
-  <h2 style="font-size: 1.4rem; color: #58240E; margin-top: 30px; margin-bottom: 12px;">Popular Timer Features</h2>
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Popular Timer Features</h2>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 20px; margin-bottom: 8px;">Custom Pomodoro Timer</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 16px;">Not everyone works best in 25-minute blocks. Our <strong>custom Pomodoro timer</strong> lets you set your own work and break durations. Click the <em>Custom Timer</em> button to adjust intervals and even assign unique ambience presets to each mode.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 20px; margin-bottom: 8px;">Custom Pomodoro Timer</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 16px;">Not everyone works best in 25-minute blocks. Our <strong>custom Pomodoro timer</strong> lets you set your own work and break durations. Click the <em>Custom Timer</em> button to adjust intervals and even assign unique ambience presets to each mode.</p>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 20px; margin-bottom: 8px;">Aesthetic Pomodoro Timer with Cute Themes</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 16px;">Study sessions don't have to be boring. TomatoTimers is an <strong>aesthetic Pomodoro timer</strong> with adorable visuals, seasonal videos, and a cozy design that makes focusing feel fun. Switch between the Classic Tomato theme and our popular Duck theme.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 20px; margin-bottom: 8px;">Aesthetic Pomodoro Timer with Cute Themes</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 16px;">Study sessions don't have to be boring. TomatoTimers is an <strong>aesthetic Pomodoro timer</strong> with adorable visuals, seasonal videos, and a cozy design that makes focusing feel fun. Switch between the Classic Tomato theme and our popular Duck theme.</p>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 20px; margin-bottom: 8px;">Focus Timer with Lofi Ambience</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 16px;">Need help tuning out distractions? Use our <strong>focus timer</strong> with built-in lofi ambience. Choose from Rainy Focus, Cozy Cafe, Campfire Night, Ocean Breeze, or Customize your own ambience using the Ambience Studio — each designed to help you enter deep work without lyrics or distracting music.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 20px; margin-bottom: 8px;">Focus Timer with Lofi Ambience</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 16px;">Need help tuning out distractions? Use our <strong>focus timer</strong> with built-in lofi ambience. Choose from Rainy Focus, Cozy Cafe, Campfire Night, Ocean Breeze, or Customize your own ambience using the Ambience Studio — each designed to help you enter deep work without lyrics or distracting music.</p>
 
-  <h2 style="font-size: 1.4rem; color: #58240E; margin-top: 30px; margin-bottom: 12px;">Frequently Asked Questions</h2>
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Frequently Asked Questions</h2>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 18px; margin-bottom: 6px;">Is this Pomodoro timer really free?</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 14px;">Yes! TomatoTimers is a <strong>free Pomodoro timer</strong> with no hidden fees, no premium tier, and no sign-up required. All features — including custom intervals, task manager, and ambience — are available instantly.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Is this Pomodoro timer really free?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Yes! TomatoTimers is a <strong>free Pomodoro timer</strong> with no hidden fees, no premium tier, and no sign-up required. All features — including custom intervals, task manager, and ambience — are available instantly.</p>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 18px; margin-bottom: 6px;">Can I use this as a study timer?</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 14px;">Absolutely. Thousands of students use TomatoTimers as their daily <strong>study timer</strong>. The Pomodoro method is proven to boost focus, reduce procrastination, and improve information retention during long study sessions.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Can I use this as a study timer?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Absolutely. Thousands of students use TomatoTimers as their daily <strong>study timer</strong>. The Pomodoro method is proven to boost focus, reduce procrastination, and improve information retention during long study sessions.</p>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 18px; margin-bottom: 6px;">What makes this a cute Pomodoro timer?</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 14px;">Unlike plain countdown apps, TomatoTimers is designed to be a <strong>cute Pomodoro timer</strong> with charming visuals, animated themes, and a warm color palette. It turns productivity into a pleasant experience rather than a chore.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">What makes this a cute Pomodoro timer?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Unlike plain countdown apps, TomatoTimers is designed to be a <strong>cute Pomodoro timer</strong> with charming visuals, animated themes, and a warm color palette. It turns productivity into a pleasant experience rather than a chore.</p>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 18px; margin-bottom: 6px;">How do I customize my timer?</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 14px;">Click the <em>Custom Timer</em> button to open the settings modal. From there, you can adjust the Pomodoro, Short Break, and Long Break durations. You can also assign ambience presets to each mode so your focus sounds automatically switch as you move between work and rest.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">How do I customize my timer?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Click the <em>Custom Timer</em> button to open the settings modal. From there, you can adjust the Pomodoro, Short Break, and Long Break durations. You can also assign ambience presets to each mode so your focus sounds automatically switch as you move between work and rest.</p>
 
-  <h3 style="font-size: 1.15rem; color: #58240E; margin-top: 18px; margin-bottom: 6px;">Does it work on mobile?</h3>
-  <p style="color: #8C5A3E; font-size: 0.95rem; margin-bottom: 14px;">Yes, our <strong>online Pomodoro timer</strong> is fully responsive and works perfectly on iPhone, Android, and tablets. Use it in your browser — no app download required.</p>
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Does it work on mobile?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Yes, our <strong>online Pomodoro timer</strong> is fully responsive and works perfectly on iPhone, Android, and tablets. Use it in your browser — no app download required.</p>
 
+</div>
 </div>
 
 
@@ -1363,65 +1726,6 @@
     </div>
 </div>
 
-
-<div id="add-to-do-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content popup-background">
-            <div class="modal-header">
-                <h4 class="modal-title header-font">Task Manager</h4>
-                <img src="assets/images/close-button.svg" class="close" data-dismiss="modal"
-                     onclick="todoModalClose()"/>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="type_of_todo" value="notes"/>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                            <button class="btn btn-outline-danger rounded-pill width-100 active" id="notes_add_button"
-                                    onclick="hideUnHideTodo('notes','checklist','notes_add_button','checklist_add_button')">
-                                Notes
-                            </button>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                            <button class="btn btn-outline-danger rounded-pill  width-100" id="checklist_add_button"
-                                    onclick="hideUnHideTodo('checklist','notes','checklist_add_button','notes_add_button')">
-                                Check List
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" id="form_id">
-                <div class="form-group">
-                    <input type="text" id="title" name="title" placeholder="Title" class="form-control  mt-4"/>
-                </div>
-
-                <div id="notes" class="mt-4">
-                    <div class="form-group">
-                        <textarea class="form-control" placeholder="Notes" rows="5" id="notes_value"
-                                  name="notes_value"></textarea>
-                    </div>
-                </div>
-
-                <div id="checklist" class="mt-4 d-none">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="checklist_item" name="checklist_item"
-                               placeholder="Check List Item">
-                        <div class="input-group-append">
-                            <button class="btn btn-success" type="button" style="padding:6px 5px 0px 5px"
-                                    onclick="addItem()">Add Item
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tmpChecklist" class="mt-4"></div>
-            </div>
-            <div class="modal-footer" id="todo_button">
-                <button type="button" class="submit-button btn btn-lg" onclick="saveTodo()">SAVE</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="assets/js/tomato.js?v=1.0"></script>
 <script src="assets/js/jquery-confirm/dist/jquery-confirm.min.js"></script>
@@ -1774,16 +2078,21 @@
         } catch(err) { console.error('[Ambience] Poll error', err); }
     }, 300);
 
-    // ---- Play at 00:00 replays the current section instead of ringing again ----
+    // ---- Play at 00:00: fresh loop if the loop finished, else replay section ----
     // tomato.js: onStartTimer() -> stopTimer() -> startAlarm(), which rings
     // whenever remainingTime < 1000. So at 00:00, Play used to just beep+stop.
-    // Refilling the timer BEFORE onStartTimer() means startAlarm() sees a full
-    // timer and stays silent, and the countdown replays the current section
-    // (gMinutes still holds the active mode's minutes, custom values included).
+    // If the loop ran to the end (loopCounter past the last step), Play starts
+    // a brand-new loop from Pomodoro. Otherwise refilling the timer BEFORE
+    // onStartTimer() means startAlarm() sees a full timer and stays silent,
+    // and the countdown replays the current section (gMinutes still holds the
+    // active mode's minutes, custom values included).
     // Loop auto-transitions call onStartTimer() directly, never this function,
     // so the Pomodoro -> Break chain is unaffected.
     window.onPlayClick = function() {
-        if ((window.remainingTime || 0) <= 0 && typeof resetTimer === 'function') {
+        if (window.isLoopClicked && typeof window.loopArray !== 'undefined'
+                && window.loopCounter >= window.loopArray.length) {
+            if (typeof onLoopTimer === 'function') onLoopTimer();
+        } else if ((window.remainingTime || 0) <= 0 && typeof resetTimer === 'function') {
             resetTimer();
         }
         onStartTimer();
@@ -1883,28 +2192,6 @@
         document.addEventListener('click', unlock, true);
     })();
 
-    // ---- Todo Start button patch ----
-    (function patchTodoButtons() {
-        var todoContainer = document.getElementById('to_do_data');
-        if (!todoContainer) return;
-        function patchButtons() {
-            todoContainer.querySelectorAll('.to-do-button').forEach(function(btn) {
-                if (btn._ambiencePatched) return;
-                btn._ambiencePatched = true;
-                btn.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onLoopTimer();
-                    onStartTimer();
-                    return false;
-                };
-            });
-        }
-        patchButtons();
-        var observer = new MutationObserver(patchButtons);
-        observer.observe(todoContainer, { childList: true, subtree: true });
-    })();
-
     // ---- UI: Dropdowns ----
     function populateDropdowns() {
         let presets;
@@ -1963,6 +2250,676 @@
     updatePillUI();
     populateDropdowns();
     console.log('[Ambience] v12 loaded. Vol:', getVolume(), 'Mode:', detectMode());
+})();
+</script>
+<script>
+// ============================================================
+// Task Manager v1 — card to-do list wired into the timer.
+// Storage: localStorage 'tt_tasks_v1'. Survives refresh; only
+// cleared by explicit user action (delete / clear / reset).
+// Drain: a completed work second on the ACTIVE task reduces its
+// estimate. Breaks never drain. Pause stops, play resumes —
+// the drain rides tomato.js's own decrementTimer ticks.
+// ============================================================
+(function TaskManager() {
+    'use strict';
+
+    var STORE_KEY = 'tt_tasks_v1';
+
+    // ---------- state ----------
+    var state = { tasks: [], activeId: null };
+    var zeroPromptFor = null;   // task id currently showing the "estimate hit 0" prompt
+    var undoBuffer = null;      // { task, index, wasActive }
+    var undoTimer = null;
+
+    function load() {
+        try {
+            var raw = localStorage.getItem(STORE_KEY);
+            if (raw) {
+                var parsed = JSON.parse(raw);
+                if (parsed && Array.isArray(parsed.tasks)) {
+                    state.tasks = parsed.tasks;
+                    state.activeId = parsed.activeId || null;
+                }
+            }
+        } catch (e) {}
+    }
+    function save() {
+        try {
+            localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        } catch (e) {}
+    }
+
+    function uid() {
+        return 't' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    // ---------- time parsing / formatting ----------
+    // Accepts: "90" (minutes), "45m", "1h", "1h 30m", "1:30", "1.5h"
+    function parseTime(str) {
+        if (!str) return null;
+        str = String(str).trim().toLowerCase();
+        if (!str) return null;
+        var m;
+        m = str.match(/^(\d+)\s*:\s*(\d{1,2})$/);            // h:mm
+        if (m) return (parseInt(m[1], 10) * 60 + parseInt(m[2], 10)) * 60000;
+        var hours = 0, mins = 0, matched = false;
+        m = str.match(/([\d.]+)\s*h/);
+        if (m) { hours = parseFloat(m[1]); matched = true; }
+        m = str.match(/(\d+)\s*m(?:in)?/);
+        if (m) { mins = parseInt(m[1], 10); matched = true; }
+        if (matched) return Math.round((hours * 60 + mins) * 60000);
+        m = str.match(/^(\d+)$/);                             // bare number = minutes
+        if (m) return parseInt(m[1], 10) * 60000;
+        return null;
+    }
+    function fmtMs(ms) {
+        var totalMin = Math.max(1, Math.ceil(ms / 60000));
+        var h = Math.floor(totalMin / 60), m = totalMin % 60;
+        if (h && m) return h + 'h ' + (m < 10 ? '0' + m : m) + 'm';
+        if (h) return h + 'h';
+        return m + 'm';
+    }
+
+    function getTask(id) {
+        for (var i = 0; i < state.tasks.length; i++) {
+            if (state.tasks[i].id === id) return state.tasks[i];
+        }
+        return null;
+    }
+
+    // ---------- DOM ----------
+    var cardsEl, doneWrapEl, doneCardsEl, doneCountEl, activeLineEl;
+
+    function render() {
+        var queued = state.tasks.filter(function (t) { return !t.done; });
+        var done = state.tasks.filter(function (t) { return t.done; });
+
+        cardsEl.innerHTML = '';
+        if (!queued.length && !done.length) {
+            cardsEl.innerHTML = '<div style="color:rgba(140,90,62,0.55);font-size:0.88rem;padding:14px 4px;">No tasks yet — add one above. Your list is saved on this device until you clear it.</div>';
+        }
+        queued.forEach(function (t) { cardsEl.appendChild(renderCard(t)); });
+
+        doneWrapEl.classList.toggle('d-none', !done.length);
+        doneCountEl.textContent = done.length ? '(' + done.length + ')' : '';
+        doneCardsEl.innerHTML = '';
+        done.forEach(function (t) { doneCardsEl.appendChild(renderCard(t)); });
+
+        renderActiveLine();
+    }
+
+    function renderCard(task) {
+        var isActive = task.id === state.activeId && !task.done;
+        var card = document.createElement('div');
+        card.className = 'tm-card' + (isActive ? ' tm-active' : '') + (task.done ? ' tm-done' : '');
+        if (task.color && !isActive && !task.done) card.style.borderLeftColor = task.color;
+        card.dataset.id = task.id;
+
+        // Clickable color edge: cycles the palette, works after creation too
+        var edge = document.createElement('div');
+        edge.className = 'tm-color-edge';
+        edge.title = 'Click to change color';
+        edge.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var PALETTE = [null, '#DE4B3A', '#FFA900', '#5FA46A', '#4A90D9', '#9B59B6'];
+            var i = PALETTE.indexOf(task.color || null);
+            task.color = PALETTE[(i + 1) % PALETTE.length];
+            save();
+            if (!isActive && !task.done) {
+                card.style.borderLeftColor = task.color || '#E8D5C0';
+            }
+        });
+        card.appendChild(edge);
+        if (!task.done) card.draggable = true;
+
+        // --- top row ---
+        var top = document.createElement('div');
+        top.className = 'tm-card-top';
+
+        var title = document.createElement('span');
+        title.className = 'tm-title';
+        title.textContent = task.title;
+        title.title = 'Click to edit';
+        title.addEventListener('click', function () { editTitle(card, task); });
+
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'tm-est-chip' + (task.estMs ? '' : ' tm-est-empty');
+        chip.textContent = task.estMs ? fmtMs(task.estMs) + ' left' : '+ est';
+        chip.title = 'Click to edit estimate';
+        chip.addEventListener('click', function () { editEstimate(card, task); });
+
+        top.appendChild(title);
+        if (!task.done) top.appendChild(chip);  // estimates are irrelevant once done
+
+        if (!task.done) {
+            var startBtn = document.createElement('button');
+            startBtn.type = 'button';
+            startBtn.className = 'tm-start-btn' + (isActive ? ' tm-focusing' : '');
+            startBtn.textContent = isActive ? '● Focusing' : '▶ Start';
+            startBtn.addEventListener('click', function () { startTask(task.id); });
+            top.appendChild(startBtn);
+        } else {
+            var restoreBtn = document.createElement('button');
+            restoreBtn.type = 'button';
+            restoreBtn.className = 'tm-icon-btn';
+            restoreBtn.textContent = '↩';
+            restoreBtn.title = 'Move back to list';
+            restoreBtn.addEventListener('click', function () {
+                task.done = false;
+                save(); render();
+            });
+            top.appendChild(restoreBtn);
+        }
+
+        var doneBtn = document.createElement('button');
+        doneBtn.type = 'button';
+        doneBtn.className = 'tm-icon-btn';
+        doneBtn.textContent = task.done ? '☑' : '☐';
+        doneBtn.title = task.done ? 'Mark not done' : 'Mark done';
+        doneBtn.addEventListener('click', function () { toggleDone(task.id); });
+
+        var delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'tm-icon-btn';
+        delBtn.textContent = '🗑';
+        delBtn.title = 'Delete';
+        delBtn.addEventListener('click', function () { deleteTask(task.id); });
+
+        top.appendChild(doneBtn);
+        top.appendChild(delBtn);
+        card.appendChild(top);
+
+        // --- detail (notes + subtasks) ---
+        var hasDetail = (task.notes && task.notes.trim()) || (task.subs && task.subs.length);
+        var detail = document.createElement('div');
+        detail.className = 'tm-card-detail';
+        detail.style.display = hasDetail ? 'block' : 'none';
+        buildDetail(detail, task);
+        card.appendChild(detail);
+
+        var toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'tm-detail-toggle';
+        toggle.textContent = hasDetail ? '▾ notes / subtasks' : '▸ notes / subtasks';
+        toggle.addEventListener('click', function () {
+            var open = detail.style.display !== 'none';
+            detail.style.display = open ? 'none' : 'block';
+            toggle.textContent = open ? '▸ notes / subtasks' : '▾ notes / subtasks';
+        });
+        card.appendChild(toggle);
+
+        // --- drag to reorder (queued cards only) ---
+        if (!task.done) {
+            card.addEventListener('dragstart', function (e) {
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', task.id);
+            });
+            card.addEventListener('dragend', function () {
+                card.classList.remove('dragging');
+                cardsEl.querySelectorAll('.tm-card').forEach(function (c) { c.classList.remove('dragover'); });
+                commitDomOrder();
+            });
+            card.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                var dragging = cardsEl.querySelector('.tm-card.dragging');
+                if (!dragging || dragging === card) return;
+                var rect = card.getBoundingClientRect();
+                var before = (e.clientY - rect.top) < rect.height / 2;
+                cardsEl.insertBefore(dragging, before ? card : card.nextSibling);
+            });
+            card.addEventListener('drop', function (e) { e.preventDefault(); });
+        }
+
+        return card;
+    }
+
+    function buildDetail(container, task) {
+        container.innerHTML = '';
+
+        var notes = document.createElement('textarea');
+        notes.className = 'tm-notes';
+        notes.rows = 4;
+        notes.placeholder = 'Notes…';
+        notes.value = task.notes || '';
+        notes.addEventListener('input', function () {
+            task.notes = notes.value;
+            save();
+        });
+        container.appendChild(notes);
+
+        var ul = document.createElement('ul');
+        ul.className = 'tm-subtasks';
+        (task.subs || []).forEach(function (sub) {
+            ul.appendChild(renderSubtask(task, sub));
+        });
+        container.appendChild(ul);
+
+        var addRow = document.createElement('div');
+        addRow.className = 'tm-sub-add';
+        var input = document.createElement('input');
+        input.className = 'tm-input';
+        input.placeholder = 'Add subtask…';
+        input.maxLength = 80;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tm-icon-btn';
+        btn.textContent = '＋';
+        btn.title = 'Add subtask';
+        function addSub() {
+            var v = input.value.trim();
+            if (!v) return;
+            task.subs = task.subs || [];
+            task.subs.push({ id: uid(), text: v, done: false });
+            save();
+            input.value = '';
+            buildDetail(container, task);
+            // Keep focus in the fresh subtask input for rapid entry
+            var newInput = container.querySelector('.tm-sub-add input');
+            if (newInput) newInput.focus();
+        }
+        btn.addEventListener('click', addSub);
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); addSub(); }
+        });
+        addRow.appendChild(input);
+        addRow.appendChild(btn);
+        container.appendChild(addRow);
+    }
+
+    function renderSubtask(task, sub) {
+        var li = document.createElement('li');
+        li.className = 'tm-subtask' + (sub.done ? ' tm-sub-done' : '');
+
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!sub.done;
+        cb.addEventListener('change', function () {
+            sub.done = cb.checked;
+            li.classList.toggle('tm-sub-done', sub.done);
+            save();
+        });
+
+        var text = document.createElement('span');
+        text.className = 'tm-sub-text';
+        text.textContent = sub.text;
+
+        var del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'tm-icon-btn';
+        del.textContent = '✕';
+        del.title = 'Delete subtask';
+        del.addEventListener('click', function () {
+            task.subs = task.subs.filter(function (s) { return s.id !== sub.id; });
+            save();
+            li.remove();
+        });
+
+        li.appendChild(cb);
+        li.appendChild(text);
+        li.appendChild(del);
+        return li;
+    }
+
+    // ---------- inline editing ----------
+    function editTitle(card, task) {
+        var titleEl = card.querySelector('.tm-title');
+        if (!titleEl) return;
+        var input = document.createElement('input');
+        input.className = 'tm-title-input';
+        input.value = task.title;
+        input.maxLength = 120;
+        titleEl.replaceWith(input);
+        input.focus();
+        input.select();
+        var committed = false;
+        function commit(saveIt) {
+            if (committed) return;
+            committed = true;
+            var v = input.value.trim();
+            if (saveIt && v) { task.title = v; save(); }
+            render();
+        }
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(true); }
+            else if (e.key === 'Escape') { commit(false); }
+        });
+        input.addEventListener('blur', function () { commit(true); });
+    }
+
+    function editEstimate(card, task) {
+        var chip = card.querySelector('.tm-est-chip');
+        if (!chip) return;
+        var input = document.createElement('input');
+        input.className = 'tm-est-input';
+        input.value = task.estMs ? fmtMs(task.estMs) : '';
+        input.placeholder = '45m';
+        chip.replaceWith(input);
+        input.focus();
+        input.select();
+        var committed = false;
+        function commit(saveIt) {
+            if (committed) return;
+            committed = true;
+            if (saveIt) {
+                var v = input.value.trim();
+                if (!v) { task.estMs = null; }
+                else {
+                    var ms = parseTime(v);
+                    if (ms && ms > 0) task.estMs = ms;
+                }
+                task._zeroPrompted = false;
+                save();
+            }
+            render();
+        }
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(true); }
+            else if (e.key === 'Escape') { commit(false); }
+        });
+        input.addEventListener('blur', function () { commit(true); });
+    }
+
+    // ---------- actions ----------
+    function addTask(title, estMs, color) {
+        state.tasks.push({
+            id: uid(),
+            title: title,
+            notes: '',
+            subs: [],
+            estMs: estMs || null,
+            color: color || null,
+            done: false,
+            created: Date.now()
+        });
+        save(); render();
+    }
+
+    function toggleDone(id) {
+        var t = getTask(id);
+        if (!t) return;
+        t.done = !t.done;
+        if (t.done && state.activeId === id) {
+            state.activeId = null;   // drain stops; timer itself keeps running
+        }
+        if (!t.done) t._zeroPrompted = false;
+        if (zeroPromptFor === id) { zeroPromptFor = null; hideZeroOverlay(); }
+        save(); render();
+    }
+
+    function deleteTask(id) {
+        var idx = state.tasks.findIndex(function (t) { return t.id === id; });
+        if (idx === -1) return;
+        var task = state.tasks[idx];
+        var wasActive = state.activeId === id;
+        state.tasks.splice(idx, 1);
+        if (wasActive) state.activeId = null;
+        if (zeroPromptFor === id) { zeroPromptFor = null; hideZeroOverlay(); }
+        save(); render();
+
+        undoBuffer = { task: task, index: idx, wasActive: wasActive };
+        showToast('Task deleted', 'Undo', function () {
+            if (!undoBuffer) return;
+            var at = Math.min(undoBuffer.index, state.tasks.length);
+            state.tasks.splice(at, 0, undoBuffer.task);
+            if (undoBuffer.wasActive) state.activeId = undoBuffer.task.id;
+            undoBuffer = null;
+            save(); render();
+        });
+    }
+
+    function startTask(id) {
+        var t = getTask(id);
+        if (!t || t.done) return;
+        state.activeId = id;
+        zeroPromptFor = null;
+        save(); render();
+        // Same loop-session kick the old Start button used.
+        if (typeof onLoopTimer === 'function') onLoopTimer();
+        if (typeof onStartTimer === 'function') onStartTimer();
+    }
+
+    // ---------- estimate-hit-zero overlay (over the countdown) ----------
+    var zeroOverlayEl, zeroTextEl, zeroInputEl;
+
+    function showZeroOverlay(task) {
+        zeroTextEl.textContent = '⏱ Estimate reached for "' + task.title + '". The timer is paused — add more time, or mark the task done.';
+        zeroInputEl.value = '';
+        zeroOverlayEl.classList.remove('d-none');
+        setTimeout(function () { zeroInputEl.focus(); }, 50);
+    }
+    function hideZeroOverlay() {
+        if (zeroOverlayEl) zeroOverlayEl.classList.add('d-none');
+    }
+
+    function wireZeroOverlay() {
+        zeroOverlayEl = document.getElementById('tm_zero_overlay');
+        zeroTextEl = document.getElementById('tm_zero_text');
+        zeroInputEl = document.getElementById('tm_zero_input');
+        if (!zeroOverlayEl) return;
+
+        document.getElementById('tm_zero_add').addEventListener('click', function () {
+            var task = zeroPromptFor ? getTask(zeroPromptFor) : null;
+            if (!task) { hideZeroOverlay(); return; }
+            var ms = parseTime(zeroInputEl.value);
+            if (!ms || ms <= 0) { zeroInputEl.focus(); zeroInputEl.style.borderColor = '#DE4B3A'; return; }
+            task.estMs = ms;
+            task._zeroPrompted = false;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            resumeIfPaused();
+        });
+
+        document.getElementById('tm_zero_done').addEventListener('click', function () {
+            var task = zeroPromptFor ? getTask(zeroPromptFor) : null;
+            if (task) task.done = true;
+            state.activeId = null;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            // Timer stays paused (it was stopped at estimate-zero) so the user
+            // can readjust before pressing play again.
+        });
+
+        zeroInputEl.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('tm_zero_add').click(); }
+        });
+    }
+
+    function resumeIfPaused() {
+        // The work timer was paused at estimate-zero; continue the session.
+        if (window.isPomClicked && (window.remainingTime || 0) > 0 && typeof onStartTimer === 'function') {
+            onStartTimer();
+        }
+    }
+
+    // ---------- active-task line under the timer ----------
+    function renderActiveLine() {
+        var t = state.activeId ? getTask(state.activeId) : null;
+        if (!t || t.done) {
+            activeLineEl.innerHTML = '';
+            return;
+        }
+        var html = 'Working on: <strong>' + esc(t.title) + '</strong>';
+        if (t.estMs) html += ' — <span class="tm-est-left">' + fmtMs(t.estMs) + ' left</span>';
+        activeLineEl.innerHTML = html;
+    }
+
+    // ---------- drain: rides tomato.js's own 1-second ticks ----------
+    // decrementTimer only fires while the countdown interval is alive,
+    // so pause automatically stops the drain and play resumes it.
+    function tick() {
+        var t = state.activeId ? getTask(state.activeId) : null;
+        if (!t || t.done || !t.estMs) return;
+        if (!window.isPomClicked) return;   // breaks never drain
+
+        t.estMs = Math.max(0, t.estMs - 1000);
+
+        // light-touch UI update without full re-render
+        var chip = cardsEl.querySelector('.tm-card[data-id="' + t.id + '"] .tm-est-chip');
+        if (chip) chip.textContent = fmtMs(t.estMs) + ' left';
+        renderActiveLine();
+
+        if (t.estMs <= 0 && !t._zeroPrompted) {
+            t._zeroPrompted = true;
+            zeroPromptFor = t.id;
+            save();
+            // Pause the work session so the user can decide.
+            // If the pomodoro already completed this same tick (mode flipped
+            // to a break), there is nothing to pause — just show the overlay.
+            if (window.isPomClicked && (window.remainingTime || 0) > 0 && typeof onStopTimer === 'function') {
+                onStopTimer();
+            }
+            render();
+            showZeroOverlay(t);
+            return;
+        }
+        // persist roughly every 15s of drain, not every second
+        if (Math.round(t.estMs / 1000) % 15 === 0) save();
+    }
+
+    // Wrap tomato.js's decrementTimer (global). Its setInterval callback
+    // resolves the name at call time, so the wrap takes effect everywhere.
+    if (typeof window.decrementTimer === 'function') {
+        var _origDecrement = window.decrementTimer;
+        window.decrementTimer = function () {
+            _origDecrement();
+            tick();
+        };
+    }
+
+    // ---------- toast (undo) ----------
+    var toastEl = null;
+    function showToast(msg, actionLabel, actionFn) {
+        if (!toastEl) {
+            toastEl = document.createElement('div');
+            toastEl.className = 'tm-toast';
+            document.body.appendChild(toastEl);
+        }
+        toastEl.innerHTML = '<span>' + esc(msg) + '</span>';
+        if (actionLabel && actionFn) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = actionLabel;
+            b.addEventListener('click', function () {
+                actionFn();
+                hideToast();
+            });
+            toastEl.appendChild(b);
+        }
+        toastEl.classList.add('show');
+        clearTimeout(undoTimer);
+        undoTimer = setTimeout(function () {
+            hideToast();
+            undoBuffer = null;
+        }, 6000);
+    }
+    function hideToast() {
+        if (toastEl) toastEl.classList.remove('show');
+    }
+
+    // ---------- drag order commit ----------
+    function commitDomOrder() {
+        var ids = Array.prototype.map.call(
+            cardsEl.querySelectorAll('.tm-card'),
+            function (c) { return c.dataset.id; }
+        );
+        if (!ids.length) return;
+        var queued = [], done = [];
+        state.tasks.forEach(function (t) { (t.done ? done : queued).push(t); });
+        queued.sort(function (a, b) { return ids.indexOf(a.id) - ids.indexOf(b.id); });
+        state.tasks = queued.concat(done);
+        save(); render();
+    }
+
+    // ---------- wire up ----------
+    function init() {
+        cardsEl = document.getElementById('tm_cards');
+        doneWrapEl = document.getElementById('tm_done_wrap');
+        doneCardsEl = document.getElementById('tm_done_cards');
+        doneCountEl = document.getElementById('tm_done_count');
+        activeLineEl = document.getElementById('tm_active_line');
+        if (!cardsEl) return;
+
+        load();
+        wireZeroOverlay();
+        render();
+
+        var form = document.getElementById('tm_add_form');
+        var titleInput = document.getElementById('tm_add_title');
+        var estInput = document.getElementById('tm_add_estimate');
+
+        // Color picker: selected swatch colors the next task's left edge.
+        var selectedColor = null;
+        var picker = document.getElementById('tm_color_picker');
+        picker.addEventListener('click', function (e) {
+            var sw = e.target.closest('.tm-swatch');
+            if (!sw) return;
+            selectedColor = sw.getAttribute('data-color') || null;
+            picker.querySelectorAll('.tm-swatch').forEach(function (s) {
+                s.classList.toggle('tm-swatch-selected', s === sw);
+            });
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var title = titleInput.value.trim();
+            if (!title) { titleInput.focus(); return; }
+            var est = parseTime(estInput.value);
+            addTask(title, est, selectedColor);
+            titleInput.value = '';
+            estInput.value = '';
+            titleInput.focus();
+        });
+
+        document.getElementById('tm_clear_done').addEventListener('click', function () {
+            var had = state.tasks.some(function (t) { return t.done; });
+            if (!had) return;
+            state.tasks = state.tasks.filter(function (t) { return !t.done; });
+            save(); render();
+        });
+
+        // Two-step reset: first click arms, second confirms.
+        var resetBtn = document.getElementById('tm_reset');
+        var armed = false, armTimer = null;
+        resetBtn.addEventListener('click', function () {
+            if (!armed) {
+                armed = true;
+                resetBtn.textContent = 'Click again to confirm reset';
+                resetBtn.style.color = '#DE4B3A';
+                armTimer = setTimeout(function () {
+                    armed = false;
+                    resetBtn.textContent = 'Reset list';
+                    resetBtn.style.color = '';
+                }, 3000);
+                return;
+            }
+            clearTimeout(armTimer);
+            armed = false;
+            resetBtn.textContent = 'Reset list';
+            resetBtn.style.color = '';
+            state.tasks = [];
+            state.activeId = null;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            showToast('List cleared', null, null);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 })();
 </script>
 </body>
