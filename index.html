@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -108,132 +108,6 @@
     }
 
     /* ---- Ambience Integration v9 ---- */
-    .ambience-master-pill {
-        background-color: #FFFFFF;
-        border-radius: 50px;
-        padding: 8px 20px;
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
-        margin-top: 14px;
-    }
-    .ambience-master-pill svg {
-        width: 22px;
-        height: 22px;
-        fill: #58240E;
-        flex-shrink: 0;
-        cursor: pointer;
-        transition: fill 0.2s ease, transform 0.15s ease;
-    }
-    .ambience-master-pill svg:hover {
-        transform: scale(1.15);
-    }
-    .ambience-master-pill.muted svg {
-        fill: #8C5A3E;
-        opacity: 0.5;
-    }
-    .ambience-master-pill input[type="range"] {
-        -webkit-appearance: none;
-        width: 140px;
-        background: transparent;
-        cursor: pointer;
-    }
-    .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track {
-        width: 100%;
-        height: 6px;
-        background: #E2D0AF;
-        border-radius: 6px;
-    }
-    .ambience-master-pill input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        height: 18px;
-        width: 18px;
-        border-radius: 50%;
-        background: #58240E;
-        margin-top: -6px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-        transition: transform 0.15s ease, background 0.2s ease;
-    }
-    .ambience-master-pill input[type="range"]::-webkit-slider-thumb:hover {
-        transform: scale(1.25);
-    }
-    .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb {
-        background: #DE4B3A;
-    }
-    .ambience-master-pill input[type="range"]::-moz-range-track {
-        width: 100%;
-        height: 6px;
-        background: #E2D0AF;
-        border-radius: 6px;
-    }
-    .ambience-master-pill input[type="range"]::-moz-range-thumb {
-        height: 18px;
-        width: 18px;
-        border-radius: 50%;
-        background: #58240E;
-        border: none;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-    }
-    .ambience-master-pill.active input[type="range"]::-moz-range-thumb {
-        background: #DE4B3A;
-    }
-    .ambience-preset-label {
-        text-align: center;
-        font-size: 14px;
-        font-family: 'Baloo Tammudu', cursive;
-        margin-top: 4px;
-        min-height: 20px;
-    }
-    .ambience-preset-label .play-icon {
-        color: #68B04D;
-        margin-right: 6px;
-    }
-    .ambience-preset-label .preset-name {
-        color: #58240E;
-    }
-    .ambience-select {
-        background-color: #FAF5EB !important;
-        border: 2px solid #E2D0AF !important;
-        color: #58240E;
-        font-family: 'Baloo Tammudu', cursive;
-        font-size: 16px;
-        border-radius: 12px !important;
-        padding: 10px 14px !important;
-        height: auto !important;
-        cursor: pointer;
-        appearance: auto;
-        -webkit-appearance: menulist;
-    }
-    .ambience-select:focus {
-        border-color: #DE4B3A !important;
-        box-shadow: 0 0 0 3px rgba(222, 75, 58, 0.15);
-        background-color: #FFFFFF !important;
-        outline: none;
-    }
-    .ambience-divider {
-        border: none;
-        border-top: 2px dashed #E2D0AF;
-        margin: 20px 0 16px;
-    }
-    .ambience-section-title {
-        color: #58240E;
-        font-size: 1.15rem;
-        margin-bottom: 6px;
-        font-weight: 700;
-    }
-    .ambience-section-desc {
-        color: #8C5A3E;
-        font-size: 0.9rem;
-        margin-bottom: 16px;
-        line-height: 1.5;
-    }
-    .ambience-section-desc a {
-        color: #DE4B3A;
-        text-decoration: underline;
-    }
-
-    /* ---- Ambience Integration ---- */
     .ambience-master-pill {
         background-color: #FFFFFF;
         border-radius: 50px;
@@ -496,8 +370,9 @@
     transform: scale(1.02);
   }
 
-  /* Targeting your <img> tags */
-  .video-card img {
+  /* Targeting your <img> AND <video> tags */
+  .video-card img,
+  .video-card video {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover; 
@@ -928,6 +803,7 @@
 }
 </style>
 <base target="_blank">
+<base target="_blank">
 </head>
     
     
@@ -1166,7 +1042,7 @@
   </div>
     
 -->
-    
+
 
 </div>
 
@@ -1179,11 +1055,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/marathon.gif" 
-            alt="Marathon Study Timer Animated Pomodoro Session"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/marathon.mp4"
+            aria-label="Marathon Study Timer Animated Pomodoro Session"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
              <a
@@ -1192,11 +1071,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/hamburger.gif"
-            alt="Cute Hamburger Aesthetic Pomodoro Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/hamburger.mp4"
+            aria-label="Cute Hamburger Aesthetic Pomodoro Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
              <a
@@ -1205,11 +1087,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/workflow.gif"
-            alt="Productive Workflow Focus Study Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/workflow.mp4"
+            aria-label="Productive Workflow Focus Study Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
   
@@ -1219,11 +1104,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/office.gif"
-            alt="Cozy Office Work Pomodoro Timer Online"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/office.mp4"
+            aria-label="Cozy Office Work Pomodoro Timer Online"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
     
@@ -1233,11 +1121,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/train.gif"
-            alt="Scenic Train Ride Ambient Study Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/train.mp4"
+            aria-label="Scenic Train Ride Ambient Study Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
     
@@ -1247,11 +1138,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/tomato.gif"
-            alt="Cute Tomato Timer Animation for Focus"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/tomato.mp4"
+            aria-label="Cute Tomato Timer Animation for Focus"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
     
@@ -1261,11 +1155,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/camping.gif"
-            alt="Outdoor Camping Ambient Pomodoro Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/camping.mp4"
+            aria-label="Outdoor Camping Ambient Pomodoro Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
     
@@ -1275,11 +1172,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/tomato 2.gif"
-            alt="Cute Pomodoro Timer Character Animation"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/tomato 2.mp4"
+            aria-label="Cute Pomodoro Timer Character Animation"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
 
@@ -1289,11 +1189,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/dream.gif"
-            alt="Dreamy Aesthetic Study Timer Online"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/dream.mp4"
+            aria-label="Dreamy Aesthetic Study Timer Online"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
 
@@ -1303,11 +1206,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/raining.gif"
-            alt="Rainy Day Lofi Study Timer Pomodoro"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/raining.mp4"
+            aria-label="Rainy Day Lofi Study Timer Pomodoro"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
     
@@ -1317,11 +1223,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/arcade.gif"
-            alt="Retro Arcade Game Cute Pomodoro Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/arcade.mp4"
+            aria-label="Retro Arcade Game Cute Pomodoro Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
 
@@ -1331,11 +1240,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/space.gif"
-            alt="Cosmic Space Theme Focus Study Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/space.mp4"
+            aria-label="Cosmic Space Theme Focus Study Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
 
 
@@ -1345,11 +1257,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/baking.gif"
-            alt="Cozy Bakery Cute Timer Animation"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/baking.mp4"
+            aria-label="Cozy Bakery Cute Timer Animation"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
       <a
@@ -1358,11 +1273,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/jazz.gif"
-            alt="Lofi Jazz Music Pomodoro Timer Online"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/jazz.mp4"
+            aria-label="Lofi Jazz Music Pomodoro Timer Online"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
     
     
@@ -1372,11 +1290,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/farm.gif"
-            alt="Peaceful Farm Life Focus Study Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/farm.mp4"
+            aria-label="Peaceful Farm Life Focus Study Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
   
@@ -1386,11 +1307,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/first one.gif"
-            alt="Minimalist Hand Drawn Pomodoro Cute Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/first one.mp4"
+            aria-label="Minimalist Hand Drawn Pomodoro Cute Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1400,11 +1324,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/museum.gif"
-            alt="Art Museum Aesthetic Pomodoro Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/museum.mp4"
+            aria-label="Art Museum Aesthetic Pomodoro Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1414,11 +1341,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/christmas.gif"
-            alt="Cozy Holiday Theme Tomato Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/christmas.mp4"
+            aria-label="Cozy Holiday Theme Tomato Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1428,11 +1358,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/autumn.gif"
-            alt="Autumn Season Aesthetic Study Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/autumn.mp4"
+            aria-label="Autumn Season Aesthetic Study Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1442,11 +1375,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/japan.gif"
-            alt="Japan Street Scene Lofi Pomodoro Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/japan.mp4"
+            aria-label="Japan Street Scene Lofi Pomodoro Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1456,11 +1392,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/halloween.gif"
-            alt="Spooky Cute Halloween Pomodoro Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/halloween.mp4"
+            aria-label="Spooky Cute Halloween Pomodoro Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1470,11 +1409,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/airplane.gif"
-            alt="In-Flight Cabin Window Study Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/airplane.mp4"
+            aria-label="In-Flight Cabin Window Study Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1484,11 +1426,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/classic.gif"
-            alt="Classic Lofi Ambience Focus Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/classic.mp4"
+            aria-label="Classic Lofi Ambience Focus Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1498,11 +1443,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/school.gif"
-            alt="Classroom Study Session Pomodoro Online"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/school.mp4"
+            aria-label="Classroom Study Session Pomodoro Online"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1512,11 +1460,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/beach 2.gif"
-            alt="Tropical Sunset Beach Study Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/beach 2.mp4"
+            aria-label="Tropical Sunset Beach Study Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1526,11 +1477,14 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="/assets/gifs/beach.gif"
-            alt="Relaxing Ocean Beach Tomato Timer"
-            loading="lazy"
-          >
+          <video
+            data-src="/assets/gifs/beach.mp4"
+            aria-label="Relaxing Ocean Beach Tomato Timer"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
         </a>
       
       
@@ -1741,6 +1695,32 @@
     </div>
 </footer>
 
+<script>
+/* ============================================================
+   VIDEO GRID — lazy looping MP4s (replaces GIF thumbnails)
+   Loads each clip only when it scrolls near the viewport,
+   then keeps it looping muted, exactly like the old GIFs.
+   ============================================================ */
+(function () {
+    var vids = document.querySelectorAll('.video-card video[data-src]');
+    function start(v) {
+        if (v.src) return;
+        v.src = v.dataset.src;
+        var p = v.play();
+        if (p && p.catch) { p.catch(function () {}); }
+    }
+    if (!('IntersectionObserver' in window)) {
+        for (var i = 0; i < vids.length; i++) { start(vids[i]); }
+        return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (e.isIntersecting) { start(e.target); io.unobserve(e.target); }
+        });
+    }, { rootMargin: '300px' });
+    for (var j = 0; j < vids.length; j++) { io.observe(vids[j]); }
+})();
+</script>
 
 <script>
 /* ============================================================

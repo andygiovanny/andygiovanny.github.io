@@ -176,8 +176,9 @@
     transform: scale(1.02);
   }
 
-  /* Targeting your <img> tags */
-  .video-card img {
+  /* Targeting your <img> AND <video> tags */
+  .video-card img,
+  .video-card video {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover; 
@@ -928,6 +929,7 @@
     </style>
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -1068,39 +1070,39 @@
 
       
       <a class="video-card" href="https://www.youtube.com/watch?v=6u2QZ5R6Bok" target="_blank" rel="noopener">
-        <img src="/assets/gifs/office.gif" alt="Cozy Office Work Pomodoro Timer Online" loading="lazy">
+        <video data-src="/assets/gifs/office.mp4" aria-label="Cozy Office Work Pomodoro Timer Online" muted loop playsinline preload="none"></video>
       </a>
       
       <a class="video-card" href="https://www.youtube.com/watch?v=EZ66BuJsTm0" target="_blank" rel="noopener">
-        <img src="/assets/gifs/train.gif" alt="Scenic Train Ride Ambient Study Timer" loading="lazy">
+        <video data-src="/assets/gifs/train.mp4" aria-label="Scenic Train Ride Ambient Study Timer" muted loop playsinline preload="none"></video>
       </a>
       
       <a class="video-card" href="https://www.youtube.com/watch?v=5sWWzgmIgfU" target="_blank" rel="noopener">
-        <img src="/assets/gifs/camping.gif" alt="Outdoor Camping Ambient Pomodoro Timer" loading="lazy">
+        <video data-src="/assets/gifs/camping.mp4" aria-label="Outdoor Camping Ambient Pomodoro Timer" muted loop playsinline preload="none"></video>
       </a>
       
       <a class="video-card" href="https://www.youtube.com/watch?v=wBENuwsH0qc" target="_blank" rel="noopener">
-        <img src="/assets/gifs/raining.gif" alt="Rainy Day Lofi Study Timer Pomodoro" loading="lazy">
+        <video data-src="/assets/gifs/raining.mp4" aria-label="Rainy Day Lofi Study Timer Pomodoro" muted loop playsinline preload="none"></video>
       </a>
       
       <a class="video-card" href="https://www.youtube.com/watch?v=fGf1NF6iSME" target="_blank" rel="noopener">
-        <img src="/assets/gifs/farm.gif" alt="Peaceful Farm Life Focus Study Timer" loading="lazy">
+        <video data-src="/assets/gifs/farm.mp4" aria-label="Peaceful Farm Life Focus Study Timer" muted loop playsinline preload="none"></video>
       </a>
       
       <a class="video-card" href="https://www.youtube.com/watch?v=svz09jz_NJU" target="_blank" rel="noopener">
-        <img src="/assets/gifs/autumn.gif" alt="Autumn Season Aesthetic Study Timer" loading="lazy">
+        <video data-src="/assets/gifs/autumn.mp4" aria-label="Autumn Season Aesthetic Study Timer" muted loop playsinline preload="none"></video>
       </a>
       
       <a class="video-card" href="https://www.youtube.com/watch?v=diz-BixQp7A" target="_blank" rel="noopener">
-        <img src="/assets/gifs/airplane.gif" alt="In-Flight Cabin Window Study Timer" loading="lazy">
+        <video data-src="/assets/gifs/airplane.mp4" aria-label="In-Flight Cabin Window Study Timer" muted loop playsinline preload="none"></video>
       </a>
     
       <a class="video-card" href="https://www.youtube.com/watch?v=Tqy6h1R2Q7U" target="_blank" rel="noopener">
-        <img src="/assets/gifs/school.gif" alt="Classroom Study Session Pomodoro Online" loading="lazy">
+        <video data-src="/assets/gifs/school.mp4" aria-label="Classroom Study Session Pomodoro Online" muted loop playsinline preload="none"></video>
       </a>
       
       <a class="video-card" href="https://www.youtube.com/watch?v=kHAmVm3gUtY&pp=2AYC" target="_blank" rel="noopener">
-        <img src="/assets/gifs/beach 2.gif" alt="Tropical Sunset Beach Study Timer" loading="lazy">
+        <video data-src="/assets/gifs/beach 2.mp4" aria-label="Tropical Sunset Beach Study Timer" muted loop playsinline preload="none"></video>
       </a>
       
     </div>
@@ -1276,6 +1278,33 @@
         </div>
     </div>
 </div>
+
+<script>
+/* ============================================================
+   VIDEO GRID — lazy looping MP4s (replaces GIF thumbnails)
+   Loads each clip only when it scrolls near the viewport,
+   then keeps it looping muted, exactly like the old GIFs.
+   ============================================================ */
+(function () {
+    var vids = document.querySelectorAll('.video-card video[data-src]');
+    function start(v) {
+        if (v.src) return;
+        v.src = v.dataset.src;
+        var p = v.play();
+        if (p && p.catch) { p.catch(function () {}); }
+    }
+    if (!('IntersectionObserver' in window)) {
+        for (var i = 0; i < vids.length; i++) { start(vids[i]); }
+        return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (e.isIntersecting) { start(e.target); io.unobserve(e.target); }
+        });
+    }, { rootMargin: '300px' });
+    for (var j = 0; j < vids.length; j++) { io.observe(vids[j]); }
+})();
+</script>
 
    <script>
     const SOUNDS = [
