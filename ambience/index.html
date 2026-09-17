@@ -927,11 +927,162 @@
         }
 
     </style>
+<style>
+    /* ═══════════ Theme dropdown (shared with main timer, key tt_theme_v1) ═══════════ */
+    .theme-select {
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 15px;
+        padding: 7px 34px 4px 16px;
+        border-radius: 50px;
+        border: 2px solid rgba(88, 36, 14, 0.18);
+        background: #FFFFFF url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%2358240E' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+        color: #58240E;
+        cursor: pointer;
+        outline: none;
+        line-height: 1.2;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
+        align-self: center;
+    }
+    .theme-select option { background: #FFFFFF; color: #58240E; }
+
+    /* ═══════════ DARK THEME (20-20-20 palette) — default ═══════════ */
+    body.theme-dark {
+        --bg-hero: #1f1813;
+        --bg-body: #14100c;
+        --text-brown: #E8D9B8;
+        --text-muted: #A98F6F;
+        --accent-yellow: #E0A458;
+    }
+    body.theme-dark ::selection { background: #DE4B3A; color: #fff; }
+    body.theme-dark .theme-select {
+        background: #2a2018 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23A98F6F' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+        color: #E8D9B8;
+        border-color: #3a2d20;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+    body.theme-dark .theme-select option { background: #2a2018; color: #E8D9B8; }
+
+    body.theme-dark .pill-btn,
+    body.theme-dark .mode-pill,
+    body.theme-dark .preset-tab {
+        background-color: #2a2018;
+        border: 1px solid #3a2d20;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    body.theme-dark .pill-btn:hover,
+    body.theme-dark .mode-pill:hover,
+    body.theme-dark .preset-tab:hover {
+        background-color: #2a2018;
+        border-color: #E0A458;
+        color: #E0A458;
+    }
+    body.theme-dark .preset-tab.active { background-color: var(--accent-tomato); color: #fff; border-color: var(--accent-tomato); }
+
+    body.theme-dark .sleep-timer-pill,
+    body.theme-dark .master-vol-group {
+        background-color: #2a2018;
+        border: 1px solid #3a2d20;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    body.theme-dark .sleep-input,
+    body.theme-dark .preset-name-input {
+        background: #14100c;
+        border-color: #3a2d20;
+        color: #E8D9B8;
+    }
+    body.theme-dark .sleep-input:focus,
+    body.theme-dark .preset-name-input:focus { background: #1f1813; border-color: var(--accent-tomato); }
+
+    body.theme-dark .sound-item {
+        background-color: #1f1813;
+        border: 1px solid #3a2d20;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+    body.theme-dark .sound-item.active { border-color: rgba(222, 75, 58, 0.45); }
+    body.theme-dark .badge-status { background-color: #2a2018; }
+    body.theme-dark .sound-item.active .badge-status { background-color: var(--accent-tomato); color: #fff; }
+
+    body.theme-dark input[type=range]::-webkit-slider-runnable-track { background: #3a2d20; }
+    body.theme-dark .sound-item.active input[type=range]::-webkit-slider-runnable-track { background: #4a3a28; }
+    body.theme-dark input[type=range]::-moz-range-track { background: #3a2d20; }
+    body.theme-dark .sound-item.active input[type=range]::-moz-range-track { background: #4a3a28; }
+
+    body.theme-dark .modal-overlay { background-color: rgba(10, 6, 3, 0.7); }
+    body.theme-dark .modal-card { background-color: #1f1813; border: 1px solid #3a2d20; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); }
+    body.theme-dark .modal-close { background-color: #2a2018; }
+    body.theme-dark .modal-close:hover { background-color: var(--accent-tomato); color: #fff; }
+    body.theme-dark .preset-sound-row { border-bottom-color: #3a2d20; }
+
+    body.theme-dark .btn-play-master { background-color: var(--accent-tomato); }
+    body.theme-dark .btn-play-master:hover { background-color: #C23A2B; }
+
+    /* Dark theme swaps in a cream-text logo variant (logo-ambience-dark.svg) — no badge */
+    body.theme-dark .logo-avatar { filter: drop-shadow(0 0 14px rgba(224, 164, 88, 0.18)); }
+
+    body.theme-dark #video-section { background-color: #1f1813 !important; }
+    body.theme-dark #ambience-content { background-color: #1f1813 !important; border-top: 1px solid #3a2d20; }
+    body.theme-dark #ambience-content h2 { color: #E0A458 !important; }
+    body.theme-dark #ambience-content h3 { color: #E8D9B8 !important; }
+    body.theme-dark #ambience-content p { color: #A98F6F !important; }
+    body.theme-dark #ambience-content strong { color: #E8D9B8; }
+    body.theme-dark #ambience-content [style*="background"] { background: #2a2018 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; }
+    body.theme-dark #resetPresetBtn { background: #2a2018 !important; }
+
+    /* ═══════════ (Ambience page intentionally has no Classic Tomato theme) ═══════════ */
+</style>
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
 </head>
 <body>
+<script>
+  /* Apply saved theme before first paint (light is default, shared with main timer) */
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('tt_theme_v1'); } catch (e) {}
+    /* no Classic Tomato here — only Dark gets the extra class */
+    if (t === 'dark') document.body.classList.add('theme-dark');
+  })();
+</script>
+<script>
+  /* Theme dropdown wiring */
+  document.addEventListener('DOMContentLoaded', function () {
+    var sel = document.getElementById('theme-select');
+    if (!sel) return;
+    var t = null;
+    try { t = localStorage.getItem('tt_theme_v1'); } catch (e) {}
+    /* Ambience has no Classic Tomato theme — fall back to light without overwriting the saved choice */
+    var theme = (t === 'dark') ? 'dark' : 'light';
+    sel.value = theme;
+    /* Dark theme uses a cream-text logo variant instead of a badge background */
+    var logoImg = document.getElementById('logoAvatar');
+    function swapLogo(th) {
+      if (!logoImg) return;
+      logoImg.src = (th === 'dark') ? '../assets/images/logo-ambience-dark.svg'
+                                    : '../assets/images/logo ambience.svg';
+    }
+    swapLogo(theme);
+    /* Hero video: night-graded file for dark, original for light */
+    var mascotSrc = document.getElementById('mascotVideoSrc');
+    function swapVideo(th) {
+      if (!mascotSrc) return;
+      mascotSrc.src = (th === 'dark') ? '../assets/images/ambience-dark.mp4'
+                                      : '../assets/images/ambience.mp4';
+      var v = document.getElementById('mascotVideo');
+      if (v) v.load();
+    }
+    sel.addEventListener('change', function () {
+      var theme = this.value;
+      document.body.classList.toggle('theme-dark', theme === 'dark');
+      swapLogo(theme);
+      swapVideo(theme);
+      try { localStorage.setItem('tt_theme_v1', theme); } catch (e) {}
+    });
+  });
+</script>
 
 <!-- YouTube Promo Banner -->
 <div style="background-color: #752222; padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-radius: 6px; margin-top: 0px; flex-wrap: wrap;">
@@ -983,10 +1134,14 @@
                 <header>
                     <div class="header-top-row">
                         <a href="https://www.tomatotimers.com/" class="logo-group" title="Go to Main Pomodoro Timer">
-                            <img src="../assets/images/logo ambience.svg" alt="Tomato Timer Logo" class="logo-avatar" onerror="this.onerror=null; this.src='https://placehold.co/200x64/F0E0BF/58240E?text=Tomato+Timer';">
+                            <img id="logoAvatar" src="../assets/images/logo ambience.svg" alt="Tomato Timer Logo" class="logo-avatar" onerror="this.onerror=null; this.src='https://placehold.co/200x64/F0E0BF/58240E?text=Tomato+Timer';">
                         </a>
 
                         <div class="nav-links-right">
+                            <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+                                <option value="light">☀️ Light Theme</option>
+                                <option value="dark">🌙 Dark Theme</option>
+                            </select>
                             <button type="button" class="pill-btn" id="customPresetsBtn">Custom Ambience </button>
                             <button type="button" class="pill-btn" id="howItWorksBtn">How It Works?</button>
                             <a href="https://www.tomatotimers.com/" target="_blank" rel="noopener noreferrer" class="pill-btn">Main Timer</a>
@@ -1004,8 +1159,30 @@
                 <section class="mascot-hero-section">
                     <div class="mascot-img-box">
                        <video id="mascotVideo" class="mascot-video" autoplay muted loop playsinline>
-                            <source src="../assets/images/ambience.mp4" type="video/mp4">
+                            <source id="mascotVideoSrc" src="../assets/images/ambience.mp4" type="video/mp4">
                        </video>
+                       <script>
+                       /* Light theme (the default) plays the original video; dark theme plays
+                          the night-graded cut whose background matches the dark page. Decided
+                          here, right after the tag parses, so the browser fetches only one file. */
+                       (function () {
+                         var s = document.getElementById('mascotVideoSrc');
+                         if (!s) return;
+                         try {
+                           if (localStorage.getItem('tt_theme_v1') === 'dark') {
+                             s.src = '../assets/images/ambience-dark.mp4';
+                           }
+                         } catch (e) {}
+                         /* if the dark file is missing on the server, fall back to the original */
+                         s.addEventListener('error', function () {
+                           if (s.src.indexOf('ambience-dark') !== -1) {
+                             s.src = '../assets/images/ambience.mp4';
+                             var v = document.getElementById('mascotVideo');
+                             if (v) v.load();
+                           }
+                         });
+                       })();
+                       </script>
                         
                         <svg id="mascotFallbackSvg" width="160" height="160" viewBox="0 0 200 200" fill="none" style="display:none;">
                             <path d="M45 105 C45 35, 155 35, 155 105" stroke="#58240E" stroke-width="12" stroke-linecap="round" fill="none"/>
@@ -1060,7 +1237,7 @@
                 <!-- Dynamic Sound Cards render here -->
             </main>
            
-           <div class="container" style="background-color: #fff; padding: 0.5rem 1rem; border-radius: 12px; margin-top: 1rem; margin-bottom: 1rem;">
+           <div class="container" id="video-section" style="background-color: #fff; padding: 0.5rem 1rem; border-radius: 12px; margin-top: 1rem; margin-bottom: 1rem;">
 <h2 style="font-size: 24px; font-weight: 700; color: var(--text-brown); margin-bottom: 28px;">
   Study Videos with Ambience 🎨
 </h2>
@@ -1217,7 +1394,6 @@
     </div>
 </footer>
         </div>
-    </div>
 
 <!-- How It Works Modal -->
 <div class="modal-overlay" id="howItWorksModal">

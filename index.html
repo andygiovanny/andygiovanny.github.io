@@ -389,26 +389,60 @@
     
     
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const themeToggle = document.getElementById('theme-toggle');
-    const headerBackground = document.querySelector('.header-background');
+  /* ── Theme system: Dark (default) / Classic Tomato ── */
+  (function () {
+    var THEME_KEY = 'tt_theme_v1';
 
-    if (themeToggle) {
-      themeToggle.addEventListener('change', function () {
-        document.body.classList.toggle('dark-theme');
-        
-        if (headerBackground) {
-          if (this.checked) {
-            // Duck theme
-            headerBackground.style.backgroundColor = '#ba6464';
-          } else {
-            // Tomato theme
-            headerBackground.style.backgroundColor = '#f0dcb9';
-          }
-        }
-      });
+    function getSavedTheme() {
+      try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
     }
-  });
+
+    /* Sync the hidden legacy #theme-toggle so tomato.js performs the Classic Tomato
+       image swaps (logo/play/pause/reset) and switches the mascot animation set */
+    function syncLegacyToggle(isClassic) {
+      var t = document.getElementById('theme-toggle');
+      if (!t || t.checked === isClassic) return;
+      t.checked = isClassic;
+      if (window.jQuery) {
+        window.jQuery(t).trigger('change');
+      } else {
+        var byId = function (id) { return document.getElementById(id); };
+        var imgs = isClassic
+          ? { logo: 'tomato.svg', resetButton: 'tomatoreset.svg', startButton: 'tomatoplay.svg', stopButton: 'tomatopause.svg' }
+          : { logo: 'logo.svg', resetButton: 'rest-button.svg', startButton: 'play-button.svg', stopButton: 'stop-button.svg' };
+        for (var id in imgs) { if (byId(id)) byId(id).src = 'assets/images/' + imgs[id]; }
+      }
+    }
+
+    function applyTheme(theme) {
+      if (theme !== 'dark' && theme !== 'classic') theme = 'light'; // light is the default
+      document.body.classList.toggle('theme-dark', theme === 'dark');
+      document.body.classList.toggle('theme-classic', theme === 'classic');
+      // 'light' = no extra class, original styling
+      syncLegacyToggle(theme === 'classic');
+      // Dark theme uses cream-text logo variants; classic keeps tomato.js's
+      // tomato.svg swap (runs inside syncLegacyToggle), light uses the originals.
+      if (theme !== 'classic') {
+        var logoImg = document.getElementById('logo');
+        if (logoImg) logoImg.src = 'assets/images/' + (theme === 'dark' ? 'logo-dark.svg' : 'logo.svg');
+      }
+      var footerLogo = document.getElementById('footerLogo');
+      if (footerLogo) footerLogo.src = 'assets/images/' + (theme === 'dark' ? 'footer-logo-dark.svg' : 'footer-logo.svg');
+      var sel = document.getElementById('theme-select');
+      if (sel) sel.value = theme;
+      try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+    }
+
+    window.ttApplyTheme = applyTheme;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      applyTheme(getSavedTheme() || 'light');
+      var sel = document.getElementById('theme-select');
+      if (sel) {
+        sel.addEventListener('change', function () { applyTheme(this.value); });
+      }
+    });
+  })();
 </script>
     
     
@@ -449,9 +483,9 @@
   
   @keyframes wiggle {
   0%   { transform: rotate(0deg) scale(1); }
-  25%  { transform: rotate(-15deg) scale(1.2); }
-  50%  { transform: rotate(15deg) scale(1.2); }
-  75%  { transform: rotate(-7deg) scale(1.1); }
+  25%  { transform: rotate(-6deg) scale(1.06); }
+  50%  { transform: rotate(6deg) scale(1.06); }
+  75%  { transform: rotate(-3deg) scale(1.03); }
   100% { transform: rotate(0deg) scale(1); }
 }
 
@@ -802,16 +836,267 @@
     #tm_add_title { flex: 1 1 100%; }
 }
 </style>
+
+<style>
+/* ═══════════════════ Theme dropdown + DARK THEME (20-20-20 palette) ═══════════════════
+   Dark is the default theme; Classic Tomato keeps the original look. */
+
+/* Theme dropdown pill (both themes) */
+.theme-select {
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 15px;
+    padding: 7px 34px 4px 16px;
+    border-radius: 50px;
+    border: 2px solid rgba(88, 36, 14, 0.18);
+    background: #FFFFFF url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%2358240E' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #58240E;
+    cursor: pointer;
+    outline: none;
+    line-height: 1.2;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
+}
+.theme-select option { background: #FFFFFF; color: #58240E; }
+
+body.theme-dark { background-color: #14100c !important; color: #E8D9B8; }
+body.theme-classic { background-color: #fff !important; }
+body.theme-dark ::selection { background: #DE4B3A; color: #fff; }
+
+body.theme-dark .theme-select {
+    background: #2a2018 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23A98F6F' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #E8D9B8;
+    border-color: #3a2d20;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+body.theme-dark .theme-select option { background: #2a2018; color: #E8D9B8; }
+
+/* ── YouTube promo banner stays the same red slice in every theme ── */
+
+/* ── Header / timer stage ── */
+body.theme-dark .header-background { background-color: #14100c !important; }
+
+body.theme-dark .button-style,
+body.theme-dark .button-style-1 {
+    background-color: #2a2018 !important;
+    color: #E8D9B8 !important;
+    border: 1px solid #3a2d20 !important;
+    box-shadow: none !important;
+}
+body.theme-dark .button-style:hover,
+body.theme-dark .button-style-1:hover { color: #E0A458 !important; border-color: #E0A458 !important; }
+body.theme-dark .button-style:focus,
+body.theme-dark .button-style-1:focus {
+    background-color: #2a2018 !important;
+    color: #E8D9B8 !important;
+    box-shadow: none !important;
+}
+
+body.theme-dark .timer-time,
+body.theme-dark .timer-box { color: #F5E6C8 !important; text-shadow: 0 0 30px rgba(224, 164, 88, 0.15); }
+
+/* ── Ambience master pill (on stage) ── */
+body.theme-dark .ambience-master-pill {
+    background-color: #2a2018;
+    border: 1px solid #3a2d20;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+body.theme-dark .ambience-master-pill svg { fill: #E8D9B8; }
+body.theme-dark .ambience-master-pill.muted svg { fill: #A98F6F; }
+body.theme-dark .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track { background: #3a2d20; }
+body.theme-dark .ambience-master-pill input[type="range"]::-webkit-slider-thumb { background: #E8D9B8; }
+body.theme-dark .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb { background: #DE4B3A; }
+body.theme-dark .ambience-master-pill input[type="range"]::-moz-range-track { background: #3a2d20; }
+body.theme-dark .ambience-master-pill input[type="range"]::-moz-range-thumb { background: #E8D9B8; border: none; }
+body.theme-dark .ambience-master-pill.active input[type="range"]::-moz-range-thumb { background: #DE4B3A; }
+body.theme-dark .ambience-preset-label { color: #A98F6F; }
+body.theme-dark .ambience-preset-label .preset-name { color: #E0A458; }
+body.theme-dark .ambience-select {
+    background-color: #2a2018 !important;
+    color: #E8D9B8 !important;
+    border-color: #3a2d20 !important;
+}
+
+/* ── Active-task line ── */
+body.theme-dark .tm-active-line { color: #A98F6F; }
+body.theme-dark .tm-active-line strong { color: #E8D9B8; }
+body.theme-dark .tm-active-line .tm-est-left { color: #E0A458; }
+
+/* ── To-do band (lighter panel shade so sections read separately) ── */
+body.theme-dark .todo-background { background-color: #1f1813 !important; }
+body.theme-dark .tm-section-title { color: #E0A458 !important; }
+
+body.theme-dark .tm-input {
+    background: #2a2018;
+    border-color: #3a2d20;
+    color: #E8D9B8;
+}
+body.theme-dark .tm-input::placeholder { color: #A98F6F; opacity: 0.7; }
+body.theme-dark .tm-input:focus { border-color: #E0A458; background: #241c15; }
+
+body.theme-dark .tm-swatch { border-color: rgba(232, 217, 184, 0.18); }
+body.theme-dark .tm-swatch.tm-swatch-selected { box-shadow: 0 0 0 2px #1f1813, 0 0 0 4px #E8D9B8; }
+
+body.theme-dark .tm-card {
+    background: #2a2018;
+    border-color: rgba(232, 217, 184, 0.10);
+    border-left-color: #4a3a28;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+body.theme-dark .tm-card .tm-input { background: #1f1813; }
+body.theme-dark .tm-card.dragover { box-shadow: 0 -3px 0 0 #DE4B3A, 0 2px 8px rgba(0, 0, 0, 0.4); }
+body.theme-dark .tm-card.tm-active { border-left-color: #DE4B3A; }
+body.theme-dark .tm-card.tm-done {
+    background: #241c14;
+    border-color: rgba(232, 217, 184, 0.06);
+    border-left-color: #3d5233;
+    box-shadow: none;
+}
+body.theme-dark .tm-color-edge:hover { box-shadow: inset 0 0 0 2px rgba(232, 217, 184, 0.3); }
+
+body.theme-dark .tm-title { color: #E8D9B8; }
+body.theme-dark .tm-title:hover { background: rgba(224, 164, 88, 0.08); }
+body.theme-dark .tm-title-input { background: #14100c; color: #E8D9B8; border-color: #E0A458; }
+body.theme-dark .tm-done .tm-title { opacity: 0.45; }
+
+body.theme-dark .tm-est-chip { color: #E0A458; background: rgba(224, 164, 88, 0.10); }
+body.theme-dark .tm-est-chip:hover { background: rgba(224, 164, 88, 0.18); color: #E0A458; }
+body.theme-dark .tm-est-chip.tm-est-empty {
+    color: rgba(169, 143, 111, 0.5);
+    background: transparent;
+    border-color: rgba(169, 143, 111, 0.35);
+}
+body.theme-dark .tm-est-input { background: #14100c; color: #E8D9B8; border-color: #E0A458; }
+
+body.theme-dark .tm-icon-btn { color: rgba(169, 143, 111, 0.6); }
+body.theme-dark .tm-icon-btn:hover { color: #F4845F; background: rgba(222, 75, 58, 0.12); }
+
+body.theme-dark .tm-notes {
+    background: rgba(20, 16, 12, 0.6);
+    border-color: #3a2d20;
+    color: #E8D9B8;
+}
+body.theme-dark .tm-notes:focus { border-color: #E0A458; background: #14100c; }
+
+body.theme-dark .tm-subtask { color: #D9C6A5; }
+body.theme-dark .tm-subtask.tm-sub-done .tm-sub-text { opacity: 0.4; }
+body.theme-dark .tm-detail-toggle { color: rgba(169, 143, 111, 0.65); }
+body.theme-dark .tm-detail-toggle:hover { color: #E0A458; }
+
+body.theme-dark .tm-done-header { color: rgba(169, 143, 111, 0.6); }
+body.theme-dark .tm-tool-btn { color: rgba(169, 143, 111, 0.7); }
+body.theme-dark .tm-tool-btn:hover { color: #E8D9B8; background: rgba(232, 217, 184, 0.08); }
+body.theme-dark .tm-tool-danger:hover { color: #F4845F; background: rgba(222, 75, 58, 0.12); }
+
+body.theme-dark .tm-zero-overlay { background: rgba(20, 16, 12, 0.82); }
+body.theme-dark .tm-zero-box {
+    background: #1f1813;
+    border-color: rgba(224, 164, 88, 0.4);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+body.theme-dark .tm-zero-box .tm-zero-text { color: #E8D9B8; }
+body.theme-dark .tm-zero-box .tm-input { background: #14100c; }
+body.theme-dark .tm-zero-btn.tm-zero-done { background: rgba(169, 143, 111, 0.15); color: #A98F6F; }
+body.theme-dark .tm-zero-btn.tm-zero-done:hover { background: rgba(169, 143, 111, 0.25); }
+
+body.theme-dark .tm-toast { background: #2a2018; border: 1px solid #3a2d20; color: #E8D9B8; }
+
+/* ── Video section ── */
+body.theme-dark #video-section { background-color: #1f1813 !important; }
+body.theme-dark #video-section h2 { color: #E0A458 !important; }
+
+/* ── SEO / guide section (amber-tinted dark, nods to the classic yellow) ── */
+body.theme-dark #seo-section { background-color: #241a0e !important; border-top: 1px solid #3a2d20; }
+body.theme-dark #pomodoro-guide { color: #D9C6A5 !important; }
+body.theme-dark #pomodoro-guide h1,
+body.theme-dark #pomodoro-guide h2,
+body.theme-dark #pomodoro-guide h3 { color: #E0A458 !important; }
+body.theme-dark #pomodoro-guide p,
+body.theme-dark #pomodoro-guide li { color: #D9C6A5 !important; }
+body.theme-dark #pomodoro-guide strong { color: #F5E6C8; }
+body.theme-dark #pomodoro-guide a { color: #F4845F; }
+
+/* ── Footer (red-tinted dark, nods to the classic red) ── */
+body.theme-dark .footer-background { background-color: #23110f !important; border-top: 1px solid #3a2d20; }
+/* Dark theme swaps in dedicated cream-text logo variants (logo-dark.svg /
+   footer-logo-dark.svg) via applyTheme — no badge backgrounds needed.
+   A faint warm halo lifts the artwork off the dark background. */
+body.theme-dark .footer-logo, body.theme-dark .header-logo {
+  filter: drop-shadow(0 0 14px rgba(224, 164, 88, 0.18));
+}
+
+/* ── Bootstrap modals (What is Pomodoro / Custom Timer) ── */
+body.theme-dark .modal-content.popup-background,
+body.theme-dark .modal-content { background-color: #1f1813 !important; border: 1px solid #3a2d20; }
+body.theme-dark .modal-header { border-bottom-color: #3a2d20; }
+body.theme-dark .modal-header .close { filter: invert(0.85) sepia(0.2); opacity: 0.8; }
+body.theme-dark .header-font { color: #E0A458 !important; }
+body.theme-dark .text-color { color: #D9C6A5 !important; }
+body.theme-dark .modal-body label { color: #D9C6A5; }
+body.theme-dark .form-control {
+    background-color: #14100c !important;
+    border-color: #3a2d20 !important;
+    color: #E8D9B8 !important;
+}
+body.theme-dark .form-control:focus { border-color: #E0A458 !important; box-shadow: 0 0 0 2px rgba(224, 164, 88, 0.15) !important; }
+
+/* jQuery-confirm dialogs (used for alerts) */
+body.theme-dark .jconfirm .jconfirm-box { background: #1f1813 !important; color: #E8D9B8 !important; border: 1px solid #3a2d20; }
+body.theme-dark .jconfirm .jconfirm-title-c { color: #E0A458 !important; }
+
+/* ═══════════════════ CLASSIC TOMATO (red) theme ═══════════════════ */
+body.theme-classic .header-background { background-color: #ba6464 !important; }
+
+body.theme-classic .button-style,
+body.theme-classic .button-style-1 {
+    background-color: #feece5 !important;
+    color: #c65e5e !important;
+}
+body.theme-classic .button-style:hover,
+body.theme-classic .button-style-1:hover { color: #a34a4a !important; }
+body.theme-classic .button-style:focus,
+body.theme-classic .button-style-1:focus {
+    background-color: #feece5 !important;
+    color: #c65e5e !important;
+    box-shadow: none !important;
+}
+
+body.theme-classic .timer-time,
+body.theme-classic .timer-box { color: #feece5 !important; text-shadow: 0 2px 14px rgba(88, 20, 20, 0.25); }
+
+/* Classic logo (tomato.svg) is already pale cream for the red header — no badge needed */
+
+body.theme-classic .theme-select {
+    background: #feece5 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23c65e5e' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #c65e5e;
+    border-color: rgba(198, 94, 94, 0.35);
+}
+
+body.theme-classic .tm-active-line { color: rgba(255, 237, 229, 0.75); }
+body.theme-classic .tm-active-line strong { color: #fff; }
+body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
+</style>
 <base target="_blank">
 <base target="_blank">
 </head>
     
     
-<body style="background-color: #fff; margin: 0; padding: 0;">
-    
+<body style="margin: 0; padding: 0;">
+<script>
+  /* Apply saved theme before first paint (light is default) */
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('tt_theme_v1'); } catch (e) {}
+    if (t === 'dark') document.body.classList.add('theme-dark');
+    else if (t === 'classic') document.body.classList.add('theme-classic');
+    /* 'light' (and first visit) needs no class */
+  })();
+</script>
+
 
 <!-- YouTube Promo Banner -->
-<div style="background-color: #752222; padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-radius: 6px; margin-top: 0px; flex-wrap: wrap;">
+<div id="yt-promo" style="background-color: #752222; padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-radius: 6px; margin-top: 0px; flex-wrap: wrap;">
   <div style="display: flex; align-items: center; gap: 12px;">
      <a href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w" target="_blank" rel="noopener noreferrer">
       <img src="assets/images/YT.png" alt="Subscribe" style="height: 28px;">
@@ -854,11 +1139,13 @@
             
             
 <div class="theme-toggle-wrapper" style="padding-left: 30px !important;">
-  <label class="theme-switch">
-    <input type="checkbox" id="theme-toggle">
-    <span class="slider round"></span>
-  </label>
-  <span class="theme-label"> Classic Tomato Theme </span>
+  <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+    <option value="light">☀️ Light Theme</option>
+    <option value="dark">🌙 Dark Theme</option>
+    <option value="classic">🍅 Classic Tomato</option>
+  </select>
+  <!-- Hidden legacy toggle: tomato.js reads it for the Classic Tomato image swaps + mascot set -->
+  <input type="checkbox" id="theme-toggle" style="display:none" aria-hidden="true" tabindex="-1">
 </div>
 
             
@@ -1025,7 +1312,7 @@
 </div>
 
 
-<div class="container" style="background-color: #fff; padding: 0.5rem 1rem; border-radius: 12px; margin-top: 1rem; margin-bottom: 1rem;">
+<div class="container" id="video-section" style="background-color: #fff; padding: 0.5rem 1rem; border-radius: 12px; margin-top: 1rem; margin-bottom: 1rem;">
   <h2 class="text-center" style="color: #000000; font-size: 1.5rem; margin-bottom: 0.5rem;"> 
     Animated Video Timers 🎨
   </h2>
@@ -1496,7 +1783,7 @@
 
 
 <!-- SEO Content Section -->
-<div style="background-color: #FFA900; padding: 50px 0 40px;">
+<div id="seo-section" style="background-color: #FFA900; padding: 50px 0 40px;">
 <div id="pomodoro-guide" class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; color: #58240E; line-height: 1.7;">
 <h1 style="text-align:center; color:#58240E; font-family:'Baloo Tammudu', cursive; font-size:1.7rem; margin:20px 0 8px;">Free Online Pomodoro Timer & Study Timer</h1>
   <h2 style="text-align: center; font-size: 2rem; margin-bottom: 8px; color: #7A1F0F;">Learn the Tomato Method 🍅</h2>
@@ -1572,7 +1859,7 @@
 
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
            
-                <img src="assets/images/footer-logo.svg" class="footer-logo"/>
+                <img id="footerLogo" src="assets/images/footer-logo.svg" class="footer-logo"/>
                 <a href="https://play.google.com/store/apps/details?id=com.associatedventure.dev.tomatotimer"
                    target="_blank" class="footer-play-store-logo-position">
                     <img src="assets/images/google-play-store.png" class="play-store"/>
@@ -1988,7 +2275,7 @@
     let _wasRunning = false;
     let _lastMode = detectMode();
     let _lastRt = (typeof window.remainingTime === 'number') ? window.remainingTime : null;
-    let _lastTickAt = 0, _prevTickAt = 0;
+    let _lastTickAt = 0;
     let _lastStep = window.isLoopClicked ? (window.loopCounter | 0) : -1;
 
     setInterval(function() {
@@ -1999,11 +2286,19 @@
             var len  = (window.loopArray && window.loopArray.length) || 8;
             var step = window.isLoopClicked ? (window.loopCounter | 0) : -1;
 
-            if (rt !== _lastRt) { _prevTickAt = _lastTickAt; _lastTickAt = now; _lastRt = rt; }
-            // ticking = two distinct ticks, recent, ~1s apart.
-            // A one-shot reset while stopped changes rt only once -> not "ticking".
-            var ticking = _lastTickAt > 0 && (now - _lastTickAt) < 2000 &&
-                          (_lastTickAt - _prevTickAt) < 2500;
+            if (rt !== _lastRt) {
+                var _delta = (_lastRt == null) ? 0 : (_lastRt - rt);
+                if (_delta > 400 && _delta < 5200) {
+                    _lastTickAt = now;   // genuine ~1s decrement(s) -> timer is ticking
+                } else if (typeof rt === 'number' && rt % 60000 === 0) {
+                    _lastTickAt = 0;     // one-shot reset to a round-minute value
+                }                        // (mode buttons) -> timer stopped NOW
+                _lastRt = rt;
+            }
+            // ticking = a genuine ~1s decrement was seen very recently.
+            // Mode-button resets land on round-minute values with non-tick deltas,
+            // so they clear the stamp immediately instead of looking like a tick.
+            var ticking = _lastTickAt > 0 && (now - _lastTickAt) < 1800;
 
             var loopStepped = (step !== _lastStep) && step >= 0 && step < len;
             var loopEnded   = window.isLoopClicked && step >= len; // final Long Break finished
@@ -2022,6 +2317,9 @@
                 // so `ticking` stays false and we stay silent.
                 if (ticking || _wasRunning) {
                     _wasRunning = true;
+                    // The transition's reset just cleared the tick stamp; bridge
+                    // the gap until the new mode's first real ~1s tick arrives.
+                    _lastTickAt = now;
                     stopAll();
                     playForCurrentMode();
                 } else {
@@ -2088,17 +2386,19 @@
         // NOTE: #loop_timer_button is STOPPISH, not startish — tomato.js onLoop()
         // skips onStartTimer() for the first step (loopCounter == 0), so clicking
         // Loop only ARMS loop mode (resets to Pomodoro) without starting the timer.
-        var stopish  = t.closest('a[onclick*="onStopTimer"], a[onclick*="onResetTimer"], #loop_timer_button');
+        // Mode buttons are STOPPISH too: tomato.js mode handlers clearInterval
+        // and reset to a round-minute value WITHOUT restarting the countdown.
+        var stopish  = t.closest('a[onclick*="onStopTimer"], a[onclick*="onResetTimer"], #loop_timer_button, #pomodoro_timer_button, #short_break_timer_button, #long_break_timer_button');
         if (!startish && !stopish) return;
         setTimeout(function() {
             if (stopish) {
                 _wasRunning = false;
-                _lastTickAt = 0; _prevTickAt = 0;
+                _lastTickAt = 0;
                 _lastRt = window.remainingTime;
                 _lastMode = detectMode();
                 pauseAmbience();
             } else if ((window.remainingTime || 0) > 0 || window.isLoopClicked) {
-                _lastTickAt = Date.now(); _prevTickAt = Date.now(); // hold until real ticks take over
+                _lastTickAt = Date.now(); // hold until real ticks take over
                 _lastRt = window.remainingTime;
                 if (!_wasRunning) {
                     _wasRunning = true;
