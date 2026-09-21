@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20-20-20 Eye Timer — Free Online Eye Break Reminder | TomatoTimers</title>
+<meta name="description" content="Free 20-20-20 rule timer: every 20 minutes a window opens for a 20-second eye break. Rest your eyes, no sign-up, works right in your browser.">
+<link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14100c;          /* warm near-black */
+    --panel: #1f1813;       /* warm dark panel */
+    --text: #E8D9B8;        /* warm cream */
+    --muted: #A98F6F;       /* dim amber */
+    --accent: #E0A458;      /* amber */
+    --tomato: #DE4B3A;
+    --border: #3a2d20;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Baloo Tammudu', cursive; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── header ── */
+  .header { background: var(--panel); border-bottom: 1px solid var(--border);
+    padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .logo { font-size: 26px; font-weight: 700; color: var(--text); }
+  .logo span { color: var(--tomato); }
+  .pill { background: #2a2018; border: 1px solid var(--border); color: var(--text); padding: 10px 18px 6px;
+    border-radius: 50px; font-family: inherit; font-size: 14px; cursor: pointer; line-height: 1; }
+  .pill:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── main stage ── */
+  .stage { max-width: 720px; margin: 0 auto; padding: 30px 20px 70px; text-align: center; }
+  .mascot-wrap { min-height: 210px; display: flex; align-items: center; justify-content: center; }
+  #tomato { width: 190px; height: 190px; transition: transform .4s ease; }
+  #tomato.wilted { transform: rotate(-4deg) scale(.96); filter: saturate(.7) brightness(.85); }
+
+  /* ── energy bar ── */
+  .energy-wrap { max-width: 420px; margin: 6px auto 18px; }
+  .energy-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .energy-bar { height: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 50px; overflow: hidden; }
+  .energy-fill { height: 100%; width: 100%; border-radius: 50px;
+    background: linear-gradient(90deg, #7fa653, #b5cf7d); transition: width 1s linear, background .6s; }
+
+  .digits { font-size: 84px; color: var(--text); line-height: 1.15; letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(224,164,88,.12); }
+
+  .controls { margin-top: 16px; display: flex; justify-content: center; gap: 14px; }
+  .cbtn { width: 54px; height: 54px; border-radius: 50%; border: none; cursor: pointer; font-size: 20px;
+    background: var(--tomato); color: #fff; box-shadow: 0 3px 10px rgba(222,75,58,.3);
+    display: flex; align-items: center; justify-content: center; font-family: inherit; }
+  .cbtn.secondary { background: #2a2018; color: var(--text); border: 1px solid var(--border); box-shadow: none; }
+  .cbtn:hover { transform: scale(1.05); }
+  .cbtn svg { width: 22px; height: 22px; fill: currentColor; display: block; }
+
+  /* ── vignette (page gets tired with the tomato) ── */
+  #vignette { position: fixed; inset: 0; pointer-events: none; z-index: 40; opacity: 0; transition: opacity 1s;
+    box-shadow: inset 0 0 150px 55px rgba(150, 40, 15, .5); }
+
+  /* ── window break overlay ── */
+  #windowOverlay { position: fixed; inset: 0; z-index: 50; background: rgba(10, 6, 3, .7);
+    display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .35s; }
+  #windowOverlay.open { opacity: 1; visibility: visible; }
+
+  .window { width: 420px; max-width: 92vw; border-radius: 18px; overflow: hidden; position: relative;
+    border: 10px solid #5a3d22; box-shadow: 0 24px 70px rgba(0,0,0,.6); background: #000; }
+  .scene { height: 300px; position: relative; overflow: hidden; transition: background 1s; }
+  .orb { position: absolute; border-radius: 50%; }
+  .stars { position: absolute; inset: 0; }
+  .stars i { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; opacity: .8; }
+  .hills { position: absolute; bottom: -4px; left: 0; right: 0; }
+
+  .shutter { position: absolute; top: 0; bottom: 0; width: 51%; background: #6b4a2a; z-index: 5;
+    transition: transform 1.4s cubic-bezier(.6,.05,.3,1); }
+  .shutter.left  { left: 0;  border-right: 4px solid #5a3d22; }
+  .shutter.right { right: 0; border-left: 4px solid #5a3d22; }
+  .shutter.left::after, .shutter.right::after { content:''; position: absolute; top: 0; bottom: 0; width: 8px;
+    background: repeating-linear-gradient(180deg, rgba(0,0,0,.15) 0 26px, transparent 26px 40px); }
+  .shutter.left::after { right: 6px; } .shutter.right::after { left: 6px; }
+  #windowOverlay.open .shutter.left  { transform: translateX(-101%); }
+  #windowOverlay.open .shutter.right { transform: translateX(101%); }
+
+  .sill-tomato { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%) translateY(30px) scale(.6);
+    opacity: 0; transition: all .8s .9s ease; z-index: 4; }
+  #windowOverlay.open .sill-tomato { transform: translateX(-50%) translateY(0) scale(.72); opacity: 1; }
+
+  .break-ui { position: absolute; inset: 0; z-index: 6; display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start; padding-top: 26px; opacity: 0; transition: opacity .5s 1.1s; }
+  #windowOverlay.open .break-ui { opacity: 1; }
+  .break-title { color: #fff; font-size: 20px; text-shadow: 0 2px 8px rgba(0,0,0,.4); }
+  .ring-wrap { position: relative; width: 96px; height: 96px; margin-top: 8px; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 30px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.4); }
+  .break-hint { color: rgba(255,255,255,.92); font-size: 13px; margin-top: 6px; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
+
+  .break-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .mini-btn { background: rgba(255,255,255,.92); border: none; border-radius: 50px; padding: 7px 16px 5px;
+    font-family: inherit; font-size: 13px; color: #58240E; cursor: pointer; }
+
+  /* ── toast ── */
+  #toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 50px; padding: 10px 22px 8px; font-size: 15px; opacity: 0; transition: all .3s; z-index: 60; }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  .explainer { max-width: 640px; margin: 50px auto 0; text-align: left; color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .explainer h2 { color: var(--text); font-size: 22px; margin: 18px 0 6px; }
+  .explainer strong { color: var(--text); }
+    /* ---- Ambience Integration v9 ---- */
+    .ambience-master-pill {
+        background-color: #FFFFFF;
+        border-radius: 50px;
+        padding: 8px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+        margin-top: 14px;
+    }
+    .ambience-master-pill svg {
+        width: 22px;
+        height: 22px;
+        fill: #58240E;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: fill 0.2s ease, transform 0.15s ease;
+    }
+    .ambience-master-pill svg:hover {
+        transform: scale(1.15);
+    }
+    .ambience-master-pill.muted svg {
+        fill: #8C5A3E;
+        opacity: 0.5;
+    }
+    .ambience-master-pill input[type="range"] {
+        -webkit-appearance: none;
+        width: 140px;
+        background: transparent;
+        cursor: pointer;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        margin-top: -6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+    }
+    .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-thumb {
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .ambience-master-pill.active input[type="range"]::-moz-range-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-preset-label {
+        text-align: center;
+        font-size: 14px;
+        font-family: 'Baloo Tammudu', cursive;
+        margin-top: 4px;
+        min-height: 20px;
+    }
+    .ambience-preset-label .play-icon {
+        color: #68B04D;
+        margin-right: 6px;
+    }
+    .ambience-preset-label .preset-name {
+        color: #58240E;
+    }
+    .ambience-select {
+        background-color: #FAF5EB !important;
+        border: 2px solid #E2D0AF !important;
+        color: #58240E;
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 16px;
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        height: auto !important;
+        cursor: pointer;
+        appearance: auto;
+        -webkit-appearance: menulist;
+    }
+    .ambience-select:focus {
+        border-color: #DE4B3A !important;
+        box-shadow: 0 0 0 3px rgba(222, 75, 58, 0.15);
+        background-color: #FFFFFF !important;
+        outline: none;
+    }
+    .ambience-divider {
+        border: none;
+        border-top: 2px dashed #E2D0AF;
+        margin: 20px 0 16px;
+    }
+    .ambience-section-title {
+        color: #58240E;
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+    .ambience-section-desc {
+        color: #8C5A3E;
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+    .ambience-section-desc a {
+        color: #DE4B3A;
+        text-decoration: underline;
+    }
+
+    /* ---- Ambience Integration ---- */
+    .ambience-master-pill {
+        background-color: #FFFFFF;
+        border-radius: 50px;
+        padding: 8px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+        margin-top: 14px;
+    }
+    .ambience-master-pill svg {
+        width: 22px;
+        height: 22px;
+        fill: #58240E;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: fill 0.2s ease, transform 0.15s ease;
+    }
+    .ambience-master-pill svg:hover {
+        transform: scale(1.15);
+    }
+    .ambience-master-pill.muted svg {
+        fill: #8C5A3E;
+        opacity: 0.5;
+    }
+    .ambience-master-pill input[type="range"] {
+        -webkit-appearance: none;
+        width: 140px;
+        background: transparent;
+        cursor: pointer;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        margin-top: -6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+    }
+    .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-thumb {
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .ambience-master-pill.active input[type="range"]::-moz-range-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-preset-label {
+        text-align: center;
+        font-size: 14px;
+        font-family: 'Baloo Tammudu', cursive;
+        margin-top: 4px;
+        min-height: 20px;
+    }
+    .ambience-preset-label .play-icon {
+        color: #68B04D;
+        margin-right: 6px;
+    }
+    .ambience-preset-label .preset-name {
+        color: #58240E;
+    }
+    .ambience-select {
+        background-color: #FAF5EB !important;
+        border: 2px solid #E2D0AF !important;
+        color: #58240E;
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 16px;
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        height: auto !important;
+        cursor: pointer;
+        appearance: auto;
+        -webkit-appearance: menulist;
+    }
+    .ambience-select:focus {
+        border-color: #DE4B3A !important;
+        box-shadow: 0 0 0 3px rgba(222, 75, 58, 0.15);
+        background-color: #FFFFFF !important;
+        outline: none;
+    }
+    .ambience-divider {
+        border: none;
+        border-top: 2px dashed #E2D0AF;
+        margin: 20px 0 16px;
+    }
+    .ambience-section-title {
+        color: #58240E;
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+    .ambience-section-desc {
+        color: #8C5A3E;
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+    .ambience-section-desc a {
+        color: #DE4B3A;
+        text-decoration: underline;
+    }
+/* Local d-none fallback so components don't depend on Bootstrap's CDN copy */
+.tm-zero-overlay.d-none,
+.tm-done-wrap.d-none { display: none !important; }
+
+/* Legacy stylesheet fixes this at 400px (old scrollable list). Let cards grow
+   naturally so the section pushes the content below it down instead. */
+.todo-list-min-height { height: auto !important; min-height: 400px; }
+
+.tm-active-line {
+    min-height: 22px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #8C5A3E;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+.tm-active-line strong { color: #58240E; }
+.tm-active-line .tm-est-left { color: #DE4B3A; font-weight: 700; }
+
+#tm_add_form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.tm-input {
+    border: 2px solid rgba(140, 90, 62, 0.18);
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    color: #58240E;
+    background: #FFFFFF;
+    outline: none;
+    transition: border-color 0.15s ease;
+    min-width: 0;
+}
+.tm-input:focus { border-color: #DE4B3A; }
+#tm_add_title { flex: 1; }
+.tm-estimate-input { width: 110px; flex-shrink: 0; }
+.tm-add-btn { flex-shrink: 0; padding: 8px 20px !important; font-size: 0.9rem !important; }
+
+.tm-section-title {
+    font-family: 'Baloo Tammudu', cursive, sans-serif;
+    color: #7A1F0F;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 6px 0 16px;
+}
+.tm-color-picker { display: flex; gap: 6px; align-items: center; flex-shrink: 0; padding-right: 2px; }
+.tm-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(88, 36, 14, 0.15);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.12s ease;
+}
+.tm-swatch:hover { transform: scale(1.15); }
+.tm-swatch.tm-swatch-selected { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #58240E; }
+
+.tm-cards { display: flex; flex-direction: column; gap: 10px; }
+
+.tm-card {
+    background: #FFFFFF;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(88, 36, 14, 0.10);
+    padding: 12px 14px 12px 16px;
+    border: 1px solid rgba(88, 36, 14, 0.12);
+    border-left: 5px solid #E8D5C0;
+    position: relative;
+    transition: border-color 0.2s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+    cursor: grab;
+}
+.tm-card:active { cursor: grabbing; }
+.tm-card.dragging { opacity: 0.45; }
+.tm-card.dragover { box-shadow: 0 -3px 0 0 #DE4B3A, 0 2px 8px rgba(88, 36, 14, 0.08); }
+.tm-card.tm-active { border-left-color: #DE4B3A; }
+.tm-card.tm-done {
+    border-left-color: #5FA46A;
+    cursor: default;
+    background: #F2F7F2;
+    border-style: dashed;
+    border-left-style: solid;
+    box-shadow: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    opacity: 0.85;
+}
+
+/* Invisible click strip over the colored left edge: click to cycle task color */
+.tm-color-edge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    border-radius: 14px 0 0 14px;
+    cursor: pointer;
+}
+.tm-color-edge:hover { box-shadow: inset 0 0 0 2px rgba(88, 36, 14, 0.25); }
+
+.tm-card-top { display: flex; align-items: center; gap: 8px; }
+.tm-title {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #58240E;
+    word-break: break-word;
+    cursor: text;
+    border-radius: 6px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+}
+.tm-title:hover { background: rgba(222, 75, 58, 0.06); }
+.tm-title-input {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #58240E;
+    border: 2px solid #DE4B3A;
+    border-radius: 8px;
+    padding: 2px 6px;
+    font-family: inherit;
+    outline: none;
+    min-width: 0;
+}
+.tm-done .tm-title { text-decoration: line-through; opacity: 0.6; }
+
+.tm-est-chip {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #8C5A3E;
+    background: rgba(140, 90, 62, 0.10);
+    border-radius: 50px;
+    padding: 3px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: none;
+    font-family: inherit;
+}
+.tm-est-chip:hover { background: rgba(222, 75, 58, 0.14); color: #DE4B3A; }
+.tm-est-chip.tm-est-empty { color: rgba(140, 90, 62, 0.45); background: transparent; border: 1.5px dashed rgba(140, 90, 62, 0.3); }
+.tm-est-input {
+    width: 84px;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    border: 2px solid #DE4B3A;
+    border-radius: 50px;
+    padding: 2px 10px;
+    font-family: inherit;
+    color: #58240E;
+    outline: none;
+    text-align: center;
+}
+
+.tm-start-btn {
+    flex-shrink: 0;
+    background: #DE4B3A;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+.tm-start-btn:hover { background: #C23A2B; }
+.tm-start-btn:active { transform: scale(0.95); }
+.tm-start-btn.tm-focusing { background: #5FA46A; }
+
+.tm-icon-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(140, 90, 62, 0.55);
+    font-size: 0.9rem;
+    padding: 3px 5px;
+    border-radius: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+    line-height: 1;
+}
+.tm-icon-btn:hover { color: #DE4B3A; background: rgba(222, 75, 58, 0.08); }
+
+.tm-card-detail { margin-top: 8px; }
+.tm-notes {
+    width: 100%;
+    border: 2px solid rgba(140, 90, 62, 0.14);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-family: inherit;
+    color: #58240E;
+    background: rgba(140, 90, 62, 0.04);
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+}
+.tm-notes:focus { border-color: #DE4B3A; background: #fff; }
+
+.tm-subtasks { list-style: none; margin: 6px 0 0; padding: 0; }
+.tm-subtask { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 0.86rem; color: #58240E; }
+.tm-subtask input[type="checkbox"] { width: 16px; height: 16px; accent-color: #DE4B3A; cursor: pointer; flex-shrink: 0; }
+.tm-subtask .tm-sub-text { flex: 1; word-break: break-word; }
+.tm-subtask.tm-sub-done .tm-sub-text { text-decoration: line-through; opacity: 0.5; }
+.tm-sub-add { display: flex; gap: 6px; margin-top: 6px; }
+.tm-sub-add .tm-input { flex: 1; padding: 5px 10px; font-size: 0.82rem; border-radius: 8px; }
+.tm-sub-add button { flex-shrink: 0; }
+
+.tm-detail-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: rgba(140, 90, 62, 0.6);
+    padding: 2px 0;
+    font-family: inherit;
+}
+.tm-detail-toggle:hover { color: #DE4B3A; }
+
+/* Estimate-hit-zero overlay (covers the countdown so the pause is explained) */
+.tm-zero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 246, 236, 0.82);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border-radius: 18px;
+    padding: 16px;
+}
+.tm-zero-box {
+    background: #FFFFFF;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(88, 36, 14, 0.22);
+    border: 2px solid rgba(222, 75, 58, 0.35);
+    padding: 20px 22px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+}
+.tm-zero-box .tm-zero-text { font-size: 0.95rem; color: #58240E; font-weight: 600; margin-bottom: 14px; line-height: 1.5; }
+.tm-zero-box .tm-zero-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.tm-zero-box .tm-input { width: 100px; padding: 7px 12px; font-size: 0.85rem; background: #fff; text-align: center; }
+.tm-zero-btn {
+    border: none;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+.tm-zero-btn.tm-zero-add { background: #DE4B3A; color: #fff; }
+.tm-zero-btn.tm-zero-add:hover { background: #C23A2B; }
+.tm-zero-btn.tm-zero-done { background: rgba(140, 90, 62, 0.12); color: #8C5A3E; }
+.tm-zero-btn.tm-zero-done:hover { background: rgba(140, 90, 62, 0.2); }
+
+/* Done section + toolbar */
+.tm-done-wrap { margin-top: 16px; }
+.tm-done-header {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(140, 90, 62, 0.6);
+    margin-bottom: 8px;
+}
+.tm-toolbar { display: flex; justify-content: space-between; margin-top: 14px; }
+.tm-tool-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: rgba(140, 90, 62, 0.65);
+    font-family: inherit;
+    padding: 4px 6px;
+    border-radius: 8px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+.tm-tool-btn:hover { color: #58240E; background: rgba(140, 90, 62, 0.08); }
+.tm-tool-danger:hover { color: #DE4B3A; background: rgba(222, 75, 58, 0.08); }
+
+/* Undo toast */
+.tm-toast {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    background: #58240E;
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 0.88rem;
+    box-shadow: 0 6px 24px rgba(88, 36, 14, 0.25);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    pointer-events: none;
+}
+.tm-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+.tm-toast button {
+    background: none;
+    border: none;
+    color: #FFB4A2;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: inherit;
+    padding: 0;
+}
+.tm-toast button:hover { color: #fff; }
+
+@media (max-width: 576px) {
+    .tm-estimate-input { width: 84px; }
+    #tm_add_form { flex-wrap: wrap; }
+    #tm_add_title { flex: 1 1 100%; }
+}
+
+  /* ── page additions: todo band, footer, overlay host ── */
+  .stage { position: relative; }
+  .tm-band { background: #FFF6EC; padding: 40px 20px 46px; }
+  .tm-wrap { max-width: 900px; margin: 0 auto; }
+  .tm-add-btn {
+    background: #DE4B3A; color: #fff; border: none; border-radius: 50px;
+    padding: 10px 22px; font-family: inherit; font-size: 0.95rem; cursor: pointer;
+    flex-shrink: 0; transition: transform .12s ease;
+  }
+  .tm-add-btn:hover { transform: scale(1.05); }
+  .site-footer {
+    background: var(--panel); border-top: 1px solid var(--border);
+    text-align: center; padding: 26px 16px; font-size: 15px; color: var(--muted);
+  }
+  .site-footer a { color: var(--text); text-decoration: none; }
+  .site-footer a:hover { color: var(--accent); }
+  .site-footer .foot-note { margin-top: 8px; font-size: 12.5px; }
+  .tm-active-line { color: var(--muted); }
+  .tm-active-line strong { color: var(--text); }
+  .tm-active-line .tm-est-left { color: var(--accent); }
+  .tm-zero-overlay { z-index: 45; }
+  .ambience-preset-label { color: var(--muted); }
+
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div id="vignette"></div>
+<div id="toast"></div>
+
+<div class="header">
+  <a class="logo" href="https://www.tomatotimers.com/" style="text-decoration:none;">🍅 Tomato<span>Timers</span></a>
+  <div>
+    <a class="pill" href="https://www.tomatotimers.com/" style="text-decoration:none;">Pomodoro Timer</a>
+    <a class="pill" href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Ambience Studio 🎵</a>
+    <button class="pill" onclick="document.getElementById('explainer').scrollIntoView({behavior:'smooth'})">What is 20-20-20?</button>
+  </div>
+</div>
+
+<div class="stage">
+
+  <div class="mascot-wrap">
+    <!-- Tomato mascot with 4 expression states -->
+    <svg id="tomato" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="112" rx="62" ry="56" fill="#DE4B3A"/>
+      <ellipse cx="78" cy="88" rx="16" ry="10" fill="#F0806F" opacity=".7"/>
+      <path d="M100 60 Q86 38 70 46 Q88 48 100 60Z" fill="#68B04D"/>
+      <path d="M100 60 Q114 38 130 46 Q112 48 100 60Z" fill="#4E8A39"/>
+      <rect x="96" y="42" width="8" height="16" rx="4" fill="#7a4a22"/>
+      <ellipse cx="66" cy="122" rx="9" ry="6" fill="#FFB0A3" opacity=".8"/>
+      <ellipse cx="134" cy="122" rx="9" ry="6" fill="#FFB0A3" opacity=".8"/>
+
+      <!-- happy -->
+      <g id="face-happy">
+        <circle cx="80" cy="106" r="9" fill="#fff"/><circle cx="120" cy="106" r="9" fill="#fff"/>
+        <circle cx="81" cy="107" r="4.5" fill="#58240E"/><circle cx="121" cy="107" r="4.5" fill="#58240E"/>
+        <path d="M88 126 Q100 138 112 126" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </g>
+      <!-- tired (half lids) -->
+      <g id="face-tired" style="display:none">
+        <circle cx="80" cy="106" r="9" fill="#fff"/><circle cx="120" cy="106" r="9" fill="#fff"/>
+        <circle cx="81" cy="108" r="4.5" fill="#58240E"/><circle cx="121" cy="108" r="4.5" fill="#58240E"/>
+        <path d="M69 100 Q80 94 91 100" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M109 100 Q120 94 131 100" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M92 130 L108 130" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </g>
+      <!-- sleepy (closed eyes) -->
+      <g id="face-sleepy" style="display:none">
+        <path d="M70 106 Q80 114 90 106" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M110 106 Q120 114 130 106" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="100" cy="130" rx="6" ry="7" fill="#58240E"/>
+      </g>
+      <!-- exhausted (bags + wavy mouth) -->
+      <g id="face-exhausted" style="display:none">
+        <circle cx="80" cy="106" r="9" fill="#fff"/><circle cx="120" cy="106" r="9" fill="#fff"/>
+        <circle cx="81" cy="109" r="4" fill="#58240E"/><circle cx="121" cy="109" r="4" fill="#58240E"/>
+        <path d="M70 98 Q80 92 90 98" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M110 98 Q120 92 130 98" stroke="#58240E" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M72 118 Q80 122 88 118" stroke="#8C5A3E" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M112 118 Q120 122 128 118" stroke="#8C5A3E" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M90 134 Q96 128 100 134 Q104 140 110 134" stroke="#58240E" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="energy-wrap">
+    <div class="energy-label"><span>🍅 tomato energy</span><span id="energyPct">100%</span></div>
+    <div class="energy-bar"><div class="energy-fill" id="energyFill"></div></div>
+  </div>
+
+  <div class="digits" id="digits">20:00</div>
+
+  <div class="controls">
+    <button class="cbtn secondary" id="resetBtn" title="Reset">
+      <svg viewBox="0 0 24 24"><path d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08a6 6 0 1 1-1.41-6.24L13 11h8V3l-3.35 3.35z"/></svg>
+    </button>
+    <button class="cbtn" id="playBtn" title="Play / Pause">
+      <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+      <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <button class="cbtn secondary" id="skipBtn" title="Skip to break">
+      <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+    </button>
+  </div>
+
+  <div style="text-align:center; margin-top:18px;">
+    <div class="ambience-master-pill" id="ambienceMasterPill">
+        <svg id="ambienceVolIcon" viewBox="0 0 24 24" title="Click to mute/unmute">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+        </svg>
+        <input type="range" id="ambienceVolSlider" min="0" max="100" value="80" title="Ambience Volume">
+    </div>
+    <div class="ambience-preset-label" id="ambiencePresetLabel"></div>
+    <div class="tm-active-line" id="tm_active_line" aria-live="polite"></div>
+  </div>
+
+  <!-- estimate-hit-zero overlay (over the countdown) -->
+  <div class="tm-zero-overlay d-none" id="tm_zero_overlay" role="alertdialog" aria-live="assertive">
+      <div class="tm-zero-box">
+          <div class="tm-zero-text" id="tm_zero_text"></div>
+          <div class="tm-zero-row">
+              <input type="text" id="tm_zero_input" class="tm-input" placeholder="e.g. 20m">
+              <button type="button" class="tm-zero-btn tm-zero-add" id="tm_zero_add">Add time &amp; resume</button>
+              <button type="button" class="tm-zero-btn tm-zero-done" id="tm_zero_done">Mark done</button>
+          </div>
+      </div>
+  </div>
+
+  <div class="explainer" id="explainer">
+    <h2>The 20-20-20 rule</h2>
+    <p>Every 20 minutes, look at something 20 feet (~6 meters) away for 20 seconds. It relaxes your eye's focusing muscle and reminds you to blink — the two things screens steal from you. The timer loops forever: the tomato wilts as your eyes tire, and when the window opens, look outside. That's the whole game.</p>
+    <h2>Gentle by design</h2>
+    <p>This page saves nothing and tracks nothing. No accounts, no stats, no streaks — just open it and rest your eyes. The warm dark palette keeps the screen soft in dim rooms, the same advice this timer exists to give.</p>
+    <h2>How to use this timer</h2>
+    <p>Press play and work. The tomato's energy bar drains over 20 minutes — when the window opens, look at the farthest thing you can see until the ring finishes. Snooze once if you're mid-thought; skip if you must, but your eyes keep the tired. Pair it with the to-do list below to give each 20-minute push a target.</p>
+  </div>
+</div>
+
+<!-- ══ WINDOW BREAK OVERLAY ══ -->
+<div id="windowOverlay">
+  <div class="window">
+    <div class="scene" id="scene">
+      <div class="stars" id="stars"></div>
+      <div class="orb" id="orb"></div>
+      <svg class="hills" viewBox="0 0 420 90" preserveAspectRatio="none" style="height:90px;width:100%;">
+        <path d="M0 90 L0 55 Q60 25 130 50 Q200 72 260 45 Q330 18 420 52 L420 90 Z" fill="#2E5D34" opacity=".85"/>
+        <path d="M0 90 L0 70 Q90 45 170 66 Q260 84 330 62 Q380 48 420 66 L420 90 Z" fill="#234A29"/>
+      </svg>
+      <div class="sill-tomato" id="sillTomato"></div>
+    </div>
+    <div class="shutter left"></div>
+    <div class="shutter right"></div>
+    <div class="break-ui">
+      <div class="break-title">👀 Look outside — 20 seconds</div>
+      <div class="ring-wrap">
+        <svg width="96" height="96" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="7"/>
+          <circle id="ring" cx="48" cy="48" r="42" fill="none" stroke="#fff" stroke-width="7"
+                  stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ring-num" id="ringNum">20</div>
+      </div>
+      <div class="break-hint">find the farthest point · blink slowly · shoulders down</div>
+      <div class="break-actions">
+        <button class="mini-btn" id="snoozeBtn">😴 Snooze 1m</button>
+        <button class="mini-btn" id="skipBreakBtn">Skip ✕</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ TO-DO LIST (same list as the main timer — shared storage) ══ -->
+<section class="tm-band">
+  <div class="tm-wrap">
+    <h2 class="tm-section-title">Your To-Do List 🍅</h2>
+    <div id="task_manager">
+        <form id="tm_add_form" autocomplete="off">
+            <div class="tm-color-picker" id="tm_color_picker" role="radiogroup" aria-label="Task color">
+                <button type="button" class="tm-swatch tm-swatch-selected" data-color="" style="background:#E8D5C0" title="Default" aria-label="Default color"></button>
+                <button type="button" class="tm-swatch" data-color="#DE4B3A" style="background:#DE4B3A" title="Red" aria-label="Red"></button>
+                <button type="button" class="tm-swatch" data-color="#FFA900" style="background:#FFA900" title="Orange" aria-label="Orange"></button>
+                <button type="button" class="tm-swatch" data-color="#5FA46A" style="background:#5FA46A" title="Green" aria-label="Green"></button>
+                <button type="button" class="tm-swatch" data-color="#4A90D9" style="background:#4A90D9" title="Blue" aria-label="Blue"></button>
+                <button type="button" class="tm-swatch" data-color="#9B59B6" style="background:#9B59B6" title="Purple" aria-label="Purple"></button>
+            </div>
+            <input type="text" id="tm_add_title" class="tm-input" placeholder="Add a task…" maxlength="120" aria-label="Task title">
+            <input type="text" id="tm_add_estimate" class="tm-input tm-estimate-input" placeholder="est. e.g. 45m" maxlength="12" aria-label="Estimated time (optional)">
+            <button type="submit" class="tm-add-btn">Add</button>
+        </form>
+        <div id="tm_cards" class="tm-cards"></div>
+        <div id="tm_done_wrap" class="tm-done-wrap d-none">
+            <div class="tm-done-header">Done <span id="tm_done_count"></span></div>
+            <div id="tm_done_cards" class="tm-cards"></div>
+        </div>
+        <div class="tm-toolbar">
+            <button type="button" id="tm_clear_done" class="tm-tool-btn">Clear completed</button>
+            <button type="button" id="tm_reset" class="tm-tool-btn tm-tool-danger">Reset list</button>
+        </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <a href="https://www.tomatotimers.com/">🍅 Pomodoro Timer</a>
+  <span>·</span>
+  <a href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener noreferrer">Ambience Studio 🎵</a>
+  <div class="foot-note">Free &amp; no sign-up — your list stays in this browser until you clear it.</div>
+</footer>
+
+<script>
+/* ═══ 20-20-20 EYE TIMER — prototype v2 ═══
+   Stateless: no storage, no stats. Open and use. */
+const WORK_S = 20 * 60, BREAK_S = 20, SNOOZE_S = 60;
+
+var mode = 'idle';            // idle | work | break | snooze
+var left = WORK_S, breakLeft = BREAK_S, snoozeLeft = SNOOZE_S;
+var hp = 100;
+var timer = null;             // exactly ONE interval, ever
+
+const $ = id => document.getElementById(id);
+
+/* single interval owner — clears before starting, prevents the 2s bug */
+function runTimer() {
+  if (timer) clearInterval(timer);
+  timer = setInterval(tick, 1000);
+}
+function stopTimer() {
+  if (timer) { clearInterval(timer); timer = null; }
+}
+
+/* ── sky by time of day ── */
+function paintSky() {
+  const h = new Date().getHours();
+  const scene = $('scene'), orb = $('orb'), stars = $('stars');
+  stars.innerHTML = '';
+  let top, bottom, orbColor, orbPos;
+  if (h < 6 || h >= 20)      { top = '#0b1026'; bottom = '#1b2a4a'; orbColor = '#F4F1DE'; orbPos = 'right:16%;top:14%'; addStars(); }
+  else if (h < 9)            { top = '#F7B267'; bottom = '#F4845F'; orbColor = '#FFE3A3'; orbPos = 'left:16%;top:22%'; }
+  else if (h < 17)           { top = '#5EB1EF'; bottom = '#AEE3F5'; orbColor = '#FFE66D'; orbPos = 'left:38%;top:10%'; }
+  else                       { top = '#F4845F'; bottom = '#9B3B5A'; orbColor = '#FFB347'; orbPos = 'right:14%;top:30%'; }
+  scene.style.background = 'linear-gradient(180deg,' + top + ',' + bottom + ')';
+  orb.style.cssText = 'width:46px;height:46px;background:' + orbColor + ';box-shadow:0 0 34px 8px ' + orbColor + '55;' + orbPos;
+  function addStars() {
+    for (let i = 0; i < 26; i++) {
+      const s = document.createElement('i');
+      s.style.left = Math.random() * 96 + '%'; s.style.top = Math.random() * 55 + '%';
+      s.style.opacity = .4 + Math.random() * .6;
+      stars.appendChild(s);
+    }
+  }
+}
+
+/* ── mascot expression ── */
+function paintFace() {
+  const states = ['happy', 'tired', 'sleepy', 'exhausted'];
+  const pick = hp >= 75 ? 0 : hp >= 40 ? 1 : hp >= 15 ? 2 : 3;
+  states.forEach((s, i) => $('face-' + s).style.display = i === pick ? '' : 'none');
+  $('tomato').classList.toggle('wilted', hp < 40);
+  $('vignette').style.opacity = hp < 40 ? ((40 - hp) / 40 * .8).toFixed(2) : 0;
+}
+
+/* ── HUD ── */
+function fmt(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+function paint() {
+  $('digits').textContent = mode === 'break' ? fmt(breakLeft) : mode === 'snooze' ? fmt(snoozeLeft) : fmt(left);
+  $('energyFill').style.width = hp + '%';
+  $('energyFill').style.background = hp > 60 ? 'linear-gradient(90deg,#7fa653,#b5cf7d)'
+    : hp > 30 ? 'linear-gradient(90deg,#E0A458,#f0c47f)' : 'linear-gradient(90deg,#DE4B3A,#F0806F)';
+  $('energyPct').textContent = Math.round(hp) + '%';
+  $('playIcon').style.display = timer ? 'none' : '';
+  $('pauseIcon').style.display = timer ? '' : 'none';
+  paintFace();
+}
+
+/* ── flow ── */
+function tick() {
+  if (mode === 'work') {
+    left--; hp = Math.max(0, left / WORK_S * 100);
+    if (left <= 0) openBreak();
+  } else if (mode === 'break') {
+    breakLeft--;
+    $('ringNum').textContent = breakLeft;
+    $('ring').style.strokeDashoffset = 264 * (1 - breakLeft / BREAK_S);
+    if (breakLeft <= 0) completeBreak();
+  } else if (mode === 'snooze') {
+    snoozeLeft--;
+    if (snoozeLeft <= 0) openBreak();
+  }
+  paint();
+}
+function openBreak() {
+  stopTimer();
+  mode = 'break'; breakLeft = BREAK_S;
+  $('ringNum').textContent = BREAK_S;
+  $('ring').style.strokeDashoffset = 0;
+  paintSky();
+  $('sillTomato').innerHTML = '';
+  const clone = $('tomato').cloneNode(true);
+  clone.removeAttribute('id'); clone.style.width = '120px'; clone.style.height = '120px';
+  clone.querySelectorAll('g').forEach(g => g.style.display = g.id === 'face-happy' ? '' : 'none');
+  $('sillTomato').appendChild(clone);
+  $('windowOverlay').classList.add('open');
+  runTimer();
+  paint();
+}
+function completeBreak() {
+  $('windowOverlay').classList.remove('open');
+  hp = 100;
+  toast('👀 nice — energy restored');
+  mode = 'work'; left = WORK_S;
+  runTimer();
+  paint();
+}
+function skipBreak() {
+  $('windowOverlay').classList.remove('open');
+  toast('skipped — your eyes keep the tired 😔');
+  mode = 'work'; left = WORK_S;
+  runTimer();
+  paint();
+}
+function snooze() {
+  $('windowOverlay').classList.remove('open');
+  mode = 'snooze'; snoozeLeft = SNOOZE_S;
+  toast('snoozed 1 minute');
+  paint();
+}
+
+/* ── controls ── */
+$('playBtn').onclick = () => {
+  if (mode === 'break' || mode === 'snooze') return;
+  if (mode === 'idle') { mode = 'work'; left = WORK_S; }
+  if (timer) { stopTimer(); } else { runTimer(); }   // toggle pause
+  paint();
+};
+$('resetBtn').onclick = () => {
+  stopTimer(); mode = 'idle'; left = WORK_S; hp = 100;
+  $('windowOverlay').classList.remove('open'); paint();
+};
+$('skipBtn').onclick = () => {
+  if (mode === 'work' || mode === 'idle') {
+    mode = 'work'; left = 1;
+    if (!timer) runTimer();
+  }
+};
+$('snoozeBtn').onclick = snooze;
+$('skipBreakBtn').onclick = skipBreak;
+
+/* ── toast ── */
+var toastT = null;
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+paint();
+
+/* hook for the task manager: begin (or resume) a 20-min work session */
+window.startWork = function () {
+  if (mode === 'break' || mode === 'snooze') return;
+  if (mode === 'idle') { mode = 'work'; left = WORK_S; }
+  if (!timer) runTimer();
+  paint();
+};
+</script>
+<script>
+/* ============================================================
+   AMBIENCE INTEGRATION (20-20-20 edition) — same presets and storage as
+   the main timer page ('tt_ambience_presets_v1' / settings), so ambience
+   choices follow the user. Mode detection reads the eye-timer's globals:
+   work -> Pomodoro preset slot, break -> Short Break preset slot.
+   ============================================================ */
+(function() {
+    'use strict';
+
+    const PRESETS_KEY = 'tt_ambience_presets_v1';
+    const TIMER_AMBIENCE_KEY = 'tt_timer_ambience_settings_v1';
+    const DEFAULT_PRESETS = {
+        1: { name: 'Rainy Focus',    sounds: { rain: {active:true, vol:70}, thunder: {active:true, vol:40} } },
+        2: { name: 'Cozy Cafe',      sounds: { cafe: {active:true, vol:75}, typing:  {active:true, vol:50} } },
+        3: { name: 'Campfire Night', sounds: { campfire: {active:true, vol:80}, night: {active:true, vol:60} } },
+        4: { name: 'Ocean Breeze',   sounds: { waves: {active:true, vol:80}, wind:   {active:true, vol:40} } }
+    };
+
+    const SOUNDS = [
+        { id:'rain',     file:'/ambience/audio/rain.ogg' },
+        { id:'thunder',  file:'/ambience/audio/thunder.ogg' },
+        { id:'wind',     file:'/ambience/audio/wind.ogg' },
+        { id:'campfire', file:'/ambience/audio/campfire.ogg' },
+        { id:'waves',    file:'/ambience/audio/waves.ogg' },
+        { id:'cafe',     file:'/ambience/audio/cafe.ogg' },
+        { id:'birds',    file:'/ambience/audio/birds.ogg' },
+        { id:'night',    file:'/ambience/audio/night.ogg' },
+        { id:'typing',   file:'/ambience/audio/typing.ogg' },
+        { id:'Train',    file:'/ambience/audio/train.ogg' },
+        { id:'Airplane', file:'/ambience/audio/airplane.ogg' },
+        { id:'Metro',    file:'/ambience/audio/metro.ogg' },
+        { id:'Cricket',  file:'/ambience/audio/cricket.ogg' },
+        { id:'River',    file:'/ambience/audio/river.ogg' },
+        { id:'bird',     file:'/ambience/audio/bird.ogg' }
+    ];
+
+    // ---- Audio Engine ----
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null, masterGain = null;
+    const buffers = {}, activeNodes = {};
+
+    function ensureAudio() {
+        if (audioCtx) return;
+        try {
+            audioCtx = new AudioContext();
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = getVolume() / 100;
+            masterGain.connect(audioCtx.destination);
+            SOUNDS.forEach(function(s){ preload(s); });
+        } catch(e){ console.error('[Ambience] Audio init failed', e); }
+    }
+    async function preload(sound) {
+        if (buffers[sound.id]) return;
+        try {
+            const res = await fetch(sound.file);
+            if (!res.ok) throw new Error(res.status);
+            buffers[sound.id] = await audioCtx.decodeAudioData(await res.arrayBuffer());
+        } catch(err){ console.error('[Ambience] Load fail', sound.file, err); }
+    }
+    function playSound(sound) {
+        if (!audioCtx) ensureAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (!buffers[sound.id]) {
+            preload(sound).then(function(){ if (sound._active) playSound(sound); });
+            return;
+        }
+        if (activeNodes[sound.id]) stopSound(sound.id);
+        const src = audioCtx.createBufferSource();
+        src.buffer = buffers[sound.id];
+        src.loop = true; src.loopStart = 0;
+        const trim = 0.10;
+        src.loopEnd = Math.max(src.buffer.duration - trim, src.buffer.duration * 0.98);
+        const gain = audioCtx.createGain();
+        const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.05);
+        src.connect(gain); gain.connect(masterGain); src.start(0);
+        activeNodes[sound.id] = { src: src, gain: gain };
+    }
+    function stopSound(id) {
+        const node = activeNodes[id]; if (!node) return;
+        const now = audioCtx.currentTime;
+        node.gain.gain.cancelScheduledValues(now);
+        node.gain.gain.setValueAtTime(node.gain.gain.value, now);
+        node.gain.gain.linearRampToValueAtTime(0, now + 0.05);
+        try { node.src.stop(now + 0.06); } catch(e){}
+        setTimeout(function(){ try{ node.src.disconnect(); node.gain.disconnect(); }catch(e){} }, 80);
+        delete activeNodes[id];
+    }
+    function stopAll() { Object.keys(activeNodes).forEach(function(id){ stopSound(id); }); }
+
+    function applyPreset(slot) {
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        const preset = presets[slot] || DEFAULT_PRESETS[slot];
+        if (!preset) return;
+        stopAll();
+        SOUNDS.forEach(function(s){
+            const cfg = preset.sounds[s.id];
+            if (cfg && cfg.active && cfg.vol > 0) {
+                s._active = true; s.volume = cfg.vol; playSound(s);
+            } else {
+                s._active = false; if (cfg) s.volume = cfg.vol || 0;
+            }
+        });
+        _lastPresetName = preset.name || 'Unnamed';
+        updatePresetLabel(_lastPresetName);
+    }
+
+    // ---- Settings ----
+    function loadSettings() {
+        try {
+            const raw = localStorage.getItem(TIMER_AMBIENCE_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch(e){}
+        return { pomodoro: '1', shortBreak: '2', longBreak: '3', volume: 0 };
+    }
+    function saveSettings(s) {
+        try { localStorage.setItem(TIMER_AMBIENCE_KEY, JSON.stringify(s)); } catch(e){}
+    }
+    function getVolume() {
+        const s = loadSettings();
+        return (s.volume !== undefined) ? s.volume : 0;
+    }
+    function isMuted() {
+        return getVolume() <= 0;
+    }
+
+    // ---- UI: Preset Label ----
+    const presetLabel = document.getElementById('ambiencePresetLabel');
+    function updatePresetLabel(name) {
+        if (!presetLabel) return;
+        if (name && !isMuted()) {
+            presetLabel.innerHTML = '<span class="play-icon">▶</span><span class="preset-name">' + name + '</span>';
+        } else {
+            presetLabel.innerHTML = '';
+        }
+    }
+    function clearPresetLabel() {
+        if (presetLabel) presetLabel.innerHTML = '';
+    }
+
+    // ---- UI: Volume Slider & Icon ----
+    const pill = document.getElementById('ambienceMasterPill');
+    const volIcon = document.getElementById('ambienceVolIcon');
+    const volSlider = document.getElementById('ambienceVolSlider');
+    let preMuteVolume = 80;
+
+    function updatePillUI() {
+        const vol = getVolume();
+        if (volSlider) volSlider.value = vol;
+        if (pill) {
+            pill.classList.toggle('active', vol > 0);
+            pill.classList.toggle('muted', vol <= 0);
+        }
+        if (volIcon) {
+            if (vol <= 0) {
+                volIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            } else if (vol < 50) {
+                volIcon.innerHTML = '<path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>';
+            } else {
+                volIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            }
+        }
+    }
+
+    if (volSlider) {
+        volSlider.value = getVolume();
+        volSlider.addEventListener('input', function(e) {
+            const val = parseInt(e.target.value);
+            const s = loadSettings();
+            s.volume = val;
+            if (val > 0) preMuteVolume = val;
+            saveSettings(s);
+            updatePillUI();
+            if (audioCtx && masterGain) {
+                masterGain.gain.setTargetAtTime(val / 100, audioCtx.currentTime, 0.05);
+            }
+            // Mute = keep nodes playing at 0% volume; never stop them.
+            if (val <= 0) { clearPresetLabel(); }
+            else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
+            else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
+        });
+    }
+
+    if (volIcon) {
+        volIcon.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            const s = loadSettings();
+            if (getVolume() > 0) {
+                preMuteVolume = getVolume();
+                s.volume = 0;
+            } else {
+                s.volume = preMuteVolume || 80;
+            }
+            saveSettings(s);
+            updatePillUI();
+            if (audioCtx && masterGain) {
+                masterGain.gain.setTargetAtTime(getVolume() / 100, audioCtx.currentTime, 0.05);
+            }
+            // Mute = keep nodes playing at 0% volume; never stop them.
+            if (getVolume() <= 0) { clearPresetLabel(); }
+            else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
+            else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
+            return false;
+        });
+    }
+
+    // ---- Mode Detection ----
+    function detectMode() {
+        return (window.mode === 'break') ? 'Short Break' : 'Pomodoro';
+    }
+
+    function playForCurrentMode() {
+        // Always start the sound nodes, even when muted — "mute" just means
+        // masterGain at 0%, so unmuting is instant (no pause/play needed).
+        const s = loadSettings();
+        const mode = detectMode();
+        let slot = '0';
+        if (mode === 'Pomodoro') slot = s.pomodoro;
+        else if (mode === 'Short Break') slot = s.shortBreak;
+        else if (mode === 'Long Break') slot = s.longBreak;
+        if (slot === '0' || !slot) { stopAll(); clearPresetLabel(); return; }
+        applyPreset(parseInt(slot));
+    }
+
+    // ---- State Control ----
+    let _lastPresetName = '';
+
+    function startAmbience() {
+        playForCurrentMode();  // nodes always play; volume 0 = silent, not stopped
+    }
+    function pauseAmbience() {
+        if (audioCtx && audioCtx.state === 'running') {
+            audioCtx.suspend();
+        }
+        clearPresetLabel();
+    }
+    function resumeAmbience() {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        if (!isMuted()) updatePresetLabel(_lastPresetName);
+    }
+    function stopAmbience() {
+        stopAll();
+        clearPresetLabel();
+    }
+
+    // ---- Main Poller: watches the eye-timer's globals ----
+    // running = the engine's interval handle is non-null (it nulls on stop).
+    // mode    = 'work' | 'break' | 'snooze' | 'idle' (global var).
+    let _wasRunning = false;
+    let _lastMode = detectMode();
+
+    setInterval(function() {
+        try {
+            var running = !!window.timer;
+            var mode = detectMode();
+
+            if (running && !_wasRunning) {
+                _wasRunning = true;
+                _lastMode = mode;
+                if (audioCtx && audioCtx.state === 'suspended' && Object.keys(activeNodes).length > 0) {
+                    resumeAmbience();
+                } else {
+                    startAmbience();
+                }
+            }
+            if (!running && _wasRunning) {
+                _wasRunning = false;
+                pauseAmbience();
+            }
+            if (mode !== _lastMode) {
+                _lastMode = mode;
+                if (running) {
+                    stopAll();
+                    playForCurrentMode();
+                }
+            }
+        } catch(err) { console.error('[Ambience] Poll error', err); }
+    }, 300);
+
+    // ---- Notification permission fix ----
+    // Ask on the first real user interaction (Firefox/Safari require a
+    // user gesture for requestPermission).
+    (function fixNotificationPermission() {
+        function ask() {
+            try {
+                if (window.Notification && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            } catch (e) {}
+            document.removeEventListener('click', ask, true);
+        }
+        document.addEventListener('click', ask, true);
+    })();
+
+    // ---- UI: Dropdowns ----
+    function populateDropdowns() {
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        const s = loadSettings();
+        [
+            { el:'pomodoro_ambience',     key:'pomodoro' },
+            { el:'short_break_ambience',  key:'shortBreak' },
+            { el:'long_break_ambience',   key:'longBreak' }
+        ].forEach(function(item){
+            const sel = document.getElementById(item.el);
+            if (!sel) return;
+            const oldVal = sel.value;
+            sel.innerHTML = '';
+            const none = document.createElement('option');
+            none.value = '0'; none.textContent = 'None / Off'; sel.appendChild(none);
+            for (let i = 1; i <= 4; i++) {
+                const opt = document.createElement('option');
+                opt.value = String(i);
+                const name = (presets[i] && presets[i].name) ? presets[i].name : DEFAULT_PRESETS[i].name;
+                opt.textContent = 'Preset ' + i + ': ' + name;
+                sel.appendChild(opt);
+            }
+            sel.value = s[item.key] || '0';
+            if (oldVal && sel.querySelector('option[value="' + oldVal + '"]')) sel.value = oldVal;
+        });
+    }
+
+    const saveBtn = document.getElementById('SaveSet');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+            try {
+                const s = loadSettings();
+                const p = document.getElementById('pomodoro_ambience');
+                const sb = document.getElementById('short_break_ambience');
+                const lb = document.getElementById('long_break_ambience');
+                if (p)  s.pomodoro    = p.value;
+                if (sb) s.shortBreak  = sb.value;
+                if (lb) s.longBreak   = lb.value;
+                saveSettings(s);
+            } catch(err) { console.error('[Ambience] Save error', err); }
+        });
+    }
+    if (typeof window.jQuery !== 'undefined') {
+        window.jQuery('#custom-timer').on('show.bs.modal', populateDropdowns);
+    }
+    window.addEventListener('focus', populateDropdowns);
+    window.addEventListener('storage', function(e) {
+        if (e.key === PRESETS_KEY) populateDropdowns();
+    });
+
+    // Init
+    updatePillUI();
+    populateDropdowns();
+    console.log('[Ambience] 20-20-20 loaded. Vol:', getVolume(), 'Mode:', detectMode());
+})();
+</script>
+
+<script>
+// ============================================================
+// Task Manager v1 (20-20-20 edition) — card to-do list wired into the
+// eye-timer engine. Same storage key as the main page ('tt_tasks_v1'),
+// so the list follows the user across both pages. Drain: each completed
+// WORK second on the active task reduces its estimate; breaks/snoozes
+// never drain. Pause stops the drain; play resumes it.
+// ============================================================
+(function TaskManager() {
+    'use strict';
+
+    var STORE_KEY = 'tt_tasks_v1';
+
+    // ---------- state ----------
+    var state = { tasks: [], activeId: null };
+    var zeroPromptFor = null;   // task id currently showing the "estimate hit 0" prompt
+    var undoBuffer = null;      // { task, index, wasActive }
+    var undoTimer = null;
+
+    function load() {
+        try {
+            var raw = localStorage.getItem(STORE_KEY);
+            if (raw) {
+                var parsed = JSON.parse(raw);
+                if (parsed && Array.isArray(parsed.tasks)) {
+                    state.tasks = parsed.tasks;
+                    state.activeId = parsed.activeId || null;
+                }
+            }
+        } catch (e) {}
+    }
+    function save() {
+        try {
+            localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        } catch (e) {}
+    }
+
+    function uid() {
+        return 't' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    // ---------- time parsing / formatting ----------
+    // Accepts: "90" (minutes), "45m", "1h", "1h 30m", "1:30", "1.5h"
+    function parseTime(str) {
+        if (!str) return null;
+        str = String(str).trim().toLowerCase();
+        if (!str) return null;
+        var m;
+        m = str.match(/^(\d+)\s*:\s*(\d{1,2})$/);            // h:mm
+        if (m) return (parseInt(m[1], 10) * 60 + parseInt(m[2], 10)) * 60000;
+        var hours = 0, mins = 0, matched = false;
+        m = str.match(/([\d.]+)\s*h/);
+        if (m) { hours = parseFloat(m[1]); matched = true; }
+        m = str.match(/(\d+)\s*m(?:in)?/);
+        if (m) { mins = parseInt(m[1], 10); matched = true; }
+        if (matched) return Math.round((hours * 60 + mins) * 60000);
+        m = str.match(/^(\d+)$/);                             // bare number = minutes
+        if (m) return parseInt(m[1], 10) * 60000;
+        return null;
+    }
+    function fmtMs(ms) {
+        var totalMin = Math.max(1, Math.ceil(ms / 60000));
+        var h = Math.floor(totalMin / 60), m = totalMin % 60;
+        if (h && m) return h + 'h ' + (m < 10 ? '0' + m : m) + 'm';
+        if (h) return h + 'h';
+        return m + 'm';
+    }
+
+    function getTask(id) {
+        for (var i = 0; i < state.tasks.length; i++) {
+            if (state.tasks[i].id === id) return state.tasks[i];
+        }
+        return null;
+    }
+
+    // ---------- DOM ----------
+    var cardsEl, doneWrapEl, doneCardsEl, doneCountEl, activeLineEl;
+
+    function render() {
+        var queued = state.tasks.filter(function (t) { return !t.done; });
+        var done = state.tasks.filter(function (t) { return t.done; });
+
+        cardsEl.innerHTML = '';
+        if (!queued.length && !done.length) {
+            cardsEl.innerHTML = '<div style="color:rgba(140,90,62,0.55);font-size:0.88rem;padding:14px 4px;">No tasks yet — add one above. Your list is saved on this device until you clear it.</div>';
+        }
+        queued.forEach(function (t) { cardsEl.appendChild(renderCard(t)); });
+
+        doneWrapEl.classList.toggle('d-none', !done.length);
+        doneCountEl.textContent = done.length ? '(' + done.length + ')' : '';
+        doneCardsEl.innerHTML = '';
+        done.forEach(function (t) { doneCardsEl.appendChild(renderCard(t)); });
+
+        renderActiveLine();
+    }
+
+    function renderCard(task) {
+        var isActive = task.id === state.activeId && !task.done;
+        var card = document.createElement('div');
+        card.className = 'tm-card' + (isActive ? ' tm-active' : '') + (task.done ? ' tm-done' : '');
+        if (task.color && !isActive && !task.done) card.style.borderLeftColor = task.color;
+        card.dataset.id = task.id;
+
+        // Clickable color edge: cycles the palette, works after creation too
+        var edge = document.createElement('div');
+        edge.className = 'tm-color-edge';
+        edge.title = 'Click to change color';
+        edge.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var PALETTE = [null, '#DE4B3A', '#FFA900', '#5FA46A', '#4A90D9', '#9B59B6'];
+            var i = PALETTE.indexOf(task.color || null);
+            task.color = PALETTE[(i + 1) % PALETTE.length];
+            save();
+            if (!isActive && !task.done) {
+                card.style.borderLeftColor = task.color || '#E8D5C0';
+            }
+        });
+        card.appendChild(edge);
+        if (!task.done) card.draggable = true;
+
+        // --- top row ---
+        var top = document.createElement('div');
+        top.className = 'tm-card-top';
+
+        var title = document.createElement('span');
+        title.className = 'tm-title';
+        title.textContent = task.title;
+        title.title = 'Click to edit';
+        title.addEventListener('click', function () { editTitle(card, task); });
+
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'tm-est-chip' + (task.estMs ? '' : ' tm-est-empty');
+        chip.textContent = task.estMs ? fmtMs(task.estMs) + ' left' : '+ est';
+        chip.title = 'Click to edit estimate';
+        chip.addEventListener('click', function () { editEstimate(card, task); });
+
+        top.appendChild(title);
+        if (!task.done) top.appendChild(chip);  // estimates are irrelevant once done
+
+        if (!task.done) {
+            var startBtn = document.createElement('button');
+            startBtn.type = 'button';
+            startBtn.className = 'tm-start-btn' + (isActive ? ' tm-focusing' : '');
+            startBtn.textContent = isActive ? '● Focusing' : '▶ Start';
+            startBtn.addEventListener('click', function () { startTask(task.id); });
+            top.appendChild(startBtn);
+        } else {
+            var restoreBtn = document.createElement('button');
+            restoreBtn.type = 'button';
+            restoreBtn.className = 'tm-icon-btn';
+            restoreBtn.textContent = '↩';
+            restoreBtn.title = 'Move back to list';
+            restoreBtn.addEventListener('click', function () {
+                task.done = false;
+                save(); render();
+            });
+            top.appendChild(restoreBtn);
+        }
+
+        var doneBtn = document.createElement('button');
+        doneBtn.type = 'button';
+        doneBtn.className = 'tm-icon-btn';
+        doneBtn.textContent = task.done ? '☑' : '☐';
+        doneBtn.title = task.done ? 'Mark not done' : 'Mark done';
+        doneBtn.addEventListener('click', function () { toggleDone(task.id); });
+
+        var delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'tm-icon-btn';
+        delBtn.textContent = '🗑';
+        delBtn.title = 'Delete';
+        delBtn.addEventListener('click', function () { deleteTask(task.id); });
+
+        top.appendChild(doneBtn);
+        top.appendChild(delBtn);
+        card.appendChild(top);
+
+        // --- detail (notes + subtasks) ---
+        var hasDetail = (task.notes && task.notes.trim()) || (task.subs && task.subs.length);
+        var detail = document.createElement('div');
+        detail.className = 'tm-card-detail';
+        detail.style.display = hasDetail ? 'block' : 'none';
+        buildDetail(detail, task);
+        card.appendChild(detail);
+
+        var toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'tm-detail-toggle';
+        toggle.textContent = hasDetail ? '▾ notes / subtasks' : '▸ notes / subtasks';
+        toggle.addEventListener('click', function () {
+            var open = detail.style.display !== 'none';
+            detail.style.display = open ? 'none' : 'block';
+            toggle.textContent = open ? '▸ notes / subtasks' : '▾ notes / subtasks';
+        });
+        card.appendChild(toggle);
+
+        // --- drag to reorder (queued cards only) ---
+        if (!task.done) {
+            card.addEventListener('dragstart', function (e) {
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', task.id);
+            });
+            card.addEventListener('dragend', function () {
+                card.classList.remove('dragging');
+                cardsEl.querySelectorAll('.tm-card').forEach(function (c) { c.classList.remove('dragover'); });
+                commitDomOrder();
+            });
+            card.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                var dragging = cardsEl.querySelector('.tm-card.dragging');
+                if (!dragging || dragging === card) return;
+                var rect = card.getBoundingClientRect();
+                var before = (e.clientY - rect.top) < rect.height / 2;
+                cardsEl.insertBefore(dragging, before ? card : card.nextSibling);
+            });
+            card.addEventListener('drop', function (e) { e.preventDefault(); });
+        }
+
+        return card;
+    }
+
+    function buildDetail(container, task) {
+        container.innerHTML = '';
+
+        var notes = document.createElement('textarea');
+        notes.className = 'tm-notes';
+        notes.rows = 4;
+        notes.placeholder = 'Notes…';
+        notes.value = task.notes || '';
+        notes.addEventListener('input', function () {
+            task.notes = notes.value;
+            save();
+        });
+        container.appendChild(notes);
+
+        var ul = document.createElement('ul');
+        ul.className = 'tm-subtasks';
+        (task.subs || []).forEach(function (sub) {
+            ul.appendChild(renderSubtask(task, sub));
+        });
+        container.appendChild(ul);
+
+        var addRow = document.createElement('div');
+        addRow.className = 'tm-sub-add';
+        var input = document.createElement('input');
+        input.className = 'tm-input';
+        input.placeholder = 'Add subtask…';
+        input.maxLength = 80;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tm-icon-btn';
+        btn.textContent = '＋';
+        btn.title = 'Add subtask';
+        function addSub() {
+            var v = input.value.trim();
+            if (!v) return;
+            task.subs = task.subs || [];
+            task.subs.push({ id: uid(), text: v, done: false });
+            save();
+            input.value = '';
+            buildDetail(container, task);
+            // Keep focus in the fresh subtask input for rapid entry
+            var newInput = container.querySelector('.tm-sub-add input');
+            if (newInput) newInput.focus();
+        }
+        btn.addEventListener('click', addSub);
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); addSub(); }
+        });
+        addRow.appendChild(input);
+        addRow.appendChild(btn);
+        container.appendChild(addRow);
+    }
+
+    function renderSubtask(task, sub) {
+        var li = document.createElement('li');
+        li.className = 'tm-subtask' + (sub.done ? ' tm-sub-done' : '');
+
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!sub.done;
+        cb.addEventListener('change', function () {
+            sub.done = cb.checked;
+            li.classList.toggle('tm-sub-done', sub.done);
+            save();
+        });
+
+        var text = document.createElement('span');
+        text.className = 'tm-sub-text';
+        text.textContent = sub.text;
+
+        var del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'tm-icon-btn';
+        del.textContent = '✕';
+        del.title = 'Delete subtask';
+        del.addEventListener('click', function () {
+            task.subs = task.subs.filter(function (s) { return s.id !== sub.id; });
+            save();
+            li.remove();
+        });
+
+        li.appendChild(cb);
+        li.appendChild(text);
+        li.appendChild(del);
+        return li;
+    }
+
+    // ---------- inline editing ----------
+    function editTitle(card, task) {
+        var titleEl = card.querySelector('.tm-title');
+        if (!titleEl) return;
+        var input = document.createElement('input');
+        input.className = 'tm-title-input';
+        input.value = task.title;
+        input.maxLength = 120;
+        titleEl.replaceWith(input);
+        input.focus();
+        input.select();
+        var committed = false;
+        function commit(saveIt) {
+            if (committed) return;
+            committed = true;
+            var v = input.value.trim();
+            if (saveIt && v) { task.title = v; save(); }
+            render();
+        }
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(true); }
+            else if (e.key === 'Escape') { commit(false); }
+        });
+        input.addEventListener('blur', function () { commit(true); });
+    }
+
+    function editEstimate(card, task) {
+        var chip = card.querySelector('.tm-est-chip');
+        if (!chip) return;
+        var input = document.createElement('input');
+        input.className = 'tm-est-input';
+        input.value = task.estMs ? fmtMs(task.estMs) : '';
+        input.placeholder = '45m';
+        chip.replaceWith(input);
+        input.focus();
+        input.select();
+        var committed = false;
+        function commit(saveIt) {
+            if (committed) return;
+            committed = true;
+            if (saveIt) {
+                var v = input.value.trim();
+                if (!v) { task.estMs = null; }
+                else {
+                    var ms = parseTime(v);
+                    if (ms && ms > 0) task.estMs = ms;
+                }
+                task._zeroPrompted = false;
+                save();
+            }
+            render();
+        }
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(true); }
+            else if (e.key === 'Escape') { commit(false); }
+        });
+        input.addEventListener('blur', function () { commit(true); });
+    }
+
+    // ---------- actions ----------
+    function addTask(title, estMs, color) {
+        state.tasks.push({
+            id: uid(),
+            title: title,
+            notes: '',
+            subs: [],
+            estMs: estMs || null,
+            color: color || null,
+            done: false,
+            created: Date.now()
+        });
+        save(); render();
+    }
+
+    function toggleDone(id) {
+        var t = getTask(id);
+        if (!t) return;
+        t.done = !t.done;
+        if (t.done && state.activeId === id) {
+            state.activeId = null;   // drain stops; timer itself keeps running
+        }
+        if (!t.done) t._zeroPrompted = false;
+        if (zeroPromptFor === id) { zeroPromptFor = null; hideZeroOverlay(); }
+        save(); render();
+    }
+
+    function deleteTask(id) {
+        var idx = state.tasks.findIndex(function (t) { return t.id === id; });
+        if (idx === -1) return;
+        var task = state.tasks[idx];
+        var wasActive = state.activeId === id;
+        state.tasks.splice(idx, 1);
+        if (wasActive) state.activeId = null;
+        if (zeroPromptFor === id) { zeroPromptFor = null; hideZeroOverlay(); }
+        save(); render();
+
+        undoBuffer = { task: task, index: idx, wasActive: wasActive };
+        showToast('Task deleted', 'Undo', function () {
+            if (!undoBuffer) return;
+            var at = Math.min(undoBuffer.index, state.tasks.length);
+            state.tasks.splice(at, 0, undoBuffer.task);
+            if (undoBuffer.wasActive) state.activeId = undoBuffer.task.id;
+            undoBuffer = null;
+            save(); render();
+        });
+    }
+
+    function startTask(id) {
+        var t = getTask(id);
+        if (!t || t.done) return;
+        state.activeId = id;
+        zeroPromptFor = null;
+        save(); render();
+        // Begin (or resume) a 20-minute work session for this task.
+        if (typeof window.startWork === 'function') window.startWork();
+    }
+
+    // ---------- estimate-hit-zero overlay (over the countdown) ----------
+    var zeroOverlayEl, zeroTextEl, zeroInputEl;
+
+    function showZeroOverlay(task) {
+        zeroTextEl.textContent = '⏱ Estimate reached for "' + task.title + '". The timer is paused — add more time, or mark the task done.';
+        zeroInputEl.value = '';
+        zeroOverlayEl.classList.remove('d-none');
+        setTimeout(function () { zeroInputEl.focus(); }, 50);
+    }
+    function hideZeroOverlay() {
+        if (zeroOverlayEl) zeroOverlayEl.classList.add('d-none');
+    }
+
+    function wireZeroOverlay() {
+        zeroOverlayEl = document.getElementById('tm_zero_overlay');
+        zeroTextEl = document.getElementById('tm_zero_text');
+        zeroInputEl = document.getElementById('tm_zero_input');
+        if (!zeroOverlayEl) return;
+
+        document.getElementById('tm_zero_add').addEventListener('click', function () {
+            var task = zeroPromptFor ? getTask(zeroPromptFor) : null;
+            if (!task) { hideZeroOverlay(); return; }
+            var ms = parseTime(zeroInputEl.value);
+            if (!ms || ms <= 0) { zeroInputEl.focus(); zeroInputEl.style.borderColor = '#DE4B3A'; return; }
+            task.estMs = ms;
+            task._zeroPrompted = false;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            resumeIfPaused();
+        });
+
+        document.getElementById('tm_zero_done').addEventListener('click', function () {
+            var task = zeroPromptFor ? getTask(zeroPromptFor) : null;
+            if (task) task.done = true;
+            state.activeId = null;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            // Timer stays paused (it was stopped at estimate-zero) so the user
+            // can readjust before pressing play again.
+        });
+
+        zeroInputEl.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('tm_zero_add').click(); }
+        });
+    }
+
+    function resumeIfPaused() {
+        // The work timer was paused at estimate-zero; continue the session.
+        if (window.mode === 'work' && (window.left || 0) > 0 && !window.timer && typeof window.runTimer === 'function') {
+            window.runTimer();
+        }
+    }
+
+    // ---------- active-task line under the timer ----------
+    function renderActiveLine() {
+        var t = state.activeId ? getTask(state.activeId) : null;
+        if (!t || t.done) {
+            activeLineEl.innerHTML = '';
+            return;
+        }
+        var html = 'Working on: <strong>' + esc(t.title) + '</strong>';
+        if (t.estMs) html += ' — <span class="tm-est-left">' + fmtMs(t.estMs) + ' left</span>';
+        activeLineEl.innerHTML = html;
+    }
+
+    // ---------- drain: rides the page engine's own 1-second ticks ----------
+    // tick() only fires while the countdown interval is alive, so pause
+    // automatically stops the drain and play resumes it.
+    function tmTick() {
+        var t = state.activeId ? getTask(state.activeId) : null;
+        if (!t || t.done || !t.estMs) return;
+        if (window.mode !== 'work') return;   // breaks/snoozes never drain
+
+        t.estMs = Math.max(0, t.estMs - 1000);
+
+        // light-touch UI update without full re-render
+        var chip = cardsEl.querySelector('.tm-card[data-id="' + t.id + '"] .tm-est-chip');
+        if (chip) chip.textContent = fmtMs(t.estMs) + ' left';
+        renderActiveLine();
+
+        if (t.estMs <= 0 && !t._zeroPrompted) {
+            t._zeroPrompted = true;
+            zeroPromptFor = t.id;
+            save();
+            // Pause the work session so the user can decide. If the 20
+            // minutes also completed this same tick (window already open),
+            // there is nothing to pause — just show the overlay.
+            if (window.mode === 'work' && (window.left || 0) > 0 && typeof window.stopTimer === 'function') {
+                window.stopTimer();
+            }
+            render();
+            showZeroOverlay(t);
+            return;
+        }
+        // persist roughly every 15s of drain, not every second
+        if (Math.round(t.estMs / 1000) % 15 === 0) save();
+    }
+
+    // Wrap the engine's global tick(). runTimer() resolves the name at
+    // call time (setInterval(tick, 1000)), so the wrap takes effect
+    // everywhere, including sessions started after this script ran.
+    if (typeof window.tick === 'function') {
+        var _origTick = window.tick;
+        window.tick = function () {
+            _origTick();
+            tmTick();
+        };
+    }
+
+    // ---------- toast (undo) ----------
+    var toastEl = null;
+    function showToast(msg, actionLabel, actionFn) {
+        if (!toastEl) {
+            toastEl = document.createElement('div');
+            toastEl.className = 'tm-toast';
+            document.body.appendChild(toastEl);
+        }
+        toastEl.innerHTML = '<span>' + esc(msg) + '</span>';
+        if (actionLabel && actionFn) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = actionLabel;
+            b.addEventListener('click', function () {
+                actionFn();
+                hideToast();
+            });
+            toastEl.appendChild(b);
+        }
+        toastEl.classList.add('show');
+        clearTimeout(undoTimer);
+        undoTimer = setTimeout(function () {
+            hideToast();
+            undoBuffer = null;
+        }, 6000);
+    }
+    function hideToast() {
+        if (toastEl) toastEl.classList.remove('show');
+    }
+
+    // ---------- drag order commit ----------
+    function commitDomOrder() {
+        var ids = Array.prototype.map.call(
+            cardsEl.querySelectorAll('.tm-card'),
+            function (c) { return c.dataset.id; }
+        );
+        if (!ids.length) return;
+        var queued = [], done = [];
+        state.tasks.forEach(function (t) { (t.done ? done : queued).push(t); });
+        queued.sort(function (a, b) { return ids.indexOf(a.id) - ids.indexOf(b.id); });
+        state.tasks = queued.concat(done);
+        save(); render();
+    }
+
+    // ---------- wire up ----------
+    function init() {
+        cardsEl = document.getElementById('tm_cards');
+        doneWrapEl = document.getElementById('tm_done_wrap');
+        doneCardsEl = document.getElementById('tm_done_cards');
+        doneCountEl = document.getElementById('tm_done_count');
+        activeLineEl = document.getElementById('tm_active_line');
+        if (!cardsEl) return;
+
+        load();
+        wireZeroOverlay();
+        render();
+
+        var form = document.getElementById('tm_add_form');
+        var titleInput = document.getElementById('tm_add_title');
+        var estInput = document.getElementById('tm_add_estimate');
+
+        // Color picker: selected swatch colors the next task's left edge.
+        var selectedColor = null;
+        var picker = document.getElementById('tm_color_picker');
+        picker.addEventListener('click', function (e) {
+            var sw = e.target.closest('.tm-swatch');
+            if (!sw) return;
+            selectedColor = sw.getAttribute('data-color') || null;
+            picker.querySelectorAll('.tm-swatch').forEach(function (s) {
+                s.classList.toggle('tm-swatch-selected', s === sw);
+            });
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var title = titleInput.value.trim();
+            if (!title) { titleInput.focus(); return; }
+            var est = parseTime(estInput.value);
+            addTask(title, est, selectedColor);
+            titleInput.value = '';
+            estInput.value = '';
+            titleInput.focus();
+        });
+
+        document.getElementById('tm_clear_done').addEventListener('click', function () {
+            var had = state.tasks.some(function (t) { return t.done; });
+            if (!had) return;
+            state.tasks = state.tasks.filter(function (t) { return !t.done; });
+            save(); render();
+        });
+
+        // Two-step reset: first click arms, second confirms.
+        var resetBtn = document.getElementById('tm_reset');
+        var armed = false, armTimer = null;
+        resetBtn.addEventListener('click', function () {
+            if (!armed) {
+                armed = true;
+                resetBtn.textContent = 'Click again to confirm reset';
+                resetBtn.style.color = '#DE4B3A';
+                armTimer = setTimeout(function () {
+                    armed = false;
+                    resetBtn.textContent = 'Reset list';
+                    resetBtn.style.color = '';
+                }, 3000);
+                return;
+            }
+            clearTimeout(armTimer);
+            armed = false;
+            resetBtn.textContent = 'Reset list';
+            resetBtn.style.color = '';
+            state.tasks = [];
+            state.activeId = null;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            showToast('List cleared', null, null);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+</body>
+</html>
