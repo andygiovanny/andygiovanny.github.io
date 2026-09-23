@@ -232,6 +232,19 @@
         color: #DE4B3A;
         text-decoration: underline;
     }
+    .notify-test-btn {
+        background: #FFFFFF;
+        color: #58240E;
+        border: 2px solid rgba(88, 36, 14, 0.18);
+        border-radius: 50px;
+        padding: 6px 16px 4px;
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+    }
+    .notify-test-btn:hover { border-color: #DE4B3A; color: #DE4B3A; }
 </style>
   
   
@@ -265,9 +278,9 @@
         color: inherit;
     }
     
-    /* Top solo button stretches to match the pair below */
+    /* Top row buttons match the pair below */
     .button-row:first-child .button-style {
-        min-width: 340px;
+        min-width: 166px;
         text-align: center;
     }
     
@@ -917,6 +930,10 @@ body.theme-dark .ambience-select {
     color: #E8D9B8 !important;
     border-color: #3a2d20 !important;
 }
+body.theme-dark .ambience-section-title { color: #E0A458; }
+body.theme-dark .ambience-section-desc { color: #A98F6F; }
+body.theme-dark .notify-test-btn { background: #2a2018; color: #E8D9B8; border-color: #3a2d20; }
+body.theme-dark .notify-test-btn:hover { border-color: #E0A458; color: #E0A458; }
 
 /* ── Active-task line ── */
 body.theme-dark .tm-active-line { color: #A98F6F; }
@@ -1102,7 +1119,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
       <img src="assets/images/YT.png" alt="Subscribe" style="height: 28px;">
     </a>
     <span style="font-size: 15px; color: #fff;">
-      Dark theme is here! Support the channel and check out the videos below!
+      New Todo List is here! Use custom timer and ambience studio to attach ambience, Support the channel and check out the videos below!
     </span>
   </div>
   <div class="g-ytsubscribe" 
@@ -1126,6 +1143,9 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         <button type="button" class="btn button-style rounded-pill button-animate"
                 onclick="document.getElementById('pomodoro-guide').scrollIntoView({behavior:'smooth'})">What is Pomodoro Timer?
         </button>
+        <button type="button" class="btn button-style rounded-pill button-animate"
+                onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Other Rhythm
+        </button>
     </div>
     <div class="button-row">
         <button type="button" class="btn button-style rounded-pill button-animate" data-toggle="modal"
@@ -1140,9 +1160,9 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             
 <div class="theme-toggle-wrapper" style="padding-left: 30px !important;">
   <select id="theme-select" class="theme-select" aria-label="Choose site theme">
-    <option value="light">  Light Theme</option>
-    <option value="dark">  Dark Theme</option>
-    <option value="classic">  Classic Tomato</option>
+    <option value="light">Light Theme</option>
+    <option value="dark">Dark Theme</option>
+    <option value="classic">Classic Tomato</option>
   </select>
   <!-- Hidden legacy toggle: tomato.js reads it for the Classic Tomato image swaps + mascot set -->
   <input type="checkbox" id="theme-toggle" style="display:none" aria-hidden="true" tabindex="-1">
@@ -1849,6 +1869,44 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 </div>
 
 
+<!-- ═══ Other Rhythm / Other Tools: internal-link cards (SEO cross-links) ═══ -->
+<style>
+  .tt-cards { max-width: 1200px; margin: 48px auto 0; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; }
+  .tt-cards-title { font-size: 1.5rem; color: #58240E; margin: 0 0 14px; }
+  .tt-card-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+                 padding: 6px 4px 18px; -webkit-overflow-scrolling: touch; }
+  .tt-card-row::-webkit-scrollbar { height: 8px; }
+  .tt-card-row::-webkit-scrollbar-thumb { background: #E3C89A; border-radius: 8px; }
+  .tt-card { flex: 0 0 240px; scroll-snap-align: start; background: #FFFFFF; border-radius: 18px;
+             overflow: hidden; text-decoration: none; border: 1px solid #EBDCC3;
+             box-shadow: 0 3px 10px rgba(88, 36, 14, .08);
+             transition: transform .18s ease, box-shadow .18s ease; }
+  .tt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(88, 36, 14, .14); }
+  .tt-card img { width: 100%; height: 170px; object-fit: contain; padding: 18px;
+                 background: #FBF3E4; box-sizing: border-box; }
+  .tt-card-text { padding: 12px 16px 16px; }
+  .tt-card h3 { font-size: 1.05rem; color: #58240E; margin: 0 0 4px; }
+  .tt-card p { font-size: .85rem; color: #8C5A3E; margin: 0; line-height: 1.45; }
+  body.theme-dark .tt-cards-title { color: #E0A458; }
+  body.theme-dark .tt-card { background: #2a2018; border-color: #3a2d20; box-shadow: 0 3px 10px rgba(0, 0, 0, .3); }
+  body.theme-dark .tt-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+  body.theme-dark .tt-card img { background: #1c1410; }
+  body.theme-dark .tt-card h3 { color: #E0A458; }
+  body.theme-dark .tt-card p { color: #C9B18F; }
+</style>
+<section id="other-rhythm" class="tt-cards" aria-label="Other rhythms and tools">
+  <h2 class="tt-cards-title">Other Rhythm</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/20-20-20-rule/">
+      <img src="assets/images/1.svg" alt="Tomato chick mascot of the 20-20-20 eye break timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>20-20-20 Rule Timer</h3>
+        <p>Every 20 minutes, look 20 feet away for 20 seconds — a gentle eye-break rhythm that fights digital eye strain.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
 <div class="container-fluid footer-background">
     <div class="container">
         <div class="row">
@@ -1934,6 +1992,26 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                         <label for="long_break_value" class="text-color">LONG BREAK</label>
                         <input type="text" name="long_break_value" id="long_break_value" class="form-control integer"
                                value="15"/>
+                    </div>
+
+                    <hr class="ambience-divider">
+                    <div class="ambience-section-title">🔔 Notification Sound</div>
+                    <div class="ambience-section-desc">
+                        Pick the chime that plays when the timer finishes. Notification 1 is the default beep.
+                    </div>
+                    <div class="form-group">
+                        <label for="notify_sound" class="text-color">NOTIFICATION CHIME</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <select id="notify_sound" class="form-control ambience-select" style="flex: 1;">
+                                <option value="1">Notification 1 (Default Beep)</option>
+                                <option value="2">Notification 2</option>
+                                <option value="3">Notification 3</option>
+                                <option value="4">Notification 4</option>
+                                <option value="5">Notification 5</option>
+                                <option value="6">Notification 6</option>
+                            </select>
+                            <button type="button" id="notify_sound_test" class="notify-test-btn">▶ Test</button>
+                        </div>
                     </div>
 
                     <hr class="ambience-divider">
@@ -2530,6 +2608,65 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     updatePillUI();
     populateDropdowns();
     console.log('[Ambience] v12 loaded. Vol:', getVolume(), 'Mode:', detectMode());
+})();
+</script>
+<script>
+// ============================================================
+// Notification chime picker — per-timer chime map, built to be
+// shared by future timers (20-20-20, etc.):
+//   localStorage 'tt_notify_sounds_v1' = { main: 1..6, eye: 1..6, ... }
+// Each timer page reads/writes only its own key. tomato.js owns
+// the global `audio` alarm object — we just repoint its src.
+// ============================================================
+(function () {
+    var NOTIFY_KEY = 'tt_notify_sounds_v1';
+    var NOTIFY_FILES = {
+        1: 'assets/sounds/beep.mp3',   // default
+        2: 'assets/sounds/Notification 1.mp3',
+        3: 'assets/sounds/Notification 2.mp3',
+        4: 'assets/sounds/Notification 3.mp3',
+        5: 'assets/sounds/Notification 4.mp3',
+        6: 'assets/sounds/Notification 5.mp3'
+    };
+
+    function getChime(timerId) {
+        try {
+            var map = JSON.parse(localStorage.getItem(NOTIFY_KEY) || '{}');
+            var n = parseInt(map[timerId], 10);
+            return (n >= 1 && n <= 6) ? n : 1;
+        } catch (e) { return 1; }
+    }
+    function setChime(timerId, n) {
+        try {
+            var map = JSON.parse(localStorage.getItem(NOTIFY_KEY) || '{}');
+            map[timerId] = n;
+            localStorage.setItem(NOTIFY_KEY, JSON.stringify(map));
+        } catch (e) {}
+    }
+    function applyChime() {
+        var file = NOTIFY_FILES[getChime('main')] || NOTIFY_FILES[1];
+        try { if (typeof audio !== 'undefined' && audio) audio.src = file; } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        applyChime();
+        var sel = document.getElementById('notify_sound');
+        var testBtn = document.getElementById('notify_sound_test');
+        if (sel) sel.value = String(getChime('main'));
+        if (testBtn && sel) {
+            testBtn.addEventListener('click', function () {
+                var f = NOTIFY_FILES[parseInt(sel.value, 10)] || NOTIFY_FILES[1];
+                try { var a = new Audio(f); a.play(); } catch (e) {}
+            });
+        }
+        var saveBtn = document.getElementById('SaveSet');
+        if (saveBtn && sel) {
+            saveBtn.addEventListener('click', function () {
+                setChime('main', parseInt(sel.value, 10) || 1);
+                applyChime();
+            });
+        }
+    });
 })();
 </script>
 <script>

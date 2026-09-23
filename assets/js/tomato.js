@@ -21,6 +21,7 @@ $(document).ready(function () {
 
 });
 var audio = new Audio('assets/sounds/beep.mp3');
+audio.preload = 'auto';
 let isDuckTheme = false;
 var $tomato = $('#tomato-cartoon');
 
@@ -436,7 +437,9 @@ function onResetTimer() {
 
 function startAlarm() {
     if (remainingTime < 1000) {
-        audio.play();
+        try { audio.currentTime = 0; } catch (e) {}   // rewind: re-rings even if a previous chime is mid-play
+        var alarmPlay = audio.play();
+        if (alarmPlay && alarmPlay.catch) { alarmPlay.catch(function () {}); }
         notify('Timer Complete');
     }
     if (remainingTime < 1000 && isLoopClicked == true)

@@ -1139,12 +1139,12 @@
 
                         <div class="nav-links-right">
                             <select id="theme-select" class="theme-select" aria-label="Choose site theme">
-                                <option value="light"> Light Theme</option>
-                                <option value="dark"> Dark Theme</option>
+                                <option value="light">Light Theme</option>
+                                <option value="dark">Dark Theme</option>
                             </select>
                             <button type="button" class="pill-btn" id="customPresetsBtn">Custom Ambience </button>
                             <button type="button" class="pill-btn" id="howItWorksBtn">How It Works?</button>
-                            <a href="https://www.tomatotimers.com/" target="_blank" rel="noopener noreferrer" class="pill-btn">Main Timer</a>
+                            <button type="button" class="pill-btn" onclick="document.getElementById('timers-section').scrollIntoView({behavior:'smooth'})">Timers</button>
                         </div>
                     </div>
 
@@ -1383,6 +1383,51 @@
 
                 </div>
             </div></div>
+
+<!-- ═══ Other Rhythm: internal-link cards (SEO cross-links) ═══ -->
+<style>
+  .tt-cards { max-width: 900px; margin: 48px auto 0; padding: 0 20px; position: relative; z-index: 1; }
+  .tt-cards-title { font-size: 1.5rem; color: var(--text-brown); margin: 0 0 14px; }
+  .tt-card-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+                 padding: 6px 4px 18px; -webkit-overflow-scrolling: touch; }
+  .tt-card-row::-webkit-scrollbar { height: 8px; }
+  .tt-card-row::-webkit-scrollbar-thumb { background: #E3C89A; border-radius: 8px; }
+  .tt-card { flex: 0 0 240px; scroll-snap-align: start; background: #FFFFFF; border-radius: var(--radius-card);
+             overflow: hidden; text-decoration: none; border: 1px solid #EBDCC3;
+             box-shadow: 0 3px 10px rgba(88, 36, 14, .08);
+             transition: transform .18s ease, box-shadow .18s ease; }
+  .tt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(88, 36, 14, .14); }
+  .tt-card img { width: 100%; height: 170px; object-fit: contain; padding: 18px;
+                 background: var(--bg-hero); box-sizing: border-box; }
+  .tt-card-text { padding: 12px 16px 16px; }
+  .tt-card h3 { font-size: 1.05rem; color: var(--text-brown); margin: 0 0 4px; }
+  .tt-card p { font-size: .85rem; color: var(--text-muted); margin: 0; line-height: 1.45; }
+  body.theme-dark .tt-cards-title { color: #F2B33D; }
+  body.theme-dark .tt-card { background: #241811; border-color: #3d2a1c; box-shadow: 0 3px 10px rgba(0, 0, 0, .35); }
+  body.theme-dark .tt-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, .5); }
+  body.theme-dark .tt-card img { background: #1A120C; }
+  body.theme-dark .tt-card h3 { color: #F2B33D; }
+  body.theme-dark .tt-card p { color: #C9AE90; }
+</style>
+<section id="timers-section" class="tt-cards" aria-label="Other rhythms">
+  <h2 class="tt-cards-title">Timers</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/">
+      <img src="/assets/images/tomato-cartoon.svg" alt="Tomato mascot of the Pomodoro focus timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Pomodoro Timer</h3>
+        <p>The classic 25-minute focus rhythm with short and long breaks — our main timer.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/20-20-20-rule/">
+      <img src="/assets/images/1.svg" alt="Tomato chick mascot of the 20-20-20 eye break timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>20-20-20 Rule Timer</h3>
+        <p>Every 20 minutes, look 20 feet away for 20 seconds — a gentle eye-break rhythm that fights digital eye strain.</p>
+      </div>
+    </a>
+  </div>
+</section>
 
             <footer style="margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 15px; font-weight: 400; padding-bottom: 25px; width: 100%; position: relative; z-index: 1;">
     <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px;">
