@@ -112,10 +112,6 @@
     justify-content: space-between; gap: 15px; border-radius: 6px; flex-wrap: wrap; }
   .yt-promo-left { display: flex; align-items: center; gap: 12px; }
   #yt-promo span { font-size: 15px; color: #fff; }
-  .yt-sub-btn { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #752222;
-    font-family: inherit; font-size: 14px; font-weight: 700; padding: 6px 14px 3px; border-radius: 20px;
-    text-decoration: none; white-space: nowrap; }
-  .yt-sub-btn:hover { background: #ffe3e3; }
 
   /* ── header: flows on the page background, no bar — and like the main page
      it lives inside the centered ~1140px container, not edge to edge ── */
@@ -1072,7 +1068,9 @@ html.theme-dark .ft-log-band { background: #1f1813; }
     gtag('config', 'G-XXWPJH9V4X', {
         'page_path': window.location.pathname
         });
-</script><base target="_blank">
+</script>
+    <script src="https://apis.google.com/js/platform.js"></script> <!-- YT Subs button --><base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -1089,7 +1087,10 @@ html.theme-dark .ft-log-band { background: #1f1813; }
       Use reward settings and ambience studio to change your flow, Support the channel and check out the videos by clicking the YT button!
     </span>
   </div>
-  <a class="yt-sub-btn" href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w?sub_confirmation=1" target="_blank" rel="noopener noreferrer">▶ Subscribe</a>
+  <div class="g-ytsubscribe"
+       data-channelid="UC-u-z82nVkW81veR76iFx_w"
+       data-layout="default"
+       data-count="default"></div>
 </div>
 
 <!-- Tomatotimers_S2S_Leftsidebar_ROS -->
