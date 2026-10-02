@@ -949,8 +949,6 @@
 
 </style>
 <script src="https://apis.google.com/js/platform.js" async defer></script> <!-- YT Subs button -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4915380526583895"
-     crossorigin="anonymous"></script>
 <script type="text/javascript">
 (function(){
 	var bsa_optimize=document.createElement('script');
@@ -995,7 +993,7 @@
     if (theme !== 'dark') theme = 'light';   // 'classic' on the main page = light here
     document.documentElement.classList.toggle('theme-dark', theme === 'dark');
     var logo = document.getElementById('logo');
-    if (logo) { logo.dataset.fb = ''; logo.src = 'assets/images/' + (theme === 'dark' ? 'logo-dark.svg' : 'logo.svg'); }
+    if (logo) { logo.dataset.fb = ''; logo.src = '/assets/images/' + (theme === 'dark' ? 'logo-dark.svg' : 'logo.svg'); }
     var sel = document.getElementById('theme-select');
     if (sel) sel.value = theme;
   }
@@ -1022,6 +1020,7 @@
         'page_path': window.location.pathname
         });
 </script>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -1300,6 +1299,13 @@
         <p>The classic 25-minute focus rhythm with short and long breaks — our main timer for deep work and study sessions.</p>
       </div>
     </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/flowtime/">
+      <img src="/assets/images/flowtime-card.png" alt="Chick mascot working at a laptop for the flowtime technique timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Flowtime Technique Timer</h3>
+        <p>Work as long as you're in flow while your break charges in real time — earn rest sized to the work you actually did.</p>
+      </div>
+    </a>
   </div>
 </section>
   <footer class="site-footer">
@@ -1308,6 +1314,10 @@
     <span>&bull;</span>
     <a class="foot-ad" href="https://optimize-tomatotimers.bsa-whitelabel.com/checkout/new" target="_blank" rel="noopener noreferrer">Advertise Here &#127919;</a>
   </div>
+        <div>
+        Found a bug? <a href="/cdn-cgi/l/email-protection#35545b514c525c5a43545b5b4c535057475c545b415a755258545c591b565a58" style="color: #DE4B3A; text-decoration: none; font-weight: 700;">Email me</a>
+        <button type="button" id="bug-copy" onclick="(function(){var e='andygiovannyfebrianto@gmail.com';var done=function(){var b=document.getElementById('bug-copy');if(!b)return;var t=b.textContent;b.textContent='Copied!';setTimeout(function(){b.textContent=t;},1500);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(e).then(done,done);}else{var ta=document.createElement('textarea');ta.value=e;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(x){}document.body.removeChild(ta);done();}})()" style="background:none;border:none;cursor:pointer;color:#8C5A3E;font-size:13px;text-decoration:underline;padding:0;font-family:inherit;">copy</button>
+    </div>
   <div class="foot-note">Free &amp; no sign-up — your list stays in this browser until you clear it.</div>
 </footer>
 
