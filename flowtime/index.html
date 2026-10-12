@@ -11,10 +11,17 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="TomatoTimers">
 <link rel="canonical" href="https://www.tomatotimers.com/flowtime/">
+<link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/flowtime/">
+<link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/flowtime/">
+<link rel="alternate" hreflang="es" href="https://www.tomatotimers.com/es/flowtime/">
+<link rel="alternate" hreflang="pt" href="https://www.tomatotimers.com/pt/flowtime/">
+<link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/flowtime/">
+<link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/flowtime/">
 <meta property="og:title" content="Flowtime Technique Timer — Work Now, Earn Your Break | TomatoTimers">
 <meta property="og:description" content="Work in flow, watch your break charge up, then cash out. The flowtime technique, gamified: a duck that works when you work and naps when you break.">
 <meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
 <meta property="og:url" content="https://www.tomatotimers.com/flowtime/">
+<meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Flowtime Technique Timer — Work Now, Earn Your Break">
@@ -999,6 +1006,9 @@ html.theme-dark .ft-log-band { background: #1f1813; }
 .rs-mini-btn:hover { color: var(--accent); border-color: var(--accent); }
 .rs-hide { display: none; }
 </style>
+.lang-globe { color: #58240E; }
+body.theme-dark .lang-globe { color: #E8D9B8; }
+body.theme-classic .lang-globe { color: #c65e5e; }
 <!-- BuySellAds (the actual ad stack, same as the other pages) -->
 <script type="text/javascript">
 (function(){
@@ -1130,7 +1140,18 @@ html.theme-dark .ft-log-band { background: #1f1813; }
       <img id="logo" src="/assets/images/logo.svg" alt="TomatoTimers" class="header-logo"
            onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
     </a>
+      <span style="position:relative; display:inline-block; margin-right:8px;">
+  <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
+  <select id="lang-select" class="theme-select" aria-label="Choose language" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
+    <option value="/flowtime/" selected>English</option>
+    <option value="/id/flowtime/">Bahasa Indonesia</option>
+    <option value="/es/flowtime/">Español</option>
+    <option value="/pt/flowtime/">Português</option>
+    <option value="/vi/flowtime/">Tiếng Việt</option>
+  </select>
+  </span>
     <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+
       <option value="light">Light Theme</option>
       <option value="dark">Dark Theme</option>
     </select>

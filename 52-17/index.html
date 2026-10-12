@@ -11,10 +11,17 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="TomatoTimers">
 <link rel="canonical" href="https://www.tomatotimers.com/52-17/">
+<link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/52-17/">
+<link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/52-17/">
+<link rel="alternate" hreflang="es" href="https://www.tomatotimers.com/es/52-17/">
+<link rel="alternate" hreflang="pt" href="https://www.tomatotimers.com/pt/52-17/">
+<link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/52-17/">
+<link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/52-17/">
 <meta property="og:title" content="52/17 Timer — Free Deep-Work Sprint & Break Timer | TomatoTimers">
 <meta property="og:description" content="Work 52 focused minutes, then take a 17-minute break and truly unplug — the rhythm the most productive workers keep. Free 52/17 timer with a daily sprint tracker.">
 <meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
 <meta property="og:url" content="https://www.tomatotimers.com/52-17/">
+<meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="52/17 Timer — Free Deep-Work Sprint & Break Timer">
@@ -91,7 +98,7 @@
       "name": "How do I use this 52/17 timer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Press play and work with full focus for 52 minutes while the energy bar drains. When the break window opens, walk away from the screen for 17 minutes " + "—" + " a rotating card suggests unplug ideas. When the break ends the next sprint starts automatically. The log counts sprints and real work time (pauses pause the log), and closing the tab saves the session to a local history."
+        "text": "Press play and work with full focus for 52 minutes while the energy bar drains. When the break window opens, walk away from the screen for 17 minutes — a rotating card suggests unplug ideas. When the break ends the next sprint starts automatically. The log counts sprints and real work time (pauses pause the log), and closing the tab saves the session to a local history."
       }
     }
   ]
@@ -945,6 +952,9 @@
   .ct-btn-save:hover { background: #C23A2B; }
 
 </style>
+.lang-globe { color: #58240E; }
+body.theme-dark .lang-globe { color: #E8D9B8; }
+body.theme-classic .lang-globe { color: #c65e5e; }
 <script src="https://apis.google.com/js/platform.js" async defer></script> <!-- YT Subs button -->
 <script type="text/javascript">
 (function(){
@@ -1082,7 +1092,18 @@
       <img id="logo" src="/assets/images/logo.svg" alt="TomatoTimers" class="header-logo"
            onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
     </a>
+      <span style="position:relative; display:inline-block; margin-right:8px;">
+  <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
+  <select id="lang-select" class="theme-select" aria-label="Choose language" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
+    <option value="/52-17/" selected>English</option>
+    <option value="/id/52-17/">Bahasa Indonesia</option>
+    <option value="/es/52-17/">Español</option>
+    <option value="/pt/52-17/">Português</option>
+    <option value="/vi/52-17/">Tiếng Việt</option>
+  </select>
+  </span>
     <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+
       <option value="light">Light Theme</option>
       <option value="dark">Dark Theme</option>
     </select>

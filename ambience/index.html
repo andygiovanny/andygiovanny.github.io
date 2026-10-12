@@ -9,6 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu:wght@400&display=swap" rel="stylesheet">
     <meta name="description" content="Free ambient sound generator & white noise machine for focus, study, and sleep. Mix rain, thunder, ocean waves, cafe sounds & more. Custom presets with auto-off timer.">
     <link rel="canonical" href="https://www.tomatotimers.com/ambience/" />
+    <link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/ambience/">
+    <link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/ambience/">
+    <link rel="alternate" hreflang="es" href="https://www.tomatotimers.com/es/ambience/">
+    <link rel="alternate" hreflang="pt" href="https://www.tomatotimers.com/pt/ambience/">
+    <link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/ambience/">
+    <link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/ambience/">
     <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png"/>
     <script src="https://apis.google.com/js/platform.js"></script>
     
@@ -116,7 +122,9 @@
     <meta property="og:description" content="Mix custom ambient soundscapes for deep focus, study, or sleep." />
     <meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-preview.jpg" />
     <meta property="og:url" content="https://www.tomatotimers.com/ambience/" />
+    <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image">
     
     
     
@@ -946,6 +954,8 @@
         box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
         align-self: center;
     }
+.lang-globe { color: #58240E; } body.theme-dark .lang-globe { color: #E8D9B8; } body.theme-classic .lang-globe { color: #c65e5e; }
+.lang-globe { color: #58240E; } body.theme-dark .lang-globe { color: #E8D9B8; } body.theme-classic .lang-globe { color: #c65e5e; }
     .theme-select option { background: #FFFFFF; color: #58240E; }
 
     /* ═══════════ DARK THEME (20-20-20 palette) — default ═══════════ */
@@ -1137,15 +1147,21 @@
                             <img id="logoAvatar" src="../assets/images/logo ambience.svg" alt="Tomato Timer Logo" class="logo-avatar" onerror="this.onerror=null; this.src='https://placehold.co/200x64/F0E0BF/58240E?text=Tomato+Timer';">
                         </a>
 
-                        <div class="nav-links-right">
-                            <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+                        <div class="nav-links-right" style="flex-direction:column; align-items:flex-end; gap:10px;"><div class="nav-dropdowns-row" style="display:flex; gap:8px; align-items:center;"><span style="position:relative; display:inline-block; margin-right:8px;">
+  <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
+  <select id="lang-select" class="theme-select" aria-label="Choose language" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
+         <option value="/ambience/" selected>English</option>
+         <option value="/id/ambience/">Bahasa Indonesia</option>
+         <option value="/es/ambience/">Español</option>
+         <option value="/pt/ambience/">Português</option>
+         <option value="/vi/ambience/">Tiếng Việt</option>
+       </select>
+  </span>
+  <select id="theme-select" class="theme-select" aria-label="Choose site theme">
                                 <option value="light">Light Theme</option>
                                 <option value="dark">Dark Theme</option>
-                            </select>
-                            <button type="button" class="pill-btn" id="customPresetsBtn">Custom Ambience </button>
-                            <button type="button" class="pill-btn" id="howItWorksBtn">How It Works?</button>
-                            <button type="button" class="pill-btn" onclick="document.getElementById('timers-section').scrollIntoView({behavior:'smooth'})">Timers</button>
-                        </div>
+                            </select></div>
+                        <div class="nav-buttons-row" style="display:flex; gap:16px; align-items:center;"><button type="button" class="pill-btn" id="customPresetsBtn">Custom Ambience </button><button type="button" class="pill-btn" id="howItWorksBtn">How It Works?</button><button type="button" class="pill-btn" onclick="document.getElementById('timers-section').scrollIntoView({behavior:'smooth'})">Timers</button></div></div>
                     </div>
 
                  <div class="mode-pills-row">
@@ -1451,11 +1467,6 @@
             Advertise Here 🎯
         </a>
     </div>
-                   <div>
-        Found a bug? <a href="/cdn-cgi/l/email-protection#35545b514c525c5a43545b5b4c535057475c545b415a755258545c591b565a58" style="color: #DE4B3A; text-decoration: none; font-weight: 700;">Email me</a>
-        <button type="button" id="bug-copy" onclick="(function(){var e='andygiovannyfebrianto@gmail.com';var done=function(){var b=document.getElementById('bug-copy');if(!b)return;var t=b.textContent;b.textContent='Copied!';setTimeout(function(){b.textContent=t;},1500);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(e).then(done,done);}else{var ta=document.createElement('textarea');ta.value=e;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(x){}document.body.removeChild(ta);done();}})()" style="background:none;border:none;cursor:pointer;color:#8C5A3E;font-size:13px;text-decoration:underline;padding:0;font-family:inherit;">copy</button>
-    </div>
-  <div class="foot-note">Free &amp; no sign-up — each tab keeps its own session log; your to-do list stays in this browser until you clear it.</div>
 </footer>
         </div>
 

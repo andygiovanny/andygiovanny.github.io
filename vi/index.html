@@ -1,0 +1,3342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<base href="/">
+<head>
+  <meta charset="UTF-8">
+  
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "TomatoTimers",
+  "url": "https://www.tomatotimers.com/vi/",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Hẹn giờ Pomodoro online miễn phí và hẹn giờ học tập esthetic với khoảng thời gian tùy chỉnh và âm thanh lofi ambience."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Pomodoro Timer",
+      "item": "https://www.tomatotimers.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Ambience Studio",
+      "item": "https://www.tomatotimers.com/vi/ambience/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hẹn giờ Pomodoro là gì?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hẹn giờ Pomodoro là công cụ năng suất dựa trên Kỹ thuật Pomodoro, chia công việc thành các khoảng tập trung 25 phút xen kẽ nghỉ ngắn. TomatoTimers cung cấp hẹn giờ Pomodoro online miễn phí, tùy chỉnh được với giao diện dễ thương và lofi ambience."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Cách dùng Kỹ thuật Pomodoro?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1. Chọn một công việc. 2. Đặt hẹn giờ 25 phút (một Pomodoro). 3. Làm đến khi chuông kêu. 4. Nghỉ 5 phút. 5. Sau 4 Pomodoro, nghỉ dài hơn 15-30 phút. TomatoTimers tự động hóa chu kỳ này cho bạn."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "TomatoTimers có miễn phí không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Có, TomatoTimers hoàn toàn miễn phí. Không cần đăng ký, không cần tải xuống và không có quảng cáo bắt buộc. Bạn có thể dùng hẹn giờ Pomodoro, hẹn giờ học tập, khoảng thời gian tùy chỉnh, quản lý công việc và lofi ambience ngay trên trình duyệt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tôi có thể dùng làm hẹn giờ học tập không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chắc chắn rồi. TomatoTimers hoạt động hoàn hảo như hẹn giờ học tập cho học sinh, sinh viên. Phương pháp Pomodoro giúp cải thiện khả năng tập trung và ghi nhớ khi ôn thi, làm bài tập và đọc sách."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hẹn giờ Pomodoro tùy chỉnh là gì?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hẹn giờ Pomodoro tùy chỉnh cho phép bạn điều chỉnh khoảng làm việc và nghỉ ngơi theo quy trình riêng. Với TomatoTimers, bạn có thể đặt thời gian tùy ý cho Pomodoro, nghỉ ngắn và nghỉ dài, thậm chí gán âm thanh ambience khác nhau cho từng chế độ."
+      }
+    }
+  ]
+}</script>
+
+<meta name="keywords" content="hẹn giờ pomodoro,hẹn giờ cà chua,cà chua, hẹn giờ online">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://www.tomatotimers.com/vi/">
+<link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/">
+<link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/">
+<link rel="alternate" hreflang="es" href="https://www.tomatotimers.com/es/">
+<link rel="alternate" hreflang="pt" href="https://www.tomatotimers.com/pt/">
+<link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/">
+<link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/">
+
+<style>
+    html {
+        font-size: 16px !important;
+        -webkit-text-size-adjust: 100% !important;
+        text-size-adjust: 100% !important;
+    }
+
+* {
+        box-sizing: border-box !important;
+    }
+
+    /* ---- Ambience Integration v9 ---- */
+    .ambience-master-pill {
+        background-color: #FFFFFF;
+        border-radius: 50px;
+        padding: 8px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.04);
+        margin-top: 14px;
+    }
+    .ambience-master-pill svg {
+        width: 22px;
+        height: 22px;
+        fill: #58240E;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: fill 0.2s ease, transform 0.15s ease;
+    }
+    .ambience-master-pill svg:hover {
+        transform: scale(1.15);
+    }
+    .ambience-master-pill.muted svg {
+        fill: #8C5A3E;
+        opacity: 0.5;
+    }
+    .ambience-master-pill input[type="range"] {
+        -webkit-appearance: none;
+        width: 140px;
+        background: transparent;
+        cursor: pointer;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        margin-top: -6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .ambience-master-pill input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+    }
+    .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-track {
+        width: 100%;
+        height: 6px;
+        background: #E2D0AF;
+        border-radius: 6px;
+    }
+    .ambience-master-pill input[type="range"]::-moz-range-thumb {
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #58240E;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .ambience-master-pill.active input[type="range"]::-moz-range-thumb {
+        background: #DE4B3A;
+    }
+    .ambience-preset-label {
+        text-align: center;
+        font-size: 14px;
+        font-family: 'Baloo Tammudu', cursive;
+        margin-top: 4px;
+        min-height: 20px;
+    }
+    .ambience-preset-label .play-icon {
+        color: #68B04D;
+        margin-right: 6px;
+    }
+    .ambience-preset-label .preset-name {
+        color: #58240E;
+    }
+    .ambience-select {
+        background-color: #FAF5EB !important;
+        border: 2px solid #E2D0AF !important;
+        color: #58240E;
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 16px;
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        height: auto !important;
+        cursor: pointer;
+        appearance: auto;
+        -webkit-appearance: menulist;
+    }
+    .ambience-select:focus {
+        border-color: #DE4B3A !important;
+        box-shadow: 0 0 0 3px rgba(222, 75, 58, 0.15);
+        background-color: #FFFFFF !important;
+        outline: none;
+    }
+    .ambience-divider {
+        border: none;
+        border-top: 2px dashed #E2D0AF;
+        margin: 20px 0 16px;
+    }
+    .ambience-section-title {
+        color: #58240E;
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+    .ambience-section-desc {
+        color: #8C5A3E;
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+    .ambience-section-desc a {
+        color: #DE4B3A;
+        text-decoration: underline;
+    }
+    .notify-test-btn {
+        background: #FFFFFF;
+        color: #58240E;
+        border: 2px solid rgba(88, 36, 14, 0.18);
+        border-radius: 50px;
+        padding: 6px 16px 4px;
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+    }
+    .notify-test-btn:hover { border-color: #DE4B3A; color: #DE4B3A; }
+</style>
+  
+  
+<style>
+    .button-align {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .button-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+    }
+    
+  .button-style {
+    padding: 16px 20px 10px 20px !important;  /* less top, more bottom */
+    font-size: 16px !important;
+    white-space: nowrap;
+    line-height: 1 !important;               /* remove extra font spacing */
+    display: inline-flex !important;         /* force true vertical center */
+    align-items: center !important;
+    justify-content: center !important;
+}
+      
+    .button-style:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    /* Top row buttons match the pair below */
+    .button-row:first-child .button-style {
+        min-width: 166px;
+        text-align: center;
+    }
+    
+    /* Bottom pair match the top width combined */
+    .button-row:last-child .button-style {
+        min-width: 166px;
+        text-align: center;
+    }
+    
+    @media (max-width: 991px) {
+        .button-align {
+            margin-top: 10px;
+        }
+        .button-row:first-child .button-style,
+        .button-row:last-child .button-style {
+            min-width: auto;
+            flex: 1;
+        }
+    }
+</style>
+    
+    
+ <title>Hẹn Giờ Pomodoro Online — Hẹn Giờ Học Tập Miễn Phí Dễ Thương với Lofi Ambience | TomatoTimers</title>
+<meta name="description" content="Hẹn giờ Pomodoro online miễn phí và hẹn giờ học tập dễ thương. Khoảng thời gian tùy chỉnh, lofi ambience, quản lý công việc và hướng dẫn Kỹ thuật Pomodoro. Không cần đăng ký — bắt đầu ngay.">
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Hẹn Giờ Pomodoro Online — Hẹn Giờ Học Tập Miễn Phí | TomatoTimers">
+    <meta property="og:description" content="Hẹn giờ Pomodoro miễn phí, tùy chỉnh được với lofi ambience, giao diện dễ thương và quản lý công việc. Không cần đăng ký.">
+    <meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+    <meta property="og:url" content="https://www.tomatotimers.com/vi/">
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="msvalidate.01" content="675E3DA254D314FAAE943BB3C2C452EB" />
+    <link rel="stylesheet" href="assets/css/style.css?v=1.0">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+    <script src="https://apis.google.com/js/platform.js"></script> <!-- YT Subs button -->
+
+   
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXWPJH9V4X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXWPJH9V4X', {
+            'page_path': window.location.pathname
+            });
+    </script>
+    
+   
+    <meta name="p:domain_verify" content="053c080ea19a4c94a9952e38b15615e3"/>
+    
+    
+    <link href="assets/js/jquery-confirm/dist/jquery-confirm.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
+    
+
+<style>
+  /* Wrapper for the section */
+  .video-grid-wrapper {
+    width: 100% !important;
+    max-width: 1200px; /* Wider to allow space for 3 columns */
+    margin: 0 auto;
+  }
+
+  /* FORCING THE GRID */
+  .video-grid {
+    display: grid !important; 
+    /* Force 3 columns */
+    grid-template-columns: repeat(3, 1fr) !important; 
+    
+    /* Scrollable height for 5 rows */
+    max-height: 80vh; 
+    overflow-y: auto;
+  }
+
+  /* Targeting your <a> tags */
+  .video-card {
+    display: block !important;
+    width: 100% !important;
+    aspect-ratio: 16 / 9; /* Ensures uniform size */
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #000;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+
+  .video-card:hover {
+    transform: scale(1.02);
+  }
+
+  /* Targeting your <img> AND <video> tags */
+  .video-card img,
+  .video-card video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover; 
+    display: block;
+  }
+
+  /* Responsive: Switch to 1 column only on very small mobile screens */
+  @media (max-width: 576px) {
+    .video-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+    
+    
+<script>
+  /* ── Theme system: Dark (default) / Classic Tomato ── */
+  (function () {
+    var THEME_KEY = 'tt_theme_v1';
+
+    function getSavedTheme() {
+      try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
+    }
+
+    /* Sync the hidden legacy #theme-toggle so tomato.js performs the Classic Tomato
+       image swaps (logo/play/pause/reset) and switches the mascot animation set */
+    function syncLegacyToggle(isClassic) {
+      var t = document.getElementById('theme-toggle');
+      if (!t || t.checked === isClassic) return;
+      t.checked = isClassic;
+      if (window.jQuery) {
+        window.jQuery(t).trigger('change');
+      } else {
+        var byId = function (id) { return document.getElementById(id); };
+        var imgs = isClassic
+          ? { logo: 'tomato.svg', resetButton: 'tomatoreset.svg', startButton: 'tomatoplay.svg', stopButton: 'tomatopause.svg' }
+          : { logo: 'logo.svg', resetButton: 'rest-button.svg', startButton: 'play-button.svg', stopButton: 'stop-button.svg' };
+        for (var id in imgs) { if (byId(id)) byId(id).src = 'assets/images/' + imgs[id]; }
+      }
+    }
+
+    function applyTheme(theme) {
+      if (theme !== 'dark' && theme !== 'classic') theme = 'light'; // light is the default
+      document.body.classList.toggle('theme-dark', theme === 'dark');
+      document.body.classList.toggle('theme-classic', theme === 'classic');
+      // 'light' = no extra class, original styling
+      syncLegacyToggle(theme === 'classic');
+      // Dark theme uses cream-text logo variants; classic keeps tomato.js's
+      // tomato.svg swap (runs inside syncLegacyToggle), light uses the originals.
+      if (theme !== 'classic') {
+        var logoImg = document.getElementById('logo');
+        if (logoImg) logoImg.src = 'assets/images/' + (theme === 'dark' ? 'logo-dark.svg' : 'logo.svg');
+      }
+      var footerLogo = document.getElementById('footerLogo');
+      if (footerLogo) footerLogo.src = 'assets/images/' + (theme === 'dark' ? 'footer-logo-dark.svg' : 'footer-logo.svg');
+      var sel = document.getElementById('theme-select');
+      if (sel) sel.value = theme;
+      try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+    }
+
+    window.ttApplyTheme = applyTheme;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      applyTheme(getSavedTheme() || 'light');
+      var sel = document.getElementById('theme-select');
+      if (sel) {
+        sel.addEventListener('change', function () { applyTheme(this.value); });
+      }
+    });
+  })();
+</script>
+    
+    
+    <script type="text/javascript">
+	(function(){
+		var bsa_optimize=document.createElement('script');
+		bsa_optimize.type='text/javascript';
+		bsa_optimize.async=true;
+		bsa_optimize.src='https://cdn4.buysellads.net/pub/tomatotimers.js?'+(new Date()-new Date()%600000);
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+	})();
+</script>
+  
+  
+<style>
+    /* Left Sidebar Wrapper Style */
+    .bsa-left-sidebar-wrapper {
+        position: absolute;
+        left: 10px;
+        top: 80px;
+        z-index: 1000;
+        overflow: hidden;
+        border-radius: 12px;
+        background-color: transparent;
+    }
+
+    /* Right Sidebar Wrapper Style */
+    .bsa-right-sidebar-wrapper {
+        position: absolute;
+        right: 10px;
+        top: 80px;
+        z-index: 1000;
+        overflow: hidden;
+        border-radius: 12px;
+        background-color: transparent;
+    }
+  
+  
+  @keyframes wiggle {
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(-6deg) scale(1.06); }
+  50%  { transform: rotate(6deg) scale(1.06); }
+  75%  { transform: rotate(-3deg) scale(1.03); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.wiggle-me {
+  animation: wiggle 0.4s ease-in-out;
+  display: inline-block;
+}
+  
+  
+</style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<style>
+/* ---- Task Manager (card to-do list) v1 ---- */
+/* Local d-none fallback so components don't depend on Bootstrap's CDN copy */
+.tm-zero-overlay.d-none,
+.tm-done-wrap.d-none { display: none !important; }
+
+/* Legacy stylesheet fixes this at 400px (old scrollable list). Let cards grow
+   naturally so the section pushes the content below it down instead. */
+.todo-list-min-height { height: auto !important; min-height: 400px; }
+
+.tm-active-line {
+    min-height: 22px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #8C5A3E;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+.tm-active-line strong { color: #58240E; }
+.tm-active-line .tm-est-left { color: #DE4B3A; font-weight: 700; }
+
+#tm_add_form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.tm-input {
+    border: 2px solid rgba(140, 90, 62, 0.18);
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    color: #58240E;
+    background: #FFFFFF;
+    outline: none;
+    transition: border-color 0.15s ease;
+    min-width: 0;
+}
+.tm-input:focus { border-color: #DE4B3A; }
+#tm_add_title { flex: 1; }
+.tm-estimate-input { width: 110px; flex-shrink: 0; }
+.tm-add-btn { flex-shrink: 0; padding: 8px 20px !important; font-size: 0.9rem !important; }
+
+.tm-section-title {
+    font-family: 'Baloo Tammudu', cursive, sans-serif;
+    color: #7A1F0F;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 6px 0 16px;
+}
+.tm-color-picker { display: flex; gap: 6px; align-items: center; flex-shrink: 0; padding-right: 2px; }
+.tm-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(88, 36, 14, 0.15);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.12s ease;
+}
+.tm-swatch:hover { transform: scale(1.15); }
+.tm-swatch.tm-swatch-selected { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #58240E; }
+
+.tm-cards { display: flex; flex-direction: column; gap: 10px; }
+
+.tm-card {
+    background: #FFFFFF;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(88, 36, 14, 0.10);
+    padding: 12px 14px 12px 16px;
+    border: 1px solid rgba(88, 36, 14, 0.12);
+    border-left: 5px solid #E8D5C0;
+    position: relative;
+    transition: border-color 0.2s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+    cursor: grab;
+}
+.tm-card:active { cursor: grabbing; }
+.tm-card.dragging { opacity: 0.45; }
+.tm-card.dragover { box-shadow: 0 -3px 0 0 #DE4B3A, 0 2px 8px rgba(88, 36, 14, 0.08); }
+.tm-card.tm-active { border-left-color: #DE4B3A; }
+.tm-card.tm-done {
+    border-left-color: #5FA46A;
+    cursor: default;
+    background: #F2F7F2;
+    border-style: dashed;
+    border-left-style: solid;
+    box-shadow: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    opacity: 0.85;
+}
+
+/* Invisible click strip over the colored left edge: click to cycle task color */
+.tm-color-edge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    border-radius: 14px 0 0 14px;
+    cursor: pointer;
+}
+.tm-color-edge:hover { box-shadow: inset 0 0 0 2px rgba(88, 36, 14, 0.25); }
+
+.tm-card-top { display: flex; align-items: center; gap: 8px; }
+.tm-title {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #58240E;
+    word-break: break-word;
+    cursor: text;
+    border-radius: 6px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+}
+.tm-title:hover { background: rgba(222, 75, 58, 0.06); }
+.tm-title-input {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #58240E;
+    border: 2px solid #DE4B3A;
+    border-radius: 8px;
+    padding: 2px 6px;
+    font-family: inherit;
+    outline: none;
+    min-width: 0;
+}
+.tm-done .tm-title { text-decoration: line-through; opacity: 0.6; }
+
+.tm-est-chip {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #8C5A3E;
+    background: rgba(140, 90, 62, 0.10);
+    border-radius: 50px;
+    padding: 3px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: none;
+    font-family: inherit;
+}
+.tm-est-chip:hover { background: rgba(222, 75, 58, 0.14); color: #DE4B3A; }
+.tm-est-chip.tm-est-empty { color: rgba(140, 90, 62, 0.45); background: transparent; border: 1.5px dashed rgba(140, 90, 62, 0.3); }
+.tm-est-input {
+    width: 84px;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    border: 2px solid #DE4B3A;
+    border-radius: 50px;
+    padding: 2px 10px;
+    font-family: inherit;
+    color: #58240E;
+    outline: none;
+    text-align: center;
+}
+
+.tm-start-btn {
+    flex-shrink: 0;
+    background: #DE4B3A;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+.tm-start-btn:hover { background: #C23A2B; }
+.tm-start-btn:active { transform: scale(0.95); }
+.tm-start-btn.tm-focusing { background: #5FA46A; }
+
+.tm-icon-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(140, 90, 62, 0.55);
+    font-size: 0.9rem;
+    padding: 3px 5px;
+    border-radius: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+    line-height: 1;
+}
+.tm-icon-btn:hover { color: #DE4B3A; background: rgba(222, 75, 58, 0.08); }
+
+.tm-card-detail { margin-top: 8px; }
+.tm-notes {
+    width: 100%;
+    border: 2px solid rgba(140, 90, 62, 0.14);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-family: inherit;
+    color: #58240E;
+    background: rgba(140, 90, 62, 0.04);
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+}
+.tm-notes:focus { border-color: #DE4B3A; background: #fff; }
+
+.tm-subtasks { list-style: none; margin: 6px 0 0; padding: 0; }
+.tm-subtask { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 0.86rem; color: #58240E; }
+.tm-subtask input[type="checkbox"] { width: 16px; height: 16px; accent-color: #DE4B3A; cursor: pointer; flex-shrink: 0; }
+.tm-subtask .tm-sub-text { flex: 1; word-break: break-word; }
+.tm-subtask.tm-sub-done .tm-sub-text { text-decoration: line-through; opacity: 0.5; }
+.tm-sub-add { display: flex; gap: 6px; margin-top: 6px; }
+.tm-sub-add .tm-input { flex: 1; padding: 5px 10px; font-size: 0.82rem; border-radius: 8px; }
+.tm-sub-add button { flex-shrink: 0; }
+
+.tm-detail-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: rgba(140, 90, 62, 0.6);
+    padding: 2px 0;
+    font-family: inherit;
+}
+.tm-detail-toggle:hover { color: #DE4B3A; }
+
+/* Estimate-hit-zero overlay (covers the countdown so the pause is explained) */
+.tm-zero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 246, 236, 0.82);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border-radius: 18px;
+    padding: 16px;
+}
+.tm-zero-box {
+    background: #FFFFFF;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(88, 36, 14, 0.22);
+    border: 2px solid rgba(222, 75, 58, 0.35);
+    padding: 20px 22px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+}
+.tm-zero-box .tm-zero-text { font-size: 0.95rem; color: #58240E; font-weight: 600; margin-bottom: 14px; line-height: 1.5; }
+.tm-zero-box .tm-zero-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.tm-zero-box .tm-input { width: 100px; padding: 7px 12px; font-size: 0.85rem; background: #fff; text-align: center; }
+.tm-zero-btn {
+    border: none;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+.tm-zero-btn.tm-zero-add { background: #DE4B3A; color: #fff; }
+.tm-zero-btn.tm-zero-add:hover { background: #C23A2B; }
+.tm-zero-btn.tm-zero-done { background: rgba(140, 90, 62, 0.12); color: #8C5A3E; }
+.tm-zero-btn.tm-zero-done:hover { background: rgba(140, 90, 62, 0.2); }
+
+/* Done section + toolbar */
+.tm-done-wrap { margin-top: 16px; }
+.tm-done-header {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(140, 90, 62, 0.6);
+    margin-bottom: 8px;
+}
+.tm-toolbar { display: flex; justify-content: space-between; margin-top: 14px; }
+.tm-tool-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: rgba(140, 90, 62, 0.65);
+    font-family: inherit;
+    padding: 4px 6px;
+    border-radius: 8px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+.tm-tool-btn:hover { color: #58240E; background: rgba(140, 90, 62, 0.08); }
+.tm-tool-danger:hover { color: #DE4B3A; background: rgba(222, 75, 58, 0.08); }
+
+/* Undo toast */
+.tm-toast {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    background: #58240E;
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 0.88rem;
+    box-shadow: 0 6px 24px rgba(88, 36, 14, 0.25);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    pointer-events: none;
+}
+.tm-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+.tm-toast button {
+    background: none;
+    border: none;
+    color: #FFB4A2;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: inherit;
+    padding: 0;
+}
+.tm-toast button:hover { color: #fff; }
+
+@media (max-width: 576px) {
+    .tm-estimate-input { width: 84px; }
+    #tm_add_form { flex-wrap: wrap; }
+    #tm_add_title { flex: 1 1 100%; }
+}
+</style>
+
+<style>
+/* ═══════════════════ Theme dropdown + DARK THEME (20-20-20 palette) ═══════════════════
+   Dark is the default theme; Classic Tomato keeps the original look. */
+
+/* Theme dropdown pill (both themes) */
+.theme-select {
+    font-family: 'Baloo Tammudu', cursive;
+    font-size: 15px;
+    padding: 7px 34px 4px 16px;
+    border-radius: 50px;
+    border: 2px solid rgba(88, 36, 14, 0.18);
+    background: #FFFFFF url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%2358240E' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #58240E;
+    cursor: pointer;
+    outline: none;
+    line-height: 1.2;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
+}
+.lang-globe { color: #58240E; }
+body.theme-dark .lang-globe { color: #E8D9B8; }
+body.theme-classic .lang-globe { color: #c65e5e; }
+
+.theme-select option { background: #FFFFFF; color: #58240E; }
+
+body.theme-dark { background-color: #14100c !important; color: #E8D9B8; }
+body.theme-classic { background-color: #fff !important; }
+body.theme-dark ::selection { background: #DE4B3A; color: #fff; }
+
+body.theme-dark .theme-select {
+    background: #2a2018 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23A98F6F' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #E8D9B8;
+    border-color: #3a2d20;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+body.theme-dark .theme-select option { background: #2a2018; color: #E8D9B8; }
+
+/* ── YouTube promo banner stays the same red slice in every theme ── */
+
+/* ── Header / timer stage ── */
+body.theme-dark .header-background { background-color: #14100c !important; }
+
+body.theme-dark .button-style,
+body.theme-dark .button-style-1 {
+    background-color: #2a2018 !important;
+    color: #E8D9B8 !important;
+    border: 1px solid #3a2d20 !important;
+    box-shadow: none !important;
+}
+body.theme-dark .button-style:hover,
+body.theme-dark .button-style-1:hover { color: #E0A458 !important; border-color: #E0A458 !important; }
+body.theme-dark .button-style:focus,
+body.theme-dark .button-style-1:focus {
+    background-color: #2a2018 !important;
+    color: #E8D9B8 !important;
+    box-shadow: none !important;
+}
+
+body.theme-dark .timer-time,
+body.theme-dark .timer-box { color: #F5E6C8 !important; text-shadow: 0 0 30px rgba(224, 164, 88, 0.15); }
+
+/* ── Ambience master pill (on stage) ── */
+body.theme-dark .ambience-master-pill {
+    background-color: #2a2018;
+    border: 1px solid #3a2d20;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+body.theme-dark .ambience-master-pill svg { fill: #E8D9B8; }
+body.theme-dark .ambience-master-pill.muted svg { fill: #A98F6F; }
+body.theme-dark .ambience-master-pill input[type="range"]::-webkit-slider-runnable-track { background: #3a2d20; }
+body.theme-dark .ambience-master-pill input[type="range"]::-webkit-slider-thumb { background: #E8D9B8; }
+body.theme-dark .ambience-master-pill.active input[type="range"]::-webkit-slider-thumb { background: #DE4B3A; }
+body.theme-dark .ambience-master-pill input[type="range"]::-moz-range-track { background: #3a2d20; }
+body.theme-dark .ambience-master-pill input[type="range"]::-moz-range-thumb { background: #E8D9B8; border: none; }
+body.theme-dark .ambience-master-pill.active input[type="range"]::-moz-range-thumb { background: #DE4B3A; }
+body.theme-dark .ambience-preset-label { color: #A98F6F; }
+body.theme-dark .ambience-preset-label .preset-name { color: #E0A458; }
+body.theme-dark .ambience-select {
+    background-color: #2a2018 !important;
+    color: #E8D9B8 !important;
+    border-color: #3a2d20 !important;
+}
+body.theme-dark .ambience-section-title { color: #E0A458; }
+body.theme-dark .ambience-section-desc { color: #A98F6F; }
+body.theme-dark .notify-test-btn { background: #2a2018; color: #E8D9B8; border-color: #3a2d20; }
+body.theme-dark .notify-test-btn:hover { border-color: #E0A458; color: #E0A458; }
+
+/* ── Active-task line ── */
+body.theme-dark .tm-active-line { color: #A98F6F; }
+body.theme-dark .tm-active-line strong { color: #E8D9B8; }
+body.theme-dark .tm-active-line .tm-est-left { color: #E0A458; }
+
+/* ── To-do band (lighter panel shade so sections read separately) ── */
+body.theme-dark .todo-background { background-color: #1f1813 !important; }
+body.theme-dark .tm-section-title { color: #E0A458 !important; }
+
+body.theme-dark .tm-input {
+    background: #2a2018;
+    border-color: #3a2d20;
+    color: #E8D9B8;
+}
+body.theme-dark .tm-input::placeholder { color: #A98F6F; opacity: 0.7; }
+body.theme-dark .tm-input:focus { border-color: #E0A458; background: #241c15; }
+
+body.theme-dark .tm-swatch { border-color: rgba(232, 217, 184, 0.18); }
+body.theme-dark .tm-swatch.tm-swatch-selected { box-shadow: 0 0 0 2px #1f1813, 0 0 0 4px #E8D9B8; }
+
+body.theme-dark .tm-card {
+    background: #2a2018;
+    border-color: rgba(232, 217, 184, 0.10);
+    border-left-color: #4a3a28;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+body.theme-dark .tm-card .tm-input { background: #1f1813; }
+body.theme-dark .tm-card.dragover { box-shadow: 0 -3px 0 0 #DE4B3A, 0 2px 8px rgba(0, 0, 0, 0.4); }
+body.theme-dark .tm-card.tm-active { border-left-color: #DE4B3A; }
+body.theme-dark .tm-card.tm-done {
+    background: #241c14;
+    border-color: rgba(232, 217, 184, 0.06);
+    border-left-color: #3d5233;
+    box-shadow: none;
+}
+body.theme-dark .tm-color-edge:hover { box-shadow: inset 0 0 0 2px rgba(232, 217, 184, 0.3); }
+
+body.theme-dark .tm-title { color: #E8D9B8; }
+body.theme-dark .tm-title:hover { background: rgba(224, 164, 88, 0.08); }
+body.theme-dark .tm-title-input { background: #14100c; color: #E8D9B8; border-color: #E0A458; }
+body.theme-dark .tm-done .tm-title { opacity: 0.45; }
+
+body.theme-dark .tm-est-chip { color: #E0A458; background: rgba(224, 164, 88, 0.10); }
+body.theme-dark .tm-est-chip:hover { background: rgba(224, 164, 88, 0.18); color: #E0A458; }
+body.theme-dark .tm-est-chip.tm-est-empty {
+    color: rgba(169, 143, 111, 0.5);
+    background: transparent;
+    border-color: rgba(169, 143, 111, 0.35);
+}
+body.theme-dark .tm-est-input { background: #14100c; color: #E8D9B8; border-color: #E0A458; }
+
+body.theme-dark .tm-icon-btn { color: rgba(169, 143, 111, 0.6); }
+body.theme-dark .tm-icon-btn:hover { color: #F4845F; background: rgba(222, 75, 58, 0.12); }
+
+body.theme-dark .tm-notes {
+    background: rgba(20, 16, 12, 0.6);
+    border-color: #3a2d20;
+    color: #E8D9B8;
+}
+body.theme-dark .tm-notes:focus { border-color: #E0A458; background: #14100c; }
+
+body.theme-dark .tm-subtask { color: #D9C6A5; }
+body.theme-dark .tm-subtask.tm-sub-done .tm-sub-text { opacity: 0.4; }
+body.theme-dark .tm-detail-toggle { color: rgba(169, 143, 111, 0.65); }
+body.theme-dark .tm-detail-toggle:hover { color: #E0A458; }
+
+body.theme-dark .tm-done-header { color: rgba(169, 143, 111, 0.6); }
+body.theme-dark .tm-tool-btn { color: rgba(169, 143, 111, 0.7); }
+body.theme-dark .tm-tool-btn:hover { color: #E8D9B8; background: rgba(232, 217, 184, 0.08); }
+body.theme-dark .tm-tool-danger:hover { color: #F4845F; background: rgba(222, 75, 58, 0.12); }
+
+body.theme-dark .tm-zero-overlay { background: rgba(20, 16, 12, 0.82); }
+body.theme-dark .tm-zero-box {
+    background: #1f1813;
+    border-color: rgba(224, 164, 88, 0.4);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+body.theme-dark .tm-zero-box .tm-zero-text { color: #E8D9B8; }
+body.theme-dark .tm-zero-box .tm-input { background: #14100c; }
+body.theme-dark .tm-zero-btn.tm-zero-done { background: rgba(169, 143, 111, 0.15); color: #A98F6F; }
+body.theme-dark .tm-zero-btn.tm-zero-done:hover { background: rgba(169, 143, 111, 0.25); }
+
+body.theme-dark .tm-toast { background: #2a2018; border: 1px solid #3a2d20; color: #E8D9B8; }
+
+/* ── Video section ── */
+body.theme-dark #video-section { background-color: #1f1813 !important; }
+body.theme-dark #video-section h2 { color: #E0A458 !important; }
+
+/* ── SEO / guide section (amber-tinted dark, nods to the classic yellow) ── */
+body.theme-dark #seo-section { background-color: #241a0e !important; border-top: 1px solid #3a2d20; }
+body.theme-dark #pomodoro-guide { color: #D9C6A5 !important; }
+body.theme-dark #pomodoro-guide h1,
+body.theme-dark #pomodoro-guide h2,
+body.theme-dark #pomodoro-guide h3 { color: #E0A458 !important; }
+body.theme-dark #pomodoro-guide p,
+body.theme-dark #pomodoro-guide li { color: #D9C6A5 !important; }
+body.theme-dark #pomodoro-guide strong { color: #F5E6C8; }
+body.theme-dark #pomodoro-guide a { color: #F4845F; }
+
+/* ── Footer (red-tinted dark, nods to the classic red) ── */
+body.theme-dark .footer-background { background-color: #23110f !important; border-top: 1px solid #3a2d20; }
+/* Dark theme swaps in dedicated cream-text logo variants (logo-dark.svg /
+   footer-logo-dark.svg) via applyTheme — no badge backgrounds needed.
+   A faint warm halo lifts the artwork off the dark background. */
+body.theme-dark .footer-logo, body.theme-dark .header-logo {
+  filter: drop-shadow(0 0 14px rgba(224, 164, 88, 0.18));
+}
+
+/* ── Bootstrap modals (What is Pomodoro / Custom Timer) ── */
+body.theme-dark .modal-content.popup-background,
+body.theme-dark .modal-content { background-color: #1f1813 !important; border: 1px solid #3a2d20; }
+body.theme-dark .modal-header { border-bottom-color: #3a2d20; }
+body.theme-dark .modal-header .close { filter: invert(0.85) sepia(0.2); opacity: 0.8; }
+body.theme-dark .header-font { color: #E0A458 !important; }
+body.theme-dark .text-color { color: #D9C6A5 !important; }
+body.theme-dark .modal-body label { color: #D9C6A5; }
+body.theme-dark .form-control {
+    background-color: #14100c !important;
+    border-color: #3a2d20 !important;
+    color: #E8D9B8 !important;
+}
+body.theme-dark .form-control:focus { border-color: #E0A458 !important; box-shadow: 0 0 0 2px rgba(224, 164, 88, 0.15) !important; }
+
+/* jQuery-confirm dialogs (used for alerts) */
+body.theme-dark .jconfirm .jconfirm-box { background: #1f1813 !important; color: #E8D9B8 !important; border: 1px solid #3a2d20; }
+body.theme-dark .jconfirm .jconfirm-title-c { color: #E0A458 !important; }
+
+/* ═══════════════════ CLASSIC TOMATO (red) theme ═══════════════════ */
+body.theme-classic .header-background { background-color: #ba6464 !important; }
+
+body.theme-classic .button-style,
+body.theme-classic .button-style-1 {
+    background-color: #feece5 !important;
+    color: #c65e5e !important;
+}
+body.theme-classic .button-style:hover,
+body.theme-classic .button-style-1:hover { color: #a34a4a !important; }
+body.theme-classic .button-style:focus,
+body.theme-classic .button-style-1:focus {
+    background-color: #feece5 !important;
+    color: #c65e5e !important;
+    box-shadow: none !important;
+}
+
+body.theme-classic .timer-time,
+body.theme-classic .timer-box { color: #feece5 !important; text-shadow: 0 2px 14px rgba(88, 20, 20, 0.25); }
+
+/* Classic logo (tomato.svg) is already pale cream for the red header — no badge needed */
+
+body.theme-classic .theme-select {
+    background: #feece5 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23c65e5e' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #c65e5e;
+    border-color: rgba(198, 94, 94, 0.35);
+}
+
+body.theme-classic .tm-active-line { color: rgba(255, 237, 229, 0.75); }
+body.theme-classic .tm-active-line strong { color: #fff; }
+body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
+</style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+</head>
+    
+    
+<body style="margin: 0; padding: 0;">
+<script>
+  /* Apply saved theme before first paint (light is default) */
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('tt_theme_v1'); } catch (e) {}
+    if (t === 'dark') document.body.classList.add('theme-dark');
+    else if (t === 'classic') document.body.classList.add('theme-classic');
+    /* 'light' (and first visit) needs no class */
+  })();
+</script>
+
+
+<!-- YouTube Promo Banner -->
+<div id="yt-promo" style="background-color: #752222; padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-radius: 6px; margin-top: 0px; flex-wrap: wrap;">
+  <div style="display: flex; align-items: center; gap: 12px;">
+     <a href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w" target="_blank" rel="noopener noreferrer">
+      <img src="assets/images/YT.png" alt="Đăng ký" style="height: 28px;">
+    </a>
+    <span style="font-size: 15px; color: #fff;">Timer Flowtime đã có rồi, kéo xuống xem nhé! Ủng hộ kênh và xem video ờ bên dưới!</span>
+  </div>
+  <div class="g-ytsubscribe" 
+       data-channelid="UC-u-z82nVkW81veR76iFx_w" 
+       data-layout="default" 
+       data-count="default">
+  </div>
+</div>
+    
+    
+<input type="hidden" id="timer_type" value="Pomodoro">
+<div class="container-fluid header-background">
+    <div class="container">
+        <div class="row p-2">
+           <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 logo-mobile" style="padding-left: 30px !important;">
+                <img id="logo" src="assets/images/logo.svg" class="header-logo" style="margin-left: 20px;"/>
+            </div>
+
+ <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-right button-align">
+    <div class="button-row">
+        <button type="button" class="btn button-style rounded-pill button-animate"
+                onclick="document.getElementById('pomodoro-guide').scrollIntoView({behavior:'smooth'})">Hẹn giờ Pomodoro là gì?</button>
+        <button type="button" class="btn button-style rounded-pill button-animate"
+                onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Nhịp Điệu Khác</button>
+    </div>
+    <div class="button-row">
+        <button type="button" class="btn button-style rounded-pill button-animate" data-toggle="modal"
+                data-target="#custom-timer">Hẹn Giờ Tùy Chỉnh</button>
+        <a href="https://www.tomatotimers.com/vi/ambience/" target="_blank" rel="noopener noreferrer"
+           class="btn button-style rounded-pill button-animate">Ambience Studio 🎵</a>
+    </div>
+</div>
+            
+            
+<div class="theme-toggle-wrapper" style="padding-left: 30px !important;">
+  <span style="position:relative; display:inline-block; margin-right:8px;">
+  <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
+  <select id="lang-select" class="theme-select" aria-label="Chọn ngôn ngữ" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
+    <option value="/">English</option>
+    <option value="/id/">Bahasa Indonesia</option>
+    <option value="/es/">Español</option>
+    <option value="/pt/">Português</option>
+    <option value="/vi/" selected>Tiếng Việt</option>
+  </select>
+  </span>
+  <select id="theme-select" class="theme-select" aria-label="Chọn giao diện">
+    <option value="light">Giao Diện Sáng</option>
+    <option value="dark">Giao Diện Tối</option>
+    <option value="classic">Cà Chua Cổ Điển</option>
+  </select>
+  <!-- Hidden legacy toggle: tomato.js reads it for the Classic Tomato image swaps + mascot set -->
+  <input type="checkbox" id="theme-toggle" style="display:none" aria-hidden="true" tabindex="-1">
+</div>
+
+            
+<div class="col-lg-12 text-center mt-4">
+    <button type="button" class="btn button-style-1 rounded-pill mr-2" onclick="onPomodoroTimer()" id="pomodoro_timer_button">Pomodoro</button>
+    <button type="button" class="btn button-style-1 rounded-pill mr-2" onclick="onShortTimer()" id="short_break_timer_button">Nghỉ Ngắn</button>
+    <button type="button" class="btn button-style-1 rounded-pill mr-2" onclick="onLongTimer()" id="long_break_timer_button">Nghỉ Dài</button>
+    <button type="button" class="btn button-style-1 rounded-pill" onclick="onLoopTimer()" id="loop_timer_button">Lặp</button>
+</div>
+
+          
+          <!-- Tomatotimers_S2S_Leftsidebar_ROS -->
+
+<div class="bsa-left-sidebar-wrapper d-none d-lg-block">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+        @media only screen and (min-width: 1600px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785230759691-0_123456"></div>
+</div>
+          
+          
+
+          
+          
+<div class="container mt-1" style="position: relative;">
+    <div class="tm-zero-overlay d-none" id="tm_zero_overlay" role="alertdialog" aria-live="assertive">
+        <div class="tm-zero-box">
+            <div class="tm-zero-text" id="tm_zero_text"></div>
+            <div class="tm-zero-row">
+                <input type="text" id="tm_zero_input" class="tm-input" placeholder="vd: 25m" aria-label="Thêm thời gian">
+                <button type="button" class="tm-zero-btn tm-zero-add" id="tm_zero_add">Thêm thời gian &amp; tiếp tục</button>
+                <button type="button" class="tm-zero-btn tm-zero-done" id="tm_zero_done">Đánh dấu hoàn thành</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-7 text-center d-flex flex-column align-items-center justify-content-start pt-1">
+            
+            <div style="min-height: 250px;" class="w-100 d-flex align-items-center justify-content-center">
+                <img src="assets/images/tomato-cartoon.svg" class="tomato-cartoon" id="tomato-cartoon" style="max-height: 300px; width: auto; margin: 0 auto;">
+            </div>
+            
+            <div class="w-100 p-1">
+                <div class="timer-time timer-container">
+                    <div class="timer-box timer-font">
+                        <span id="hoursValue">00</span><span>:</span><span id="minutesValue">25</span><span>:</span><span id="secondsValue">00</span>
+                    </div>
+                    <div class="timer-time-set timer-box timer-font" id="nextTime">
+                        <span id="hoursNext">00</span><span>:</span><span id="minutesNext">00</span><span>:</span><span id="secondsNext">00</span>
+                    </div>
+                </div>
+            </div>
+            
+           <div style="width: 100%; margin-top: 20px; text-align: center; display: block; overflow: hidden;">
+<a href="javascript:void(0)" onclick="onResetTimer()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
+    <img id="resetButton" src="assets/images/rest-button.svg" alt='Đặt lại' style="width: 50px; height: auto;">
+</a>
+<a href="javascript:void(0)" onclick="onPlayClick()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
+    <img id="startButton" src="assets/images/play-button.svg" alt='Phát' style="width: 50px; height: auto;">
+</a>
+<a href="javascript:void(0)" onclick="onStopTimer()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
+    <img id="stopButton" src="assets/images/stop-button.svg" alt='Tạm dừng' style="width: 50px; height: auto;">
+</a>
+</div>
+<!-- Ambience Master Control -->
+<div style="text-align:center;">
+    <div class="ambience-master-pill" id="ambienceMasterPill">
+        <svg id="ambienceVolIcon" viewBox="0 0 24 24" title="Bấm để bật/tắt tiếng">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+        </svg>
+        <input type="range" id="ambienceVolSlider" min="0" max="100" value="80" title="Âm lượng Ambience">
+    </div>
+    <div class="ambience-preset-label" id="ambiencePresetLabel"></div>
+    <div class="tm-active-line" id="tm_active_line" aria-live="polite"></div>
+</div>
+        </div>
+    </div>
+</div>
+          
+          
+          <!-- Tomatotimers_S2S_Rightsidebar_ROS -->
+
+<div class="bsa-right-sidebar-wrapper d-none d-lg-block">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
+        }
+        @media only screen and (min-width: 1600px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785233220314-9_123456"></div>
+</div>
+          
+          
+        </div>
+    </div>
+</div>
+    
+
+<div class="container-fluid todo-background" style="background-color: #FFFFFF;">
+    <div class="container" style="max-width: 1200px;">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h2 class="tm-section-title">Danh Sách Việc Cần Làm</h2>
+                <div class="todo-list-min-height" id="task_manager">
+                    <form id="tm_add_form" autocomplete="off">
+                        <div class="tm-color-picker" id="tm_color_picker" role="radiogroup" aria-label="Màu công việc">
+                            <button type="button" class="tm-swatch tm-swatch-selected" data-color="" style="background:#E8D5C0" title="Mặc định" aria-label="Màu mặc định"></button>
+                            <button type="button" class="tm-swatch" data-color="#DE4B3A" style="background:#DE4B3A" title="Đỏ" aria-label="Đỏ"></button>
+                            <button type="button" class="tm-swatch" data-color="#FFA900" style="background:#FFA900" title="Cam" aria-label="Cam"></button>
+                            <button type="button" class="tm-swatch" data-color="#5FA46A" style="background:#5FA46A" title="Xanh lá" aria-label="Xanh lá"></button>
+                            <button type="button" class="tm-swatch" data-color="#4A90D9" style="background:#4A90D9" title="Xanh dương" aria-label="Xanh dương"></button>
+                            <button type="button" class="tm-swatch" data-color="#9B59B6" style="background:#9B59B6" title="Tím" aria-label="Tím"></button>
+                        </div>
+                        <input type="text" id="tm_add_title" class="tm-input" placeholder="Thêm một việc…" maxlength="120" aria-label="Tiêu đề công việc">
+                        <input type="text" id="tm_add_estimate" class="tm-input tm-estimate-input" placeholder="ước tính" maxlength="12" aria-label="Thời gian ước tính (không bắt buộc)">
+                        <button type="submit" class="to-do-button btn rounded-pill tm-add-btn">Thêm</button>
+                    </form>
+                    <div id="tm_cards" class="tm-cards"></div>
+                    <div id="tm_done_wrap" class="tm-done-wrap d-none">
+                        <div class="tm-done-header">Xong<span id="tm_done_count"></span></div>
+                        <div id="tm_done_cards" class="tm-cards"></div>
+                    </div>
+                    <div class="tm-toolbar">
+                        <button type="button" id="tm_clear_done" class="tm-tool-btn">Xóa việc đã xong</button>
+                        <button type="button" id="tm_reset" class="tm-tool-btn tm-tool-danger">Đặt lại danh sách</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" id="video-section" style="background-color: #fff; padding: 0.5rem 1rem; border-radius: 12px; margin-top: 1rem; margin-bottom: 1rem;">
+  <h2 class="text-center" style="color: #000000; font-size: 1.5rem; margin-bottom: 0.5rem;">Hẹn Giờ Bằng Video Hoạt Hình 🎨</h2>
+ 
+ <!--
+    <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" 
+            src="https://www.youtube.com/embed/videoseries?si=gKgVVV9jFnmmy0ts&amp;list=PLeUr2UZVEPDN1MlyMqaCISeweTBKrzO34" 
+            title="YouTube playlist player" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+    </iframe>
+  </div>
+    
+-->
+
+
+</div>
+
+<div class="video-grid-wrapper">
+  <div class="video-grid">
+    
+         <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=EoY4vT_QS9M"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/marathon.mp4"
+            aria-label="Phiên Học Tập Hoạt Hình Maraton với Hẹn Giờ Pomodoro"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+             <a
+          class="video-card"
+          href="https://youtu.be/MCN3oxKXGzE"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/hamburger.mp4"
+            aria-label="Hẹn Giờ Pomodoro Esthetic Hình Bánh Hamburger Dễ Thương"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+             <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=emtaPzwLF2U&feature=youtu.be"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/workflow.mp4"
+            aria-label="Hẹn Giờ Học Tập và Tập Trung Với Quy Trình Làm Việc Hiệu Quả"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+  
+             <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=6u2QZ5R6Bok"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/office.mp4"
+            aria-label="Hẹn Giờ Pomodoro Online Làm Việc Văn Phòng Ấm Cúng"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+    
+                <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=EZ66BuJsTm0"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/train.mp4"
+            aria-label="Hẹn Giờ Học Tập Không Khí Chuyến Tàu Ngắm Cảnh"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+    
+            <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=6BXOtQ9sb9A"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/tomato.mp4"
+            aria-label="Hoạt Hình Hẹn Giờ Cà Chua Dễ Thương Để Tập Trung"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+    
+                  <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=5sWWzgmIgfU"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/camping.mp4"
+            aria-label="Hẹn Giờ Pomodoro Không Khí Cắm Trại Ngoài trời"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+    
+                       <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=pI1ebDzt4yo"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/tomato 2.mp4"
+            aria-label="Hoạt Hình Nhân Vật Hẹn Giờ Pomodoro Dễ Thương"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+
+               <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=7NPbGRohvm4"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/dream.mp4"
+            aria-label="Hẹn Giờ Học Tập Online Esthetic Như Mơ"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+
+              <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=wBENuwsH0qc"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/raining.mp4"
+            aria-label="Hẹn Giờ Pomodoro Học Tập Lofi Ngày Mưa"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+    
+          <a
+          class="video-card"
+          href="https://youtu.be/1-np2XXwMFg"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/arcade.mp4"
+            aria-label="Hẹn Giờ Pomodoro Dễ Thương Trò Chơi Arcade Cổ Điển"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+
+         <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=XRLRi7f4fb0"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/space.mp4"
+            aria-label="Hẹn Giờ Tập Trung Chủ Đề Vũ Trụ Bao La"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+
+
+      <a
+          class="video-card"
+          href="https://youtu.be/u2SB5EnnfM8"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/baking.mp4"
+            aria-label="Hoạt Hình Hẹn Giờ Dễ Thương Tiệm Bánh Ấm Cúng"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+      <a
+          class="video-card"
+          href="https://youtu.be/OD7BcHcIGB0"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/jazz.mp4"
+            aria-label="Hẹn Giờ Pomodoro Online Nhạc Jazz Lofi"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+    
+    
+     <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=fGf1NF6iSME"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/farm.mp4"
+            aria-label="Hẹn Giờ Tập Trung Cuộc Sống Nông Trại Yên Bình"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+  
+                       <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=kIMBAamdhCE&pp=2AYC0gcJCZEKAYcqIYzv"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/first one.mp4"
+            aria-label="Hẹn Giờ Pomodoro Dễ Thương Tối Giản Vẽ Tay"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+         <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=JhmcIHEcrM0"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/museum.mp4"
+            aria-label="Hẹn Giờ Pomodoro Esthetic Bảo Tàng Nghệ Thuật"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+      <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=G8wjxLGLNCE"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/christmas.mp4"
+            aria-label="Hẹn Giờ Cà Chua Chủ Đề Lễ Hội Ấm Cúng"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+       <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=svz09jz_NJU"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/autumn.mp4"
+            aria-label="Hẹn Giờ Học Tập Esthetic Mùa Thu"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+            <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=NI2lQVEc5QU"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/japan.mp4"
+            aria-label="Hẹn Giờ Pomodoro Lofi Phố Nhật Bản"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+           <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=-CNcfip7XyY"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/halloween.mp4"
+            aria-label="Hẹn Giờ Pomodoro Dễ Thương Ma Mị Halloween"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+              <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=diz-BixQp7A"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/airplane.mp4"
+            aria-label="Hẹn Giờ Học Tập Cửa Sổ Khoang Máy Bay"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+                   <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=GolaU8Ga6Cw"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/classic.mp4"
+            aria-label="Hẹn Giờ Tập Trung Cổ Điển Với Lofi Ambience"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+                  <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=Tqy6h1R2Q7U"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/school.mp4"
+            aria-label="Phiên Học Tập Trong Lớp Pomodoro Online"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+                    <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=kHAmVm3gUtY&pp=2AYC"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/beach 2.mp4"
+            aria-label="Hẹn Giờ Học Tập Hoàng Hôn Biển Nhiệt Đới"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+                    <a
+          class="video-card"
+          href="https://www.youtube.com/watch?v=pznR917uHR0&pp=2AYC0gcJCZEKAYcqIYzv"
+          target="_blank"
+          rel="noopener"
+        >
+          <video
+            data-src="/assets/gifs/beach.mp4"
+            aria-label="Hẹn Giờ Cà Chua Bãi Biển và Đại Dương Thư Giãn"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+        </a>
+      
+      
+  </div>
+
+
+
+</div>
+
+
+<!-- SEO Content Section -->
+<div id="seo-section" style="background-color: #FFA900; padding: 50px 0 40px;">
+<div id="pomodoro-guide" class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; color: #58240E; line-height: 1.7;">
+<h1 style="text-align:center; color:#58240E; font-family:'Baloo Tammudu', cursive; font-size:1.7rem; margin:20px 0 8px;">Hẹn Giờ Pomodoro Online Miễn Phí &amp; Hẹn Giờ Học Tập</h1>
+  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 8px; color: #7A1F0F;">Học Phương Pháp Cà Chua 🍅</h2>
+  <p style="text-align: center; color: #58240E; font-size: 1rem; margin-bottom: 24px;">Tăng năng suất với hẹn giờ Pomodoro tùy chỉnh, giao diện dễ thương và không khí tập trung.</p>
+
+  <div style="text-align: center; margin: 10px auto 40px; max-width: 720px;">
+    <img src="assets/images/tomato-work-flow.svg" class="work-flow" style="max-width: 100%; height: auto;" alt="Đồ họa quy trình làm việc của Kỹ thuật Pomodoro: chọn một việc, đặt hẹn giờ 25 phút, làm đến khi chuông kêu, nghỉ 5 phút, và sau bốn Pomodoro thì nghỉ dài hơn 15-30 phút" loading="lazy"/>
+    <p style="color: #58240E; font-size: 0.9rem; margin-top: 10px;">Quy trình Pomodoro tóm tắt — chọn một việc, tập trung 25 phút, nghỉ 5 phút, lặp lại.</p>
+  </div>
+
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Kỹ thuật Pomodoro là gì?</h2>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px;"><strong>Kỹ thuật Pomodoro</strong>là phương pháp quản lý thời gian do Francesco Cirillo phát triển vào cuối những năm 1980. Phương pháp dùng hẹn giờ để chia công việc thành các khoảng tập trung — truyền thống là<strong>25 phút</strong>— xen kẽ nghỉ ngắn.<strong>hẹn giờ Pomodoro online</strong>của chúng tôi giúp áp dụng kỹ thuật này dễ dàng với khoảng thời gian tùy chỉnh, giao diện dễ thương và âm thanh<strong>lofi ambience</strong>thư giãn.</p>
+
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Cách Dùng Hẹn Giờ Pomodoro Miễn Phí</h2>
+  <ol style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px; padding-left: 20px;">
+    <li>Chọn một công việc bạn muốn tập trung</li>
+    <li>Bấm vào<strong>Pomodoro</strong>để bắt đầu phiên tập trung 25 phút</li>
+    <li>Làm việc đến khi chuông kêu — không xao nhãng!</li>
+    <li>Nghỉ 5 phút với<strong>Nghỉ Ngắn</strong></li>
+    <li>Sau 4 Pomodoro, tận hường<strong>Nghỉ Dài</strong>(15 phút)</li>
+    <li>Dùng nút<strong>Lặp</strong>để tự động hóa toàn bộ chu kỳ</li>
+  </ol>
+
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Tại Sao TomatoTimers Là Hẹn Giờ Học Tập Tốt Nhất</h2>
+  <ul style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px; padding-left: 20px;">
+    <li><strong>Miễn phí &amp; không cần đăng ký:</strong>Bắt đầu tập trung ngay — không cần tài khoản</li>
+    <li><strong>Dễ thương &amp; esthetic:</strong>Nhiều giao diện gồm Cà Chua Cổ Điển, Vịt và các thiết kế theo mùa</li>
+    <li><strong>Khoảng thời gian tùy chỉnh:</strong>Điều chỉnh thời gian Pomodoro, nghỉ ngắn và nghỉ dài theo quy trình của bạn</li>
+    <li><strong>Lofi Ambience:</strong>Âm thanh tập trung tích hợp — mưa, quán cà phê, lửa trại, sóng biển và hơn thế nữa</li>
+    <li><strong>Quản lý công việc:</strong>Danh sách việc cần làm tích hợp để theo dõi các phiên học tập</li>
+    <li><strong>Dùng được mọi nơi:</strong>Máy tính, điện thoại, máy tính bảng — trình duyệt nào cũng chạy</li>
+  </ul>
+
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Tính Năng Hẹn Giờ Được Yêu Thích</h2>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 20px; margin-bottom: 8px;">Hẹn Giờ Pomodoro Tùy Chỉnh</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 16px;">Không phải ai cũng làm việc tốt nhất trong khoảng 25 phút.<strong>Hẹn giờ Pomodoro tùy chỉnh</strong>của chúng tôi cho phép bạn tự đặt thời gian làm việc và nghỉ ngơi. Bấm nút<em>Hẹn Giờ Tùy Chỉnh</em>để điều chỉnh khoảng thời gian và thậm chí gán preset ambience riêng cho từng chế độ.</p>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 20px; margin-bottom: 8px;">Hẹn Giờ Pomodoro Esthetic Với Giao Diện Dễ Thương</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 16px;">Giờ học không nhất thiết phải nhàm chán. TomatoTimers là một<strong>hẹn giờ Pomodoro esthetic</strong>với hình ảnh đáng yêu, video theo mùa và thiết kế ấm cúng giúp việc tập trung trờ nên thú vị. Chuyển đổi giữa giao diện Cà Chua Cổ Điển và giao diện Vịt nổi tiếng của chúng tôi.</p>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 20px; margin-bottom: 8px;">Hẹn Giờ Tập Trung Với Lofi Ambience</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 16px;">Cần loại bỏ sự xao nhãng? Dùng<strong>hẹn giờ tập trung</strong>với lofi ambience tích hợp. Chọn Mưa Tập Trung, Quán Cà Phê Ấm Cúng, Đêm Lửa Trại, Gió Biển, hoặc tự tạo ambience riêng trong Ambience Studio — mỗi bản đều được thiết kế để giúp bạn làm việc sâu không có lời ca nhạc gây xao nhãng.</p>
+
+  <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Câu Hỏi Thường Gặp</h2>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Hẹn giờ Pomodoro này có thật sự miễn phí không?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Có! TomatoTimers là một<strong>hẹn giờ Pomodoro miễn phí</strong>không phí ẩn, không gói trả phí và không cần đăng ký. Mọi tính năng — gồm khoảng thời gian tùy chỉnh, quản lý công việc và ambience — đều dùng được ngay.</p>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Tôi có thể dùng làm hẹn giờ học tập không?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Chắc chắn rồi. Hàng nghìn học sinh, sinh viên dùng TomatoTimers như<strong>hẹn giờ học tập</strong>hằng ngày. Phương pháp Pomodoro đã được chứng minh giúp tăng khả năng tập trung, giảm trì hoãn và cải thiện ghi nhớ trong các phiên học dài.</p>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Điều gì khiến hẹn giờ Pomodoro này dễ thương?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Khác với các app đếm ngược đơn điệu, TomatoTimers được thiết kế là một<strong>hẹn giờ Pomodoro dễ thương</strong>với hình ảnh duyên dáng, giao diện động và bảng màu ấm áp. Nó biến năng suất thành trải nghiệm dễ chịu thay vì gánh nặng.</p>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Làm sao để tùy chỉnh hẹn giờ của tôi?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Bấm nút<em>Hẹn Giờ Tùy Chỉnh</em>để mờ cửa sổ cài đặt. Từ đó, bạn có thể điều chỉnh thời gian Pomodoro, Nghỉ Ngắn và Nghỉ Dài. Bạn cũng có thể gán preset ambience cho từng chế độ để âm thanh tập trung tự chuyển khi bạn chuyển giữa làm việc và nghỉ ngơi.</p>
+
+  <h3 style="font-size: 1.15rem; color: #7A1F0F; margin-top: 18px; margin-bottom: 6px;">Có dùng được trên điện thoại không?</h3>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 14px;">Có,<strong>hẹn giờ Pomodoro online</strong>của chúng tôi phản hồi hoàn toàn và chạy tốt trên iPhone, Android và máy tính bảng. Dùng ngay trong trình duyệt — không cần tải app.</p>
+
+</div>
+</div>
+
+
+<!-- ═══ Other Rhythm / Other Tools: internal-link cards (SEO cross-links) ═══ -->
+<style>
+  .tt-cards { max-width: 1200px; margin: 48px auto 0; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; }
+  .tt-cards-title { font-size: 1.5rem; color: #58240E; margin: 0 0 14px; }
+  .tt-card-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+                 padding: 6px 4px 18px; -webkit-overflow-scrolling: touch; }
+  .tt-card-row::-webkit-scrollbar { height: 8px; }
+  .tt-card-row::-webkit-scrollbar-thumb { background: #E3C89A; border-radius: 8px; }
+  .tt-card { flex: 0 0 240px; scroll-snap-align: start; background: #FFFFFF; border-radius: 18px;
+             overflow: hidden; text-decoration: none; border: 1px solid #EBDCC3;
+             box-shadow: 0 3px 10px rgba(88, 36, 14, .08);
+             transition: transform .18s ease, box-shadow .18s ease; }
+  .tt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(88, 36, 14, .14); }
+  .tt-card img { width: 100%; height: 170px; object-fit: contain; padding: 18px;
+                 background: #FBF3E4; box-sizing: border-box; }
+  .tt-card-text { padding: 12px 16px 16px; }
+  .tt-card h3 { font-size: 1.05rem; color: #58240E; margin: 0 0 4px; }
+  .tt-card p { font-size: .85rem; color: #8C5A3E; margin: 0; line-height: 1.45; }
+  body.theme-dark .tt-cards-title { color: #E0A458; }
+  body.theme-dark .tt-card { background: #2a2018; border-color: #3a2d20; box-shadow: 0 3px 10px rgba(0, 0, 0, .3); }
+  body.theme-dark .tt-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+  body.theme-dark .tt-card img { background: #1c1410; }
+  body.theme-dark .tt-card h3 { color: #E0A458; }
+  body.theme-dark .tt-card p { color: #C9B18F; }
+</style>
+<section id="other-rhythm" class="tt-cards" aria-label="Các nhịp điệu và công cụ khác">
+  <h2 class="tt-cards-title">Nhịp Điệu Khác</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/vi/52-17/">
+      <img src="assets/images/52-17-card.png" alt="Lin vật gà con với hẹn giờ sprint và nghỉ 52/17" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Hẹn Giờ 52/17</h3>
+        <p>Làm việc tập trung 52 phút, sau đó nghỉ 17 phút để thật sự thư giãn — nhịp làm việc sâu được đo từ những người hiệu quả nhất.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/vi/20-20-20-rule/">
+      <img src="assets/images/1.svg" alt="Lin vật gà con Tomato của hẹn giờ nghỉ mắt 20-20-20" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Hẹn Giờ Quy Tắc 20-20-20</h3>
+        <p>Mỗi 20 phút, nhìn ra xa 6 mét trong 20 giây — nhịp nghỉ mắt nhẹ nhàng chống mỏi mắt do màn hình.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/vi/flowtime/">
+      <img src="assets/images/flowtime-card.png" alt="Lin vật gà con làm việc trên laptop cho hẹn giờ kỹ thuật Flowtime" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Hẹn Giờ Kỹ Thuật Flowtime</h3>
+        <p>Làm việc miễn còn hưng phấn trong khi phần nghỉ nạp dần theo thời gian thực — nhận thời gian nghỉ tương xứng với công việc bạn thật sự làm.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<div class="container-fluid footer-background">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <img src="assets/images/screen-shot.png" class="screen-shot"/>
+
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+           
+                <img id="footerLogo" src="assets/images/footer-logo.svg" class="footer-logo"/>
+                <a href="https://play.google.com/store/apps/details?id=com.associatedventure.dev.tomatotimer"
+                   target="_blank" class="footer-play-store-logo-position">
+                    <img src="assets/images/google-play-store.png" class="play-store"/>
+                </a>
+                <a href="https://apps.apple.com/us/app/focus-hub-study-timer/id1478228599"
+                   target="_blank" class="footer-play-store-logo-position">
+                    <img src="assets/images/app-store.png" class="play-store"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="what-pomodoro-timer" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content popup-background">
+            <div class="modal-header">
+                <h4 class="modal-title header-font">Hẹn giờ Pomodoro là gì?</h4>
+                <img src="assets/images/close-button.svg" class="close" data-dismiss="modal"/>
+            </div>
+            <div class="modal-body">
+                <h6 class="header-font">Hẹn Giờ Pomodoro Online</h6>
+                <p class="text-color">TomatoTimers là hẹn giờ pomodoro lặp lại, dễ dàng tùy chỉnh và sử dụng để tăng hiệu quả của bạn.</p>
+
+                <h6 class="header-font">Về Kỹ Thuật Pomodoro</h6>
+                <p class="text-color">Kỹ thuật Pomodoro™ là phương pháp quản lý thời gian do Francesco Cirillo phát triển vào cuối những năm 1980. Kỹ thuật này dùng hẹn giờ để chia công việc thành các khoảng xen kẽ nghỉ ngơi. Kỹ thuật Pomodoro tăng năng suất bằng cách nghỉ ngắn đều đặn theo lịch.</p>
+
+                <h6 class="header-font">Cách dùng hẹn giờ Pomodoro / Cà Chua</h6>
+                <ul class="text-color ml-3">
+                    <li>Chọn công việc cần làm, đặt hẹn giờ 25 phút cho một "Pomodoro"</li>
+                    <li>Làm việc đến khi hẹn giờ kết thúc</li>
+                    <li>Khi hẹn giờ kết thúc, đánh dấu vào danh sách việc cần làm</li>
+                    <li>Nghỉ ngắn 5 phút</li>
+                    <li>Sau bốn "Pomodoro" thì nghỉ dài</li>
+                    <li>Lặp lại từ bước 1</li>
+                    <li>Dùng hẹn giờ tùy chỉnh để điều chỉnh và bấm nút làm mới cạnh nút phát để thay đổi thời gian</li>
+                </ul>
+
+                <p class="text-color">DÙNG NÚT LẶP ĐỂ LÀM LIÊN TIẾP TỪ BƯỚC 1 ĐẾN BƯỚC 5</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="custom-timer" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content popup-background">
+            <div class="modal-header">
+                <h4 class="modal-title header-font">NHẬP HẸN GIỜ TÙY CHỈNH</h4>
+                <img src="assets/images/close-button.svg" class="close" data-dismiss="modal"/>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="pomodoro_value" class="text-color">POMODORO</label>
+                        <input type="text" name="pomodoro_value" id="pomodoro_value" class="form-control integer"
+                               value="25"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="short_break_value" class="text-color">NGHỈ NGẮN</label>
+                        <input type="text" name="short_break_value" id="short_break_value" class="form-control integer"
+                               value="5"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="long_break_value" class="text-color">NGHỈ DÀI</label>
+                        <input type="text" name="long_break_value" id="long_break_value" class="form-control integer"
+                               value="15"/>
+                    </div>
+
+                    <hr class="ambience-divider">
+                    <div class="ambience-section-title">🔔 Âm Thanh Thông Báo</div>
+                    <div class="ambience-section-desc">Chọn nhạc chuông kêu khi hẹn giờ kết thúc. Thông báo 1 là tiếng bíp mặc định.</div>
+                    <div class="form-group">
+                        <label for="notify_sound" class="text-color">NHẠC CHUÔNG THÔNG BÁO</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <select id="notify_sound" class="form-control ambience-select" style="flex: 1;">
+                                <option value="1">Thông báo 1 (Bíp Mặc Định)</option>
+                                <option value="2">Thông báo 2</option>
+                                <option value="3">Thông báo 3</option>
+                                <option value="4">Thông báo 4</option>
+                                <option value="5">Thông báo 5</option>
+                                <option value="6">Thông báo 6</option>
+                            </select>
+                            <button type="button" id="notify_sound_test" class="notify-test-btn">▶ Thử</button>
+                        </div>
+                    </div>
+
+                    <hr class="ambience-divider">
+                    <div class="ambience-section-title">🎧 Ambience Tập Trung</div>
+                    <div class="ambience-section-desc">Gán preset ambience cho từng chế độ hẹn giờ. Preset được chia sẻ với<a href="https://www.tomatotimers.com/vi/ambience/" target="_blank" rel="noopener">Ambience Studio</a>và đồng bộ hai chiều.</div>
+                    <div class="form-group">
+                        <label for="pomodoro_ambience" class="text-color">AMBIENCE POMODORO</label>
+                        <select id="pomodoro_ambience" class="form-control ambience-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="short_break_ambience" class="text-color">AMBIENCE NGHỈ NGẮN</label>
+                        <select id="short_break_ambience" class="form-control ambience-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="long_break_ambience" class="text-color">AMBIENCE NGHỈ DÀI</label>
+                        <select id="long_break_ambience" class="form-control ambience-select"></select>
+                    </div>
+                    <div class="checkbox_listing"></div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit-button btn btn-lg" id='SaveSet'>LƯU</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="assets/js/tomato.js?v=1.0"></script>
+<script src="assets/js/jquery-confirm/dist/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59bf5fb7954a0abb"></script>
+    
+      <footer style="margin-top: 40px; text-align: center; color: #8C5A3E; font-size: 15px; font-weight: 400; padding-bottom: 25px; width: 100%;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span>Hẹn Giờ Cà Chua</span>
+        <span>•</span>
+        <a href="https://optimize-tomatotimers.bsa-whitelabel.com/checkout/new" target="_blank" rel="noopener noreferrer" style="color: #DE4B3A; text-decoration: none; font-weight: 700; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1.0'">Quảng Cáo Ở Đây 🎯</a>
+    </div>
+     <div>Phát hiện lỗi?<a href="/cdn-cgi/l/email-protection#35545b514c525c5a43545b5b4c535057475c545b415a755258545c591b565a58" style="color: #DE4B3A; text-decoration: none; font-weight: 700;">Gửi email cho tôi</a>
+        <button type="button" id="bug-copy" onclick="(function(){var e='andygiovannyfebrianto@gmail.com';var done=function(){var b=document.getElementById('bug-copy');if(!b)return;var t=b.textContent;b.textContent='Copied!';setTimeout(function(){b.textContent=t;},1500);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(e).then(done,done);}else{var ta=document.createElement('textarea');ta.value=e;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(x){}document.body.removeChild(ta);done();}})()" style="background:none;border:none;cursor:pointer;color:#8C5A3E;font-size:13px;text-decoration:underline;padding:0;font-family:inherit;">sao chép</button>
+    </div>
+  <div class="foot-note">Miễn phí &amp; không cần đăng ký — mỗi tab giữ nhật ký phiên riêng; danh sách việc của bạn lưu trong trình duyệt này cho đến khi bạn xóa.</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ============================================================
+   VIDEO GRID — lazy looping MP4s (replaces GIF thumbnails)
+   Loads each clip only when it scrolls near the viewport,
+   then keeps it looping muted, exactly like the old GIFs.
+   ============================================================ */
+(function () {
+    var vids = document.querySelectorAll('.video-card video[data-src]');
+    function start(v) {
+        if (v.src) return;
+        v.src = v.dataset.src;
+        var p = v.play();
+        if (p && p.catch) { p.catch(function () {}); }
+    }
+    if (!('IntersectionObserver' in window)) {
+        for (var i = 0; i < vids.length; i++) { start(vids[i]); }
+        return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (e.isIntersecting) { start(e.target); io.unobserve(e.target); }
+        });
+    }, { rootMargin: '300px' });
+    for (var j = 0; j < vids.length; j++) { io.observe(vids[j]); }
+})();
+</script>
+
+<script>
+/* ============================================================
+   AMBIENCE INTEGRATION v12 — Loop-safe mode detection.
+   Reads tomato.js globals (mode flags + loopCounter + remainingTime).
+   No function hooks. No button wrapping. No DOM polling.
+   ============================================================ */
+(function() {
+    'use strict';
+
+    const PRESETS_KEY = 'tt_ambience_presets_v1';
+    const TIMER_AMBIENCE_KEY = 'tt_timer_ambience_settings_v1';
+    const DEFAULT_PRESETS = {
+        1: { name: 'Rainy Focus',    sounds: { rain: {active:true, vol:70}, thunder: {active:true, vol:40} } },
+        2: { name: 'Cozy Cafe',      sounds: { cafe: {active:true, vol:75}, typing:  {active:true, vol:50} } },
+        3: { name: 'Campfire Night', sounds: { campfire: {active:true, vol:80}, night: {active:true, vol:60} } },
+        4: { name: 'Ocean Breeze',   sounds: { waves: {active:true, vol:80}, wind:   {active:true, vol:40} } }
+    };
+
+    const SOUNDS = [
+        { id:'rain',     file:'ambience/audio/rain.ogg' },
+        { id:'thunder',  file:'ambience/audio/thunder.ogg' },
+        { id:'wind',     file:'ambience/audio/wind.ogg' },
+        { id:'campfire', file:'ambience/audio/campfire.ogg' },
+        { id:'waves',    file:'ambience/audio/waves.ogg' },
+        { id:'cafe',     file:'ambience/audio/cafe.ogg' },
+        { id:'birds',    file:'ambience/audio/birds.ogg' },
+        { id:'night',    file:'ambience/audio/night.ogg' },
+        { id:'typing',   file:'ambience/audio/typing.ogg' },
+        { id:'Train',    file:'ambience/audio/train.ogg' },
+        { id:'Airplane', file:'ambience/audio/airplane.ogg' },
+        { id:'Metro',    file:'ambience/audio/metro.ogg' },
+        { id:'Cricket',  file:'ambience/audio/cricket.ogg' },
+        { id:'River',    file:'ambience/audio/river.ogg' },
+        { id:'bird',     file:'ambience/audio/bird.ogg' }
+    ];
+
+    // ---- Audio Engine ----
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null, masterGain = null;
+    const buffers = {}, activeNodes = {};
+
+    function ensureAudio() {
+        if (audioCtx) return;
+        try {
+            audioCtx = new AudioContext();
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = getVolume() / 100;
+            masterGain.connect(audioCtx.destination);
+            SOUNDS.forEach(function(s){ preload(s); });
+        } catch(e){ console.error('[Ambience] Audio init failed', e); }
+    }
+    async function preload(sound) {
+        if (buffers[sound.id]) return;
+        try {
+            const res = await fetch(sound.file);
+            if (!res.ok) throw new Error(res.status);
+            buffers[sound.id] = await audioCtx.decodeAudioData(await res.arrayBuffer());
+        } catch(err){ console.error('[Ambience] Load fail', sound.file, err); }
+    }
+    function playSound(sound) {
+        if (!audioCtx) ensureAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (!buffers[sound.id]) {
+            preload(sound).then(function(){ if (sound._active) playSound(sound); });
+            return;
+        }
+        if (activeNodes[sound.id]) stopSound(sound.id);
+        const src = audioCtx.createBufferSource();
+        src.buffer = buffers[sound.id];
+        src.loop = true; src.loopStart = 0;
+        const trim = 0.10;
+        src.loopEnd = Math.max(src.buffer.duration - trim, src.buffer.duration * 0.98);
+        const gain = audioCtx.createGain();
+        const vol = (sound.volume !== undefined ? sound.volume : 50) / 100;
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.05);
+        src.connect(gain); gain.connect(masterGain); src.start(0);
+        activeNodes[sound.id] = { src: src, gain: gain };
+    }
+    function stopSound(id) {
+        const node = activeNodes[id]; if (!node) return;
+        const now = audioCtx.currentTime;
+        node.gain.gain.cancelScheduledValues(now);
+        node.gain.gain.setValueAtTime(node.gain.gain.value, now);
+        node.gain.gain.linearRampToValueAtTime(0, now + 0.05);
+        try { node.src.stop(now + 0.06); } catch(e){}
+        setTimeout(function(){ try{ node.src.disconnect(); node.gain.disconnect(); }catch(e){} }, 80);
+        delete activeNodes[id];
+    }
+    function stopAll() { Object.keys(activeNodes).forEach(function(id){ stopSound(id); }); }
+
+    function applyPreset(slot) {
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        const preset = presets[slot] || DEFAULT_PRESETS[slot];
+        if (!preset) return;
+        stopAll();
+        SOUNDS.forEach(function(s){
+            const cfg = preset.sounds[s.id];
+            if (cfg && cfg.active && cfg.vol > 0) {
+                s._active = true; s.volume = cfg.vol; playSound(s);
+            } else {
+                s._active = false; if (cfg) s.volume = cfg.vol || 0;
+            }
+        });
+        _lastPresetName = preset.name || 'Unnamed';
+        updatePresetLabel(_lastPresetName);
+    }
+
+    // ---- Settings ----
+    function loadSettings() {
+        try {
+            const raw = localStorage.getItem(TIMER_AMBIENCE_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch(e){}
+        return { pomodoro: '1', shortBreak: '2', longBreak: '3', volume: 0 };
+    }
+    function saveSettings(s) {
+        try { localStorage.setItem(TIMER_AMBIENCE_KEY, JSON.stringify(s)); } catch(e){}
+    }
+    function getVolume() {
+        const s = loadSettings();
+        return (s.volume !== undefined) ? s.volume : 0;
+    }
+    function isMuted() {
+        return getVolume() <= 0;
+    }
+
+    // ---- UI: Preset Label ----
+    const presetLabel = document.getElementById('ambiencePresetLabel');
+    function updatePresetLabel(name) {
+        if (!presetLabel) return;
+        if (name && !isMuted()) {
+            presetLabel.innerHTML = '<span class="play-icon">▶</span><span class="preset-name">' + name + '</span>';
+        } else {
+            presetLabel.innerHTML = '';
+        }
+    }
+    function clearPresetLabel() {
+        if (presetLabel) presetLabel.innerHTML = '';
+    }
+
+    // ---- UI: Volume Slider & Icon ----
+    const pill = document.getElementById('ambienceMasterPill');
+    const volIcon = document.getElementById('ambienceVolIcon');
+    const volSlider = document.getElementById('ambienceVolSlider');
+    let preMuteVolume = 80;
+
+    function updatePillUI() {
+        const vol = getVolume();
+        if (volSlider) volSlider.value = vol;
+        if (pill) {
+            pill.classList.toggle('active', vol > 0);
+            pill.classList.toggle('muted', vol <= 0);
+        }
+        if (volIcon) {
+            if (vol <= 0) {
+                volIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            } else if (vol < 50) {
+                volIcon.innerHTML = '<path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>';
+            } else {
+                volIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            }
+        }
+    }
+
+    if (volSlider) {
+        volSlider.value = getVolume();
+        volSlider.addEventListener('input', function(e) {
+            const val = parseInt(e.target.value);
+            const s = loadSettings();
+            s.volume = val;
+            if (val > 0) preMuteVolume = val;
+            saveSettings(s);
+            updatePillUI();
+            if (audioCtx && masterGain) {
+                masterGain.gain.setTargetAtTime(val / 100, audioCtx.currentTime, 0.05);
+            }
+            // Mute = keep nodes playing at 0% volume; never stop them.
+            if (val <= 0) { clearPresetLabel(); }
+            else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
+            else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
+        });
+    }
+
+    if (volIcon) {
+        volIcon.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            const s = loadSettings();
+            if (getVolume() > 0) {
+                preMuteVolume = getVolume();
+                s.volume = 0;
+            } else {
+                s.volume = preMuteVolume || 80;
+            }
+            saveSettings(s);
+            updatePillUI();
+            if (audioCtx && masterGain) {
+                masterGain.gain.setTargetAtTime(getVolume() / 100, audioCtx.currentTime, 0.05);
+            }
+            // Mute = keep nodes playing at 0% volume; never stop them.
+            if (getVolume() <= 0) { clearPresetLabel(); }
+            else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
+            else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
+            return false;
+        });
+    }
+
+    // ---- Mode Detection ----
+    function detectMode() {
+        if (typeof isShortCliked !== 'undefined' && isShortCliked) return 'Short Break';
+        if (typeof isLongClicked !== 'undefined' && isLongClicked) return 'Long Break';
+        if (typeof isPomClicked !== 'undefined' && isPomClicked) return 'Pomodoro';
+        const el = document.getElementById('timer_type');
+        return el ? el.value : 'Pomodoro';
+    }
+
+    function playForCurrentMode() {
+        // Always start the sound nodes, even when muted — "mute" just means
+        // masterGain at 0%, so unmuting is instant (no pause/play needed).
+        const s = loadSettings();
+        const mode = detectMode();
+        let slot = '0';
+        if (mode === 'Pomodoro') slot = s.pomodoro;
+        else if (mode === 'Short Break') slot = s.shortBreak;
+        else if (mode === 'Long Break') slot = s.longBreak;
+        if (slot === '0' || !slot) { stopAll(); clearPresetLabel(); return; }
+        applyPreset(parseInt(slot));
+    }
+
+    // ---- State Control ----
+    let _lastPresetName = '';
+
+    function startAmbience() {
+        playForCurrentMode();  // nodes always play; volume 0 = silent, not stopped
+    }
+    function pauseAmbience() {
+        if (audioCtx && audioCtx.state === 'running') {
+            audioCtx.suspend();
+        }
+        clearPresetLabel();
+    }
+    function resumeAmbience() {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        if (!isMuted()) updatePresetLabel(_lastPresetName);
+    }
+    function stopAmbience() {
+        stopAll();
+        clearPresetLabel();
+    }
+
+    // ---- Main Poller: watches tomato.js globals (mode flags + loopCounter + remainingTime) ----
+    // countdownHandle is NEVER nulled by tomato.js stopTimer(), so it cannot detect
+    // "stopped". Reliable signals instead:
+    //   mode    = window.isPomClicked / isShortCliked / isLongClicked
+    //             (tomato.js sets them synchronously during loop auto-transitions)
+    //   step    = window.loopCounter (increments exactly once per loop auto-transition)
+    //   running = window.remainingTime is actually ticking (~1s cadence)
+    let _wasRunning = false;
+    let _lastMode = detectMode();
+    let _lastRt = (typeof window.remainingTime === 'number') ? window.remainingTime : null;
+    let _lastTickAt = 0;
+    let _lastStep = window.isLoopClicked ? (window.loopCounter | 0) : -1;
+
+    setInterval(function() {
+        try {
+            var now  = Date.now();
+            var rt   = window.remainingTime;
+            var mode = detectMode();
+            var len  = (window.loopArray && window.loopArray.length) || 8;
+            var step = window.isLoopClicked ? (window.loopCounter | 0) : -1;
+
+            if (rt !== _lastRt) {
+                var _delta = (_lastRt == null) ? 0 : (_lastRt - rt);
+                if (_delta > 400 && _delta < 5200) {
+                    _lastTickAt = now;   // genuine ~1s decrement(s) -> timer is ticking
+                } else if (typeof rt === 'number' && rt % 60000 === 0) {
+                    _lastTickAt = 0;     // one-shot reset to a round-minute value
+                }                        // (mode buttons) -> timer stopped NOW
+                _lastRt = rt;
+            }
+            // ticking = a genuine ~1s decrement was seen very recently.
+            // Mode-button resets land on round-minute values with non-tick deltas,
+            // so they clear the stamp immediately instead of looking like a tick.
+            var ticking = _lastTickAt > 0 && (now - _lastTickAt) < 1800;
+
+            var loopStepped = (step !== _lastStep) && step >= 0 && step < len;
+            var loopEnded   = window.isLoopClicked && step >= len; // final Long Break finished
+            _lastStep = step;
+
+            var isRunning = loopStepped ? true : (loopEnded ? false : ticking);
+
+            // Loop auto-transition: tomato.js has already updated the mode flags
+            // synchronously at this point. Trigger on loopCounter (not mode),
+            // because the loop sequence repeats Pomodoro (P->S->P->...).
+            if (loopStepped) {
+                _lastMode = mode;
+                // Only switch presets if the timer is genuinely running through
+                // this step. Clicking the Loop button also bumps loopCounter
+                // (arm, -1 -> 0) but does NOT start the timer — no ticks follow,
+                // so `ticking` stays false and we stay silent.
+                if (ticking || _wasRunning) {
+                    _wasRunning = true;
+                    // The transition's reset just cleared the tick stamp; bridge
+                    // the gap until the new mode's first real ~1s tick arrives.
+                    _lastTickAt = now;
+                    stopAll();
+                    playForCurrentMode();
+                } else {
+                    _wasRunning = false;
+                }
+                return;
+            }
+
+            // Timer just started
+            if (isRunning && !_wasRunning) {
+                _wasRunning = true;
+                _lastMode = mode;
+                if (audioCtx && audioCtx.state === 'suspended' && Object.keys(activeNodes).length > 0) {
+                    resumeAmbience();
+                } else {
+                    startAmbience();
+                }
+            }
+
+            // Timer just stopped / paused / loop finished
+            if (!isRunning && _wasRunning) {
+                _wasRunning = false;
+                pauseAmbience();
+            }
+
+            // Mode changed (manual mode-button click); switch live if running
+            if (mode !== _lastMode) {
+                _lastMode = mode;
+                if (isRunning) {
+                    stopAll();
+                    playForCurrentMode();
+                }
+            }
+        } catch(err) { console.error('[Ambience] Poll error', err); }
+    }, 300);
+
+    // ---- Play at 00:00: fresh loop if the loop finished, else replay section ----
+    // tomato.js: onStartTimer() -> stopTimer() -> startAlarm(), which rings
+    // whenever remainingTime < 1000. So at 00:00, Play used to just beep+stop.
+    // If the loop ran to the end (loopCounter past the last step), Play starts
+    // a brand-new loop from Pomodoro. Otherwise refilling the timer BEFORE
+    // onStartTimer() means startAlarm() sees a full timer and stays silent,
+    // and the countdown replays the current section (gMinutes still holds the
+    // active mode's minutes, custom values included).
+    // Loop auto-transitions call onStartTimer() directly, never this function,
+    // so the Pomodoro -> Break chain is unaffected.
+    window.onPlayClick = function() {
+        if (window.isLoopClicked && typeof window.loopArray !== 'undefined'
+                && window.loopCounter >= window.loopArray.length) {
+            if (typeof onLoopTimer === 'function') onLoopTimer();
+        } else if ((window.remainingTime || 0) <= 0 && typeof resetTimer === 'function') {
+            resetTimer();
+        }
+        onStartTimer();
+    };
+
+    // ---- Instant start/stop response on real user clicks ----
+    // Listener only: it does NOT wrap or replace any onclick attribute, and
+    // reads state AFTER tomato.js handlers have run (setTimeout 0).
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        var startish = t.closest('a[onclick*="onPlayClick"], a[onclick*="onStartTimer"], .to-do-button[onclick*="startTaskTimer"]');
+        // NOTE: #loop_timer_button is STOPPISH, not startish — tomato.js onLoop()
+        // skips onStartTimer() for the first step (loopCounter == 0), so clicking
+        // Loop only ARMS loop mode (resets to Pomodoro) without starting the timer.
+        // Mode buttons are STOPPISH too: tomato.js mode handlers clearInterval
+        // and reset to a round-minute value WITHOUT restarting the countdown.
+        var stopish  = t.closest('a[onclick*="onStopTimer"], a[onclick*="onResetTimer"], #loop_timer_button, #pomodoro_timer_button, #short_break_timer_button, #long_break_timer_button');
+        if (!startish && !stopish) return;
+        setTimeout(function() {
+            if (stopish) {
+                _wasRunning = false;
+                _lastTickAt = 0;
+                _lastRt = window.remainingTime;
+                _lastMode = detectMode();
+                pauseAmbience();
+            } else if ((window.remainingTime || 0) > 0 || window.isLoopClicked) {
+                _lastTickAt = Date.now(); // hold until real ticks take over
+                _lastRt = window.remainingTime;
+                if (!_wasRunning) {
+                    _wasRunning = true;
+                    _lastMode = detectMode();
+                    startAmbience();
+                }
+            }
+        }, 0);
+    }, true);
+
+    // ---- Windows blank tab fix (run FIRST, before anything else) ----
+    (function fixBaseTargetBlank() {
+        document.querySelectorAll('a[href="javascript:void(0)"]').forEach(function(link) {
+            if (!link.hasAttribute('target')) {
+                link.setAttribute('target', '_self');
+            }
+        });
+    })();
+
+    // Dynamic links (todo Edit/Delete etc.) are injected AFTER page load, so the
+    // one-time patch above never sees them. Block the blank navigation at click
+    // time instead — the link's own onclick (editTodo/deleteTodo) still runs,
+    // because preventDefault only cancels the navigation, not event handlers.
+    document.addEventListener('click', function(e) {
+        var a = e.target && e.target.closest ? e.target.closest('a[href^="javascript:"]') : null;
+        if (a) e.preventDefault();
+    }, true);
+
+    // ---- Notification permission fix ----
+    // tomato.js requests Notification permission at page load. Firefox and
+    // Safari REQUIRE a user gesture for requestPermission(), so the page-load
+    // request is silently ignored on the live site and permission stays
+    // 'default' forever -> new Notification() does nothing at timer end.
+    // (It works on localhost only because permission was granted there once
+    // and persists in your browser profile.)
+    // Fix: ask again on the first real user interaction with the page.
+    (function fixNotificationPermission() {
+        function ask() {
+            try {
+                if (window.Notification && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            } catch (e) {}
+            document.removeEventListener('click', ask, true);
+        }
+        document.addEventListener('click', ask, true);
+    })();
+
+    // ---- Safari completion-beep unlock ----
+    // tomato.js plays the timer-end beep via audio.play() from a setInterval
+    // callback. Safari (and iOS) block HTMLAudioElement.play() unless the
+    // element was first unlocked by a real user gesture. Warm it up on the
+    // first click anywhere: play it MUTED for a tick, then restore.
+    // Inaudible, one-time. ('audio' is tomato.js's global beep element.)
+    (function unlockTimerBeep() {
+        function unlock() {
+            try {
+                var beep = window.audio;
+                if (beep && beep.paused) {
+                    beep.muted = true;
+                    var p = beep.play();
+                    var restore = function() {
+                        try { beep.pause(); beep.currentTime = 0; } catch (e) {}
+                        beep.muted = false;
+                    };
+                    if (p && p.then) { p.then(restore).catch(restore); } else { restore(); }
+                }
+            } catch (e) {}
+            document.removeEventListener('click', unlock, true);
+        }
+        document.addEventListener('click', unlock, true);
+    })();
+
+    // ---- UI: Dropdowns ----
+    function populateDropdowns() {
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        const s = loadSettings();
+        [
+            { el:'pomodoro_ambience',     key:'pomodoro' },
+            { el:'short_break_ambience',  key:'shortBreak' },
+            { el:'long_break_ambience',   key:'longBreak' }
+        ].forEach(function(item){
+            const sel = document.getElementById(item.el);
+            if (!sel) return;
+            const oldVal = sel.value;
+            sel.innerHTML = '';
+            const none = document.createElement('option');
+            none.value = '0'; none.textContent = 'None / Off'; sel.appendChild(none);
+            for (let i = 1; i <= 4; i++) {
+                const opt = document.createElement('option');
+                opt.value = String(i);
+                const name = (presets[i] && presets[i].name) ? presets[i].name : DEFAULT_PRESETS[i].name;
+                opt.textContent = 'Preset ' + i + ': ' + name;
+                sel.appendChild(opt);
+            }
+            sel.value = s[item.key] || '0';
+            if (oldVal && sel.querySelector('option[value="' + oldVal + '"]')) sel.value = oldVal;
+        });
+    }
+
+    const saveBtn = document.getElementById('SaveSet');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+            try {
+                const s = loadSettings();
+                const p = document.getElementById('pomodoro_ambience');
+                const sb = document.getElementById('short_break_ambience');
+                const lb = document.getElementById('long_break_ambience');
+                if (p)  s.pomodoro    = p.value;
+                if (sb) s.shortBreak  = sb.value;
+                if (lb) s.longBreak   = lb.value;
+                saveSettings(s);
+            } catch(err) { console.error('[Ambience] Save error', err); }
+        });
+    }
+    if (typeof $ !== 'undefined') {
+        $('#custom-timer').on('show.bs.modal', populateDropdowns);
+    }
+    window.addEventListener('focus', populateDropdowns);
+    window.addEventListener('storage', function(e) {
+        if (e.key === PRESETS_KEY) populateDropdowns();
+    });
+
+    // Init
+    updatePillUI();
+    populateDropdowns();
+    console.log('[Ambience] v12 loaded. Vol:', getVolume(), 'Mode:', detectMode());
+})();
+</script>
+<script>
+// ============================================================
+// Notification chime picker — per-timer chime map, built to be
+// shared by future timers (20-20-20, etc.):
+//   localStorage 'tt_notify_sounds_v1' = { main: 1..6, eye: 1..6, ... }
+// Each timer page reads/writes only its own key. tomato.js owns
+// the global `audio` alarm object — we just repoint its src.
+// ============================================================
+(function () {
+    var NOTIFY_KEY = 'tt_notify_sounds_v1';
+    var NOTIFY_FILES = {
+        1: 'assets/sounds/beep.mp3',   // default
+        2: 'assets/sounds/Notification 1.mp3',
+        3: 'assets/sounds/Notification 2.mp3',
+        4: 'assets/sounds/Notification 3.mp3',
+        5: 'assets/sounds/Notification 4.mp3',
+        6: 'assets/sounds/Notification 5.mp3'
+    };
+
+    function getChime(timerId) {
+        try {
+            var map = JSON.parse(localStorage.getItem(NOTIFY_KEY) || '{}');
+            var n = parseInt(map[timerId], 10);
+            return (n >= 1 && n <= 6) ? n : 1;
+        } catch (e) { return 1; }
+    }
+    function setChime(timerId, n) {
+        try {
+            var map = JSON.parse(localStorage.getItem(NOTIFY_KEY) || '{}');
+            map[timerId] = n;
+            localStorage.setItem(NOTIFY_KEY, JSON.stringify(map));
+        } catch (e) {}
+    }
+    function applyChime() {
+        var file = NOTIFY_FILES[getChime('main')] || NOTIFY_FILES[1];
+        try { if (typeof audio !== 'undefined' && audio) audio.src = file; } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        applyChime();
+        var sel = document.getElementById('notify_sound');
+        var testBtn = document.getElementById('notify_sound_test');
+        if (sel) sel.value = String(getChime('main'));
+        if (testBtn && sel) {
+            testBtn.addEventListener('click', function () {
+                var f = NOTIFY_FILES[parseInt(sel.value, 10)] || NOTIFY_FILES[1];
+                try { var a = new Audio(f); a.play(); } catch (e) {}
+            });
+        }
+        var saveBtn = document.getElementById('SaveSet');
+        if (saveBtn && sel) {
+            saveBtn.addEventListener('click', function () {
+                setChime('main', parseInt(sel.value, 10) || 1);
+                applyChime();
+            });
+        }
+    });
+})();
+</script>
+<script>
+// ============================================================
+// Task Manager v1 — card to-do list wired into the timer.
+// Storage: localStorage 'tt_tasks_v1'. Survives refresh; only
+// cleared by explicit user action (delete / clear / reset).
+// Drain: a completed work second on the ACTIVE task reduces its
+// estimate. Breaks never drain. Pause stops, play resumes —
+// the drain rides tomato.js's own decrementTimer ticks.
+// ============================================================
+(function TaskManager() {
+    'use strict';
+
+    var STORE_KEY = 'tt_tasks_v1';
+
+    // ---------- state ----------
+    var state = { tasks: [], activeId: null };
+    var zeroPromptFor = null;   // task id currently showing the "estimate hit 0" prompt
+    var undoBuffer = null;      // { task, index, wasActive }
+    var undoTimer = null;
+
+    function load() {
+        try {
+            var raw = localStorage.getItem(STORE_KEY);
+            if (raw) {
+                var parsed = JSON.parse(raw);
+                if (parsed && Array.isArray(parsed.tasks)) {
+                    state.tasks = parsed.tasks;
+                    state.activeId = parsed.activeId || null;
+                }
+            }
+        } catch (e) {}
+    }
+    function save() {
+        try {
+            localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        } catch (e) {}
+    }
+
+    function uid() {
+        return 't' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    // ---------- time parsing / formatting ----------
+    // Accepts: "90" (minutes), "45m", "1h", "1h 30m", "1:30", "1.5h"
+    function parseTime(str) {
+        if (!str) return null;
+        str = String(str).trim().toLowerCase();
+        if (!str) return null;
+        var m;
+        m = str.match(/^(\d+)\s*:\s*(\d{1,2})$/);            // h:mm
+        if (m) return (parseInt(m[1], 10) * 60 + parseInt(m[2], 10)) * 60000;
+        var hours = 0, mins = 0, matched = false;
+        m = str.match(/([\d.]+)\s*h/);
+        if (m) { hours = parseFloat(m[1]); matched = true; }
+        m = str.match(/(\d+)\s*m(?:in)?/);
+        if (m) { mins = parseInt(m[1], 10); matched = true; }
+        if (matched) return Math.round((hours * 60 + mins) * 60000);
+        m = str.match(/^(\d+)$/);                             // bare number = minutes
+        if (m) return parseInt(m[1], 10) * 60000;
+        return null;
+    }
+    function fmtMs(ms) {
+        var totalMin = Math.max(1, Math.ceil(ms / 60000));
+        var h = Math.floor(totalMin / 60), m = totalMin % 60;
+        if (h && m) return h + 'h ' + (m < 10 ? '0' + m : m) + 'm';
+        if (h) return h + 'h';
+        return m + 'm';
+    }
+
+    function getTask(id) {
+        for (var i = 0; i < state.tasks.length; i++) {
+            if (state.tasks[i].id === id) return state.tasks[i];
+        }
+        return null;
+    }
+
+    // ---------- DOM ----------
+    var cardsEl, doneWrapEl, doneCardsEl, doneCountEl, activeLineEl;
+
+    function render() {
+        var queued = state.tasks.filter(function (t) { return !t.done; });
+        var done = state.tasks.filter(function (t) { return t.done; });
+
+        cardsEl.innerHTML = '';
+        if (!queued.length && !done.length) {
+            cardsEl.innerHTML = '<div style="color:rgba(140,90,62,0.55);font-size:0.88rem;padding:14px 4px;">No tasks yet — add one above. Your list is saved on this device until you clear it.</div>';
+        }
+        queued.forEach(function (t) { cardsEl.appendChild(renderCard(t)); });
+
+        doneWrapEl.classList.toggle('d-none', !done.length);
+        doneCountEl.textContent = done.length ? '(' + done.length + ')' : '';
+        doneCardsEl.innerHTML = '';
+        done.forEach(function (t) { doneCardsEl.appendChild(renderCard(t)); });
+
+        renderActiveLine();
+    }
+
+    function renderCard(task) {
+        var isActive = task.id === state.activeId && !task.done;
+        var card = document.createElement('div');
+        card.className = 'tm-card' + (isActive ? ' tm-active' : '') + (task.done ? ' tm-done' : '');
+        if (task.color && !isActive && !task.done) card.style.borderLeftColor = task.color;
+        card.dataset.id = task.id;
+
+        // Clickable color edge: cycles the palette, works after creation too
+        var edge = document.createElement('div');
+        edge.className = 'tm-color-edge';
+        edge.title = 'Click to change color';
+        edge.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var PALETTE = [null, '#DE4B3A', '#FFA900', '#5FA46A', '#4A90D9', '#9B59B6'];
+            var i = PALETTE.indexOf(task.color || null);
+            task.color = PALETTE[(i + 1) % PALETTE.length];
+            save();
+            if (!isActive && !task.done) {
+                card.style.borderLeftColor = task.color || '#E8D5C0';
+            }
+        });
+        card.appendChild(edge);
+        if (!task.done) card.draggable = true;
+
+        // --- top row ---
+        var top = document.createElement('div');
+        top.className = 'tm-card-top';
+
+        var title = document.createElement('span');
+        title.className = 'tm-title';
+        title.textContent = task.title;
+        title.title = 'Click to edit';
+        title.addEventListener('click', function () { editTitle(card, task); });
+
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'tm-est-chip' + (task.estMs ? '' : ' tm-est-empty');
+        chip.textContent = task.estMs ? fmtMs(task.estMs) + ' left' : '+ est';
+        chip.title = 'Click to edit estimate';
+        chip.addEventListener('click', function () { editEstimate(card, task); });
+
+        top.appendChild(title);
+        if (!task.done) top.appendChild(chip);  // estimates are irrelevant once done
+
+        if (!task.done) {
+            var startBtn = document.createElement('button');
+            startBtn.type = 'button';
+            startBtn.className = 'tm-start-btn' + (isActive ? ' tm-focusing' : '');
+            startBtn.textContent = isActive ? '● Focusing' : '▶ Start';
+            startBtn.addEventListener('click', function () { startTask(task.id); });
+            top.appendChild(startBtn);
+        } else {
+            var restoreBtn = document.createElement('button');
+            restoreBtn.type = 'button';
+            restoreBtn.className = 'tm-icon-btn';
+            restoreBtn.textContent = '↩';
+            restoreBtn.title = 'Move back to list';
+            restoreBtn.addEventListener('click', function () {
+                task.done = false;
+                save(); render();
+            });
+            top.appendChild(restoreBtn);
+        }
+
+        var doneBtn = document.createElement('button');
+        doneBtn.type = 'button';
+        doneBtn.className = 'tm-icon-btn';
+        doneBtn.textContent = task.done ? '☑' : '☐';
+        doneBtn.title = task.done ? 'Mark not done' : 'Mark done';
+        doneBtn.addEventListener('click', function () { toggleDone(task.id); });
+
+        var delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'tm-icon-btn';
+        delBtn.textContent = '🗑';
+        delBtn.title = 'Delete';
+        delBtn.addEventListener('click', function () { deleteTask(task.id); });
+
+        top.appendChild(doneBtn);
+        top.appendChild(delBtn);
+        card.appendChild(top);
+
+        // --- detail (notes + subtasks) ---
+        var hasDetail = (task.notes && task.notes.trim()) || (task.subs && task.subs.length);
+        var detail = document.createElement('div');
+        detail.className = 'tm-card-detail';
+        detail.style.display = hasDetail ? 'block' : 'none';
+        buildDetail(detail, task);
+        card.appendChild(detail);
+
+        var toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'tm-detail-toggle';
+        toggle.textContent = hasDetail ? '▾ notes / subtasks' : '▸ notes / subtasks';
+        toggle.addEventListener('click', function () {
+            var open = detail.style.display !== 'none';
+            detail.style.display = open ? 'none' : 'block';
+            toggle.textContent = open ? '▸ notes / subtasks' : '▾ notes / subtasks';
+        });
+        card.appendChild(toggle);
+
+        // --- drag to reorder (queued cards only) ---
+        if (!task.done) {
+            card.addEventListener('dragstart', function (e) {
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', task.id);
+            });
+            card.addEventListener('dragend', function () {
+                card.classList.remove('dragging');
+                cardsEl.querySelectorAll('.tm-card').forEach(function (c) { c.classList.remove('dragover'); });
+                commitDomOrder();
+            });
+            card.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                var dragging = cardsEl.querySelector('.tm-card.dragging');
+                if (!dragging || dragging === card) return;
+                var rect = card.getBoundingClientRect();
+                var before = (e.clientY - rect.top) < rect.height / 2;
+                cardsEl.insertBefore(dragging, before ? card : card.nextSibling);
+            });
+            card.addEventListener('drop', function (e) { e.preventDefault(); });
+        }
+
+        return card;
+    }
+
+    function buildDetail(container, task) {
+        container.innerHTML = '';
+
+        var notes = document.createElement('textarea');
+        notes.className = 'tm-notes';
+        notes.rows = 4;
+        notes.placeholder = 'Notes…';
+        notes.value = task.notes || '';
+        notes.addEventListener('input', function () {
+            task.notes = notes.value;
+            save();
+        });
+        container.appendChild(notes);
+
+        var ul = document.createElement('ul');
+        ul.className = 'tm-subtasks';
+        (task.subs || []).forEach(function (sub) {
+            ul.appendChild(renderSubtask(task, sub));
+        });
+        container.appendChild(ul);
+
+        var addRow = document.createElement('div');
+        addRow.className = 'tm-sub-add';
+        var input = document.createElement('input');
+        input.className = 'tm-input';
+        input.placeholder = 'Add subtask…';
+        input.maxLength = 80;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tm-icon-btn';
+        btn.textContent = '＋';
+        btn.title = 'Add subtask';
+        function addSub() {
+            var v = input.value.trim();
+            if (!v) return;
+            task.subs = task.subs || [];
+            task.subs.push({ id: uid(), text: v, done: false });
+            save();
+            input.value = '';
+            buildDetail(container, task);
+            // Keep focus in the fresh subtask input for rapid entry
+            var newInput = container.querySelector('.tm-sub-add input');
+            if (newInput) newInput.focus();
+        }
+        btn.addEventListener('click', addSub);
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); addSub(); }
+        });
+        addRow.appendChild(input);
+        addRow.appendChild(btn);
+        container.appendChild(addRow);
+    }
+
+    function renderSubtask(task, sub) {
+        var li = document.createElement('li');
+        li.className = 'tm-subtask' + (sub.done ? ' tm-sub-done' : '');
+
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!sub.done;
+        cb.addEventListener('change', function () {
+            sub.done = cb.checked;
+            li.classList.toggle('tm-sub-done', sub.done);
+            save();
+        });
+
+        var text = document.createElement('span');
+        text.className = 'tm-sub-text';
+        text.textContent = sub.text;
+
+        var del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'tm-icon-btn';
+        del.textContent = '✕';
+        del.title = 'Delete subtask';
+        del.addEventListener('click', function () {
+            task.subs = task.subs.filter(function (s) { return s.id !== sub.id; });
+            save();
+            li.remove();
+        });
+
+        li.appendChild(cb);
+        li.appendChild(text);
+        li.appendChild(del);
+        return li;
+    }
+
+    // ---------- inline editing ----------
+    function editTitle(card, task) {
+        var titleEl = card.querySelector('.tm-title');
+        if (!titleEl) return;
+        var input = document.createElement('input');
+        input.className = 'tm-title-input';
+        input.value = task.title;
+        input.maxLength = 120;
+        titleEl.replaceWith(input);
+        input.focus();
+        input.select();
+        var committed = false;
+        function commit(saveIt) {
+            if (committed) return;
+            committed = true;
+            var v = input.value.trim();
+            if (saveIt && v) { task.title = v; save(); }
+            render();
+        }
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(true); }
+            else if (e.key === 'Escape') { commit(false); }
+        });
+        input.addEventListener('blur', function () { commit(true); });
+    }
+
+    function editEstimate(card, task) {
+        var chip = card.querySelector('.tm-est-chip');
+        if (!chip) return;
+        var input = document.createElement('input');
+        input.className = 'tm-est-input';
+        input.value = task.estMs ? fmtMs(task.estMs) : '';
+        input.placeholder = '45m';
+        chip.replaceWith(input);
+        input.focus();
+        input.select();
+        var committed = false;
+        function commit(saveIt) {
+            if (committed) return;
+            committed = true;
+            if (saveIt) {
+                var v = input.value.trim();
+                if (!v) { task.estMs = null; }
+                else {
+                    var ms = parseTime(v);
+                    if (ms && ms > 0) task.estMs = ms;
+                }
+                task._zeroPrompted = false;
+                save();
+            }
+            render();
+        }
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(true); }
+            else if (e.key === 'Escape') { commit(false); }
+        });
+        input.addEventListener('blur', function () { commit(true); });
+    }
+
+    // ---------- actions ----------
+    function addTask(title, estMs, color) {
+        state.tasks.push({
+            id: uid(),
+            title: title,
+            notes: '',
+            subs: [],
+            estMs: estMs || null,
+            color: color || null,
+            done: false,
+            created: Date.now()
+        });
+        save(); render();
+    }
+
+    function toggleDone(id) {
+        var t = getTask(id);
+        if (!t) return;
+        t.done = !t.done;
+        if (t.done && state.activeId === id) {
+            state.activeId = null;   // drain stops; timer itself keeps running
+        }
+        if (!t.done) t._zeroPrompted = false;
+        if (zeroPromptFor === id) { zeroPromptFor = null; hideZeroOverlay(); }
+        save(); render();
+    }
+
+    function deleteTask(id) {
+        var idx = state.tasks.findIndex(function (t) { return t.id === id; });
+        if (idx === -1) return;
+        var task = state.tasks[idx];
+        var wasActive = state.activeId === id;
+        state.tasks.splice(idx, 1);
+        if (wasActive) state.activeId = null;
+        if (zeroPromptFor === id) { zeroPromptFor = null; hideZeroOverlay(); }
+        save(); render();
+
+        undoBuffer = { task: task, index: idx, wasActive: wasActive };
+        showToast('Task deleted', 'Undo', function () {
+            if (!undoBuffer) return;
+            var at = Math.min(undoBuffer.index, state.tasks.length);
+            state.tasks.splice(at, 0, undoBuffer.task);
+            if (undoBuffer.wasActive) state.activeId = undoBuffer.task.id;
+            undoBuffer = null;
+            save(); render();
+        });
+    }
+
+    function startTask(id) {
+        var t = getTask(id);
+        if (!t || t.done) return;
+        state.activeId = id;
+        zeroPromptFor = null;
+        save(); render();
+        // Same loop-session kick the old Start button used.
+        if (typeof onLoopTimer === 'function') onLoopTimer();
+        if (typeof onStartTimer === 'function') onStartTimer();
+    }
+
+    // ---------- estimate-hit-zero overlay (over the countdown) ----------
+    var zeroOverlayEl, zeroTextEl, zeroInputEl;
+
+    function showZeroOverlay(task) {
+        zeroTextEl.textContent = '⏱ Estimate reached for "' + task.title + '". The timer is paused — add more time, or mark the task done.';
+        zeroInputEl.value = '';
+        zeroOverlayEl.classList.remove('d-none');
+        setTimeout(function () { zeroInputEl.focus(); }, 50);
+    }
+    function hideZeroOverlay() {
+        if (zeroOverlayEl) zeroOverlayEl.classList.add('d-none');
+    }
+
+    function wireZeroOverlay() {
+        zeroOverlayEl = document.getElementById('tm_zero_overlay');
+        zeroTextEl = document.getElementById('tm_zero_text');
+        zeroInputEl = document.getElementById('tm_zero_input');
+        if (!zeroOverlayEl) return;
+
+        document.getElementById('tm_zero_add').addEventListener('click', function () {
+            var task = zeroPromptFor ? getTask(zeroPromptFor) : null;
+            if (!task) { hideZeroOverlay(); return; }
+            var ms = parseTime(zeroInputEl.value);
+            if (!ms || ms <= 0) { zeroInputEl.focus(); zeroInputEl.style.borderColor = '#DE4B3A'; return; }
+            task.estMs = ms;
+            task._zeroPrompted = false;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            resumeIfPaused();
+        });
+
+        document.getElementById('tm_zero_done').addEventListener('click', function () {
+            var task = zeroPromptFor ? getTask(zeroPromptFor) : null;
+            if (task) task.done = true;
+            state.activeId = null;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            // Timer stays paused (it was stopped at estimate-zero) so the user
+            // can readjust before pressing play again.
+        });
+
+        zeroInputEl.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('tm_zero_add').click(); }
+        });
+    }
+
+    function resumeIfPaused() {
+        // The work timer was paused at estimate-zero; continue the session.
+        if (window.isPomClicked && (window.remainingTime || 0) > 0 && typeof onStartTimer === 'function') {
+            onStartTimer();
+        }
+    }
+
+    // ---------- active-task line under the timer ----------
+    function renderActiveLine() {
+        var t = state.activeId ? getTask(state.activeId) : null;
+        if (!t || t.done) {
+            activeLineEl.innerHTML = '';
+            return;
+        }
+        var html = 'Working on: <strong>' + esc(t.title) + '</strong>';
+        if (t.estMs) html += ' — <span class="tm-est-left">' + fmtMs(t.estMs) + ' left</span>';
+        activeLineEl.innerHTML = html;
+    }
+
+    // ---------- drain: rides tomato.js's own 1-second ticks ----------
+    // decrementTimer only fires while the countdown interval is alive,
+    // so pause automatically stops the drain and play resumes it.
+    function tick() {
+        var t = state.activeId ? getTask(state.activeId) : null;
+        if (!t || t.done || !t.estMs) return;
+        if (!window.isPomClicked) return;   // breaks never drain
+
+        t.estMs = Math.max(0, t.estMs - 1000);
+
+        // light-touch UI update without full re-render
+        var chip = cardsEl.querySelector('.tm-card[data-id="' + t.id + '"] .tm-est-chip');
+        if (chip) chip.textContent = fmtMs(t.estMs) + ' left';
+        renderActiveLine();
+
+        if (t.estMs <= 0 && !t._zeroPrompted) {
+            t._zeroPrompted = true;
+            zeroPromptFor = t.id;
+            save();
+            // Pause the work session so the user can decide.
+            // If the pomodoro already completed this same tick (mode flipped
+            // to a break), there is nothing to pause — just show the overlay.
+            if (window.isPomClicked && (window.remainingTime || 0) > 0 && typeof onStopTimer === 'function') {
+                onStopTimer();
+            }
+            render();
+            showZeroOverlay(t);
+            return;
+        }
+        // persist roughly every 15s of drain, not every second
+        if (Math.round(t.estMs / 1000) % 15 === 0) save();
+    }
+
+    // Wrap tomato.js's decrementTimer (global). Its setInterval callback
+    // resolves the name at call time, so the wrap takes effect everywhere.
+    if (typeof window.decrementTimer === 'function') {
+        var _origDecrement = window.decrementTimer;
+        window.decrementTimer = function () {
+            _origDecrement();
+            tick();
+        };
+    }
+
+    // ---------- toast (undo) ----------
+    var toastEl = null;
+    function showToast(msg, actionLabel, actionFn) {
+        if (!toastEl) {
+            toastEl = document.createElement('div');
+            toastEl.className = 'tm-toast';
+            document.body.appendChild(toastEl);
+        }
+        toastEl.innerHTML = '<span>' + esc(msg) + '</span>';
+        if (actionLabel && actionFn) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = actionLabel;
+            b.addEventListener('click', function () {
+                actionFn();
+                hideToast();
+            });
+            toastEl.appendChild(b);
+        }
+        toastEl.classList.add('show');
+        clearTimeout(undoTimer);
+        undoTimer = setTimeout(function () {
+            hideToast();
+            undoBuffer = null;
+        }, 6000);
+    }
+    function hideToast() {
+        if (toastEl) toastEl.classList.remove('show');
+    }
+
+    // ---------- drag order commit ----------
+    function commitDomOrder() {
+        var ids = Array.prototype.map.call(
+            cardsEl.querySelectorAll('.tm-card'),
+            function (c) { return c.dataset.id; }
+        );
+        if (!ids.length) return;
+        var queued = [], done = [];
+        state.tasks.forEach(function (t) { (t.done ? done : queued).push(t); });
+        queued.sort(function (a, b) { return ids.indexOf(a.id) - ids.indexOf(b.id); });
+        state.tasks = queued.concat(done);
+        save(); render();
+    }
+
+    // ---------- wire up ----------
+    function init() {
+        cardsEl = document.getElementById('tm_cards');
+        doneWrapEl = document.getElementById('tm_done_wrap');
+        doneCardsEl = document.getElementById('tm_done_cards');
+        doneCountEl = document.getElementById('tm_done_count');
+        activeLineEl = document.getElementById('tm_active_line');
+        if (!cardsEl) return;
+
+        load();
+        wireZeroOverlay();
+        render();
+
+        var form = document.getElementById('tm_add_form');
+        var titleInput = document.getElementById('tm_add_title');
+        var estInput = document.getElementById('tm_add_estimate');
+
+        // Color picker: selected swatch colors the next task's left edge.
+        var selectedColor = null;
+        var picker = document.getElementById('tm_color_picker');
+        picker.addEventListener('click', function (e) {
+            var sw = e.target.closest('.tm-swatch');
+            if (!sw) return;
+            selectedColor = sw.getAttribute('data-color') || null;
+            picker.querySelectorAll('.tm-swatch').forEach(function (s) {
+                s.classList.toggle('tm-swatch-selected', s === sw);
+            });
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var title = titleInput.value.trim();
+            if (!title) { titleInput.focus(); return; }
+            var est = parseTime(estInput.value);
+            addTask(title, est, selectedColor);
+            titleInput.value = '';
+            estInput.value = '';
+            titleInput.focus();
+        });
+
+        document.getElementById('tm_clear_done').addEventListener('click', function () {
+            var had = state.tasks.some(function (t) { return t.done; });
+            if (!had) return;
+            state.tasks = state.tasks.filter(function (t) { return !t.done; });
+            save(); render();
+        });
+
+        // Two-step reset: first click arms, second confirms.
+        var resetBtn = document.getElementById('tm_reset');
+        var armed = false, armTimer = null;
+        resetBtn.addEventListener('click', function () {
+            if (!armed) {
+                armed = true;
+                resetBtn.textContent = 'Click again to confirm reset';
+                resetBtn.style.color = '#DE4B3A';
+                armTimer = setTimeout(function () {
+                    armed = false;
+                    resetBtn.textContent = 'Reset list';
+                    resetBtn.style.color = '';
+                }, 3000);
+                return;
+            }
+            clearTimeout(armTimer);
+            armed = false;
+            resetBtn.textContent = 'Reset list';
+            resetBtn.style.color = '';
+            state.tasks = [];
+            state.activeId = null;
+            zeroPromptFor = null;
+            hideZeroOverlay();
+            save(); render();
+            showToast('List cleared', null, null);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+</body>
+
+</html>
