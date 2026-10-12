@@ -136,14 +136,14 @@
   /* ── header: flows on the page background, no bar — and like the main page
      it lives inside the centered ~1140px container, not edge to edge ── */
   .header { max-width: 1140px; margin: 0 auto; padding: 16px 15px 8px;
-    display: flex; align-items: flex-start; flex-wrap: wrap; }
-  .header-left { flex: 0 0 33.333%; max-width: 33.333%; box-sizing: border-box; display: flex; flex-direction: column;
-    align-items: flex-start; gap: 12px; padding-left: 30px; }
-  .header-logo { width: 75%; max-width: 280px; height: auto; display: block; margin-left: 20px; }
-  .header-nav { flex: 0 0 66.666%; max-width: 66.666%; box-sizing: border-box; display: grid;
-    grid-template-columns: repeat(2, minmax(166px, auto)); justify-content: end; gap: 8px; padding-top: 22px; }
+    display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: center; gap: 30px; }
+  .header-left { flex: 0 0 350px; max-width: none; box-sizing: border-box; display: flex; flex-direction: column;
+    align-items: flex-start; gap: 12px; padding-left: 10px; }
+  .header-logo { width: 240px; max-width: 240px; height: auto; display: block; margin-left: 20px; }
+  .header-nav { flex: 1 1 auto; max-width: none; box-sizing: border-box; display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: center; gap: 8px; padding-top: 22px; }
   .button-row { display: contents; }
-  .button-row .button-style { min-width: 166px; text-align: center; }
+  .button-row .button-style { min-width: 0; text-align: center; width: 100%; }
   .button-style {
     font-family: inherit; background-color: #fff; color: #8e552b; text-transform: uppercase;
     padding: 16px 20px 10px; font-size: 16px; white-space: nowrap; line-height: 1;
@@ -954,10 +954,10 @@
   .ct-btn-save { background: var(--tomato); border: none; color: #fff; font-weight: 700; }
   .ct-btn-save:hover { background: #C23A2B; }
 
-</style>
 .lang-globe { color: #58240E; }
 body.theme-dark .lang-globe { color: #E8D9B8; }
 body.theme-classic .lang-globe { color: #c65e5e; }
+</style>
 <script src="https://apis.google.com/js/platform.js" async defer></script> <!-- YT Subs button -->
 <script type="text/javascript">
 (function(){
@@ -1093,7 +1093,7 @@ body.theme-classic .lang-globe { color: #c65e5e; }
       <img id="logo" src="/assets/images/logo.svg" alt="TomatoTimers" class="header-logo"
            onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
     </a>
-      <span style="position:relative; display:inline-block; margin-right:8px;">
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="position:relative; display:inline-block;">
   <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
   <select id="lang-select" class="theme-select" aria-label="Choose language" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
     <option value="/20-20-20-rule/" selected>English</option>
@@ -1107,7 +1107,7 @@ body.theme-classic .lang-globe { color: #c65e5e; }
 
       <option value="light">Light Theme</option>
       <option value="dark">Dark Theme</option>
-    </select>
+    </select></div>
   </div>
   <div class="header-nav">
     <div class="button-row">
