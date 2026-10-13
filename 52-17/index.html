@@ -149,7 +149,7 @@
     align-items: flex-start; gap: 12px; padding-left: 10px; }
   .header-logo { width: 240px; max-width: 240px; height: auto; display: block; margin-left: 20px; }
   .header-nav { flex: 1 1 auto; max-width: none; box-sizing: border-box; display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: center; gap: 8px; padding-top: 22px; }
+    grid-template-columns: repeat(2, minmax(0, 324px)); justify-content: center; gap: 8px; padding-top: 22px; }
   .button-row { display: contents; }
   .button-row .button-style { min-width: 0; text-align: center; width: 100%; }
   .button-style {
@@ -167,7 +167,7 @@
     .header-logo { margin-left: 0; }
     .header-nav { flex: 0 0 100%; max-width: 100%; padding-top: 0; grid-template-columns: 1fr 1fr; }
     .button-row:first-child .button-style,
-    .button-row:last-child .button-style { min-width: 0; }
+    .button-row:last-child .button-style { min-width: 0; white-space: normal; line-height: 1.25; }
     .header-logo { width: 200px; }
   }
 
