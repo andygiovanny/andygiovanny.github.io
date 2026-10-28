@@ -6,41 +6,57 @@
 
 ## The human
 
-- Non-coder. Works through GitHub web UI and phcode only.
-  NEVER suggest terminal commands, git CLI, or local dev servers.
+- Non-coder. Works through GitHub Desktop (branch flow), the GitHub web UI,
+  and phcode. NEVER suggest terminal commands, git CLI, or local dev
+  servers.
 - Works on a Windows PC (main machine) and a MacBook Air (secondary).
 - **Google Drive is NO LONGER part of the setup.** The working folder is a
-  plain local folder on the Windows PC. GitHub is now the bridge between
-  machines: work done on the MacBook happens via the repo; the PC's local
-  copy must be refreshed from the repo afterwards.
+  local git clone of the repo on the Windows PC. GitHub is the bridge
+  between machines.
 - GitHub repo is the master and publishes the live site (tomatotimers.com).
+  The default branch is `master` (not `main`); `development` is the
+  staging branch.
 
 ## Machine setup (the human's actual workflow)
 
-- **Workspace:** a plain local folder on the Windows PC:
+- **Workspace:** a local git clone on the Windows PC:
+  `C:\Users\andyg\Documents\GitHub\andygiovanny.github.io`
+  (origin: `github.com/andygiovanny/andygiovanny.github.io`). This is THE
+  one working folder — GitHub Desktop watches it, and all editing happens
+  here, including by Kimi Work. Kimi Work only edits files; it NEVER
+  commits, pushes, pulls, or merges.
+- **Legacy clone (retire, do NOT edit):**
   `C:\Users\andyg\Documents\Working On\Coding\Github Backup\andygiovanny.github.io`
-  No cloud sync, nothing to wait on. All editing happens here — including by
-  Kimi Work.
-- **Publish:** when 100% happy, the human uploads the changed files from the
-  local folder to the GitHub repo (web UI or phcode). Live site rebuilds
-  from GitHub. Nothing publishes itself.
+  was the old workspace — two live clones caused the 2026-10-28 "Desktop
+  sees no changes" confusion. Keep it as a read-only backup or delete it;
+  never edit both folders.
+- **Publish (new branch flow, 2026-10-28):** when 100% happy, the human
+  commits + pushes to the **`development` branch** first (GitHub Desktop),
+  then merges development → `master` on github.com. Live site rebuilds
+  from `master`. Nothing publishes itself.
+- **Never mix web-UI uploads with the branch flow.** A web-UI drag-upload
+  creates a remote commit the local clone doesn't have — the next push
+  from GitHub Desktop is REJECTED ("non-fast-forward"/conflict). This
+  exact hiccup happened 2026-10-28 (web upload commit "asd"). If a push
+  is rejected: Fetch/Pull in GitHub Desktop FIRST (it merges cleanly),
+  then push.
 
 ## Golden rules
 
 1. GitHub holds only finished, human-approved work. Never push/upload
-   half-finished pages. Each page or language set is complete before upload.
+   half-finished pages. Each page or language set is complete before
+   the human commits and pushes.
 2. Single-page deliveries are loose files named exactly as they go into the
    repo — NEVER zip a single page.
-3. **Freshness check (the only ritual):** only the PC has the local working
-   folder. If the human edited anything from the MacBook (via GitHub) since
-   the last session, the local copy is stale — ask the human to re-download
-   from the repo before continuing.
+3. **Freshness check (the only ritual):** before starting work, the local
+   clone must be up to date — Fetch/Pull in GitHub Desktop first,
+   especially if anything was uploaded via the web UI or edited from the
+   MacBook since the last session.
 4. If a file with a duplicate name or unexpected copy appears, STOP —
    do not guess which is right. Ask the human or compare before continuing.
-5. There is NO automatic version history anymore (that died with Drive).
-   The undo button is the last published version on GitHub (repo file →
-   Download). Before big rewrites, keep a dated backup copy of the file in
-   `_backups/` — that folder is local-only, never uploaded to the repo.
+5. Git history on `master` is the undo button now. Still keep dated
+   backups of big rewrites in `_backups/` — that folder is local-only,
+   never committed or uploaded.
 6. **English first, always.** Build and change features on the English
    master pages only, then let the human review. NEVER touch the
    translations (`id/`, `es/`, `pt/`, `vi/`) until the human has seen the
@@ -98,20 +114,47 @@ belong in the work log below.
   button on flowtime; main index has no skip so Space only. Ambience pages
   (all 5 languages): Space = master play/pause-all. User is still porting
   ambience-pill/duplicate features to other timers themselves.
-- **Pending:** nothing open. Hreflang: VERIFIED COMPLETE 2026-10-27 — all
-  30 pages (25 older + 5 custom-timer) already carry the correct 6-link
-  cluster (script-checked against expected URLs). Pill preset-dropdown +
-  round cbtn controls: shipped on all 15 52-17/20-20-20/flowtime pages
-  (2026-10-27) AND on all 5 main index pages (EN 2026-10-27, translations
-  2026-10-28). "▶ now playing" label removed from all 25 pages that had it
-  (2026-10-28). Custom-timer feature set: COMPLETE (2026-10-27).
-  **All 30 page files are ahead of GitHub — upload pending Andy's review.**
+- **Pending:** as of 2026-10-28 16:00, origin/master ("asd" commit) already
+  contains EVERYTHING through pt 22 (all 30 pages + assets + hyphen
+  custom-timer). Local-only changes awaiting Andy's next commit+push: the
+  custom-timer ad-positioning fix (pt 24, 5 custom-timer files) and this
+  AGENTS.md. Local folder renamed `custom timer/` → `custom-timer/` (pt 23)
+  — remote already hyphen-only. Hreflang: VERIFIED COMPLETE 2026-10-27.
+  Custom-timer feature set: COMPLETE (2026-10-27).
 
 ## Work log (newest on top)
 
 The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
+
+- **2026-10-28 (Kimi Work, pt 25):** TWO-CLONE PROBLEM found & synced.
+  GitHub Desktop watches `C:\Users\andyg\Documents\GitHub\andygiovanny.github.io`
+  (HEAD = 999e0b7 "asd", clean) — the "asd" commit came from there, NOT from
+  the Kimi workspace (`...\Github Backup\...`), which is why Desktop showed
+  "no changes". The pt-24 custom-timer ad fix + AGENTS.md updates were
+  copied from the Backup clone into the GitHub clone (verified by diff:
+  only the expected changes); Desktop now sees exactly 6 modified files
+  (5 custom-timer pages + AGENTS.md). AGENTS.md Machine setup now points at
+  the GitHub clone as THE workspace; the Backup clone is legacy/read-only.
+  Next: Andy commits those 6 files → push to development → merge to master.
+- **2026-10-28 (Kimi Work, pt 24):** custom-timer ads fixed + git state
+  investigated. (a) All 5 custom-timer pages were missing the sidebar
+  positioning CSS (`.bsa-left/right-sidebar-wrapper { position:absolute;
+  left/right:10px; top:80px; ... }`) — only the `.ads-lg-only` display rule
+  was there, so the wrappers sat in page flow after the footer and ads
+  rendered mid-footer. Added the rules (same values as 52-17). Backups
+  `_backups/2026-10-28_ctadfix/`. (b) Andy's push conflicts EXPLAINED: the
+  workspace is a git clone (branch master) and was 1 commit behind —
+  origin/master had commit 999e0b7 "asd" (2026-10-28 15:53, a web-UI batch
+  upload) the clone didn't have, so pushes got rejected. Verified remote
+  now: hyphen `custom-timer/` only (space folder GONE — 404 fixed), all
+  fixes through pt 22 present, `development` branch exists at the same
+  commit. Working tree matches origin/master except the pt-24 custom-timer
+  ad fix + AGENTS.md updates → next GitHub Desktop pull will fast-forward
+  cleanly, then commit+push the remainder. AGENTS.md workflow updated to
+  the new branch flow (push development → merge to master; never mix
+  web-UI uploads with git pushes; pull first if rejected).
 
 - **2026-10-28 (Kimi Work, pt 23):** local folder renamed `custom timer/` →
   `custom-timer/` — the space-folder quirk is gone for good (grep confirmed

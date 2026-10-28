@@ -1557,9 +1557,18 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
-    /* Sidebar ad wrappers — shown at ≥992px, same as the other timer pages */
+    /* Sidebar ad wrappers — pinned to the screen edges at ≥992px,
+       same as the other timer pages */
     .ads-lg-only { display: none; }
     @media (min-width: 992px) { .ads-lg-only { display: block; } }
+    .bsa-left-sidebar-wrapper {
+        position: absolute; left: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
+    .bsa-right-sidebar-wrapper {
+        position: absolute; right: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
 </style>
 </body>
 </html> 
