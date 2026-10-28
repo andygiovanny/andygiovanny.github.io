@@ -128,6 +128,15 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-10-28 (Kimi Work, pt 28):** main-page content column narrowed to
+  the other pages' standard — Andy flagged the main page's column as
+  visibly wider than 52-17's ("make it like the top one"). All 5 index
+  pages: `.header-background > .container { max-width: 1090px !important }`
+  (Bootstrap's 1170px container capped to match 52-17's effective ~1060px
+  content width: 1140 max-width minus 40px padding per side). Keeps the
+  right-aligned header grid + full-width tabs, just pulls the whole column
+  in — bigger clear lanes for the side ads. Pure CSS, one rule. Backups
+  `_backups/2026-10-28_narrowcol/`. Next: Andy commits+pushes, eyeballs.
 - **2026-10-28 (Kimi Work, pt 27):** main-page side ads brought BACK —
   Andy wanted them visible after all. The pt-22 1850px gate was why they
   never showed at his 140% zoom (~1810 CSS px). New approach on all 5

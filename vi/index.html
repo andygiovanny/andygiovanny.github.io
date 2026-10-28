@@ -368,6 +368,12 @@
         .mode-tabs { display: block; }
         .mode-tabs .button-style-1 { width: 49% !important; }
     }
+
+    /* Match the other pages' narrower content column so the side ads keep
+       clear lanes: 52-17's header content is ~1060px (1140 max-width minus
+       40px padding each side) — cap this page's 1170px Bootstrap container
+       to the same effective width (1090 incl. its 15px padding). */
+    .header-background > .container { max-width: 1090px !important; }
 </style>
     
     
