@@ -500,8 +500,10 @@
 .tm-done-wrap.d-none { display: none !important; }
 
 /* Legacy stylesheet fixes this at 400px (old scrollable list). Let cards grow
-   naturally so the section pushes the content below it down instead. */
-.todo-list-min-height { height: auto !important; min-height: 400px; }
+   naturally so the section pushes the content below it down instead — NO
+   min-height: an empty/short list collapses to its real height instead of
+   leaving a dead gap above the section below. */
+.todo-list-min-height { height: auto !important; }
 
 .tm-active-line {
     min-height: 22px;

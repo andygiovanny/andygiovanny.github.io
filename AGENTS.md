@@ -128,6 +128,22 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-10-28 (Kimi Work, pt 30):** pt-29's to-do gap fix extended to the
+  remaining 15 pages (52-17, 20-20-20-rule, flowtime × en/id/es/pt/vi) with
+  Andy's go — identical rule text, same replacement
+  (`min-height: 400px` removed from `.todo-list-min-height`). The 400px
+  dead-gap rule is now gone from ALL 20 pages that had it. Backups
+  `_backups/2026-10-28_todogap15/`. Pending in GitHub Desktop at close:
+  20 page files (pts 29+30) + AGENTS.md awaiting Andy's commit+push.
+- **2026-10-28 (Kimi Work, pt 29):** dead gap below the to-do list removed
+  on all 5 main index pages — `.todo-list-min-height` had
+  `min-height: 400px`, so an empty/short list reserved 400px and left a
+  huge blank before the Animated Video Timers section. Rule is now
+  `height: auto !important` only; the list takes its real height and a full
+  list still pushes the videos down naturally. Backups
+  `_backups/2026-10-28_todogap/`. NOTE: the same 400px rule still exists on
+  the 15 52-17/20-20-20/flowtime pages (same dead-gap effect above their
+  explainer/video sections) — Andy to confirm before applying there.
 - **2026-10-28 (Kimi Work, pt 28):** main-page content column narrowed to
   the other pages' standard — Andy flagged the main page's column as
   visibly wider than 52-17's ("make it like the top one"). All 5 index
