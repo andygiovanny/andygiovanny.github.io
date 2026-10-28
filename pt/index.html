@@ -197,6 +197,30 @@
     .ambience-preset-label .preset-name {
         color: #58240E;
     }
+    .ambience-sel {
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 13px;
+        padding: 4px 10px 2px;
+        border-radius: 50px;
+        border: 2px solid #E2D0AF;
+        background: #FAF5EB;
+        color: #58240E;
+        cursor: pointer;
+        outline: none;
+        max-width: 150px;
+    }
+
+    /* ── timer controls: round icon buttons (same style as the other pages) ── */
+    .ctrl-row { margin-top: 4px; display: flex; justify-content: center; gap: 16px;
+        position: relative; z-index: 2; }
+    .cbtn { width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer;
+        background: #DE4B3A; color: #fff; box-shadow: 0 3px 10px rgba(222, 75, 58, 0.3);
+        display: inline-flex; align-items: center; justify-content: center;
+        font-family: inherit; padding: 0; transition: transform 0.15s ease; }
+    .cbtn.secondary { background: #FFFFFF; color: #58240E; border: 1px solid #E2D0AF; box-shadow: none; }
+    .cbtn:hover { transform: scale(1.05); }
+    .cbtn.secondary:hover { color: #DE4B3A; border-color: #DE4B3A; }
+    .cbtn svg { width: 24px; height: 24px; fill: currentColor; display: block; }
     .ambience-select {
         background-color: #FAF5EB !important;
         border: 2px solid #E2D0AF !important;
@@ -255,21 +279,19 @@
   
 <style>
     .button-align {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-    }
-    
-    .button-row {
-        display: flex;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, max-content));
+        justify-content: end;
+        align-content: center;
         gap: 8px;
         width: 100%;
     }
     
+    .button-row { display: contents; }
+    .button-row .button-style { min-width: 0; width: 100%; }
+    
   .button-style {
-    padding: 16px 20px 10px 20px !important;  /* less top, more bottom */
+    padding: 14px 20px 8px 20px !important;  /* slim + extra top padding: Baloo sits high */
     font-size: 16px !important;
     white-space: nowrap;
     line-height: 1 !important;               /* remove extra font spacing */
@@ -278,32 +300,73 @@
     justify-content: center !important;
 }
       
+    .button-style {
+        border: 1px solid #E2D0AF;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
     .button-style:hover {
         text-decoration: none;
-        color: inherit;
+        color: #DE4B3A;
+        border-color: #DE4B3A;
     }
-    
-    /* Top row buttons match the pair below */
-    .button-row:first-child .button-style {
-        min-width: 166px;
+
+    /* Mode tabs: slim pills, centered text, red hover instead of the shake */
+    .button-style-1 {
+        padding: 10px 0.7% 6px 0.7% !important;  /* extra top padding: Baloo sits high */
+        line-height: 1 !important;
+        font-size: 16px !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         text-align: center;
+        border: 1px solid #E2D0AF;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
+        transition: color 0.2s ease, border-color 0.2s ease;
     }
-    
-    /* Bottom pair match the top width combined */
-    .button-row:last-child .button-style {
-        min-width: 166px;
-        text-align: center;
+    .button-style-1:hover {
+        color: #DE4B3A;
+        border-color: #DE4B3A;
     }
+
+    /* Timer digits: same font + colour as the other timer pages */
+    .timer-box.timer-font { font-family: 'Baloo Tammudu', cursive; color: #58240E;
+        line-height: 1; pointer-events: none; user-select: none; }
+    /* release the old 1em clip (built for Helvetica's metrics) so Baloo
+       renders naturally like the other pages; #nextTime is display:none now */
+    .timer-time.timer-container { height: auto; overflow: visible; }
+    /* #nextTime is a hidden sync copy (tomato.js writes it, nothing reads it);
+       keep it fully invisible so its glyphs can't leak under the main digits */
+    #nextTime { display: none; }
     
-    @media (max-width: 991px) {
+    @media (max-width: 1199px) {
         .button-align {
             margin-top: 10px;
+            grid-template-columns: 1fr 1fr;
         }
-        .button-row:first-child .button-style,
-        .button-row:last-child .button-style {
-            min-width: auto;
-            flex: 1;
+        .button-row .button-style {
+            min-width: 0;
+            white-space: normal;
+            line-height: 1.25 !important;
         }
+    }
+
+    /* Mode tabs row: stretch the 4 tabs edge-to-edge so LOOP's right edge
+       lines up with the right-aligned header button grid above it */
+    .mode-tabs {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+    .mode-tabs .button-style-1 {
+        flex: 1 1 0;
+        width: auto !important;
+        margin-right: 0 !important;
+    }
+    /* keep the original 2x2 wrap on small phones (style.css 320-425px rule) */
+    @media (max-width: 425px) {
+        .mode-tabs { display: block; }
+        .mode-tabs .button-style-1 { width: 49% !important; }
     }
 </style>
     
@@ -497,20 +560,12 @@
         border-radius: 12px;
         background-color: transparent;
     }
-  
-  
-  @keyframes wiggle {
-  0%   { transform: rotate(0deg) scale(1); }
-  25%  { transform: rotate(-6deg) scale(1.06); }
-  50%  { transform: rotate(6deg) scale(1.06); }
-  75%  { transform: rotate(-3deg) scale(1.03); }
-  100% { transform: rotate(0deg) scale(1); }
-}
 
-.wiggle-me {
-  animation: wiggle 0.4s ease-in-out;
-  display: inline-block;
-}
+    /* Show the side ads only when the viewport is wide enough to keep them
+       clear of the edge-to-edge content (container ~1170px + two ~330px ad
+       lanes); below that they crowd the header buttons and mode tabs. */
+    .bsa-side-ad { display: none; }
+    @media (min-width: 1850px) { .bsa-side-ad { display: block; } }
   
   
 </style>
@@ -939,6 +994,13 @@ body.theme-dark .ambience-select {
     color: #E8D9B8 !important;
     border-color: #3a2d20 !important;
 }
+body.theme-dark .ambience-sel {
+    background: #2a2018;
+    color: #E8D9B8;
+    border-color: #3a2d20;
+}
+body.theme-dark .cbtn.secondary { background: #2a2018; color: #E8D9B8; border-color: #3a2d20; }
+body.theme-dark .cbtn.secondary:hover { color: #F4845F; border-color: #F4845F; }
 body.theme-dark .ambience-section-title { color: #E0A458; }
 body.theme-dark .ambience-section-desc { color: #A98F6F; }
 body.theme-dark .notify-test-btn { background: #2a2018; color: #E8D9B8; border-color: #3a2d20; }
@@ -1128,7 +1190,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
      <a href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w" target="_blank" rel="noopener noreferrer">
       <img src="assets/images/YT.png" alt="Inscrever-se" style="height: 28px;">
     </a>
-    <span style="font-size: 15px; color: #fff;">O Timer Flowtime chegou, veja abaixo! Apoie o canal e assista os vídeos abaixo!</span>
+    <span style="font-size: 15px; color: #fff;">Os atalhos de teclado já estão disponíveis, a lista de atalhos está abaixo! Apoie o canal e assista os vídeos!</span>
   </div>
   <div class="g-ytsubscribe" 
        data-channelid="UC-u-z82nVkW81veR76iFx_w" 
@@ -1148,16 +1210,16 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 
  <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-right button-align">
     <div class="button-row">
-        <button type="button" class="btn button-style rounded-pill button-animate"
+        <button type="button" class="btn button-style rounded-pill"
                 onclick="document.getElementById('pomodoro-guide').scrollIntoView({behavior:'smooth'})">O que é o Timer Pomodoro?</button>
-        <button type="button" class="btn button-style rounded-pill button-animate"
+        <button type="button" class="btn button-style rounded-pill"
                 onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Outros Ritmos</button>
     </div>
     <div class="button-row">
-        <button type="button" class="btn button-style rounded-pill button-animate" data-toggle="modal"
+        <button type="button" class="btn button-style rounded-pill" data-toggle="modal"
                 data-target="#custom-timer">Timer Personalizado</button>
         <a href="https://www.tomatotimers.com/pt/ambience/" target="_blank" rel="noopener noreferrer"
-           class="btn button-style rounded-pill button-animate">Ambience Studio 🎵</a>
+           class="btn button-style rounded-pill">Ambience Studio 🎵</a>
     </div>
 </div>
             
@@ -1165,7 +1227,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 <div class="theme-toggle-wrapper" style="padding-left: 30px !important;">
   <span style="position:relative; display:inline-block; margin-right:8px;">
   <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
-  <select id="lang-select" class="theme-select" aria-label="Escolher idioma" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
+  <select id="lang-select" class="theme-select" aria-label="Escolher idioma" onchange="if(this.value){try{localStorage.setItem('tt_lang',this.value.replace(/\//g,'')||'en')}catch(e){}window.location.href=this.value}" style="padding-left:38px;">
     <option value="/">English</option>
     <option value="/id/">Bahasa Indonesia</option>
     <option value="/es/">Español</option>
@@ -1183,7 +1245,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 </div>
 
             
-<div class="col-lg-12 text-center mt-4">
+<div class="col-lg-12 text-center mt-4 mode-tabs">
     <button type="button" class="btn button-style-1 rounded-pill mr-2" onclick="onPomodoroTimer()" id="pomodoro_timer_button">Pomodoro</button>
     <button type="button" class="btn button-style-1 rounded-pill mr-2" onclick="onShortTimer()" id="short_break_timer_button">Pausa Curta</button>
     <button type="button" class="btn button-style-1 rounded-pill mr-2" onclick="onLongTimer()" id="long_break_timer_button">Pausa Longa</button>
@@ -1193,7 +1255,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
           
           <!-- Tomatotimers_S2S_Leftsidebar_ROS -->
 
-<div class="bsa-left-sidebar-wrapper d-none d-lg-block">
+<div class="bsa-left-sidebar-wrapper bsa-side-ad">
     <style>
         @media only screen and (min-width: 0px) and (min-height: 0px) {
             div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
@@ -1241,16 +1303,17 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                 </div>
             </div>
             
-           <div style="width: 100%; margin-top: 20px; text-align: center; display: block; overflow: hidden;">
-<a href="javascript:void(0)" onclick="onResetTimer()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
-    <img id="resetButton" src="assets/images/rest-button.svg" alt='Redefinir' style="width: 50px; height: auto;">
-</a>
-<a href="javascript:void(0)" onclick="onPlayClick()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
-    <img id="startButton" src="assets/images/play-button.svg" alt='Reproduzir' style="width: 50px; height: auto;">
-</a>
-<a href="javascript:void(0)" onclick="onStopTimer()" class="action-button button-animate" style="display: inline-block; margin: 0 10px; cursor: pointer;">
-    <img id="stopButton" src="assets/images/stop-button.svg" alt='Pausar' style="width: 50px; height: auto;">
-</a>
+           <div class="ctrl-row">
+    <button type="button" class="cbtn secondary" id="resetBtn" title="Redefinir">
+        <svg viewBox="0 0 24 24"><path d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08a6 6 0 1 1-1.41-6.24L13 11h8V3l-3.35 3.35z"/></svg>
+    </button>
+    <button type="button" class="cbtn" id="playBtn" title="Reproduzir / Pausar (espaço)">
+        <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+        <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <button type="button" class="cbtn secondary" id="skipBtn" title="Pular para a pausa (→)">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+    </button>
 </div>
 <!-- Ambience Master Control -->
 <div style="text-align:center;">
@@ -1259,8 +1322,8 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
         </svg>
         <input type="range" id="ambienceVolSlider" min="0" max="100" value="80" title="Volume do Ambience">
+        <select id="ambiencePresetSel" class="ambience-sel" aria-label="Som ambiente"></select>
     </div>
-    <div class="ambience-preset-label" id="ambiencePresetLabel"></div>
     <div class="tm-active-line" id="tm_active_line" aria-live="polite"></div>
 </div>
         </div>
@@ -1270,7 +1333,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
           
           <!-- Tomatotimers_S2S_Rightsidebar_ROS -->
 
-<div class="bsa-right-sidebar-wrapper d-none d-lg-block">
+<div class="bsa-right-sidebar-wrapper bsa-side-ad">
     <style>
         @media only screen and (min-width: 0px) and (min-height: 0px) {
             div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
@@ -1810,6 +1873,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
   <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px;">A<strong>Técnica Pomodoro</strong>é um método de gestão do tempo desenvolvido por Francesco Cirillo no final dos anos 80. Ele usa um timer para dividir o trabalho em intervalos de foco — tradicionalmente de<strong>25 minutos</strong>— separados por pausas curtas. Nosso<strong>timer Pomodoro online</strong>facilita aplicar essa técnica com intervalos personalizáveis, temas fofos e sons<strong>lofi ambience</strong>relaxantes.</p>
 
   <h2 style="font-size: 1.4rem; color: #7A1F0F; margin-top: 30px; margin-bottom: 12px;">Como Usar Nosso Timer Pomodoro Grátis</h2>
+  <p style="color: #58240E; font-size: 0.95rem; margin-bottom: 12px;">⌨️ <strong>Atalhos de teclado:</strong> <strong>Espaço</strong> — reproduzir / pausar o timer, <strong>→</strong> — pular para a próxima fase.</p>
   <ol style="color: #58240E; font-size: 0.95rem; margin-bottom: 20px; padding-left: 20px;">
     <li>Escolha uma tarefa em que quer focar</li>
     <li>Clique em<strong>Pomodoro</strong>para iniciar uma sessão de foco de 25 minutos</li>
@@ -1910,6 +1974,13 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         <p>Trabalhe enquanto estiver no fluxo enquanto sua pausa carrega em tempo real — ganhe descanso no tamanho do trabalho que você realmente fez.</p>
       </div>
     </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/pt/custom-timer/">
+      <img src="/assets/images/custom-timer-card.png" alt="Mascote pintinho do criador Crie Seu Próprio Timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Crie Seu Próprio Timer</h3>
+        <p>Empilhe, nomeie e repita suas próprias fases — um timer que você monta do zero para estudos, treinos ou intervalos, salvo neste navegador.</p>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -1973,25 +2044,25 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     <div class="modal-dialog modal-lg">
         <div class="modal-content popup-background">
             <div class="modal-header">
-                <h4 class="modal-title header-font">INSERIR TIMER PERSONALIZADO</h4>
+                <h4 class="modal-title header-font">⚙️ Timer Personalizado</h4>
                 <img src="assets/images/close-button.svg" class="close" data-dismiss="modal"/>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="pomodoro_value" class="text-color">POMODORO</label>
+                        <label for="pomodoro_value" class="text-color">POMODORO (MINUTOS)</label>
                         <input type="text" name="pomodoro_value" id="pomodoro_value" class="form-control integer"
                                value="25"/>
                     </div>
 
                     <div class="form-group">
-                        <label for="short_break_value" class="text-color">PAUSA CURTA</label>
+                        <label for="short_break_value" class="text-color">PAUSA CURTA (MINUTOS)</label>
                         <input type="text" name="short_break_value" id="short_break_value" class="form-control integer"
                                value="5"/>
                     </div>
 
                     <div class="form-group">
-                        <label for="long_break_value" class="text-color">PAUSA LONGA</label>
+                        <label for="long_break_value" class="text-color">PAUSA LONGA (MINUTOS)</label>
                         <input type="text" name="long_break_value" id="long_break_value" class="form-control integer"
                                value="15"/>
                     </div>
@@ -2000,7 +2071,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                     <div class="ambience-section-title">🔔 Som de Notificação</div>
                     <div class="ambience-section-desc">Escolha o toque que soa quando o timer termina. A Notificação 1 é o beep padrão.</div>
                     <div class="form-group">
-                        <label for="notify_sound" class="text-color">TOQUE DE NOTIFICAÇÃO</label>
+                        <label for="notify_sound" class="text-color">TOQUE</label>
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <select id="notify_sound" class="form-control ambience-select" style="flex: 1;">
                                 <option value="1">Notificação 1 (Beep Padrão)</option>
@@ -2015,18 +2086,18 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                     </div>
 
                     <hr class="ambience-divider">
-                    <div class="ambience-section-title">🎧 Ambience de Foco</div>
-                    <div class="ambience-section-desc">Atribua presets de ambience a cada modo de timer. Os presets são compartilhados com o<a href="https://www.tomatotimers.com/pt/ambience/" target="_blank" rel="noopener">Ambience Studio</a>e sincronizam nos dois sentidos.</div>
+                    <div class="ambience-section-title">🎵 Ambience</div>
+                    <div class="ambience-section-desc">Os sons tocam enquanto o timer corre. Edite os presets no <a href="https://www.tomatotimers.com/pt/ambience/" target="_blank" rel="noopener">Ambience Studio</a>.</div>
                     <div class="form-group">
-                        <label for="pomodoro_ambience" class="text-color">AMBIENCE POMODORO</label>
+                        <label for="pomodoro_ambience" class="text-color">ENQUANTO FOCA (POMODORO)</label>
                         <select id="pomodoro_ambience" class="form-control ambience-select"></select>
                     </div>
                     <div class="form-group">
-                        <label for="short_break_ambience" class="text-color">AMBIENCE PAUSA CURTA</label>
+                        <label for="short_break_ambience" class="text-color">DURANTE A PAUSA CURTA</label>
                         <select id="short_break_ambience" class="form-control ambience-select"></select>
                     </div>
                     <div class="form-group">
-                        <label for="long_break_ambience" class="text-color">AMBIENCE PAUSA LONGA</label>
+                        <label for="long_break_ambience" class="text-color">DURANTE A PAUSA LONGA</label>
                         <select id="long_break_ambience" class="form-control ambience-select"></select>
                     </div>
                     <div class="checkbox_listing"></div>
@@ -2035,7 +2106,8 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="submit-button btn btn-lg" id='SaveSet'>SALVAR</button>
+                <button type="button" class="btn btn-lg" data-dismiss="modal" style="margin-right:10px;">Cancelar</button>
+                <button type="button" class="submit-button btn btn-lg" id='SaveSet'>Salvar Ajustes</button>
             </div>
         </div>
     </div>
@@ -2087,7 +2159,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 
 <script>
 /* ============================================================
-   AMBIENCE INTEGRATION v12 — Loop-safe mode detection.
+   AMBIENCE INTEGRATION v13 — Loop-safe mode detection + pill preset dropdown.
    Reads tomato.js globals (mode flags + loopCounter + remainingTime).
    No function hooks. No button wrapping. No DOM polling.
    ============================================================ */
@@ -2252,6 +2324,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                 volIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
             }
         }
+        updatePresetSelValue();
     }
 
     if (volSlider) {
@@ -2293,6 +2366,54 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
             else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
             return false;
+        });
+    }
+
+    // ---- UI: Preset dropdown on the pill ----
+    // Shows and edits the CURRENT mode's ambience slot — the same
+    // 'tt_timer_ambience_settings_v1' slots the Custom Timer modal's
+    // ambience dropdowns edit, so the two stay in sync both ways:
+    // pill change saves to the slot; modal save refreshes the pill
+    // via updatePillUI().
+    const presetSel = document.getElementById('ambiencePresetSel');
+
+    function currentSlotKey() {
+        const mode = detectMode();
+        return mode === 'Short Break' ? 'shortBreak' : (mode === 'Long Break' ? 'longBreak' : 'pomodoro');
+    }
+
+    function updatePresetSelValue() {
+        if (!presetSel) return;
+        const s = loadSettings();
+        presetSel.value = s[currentSlotKey()] || '0';
+    }
+
+    function populatePresetSel() {
+        if (!presetSel) return;
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        presetSel.innerHTML = '';
+        const off = document.createElement('option');
+        off.value = '0'; off.textContent = 'Off'; presetSel.appendChild(off);
+        for (let i = 1; i <= 4; i++) {
+            const opt = document.createElement('option');
+            opt.value = String(i);
+            opt.textContent = (presets[i] && presets[i].name) ? presets[i].name : DEFAULT_PRESETS[i].name;
+            presetSel.appendChild(opt);
+        }
+        updatePresetSelValue();
+    }
+
+    if (presetSel) {
+        presetSel.addEventListener('change', function() {
+            const s = loadSettings();
+            s[currentSlotKey()] = presetSel.value;
+            saveSettings(s);
+            updatePillUI();
+            if (_wasRunning) { stopAll(); playForCurrentMode(); }   // live switch while playing
         });
     }
 
@@ -2387,6 +2508,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             // because the loop sequence repeats Pomodoro (P->S->P->...).
             if (loopStepped) {
                 _lastMode = mode;
+                updatePillUI();   // pill dropdown follows the current mode's slot
                 // Only switch presets if the timer is genuinely running through
                 // this step. Clicking the Loop button also bumps loopCounter
                 // (arm, -1 -> 0) but does NOT start the timer — no ticks follow,
@@ -2424,6 +2546,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             // Mode changed (manual mode-button click); switch live if running
             if (mode !== _lastMode) {
                 _lastMode = mode;
+                updatePillUI();   // pill dropdown follows the current mode's slot
                 if (isRunning) {
                     stopAll();
                     playForCurrentMode();
@@ -2452,26 +2575,76 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         onStartTimer();
     };
 
+    /* ── keyboard shortcuts: Space = play/pause, → = skip ── */
+    /* Space clicks the play/pause button so the icon and ambience follow
+       through the same single path as a mouse click. */
+    (function () {
+        document.addEventListener('keydown', function (e) {
+            var tag = (e.target && e.target.tagName || '').toLowerCase();
+            if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+            if (document.querySelector('.modal.show, .jconfirm-box')) return;
+            var zo = document.getElementById('tm_zero_overlay');
+            if (zo && !zo.classList.contains('d-none')) return;
+            if (e.code === 'Space') {
+                e.preventDefault();
+                var pb = document.getElementById('playBtn');
+                if (pb) pb.click();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (typeof window.onSkipPhase === 'function') window.onSkipPhase();
+            }
+        });
+    })();
+
     // ---- Instant start/stop response on real user clicks ----
     // Listener only: it does NOT wrap or replace any onclick attribute, and
     // reads state AFTER tomato.js handlers have run (setTimeout 0).
     document.addEventListener('click', function(e) {
         var t = e.target;
         if (!t || !t.closest) return;
-        var startish = t.closest('a[onclick*="onPlayClick"], a[onclick*="onStartTimer"], .to-do-button[onclick*="startTaskTimer"]');
+        var startish = t.closest('a[onclick*="onStartTimer"], .to-do-button[onclick*="startTaskTimer"]');
+        var playpause = t.closest('#playBtn');
         // NOTE: #loop_timer_button is STOPPISH, not startish — tomato.js onLoop()
         // skips onStartTimer() for the first step (loopCounter == 0), so clicking
         // Loop only ARMS loop mode (resets to Pomodoro) without starting the timer.
         // Mode buttons are STOPPISH too: tomato.js mode handlers clearInterval
         // and reset to a round-minute value WITHOUT restarting the countdown.
-        var stopish  = t.closest('a[onclick*="onStopTimer"], a[onclick*="onResetTimer"], #loop_timer_button, #pomodoro_timer_button, #short_break_timer_button, #long_break_timer_button');
-        if (!startish && !stopish) return;
+        var stopish  = t.closest('#resetBtn, #loop_timer_button, #pomodoro_timer_button, #short_break_timer_button, #long_break_timer_button');
+        var skip     = t.closest('#skipBtn');
+        if (!startish && !stopish && !playpause && !skip) return;
         setTimeout(function() {
-            if (stopish) {
+            if (skip) {
+                // Skip inside a loop auto-starts the next phase (tomato.js onLoop
+                // calls onStartTimer for every step past the first). Bridge the
+                // tick gap and switch the sound straight to the new phase, exactly
+                // like the poller's loopStepped path. Any non-loop skip stops the
+                // timer (mode functions reset without starting) -> pause instead.
+                var _len  = (window.loopArray && window.loopArray.length) || 8;
+                var _step = (typeof window.loopCounter !== 'undefined') ? (window.loopCounter | 0) : -1;
+                if (window.isLoopClicked && _step >= 0 && _step < _len) {
+                    _wasRunning = true;
+                    _lastTickAt = Date.now();
+                    _lastRt = window.remainingTime;
+                    _lastMode = detectMode();
+                    updatePillUI();
+                    stopAll();
+                    playForCurrentMode();
+                } else {
+                    _wasRunning = false;
+                    _lastTickAt = 0;
+                    _lastRt = window.remainingTime;
+                    _lastMode = detectMode();
+                    updatePillUI();
+                    pauseAmbience();
+                }
+                return;
+            }
+            if (stopish || (playpause && window.ttControlsIsRunning && !window.ttControlsIsRunning())) {
                 _wasRunning = false;
                 _lastTickAt = 0;
                 _lastRt = window.remainingTime;
                 _lastMode = detectMode();
+                updatePillUI();   // mode buttons are stopish — keep the pill in sync
                 pauseAmbience();
             } else if ((window.remainingTime || 0) > 0 || window.isLoopClicked) {
                 _lastTickAt = Date.now(); // hold until real ticks take over
@@ -2591,21 +2764,123 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                 if (sb) s.shortBreak  = sb.value;
                 if (lb) s.longBreak   = lb.value;
                 saveSettings(s);
+                // Refresh the pill right away and re-apply the sound if the
+                // timer is running (same as ttEyeAmbienceRefresh on other pages).
+                updatePillUI();
+                if (_wasRunning) { stopAll(); playForCurrentMode(); }
             } catch(err) { console.error('[Ambience] Save error', err); }
         });
     }
     if (typeof $ !== 'undefined') {
-        $('#custom-timer').on('show.bs.modal', populateDropdowns);
+        $('#custom-timer').on('show.bs.modal', function() {
+            // populateDropdowns restores the currently-shown value after
+            // rebuilding the options — clear first so a freshly-saved
+            // pill choice actually wins.
+            ['pomodoro_ambience', 'short_break_ambience', 'long_break_ambience'].forEach(function(id) {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            populateDropdowns();
+        });
     }
-    window.addEventListener('focus', populateDropdowns);
+    window.addEventListener('focus', function() { populateDropdowns(); populatePresetSel(); });
     window.addEventListener('storage', function(e) {
-        if (e.key === PRESETS_KEY) populateDropdowns();
+        if (e.key === PRESETS_KEY) { populateDropdowns(); populatePresetSel(); }
     });
 
     // Init
     updatePillUI();
     populateDropdowns();
-    console.log('[Ambience] v12 loaded. Vol:', getVolume(), 'Mode:', detectMode());
+    populatePresetSel();
+    console.log('[Ambience] v13 loaded. Vol:', getVolume(), 'Mode:', detectMode());
+})();
+</script>
+<script>
+// ============================================================
+// Timer controls v1 — round buttons: reset, alternating
+// play/pause, skip. tomato.js exposes no "running" flag, so the
+// icon state reuses the same remainingTime tick detector the
+// ambience poller uses.
+// ============================================================
+(function () {
+    'use strict';
+    var playBtn   = document.getElementById('playBtn');
+    var resetBtn  = document.getElementById('resetBtn');
+    var skipBtn   = document.getElementById('skipBtn');
+    var playIcon  = document.getElementById('playIcon');
+    var pauseIcon = document.getElementById('pauseIcon');
+    if (!playBtn) return;
+
+    var _lastRt = (typeof window.remainingTime === 'number') ? window.remainingTime : null;
+    var _lastTickAt = 0;
+
+    function isRunning() {
+        return _lastTickAt > 0 && (Date.now() - _lastTickAt) < 1800 && (window.remainingTime || 0) > 0;
+    }
+    window.ttControlsIsRunning = isRunning;   // used by the ambience instant-response listener
+
+    function render() {
+        var running = isRunning();
+        if (playIcon)  playIcon.style.display  = running ? 'none' : '';
+        if (pauseIcon) pauseIcon.style.display = running ? '' : 'none';
+    }
+
+    setInterval(function () {
+        var rt = window.remainingTime;
+        if (rt !== _lastRt) {
+            var d = (_lastRt == null) ? 0 : (_lastRt - rt);
+            if (d > 400 && d < 5200) _lastTickAt = Date.now();                    // genuine ~1s tick
+            else if (typeof rt === 'number' && rt % 60000 === 0) _lastTickAt = 0; // reset to round minute
+            _lastRt = rt;
+        }
+        render();
+    }, 300);
+
+    playBtn.addEventListener('click', function () {
+        if (isRunning()) {
+            _lastTickAt = 0;
+            onStopTimer();
+        } else {
+            _lastTickAt = Date.now();   // hold until real ticks take over
+            onPlayClick();
+        }
+        render();
+    });
+
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+        _lastTickAt = 0;
+        onResetTimer();
+        render();
+    });
+
+    // Skip: in loop mode, advance the real cycle — the same onLoop() tomato.js
+    // calls at a natural phase end (loads the next phase and auto-starts it).
+    // Guarded to step < len-1: onLoop's own guard is `==` (not `>=`), so calling
+    // it past the final phase would index loopArray out of bounds. Skipping the
+    // final phase (or an already-finished loop) ends the loop back at Pomodoro.
+    // Outside loop mode: simple toggle — focus -> short break, any break -> focus.
+    window.onSkipPhase = function () {
+        var len  = (window.loopArray && window.loopArray.length) || 8;
+        var step = (typeof window.loopCounter !== 'undefined') ? (window.loopCounter | 0) : -1;
+        var looping = (typeof isLoopClicked !== 'undefined') && isLoopClicked
+                   && (typeof onLoop === 'function');
+        if (looping && step >= 0 && step < len - 1) {
+            onLoop();
+            _lastTickAt = Date.now();   // auto-started: hold the pause icon until real ticks
+        } else if (looping) {
+            onPomodoroTimer();
+            _lastTickAt = 0;
+        } else {
+            _lastTickAt = 0;
+            var onBreak = (typeof isShortCliked !== 'undefined' && isShortCliked)
+                       || (typeof isLongClicked !== 'undefined' && isLongClicked);
+            if (onBreak) onPomodoroTimer(); else onShortTimer();
+        }
+        render();
+    };
+    if (skipBtn) skipBtn.addEventListener('click', window.onSkipPhase);
+
+    render();
 })();
 </script>
 <script>

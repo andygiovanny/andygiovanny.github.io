@@ -1149,7 +1149,7 @@
 
                         <div class="nav-links-right" style="flex-direction:column; align-items:flex-end; gap:10px;"><div class="nav-dropdowns-row" style="display:flex; gap:8px; align-items:center;"><span style="position:relative; display:inline-block; margin-right:8px;">
   <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
-  <select id="lang-select" class="theme-select" aria-label="Escolher idioma" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
+  <select id="lang-select" class="theme-select" aria-label="Escolher idioma" onchange="if(this.value){try{localStorage.setItem('tt_lang',this.value.replace(/\//g,'')||'en')}catch(e){}window.location.href=this.value}" style="padding-left:38px;">
          <option value="/ambience/">English</option>
          <option value="/id/ambience/">Bahasa Indonesia</option>
          <option value="/es/ambience/">Español</option>
@@ -1222,7 +1222,7 @@
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                         </button>
 
-                        <button class="btn-play-master" id="masterPlayBtn" title="Reproduzir / Pausar tudo">
+                        <button class="btn-play-master" id="masterPlayBtn" title="Reproduzir / Pausar tudo (espaço)">
                             <svg id="playIcon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                             <svg id="pauseIcon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                         </button>
@@ -1343,6 +1343,7 @@
                     </div>
 
                     <h2 style="color:#58240E; font-size:1.8rem; text-align:center; margin-bottom: 20px;">Como criar sua paisagem sonora perfeita 🎚️</h2>
+                    <p style="color:#58240E; font-size:0.95rem; text-align:center; margin-bottom: 20px;">⌨️ <strong>Atalho de teclado:</strong> <strong>Espaço</strong> — reproduzir / pausar todos os sons.</p>
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; text-align: center; margin-bottom: 40px;">
                         <div>
                             <div style="font-size:2rem; margin-bottom:6px;">1️⃣</div>
@@ -1448,6 +1449,13 @@
       <div class="tt-card-text">
         <h3>Timer da Técnica Flowtime</h3>
         <p>Trabalhe enquanto estiver no fluxo enquanto sua pausa carrega em tempo real — ganhe descanso no tamanho do trabalho que você realmente fez.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="/pt/custom-timer/">
+      <img src="/assets/images/custom-timer-card.png" alt="Mascote pintinho do criador Crie Seu Próprio Timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Crie Seu Próprio Timer</h3>
+        <p>Empilhe, nomeie e repita suas próprias fases — um timer que você monta do zero para estudos, treinos ou intervalos, salvo neste navegador.</p>
       </div>
     </a>
   </div>
@@ -1963,6 +1971,14 @@
 
         playIcon.style.display = isPlaying ? 'none' : 'block';
         pauseIcon.style.display = isPlaying ? 'block' : 'none';
+    });
+
+    /* ── keyboard shortcut (same as the timer pages): Space = play/pause all ── */
+    document.addEventListener('keydown', (e) => {
+        if (document.querySelector('.modal-overlay.open')) return;
+        const tag = (e.target && e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+        if (e.code === 'Space') { e.preventDefault(); masterPlayBtn.click(); }
     });
 
     document.getElementById('clearAllBtn').addEventListener('click', () => {

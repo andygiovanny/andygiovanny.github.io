@@ -907,6 +907,9 @@
   .ambience-master-pill.active input[type="range"]::-moz-range-thumb { background: var(--tomato); }
   .ambience-preset-label .preset-name { color: var(--text); }
   .ambience-preset-label .play-icon { color: #7fa653; }
+  .ambience-sel { font-family: inherit; font-size: 13px; padding: 5px 10px 3px; border-radius: 50px;
+    border: 1px solid var(--border); background: var(--input); color: var(--text); cursor: pointer;
+    outline: none; max-width: 150px; }
 
   /* ── custom timer modal ── */
   .ct-overlay { position: fixed; inset: 0; z-index: 70; background: rgba(10, 6, 3, .7);
@@ -1096,7 +1099,7 @@ html.theme-dark .ft-log-band { background: #1f1813; }
       <img src="/assets/images/YT.png" alt="Đăng ký" style="height: 28px;"
            onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/YT.png';}">
     </a>
-    <span>Dùng cài đặt phần thưởng và Ambience Studio để thay đổi dòng chảy của bạn. Ủng hộ kênh và xem video bằng cách bấm nút YT!</span>
+    <span>Phím tắt đã có sẵn rồi, danh sách phím tắt ở bên dưới! Ủng hộ kênh và xem video nhé!</span>
   </div>
   <div class="g-ytsubscribe"
        data-channelid="UC-u-z82nVkW81veR76iFx_w"
@@ -1144,7 +1147,7 @@ html.theme-dark .ft-log-band { background: #1f1813; }
     </a>
     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="position:relative; display:inline-block;">
   <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
-  <select id="lang-select" class="theme-select" aria-label="Chọn ngôn ngữ" onchange="if(this.value) window.location.href=this.value" style="padding-left:38px;">
+  <select id="lang-select" class="theme-select" aria-label="Chọn ngôn ngữ" onchange="if(this.value){try{localStorage.setItem('tt_lang',this.value.replace(/\//g,'')||'en')}catch(e){}window.location.href=this.value}" style="padding-left:38px;">
          <option value="/flowtime/">English</option>
          <option value="/id/flowtime/">Bahasa Indonesia</option>
          <option value="/es/flowtime/">Español</option>
@@ -1198,11 +1201,11 @@ html.theme-dark .ft-log-band { background: #1f1813; }
     <button class="cbtn secondary" id="resetBtn" title="Đặt lại phiên">
       <svg viewBox="0 0 24 24"><path d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08a6 6 0 1 1-1.41-6.24L13 11h8V3l-3.35 3.35z"/></svg>
     </button>
-    <button class="cbtn" id="playBtn" title="Phát / Tạm dừng">
+    <button class="cbtn" id="playBtn" title="Phát / Tạm dừng (phím cách)">
       <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
       <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
     </button>
-    <button class="cbtn fire" id="breakBtn" title="Đổi thưởng và nghỉ ngơi">☕ NGHỈ</button>
+    <button class="cbtn fire" id="breakBtn" title="Đổi thưởng và nghỉ ngơi (→)">☕ NGHỈ</button>
   </div>
 
   <div style="text-align:center; margin-top:8px;">
@@ -1211,8 +1214,8 @@ html.theme-dark .ft-log-band { background: #1f1813; }
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
         </svg>
         <input type="range" id="ambienceVolSlider" min="0" max="100" value="80" title="Âm lượng Ambience">
+        <select id="ambiencePresetSel" class="ambience-sel" aria-label="Âm thanh ambience"></select>
     </div>
-    <div class="ambience-preset-label" id="ambiencePresetLabel"></div>
     <div class="tm-active-line" id="tm_active_line" aria-live="polite"></div>
   </div>
 
@@ -1345,6 +1348,8 @@ html.theme-dark .ft-log-band { background: #1f1813; }
     <p>Kỹ thuật flowtime là sự phát triển đầy sáng tạo của phương pháp Pomodoro do Zoë Read-Bivens tạo ra. Thay vì cắt ngày của bạn thành những ô cứng 25 phút,<strong>bạn làm một việc duy nhất chừng nào còn thật sự hưng phấn</strong>— 15 phút hay hai giờ — và nghỉ ngơi tương xứng với thời gian đã làm. Không có đồng hồ đếm ngược nào thúc ép bạn, cũng không có độ dài tối thiểu: ngay khi cảm thấy sự tập trung tụt dốc, bạn dừng lại, và giờ nghỉ của bạn đã sẵn sàng. Hẹn giờ này làm phương pháp hiện ra trước mắt: chú vịt làm việc khi bạn làm việc, ngủ khi bạn nghỉ, và thanh nghỉ nạp dần theo thời gian thực — để câu hỏi "mình đã kiếm được bao nhiêu giờ nghỉ?" luôn chỉ cách một cái liếc mắt.</p>
     <h2>Giờ nghỉ được kiếm như thế nào?</h2>
     <p>Mặc định chúng tôi dùng hướng dẫn của chính tác giả, áp dụng nguyên văn như cô viết: dừng dưới 25 phút làm việc thì bạn được nghỉ 5 phút; dừng trong khoảng 25–50 phút thì được 8; 50–90 được 10; trên 90 được 15. Cô gọi đó là gợi ý, không phải quy tắc — điểm cốt lõi là giờ nghỉ luôn tương xứng với công việc bạn thật sự làm, chứ không theo một đồng hồ cố định. Thích thanh nghỉ nạp dần đều trong khi làm thay vì nhảy theo các mốc? Tích<strong>"nạp liên tục"</strong>trong Cài Đặt Phần Thưởng (nội suy kiểu tỷ lệ giữa các mốc giống nhau). Thích một tỷ lệ đơn giản? Chuyển chế độ (mặc định: 1 phút nghỉ cho 5 phút làm việc, lựa chọn phổ biến của Super Productivity). Kết thúc giờ nghỉ sớm thì phần còn lại chuyển vào<strong>ngân hàng nghỉ</strong>cho lần sau — dừng đúng lúc theo nghĩa đen là có lời.</p>
+    <h2>⌨️ Phím tắt</h2>
+    <p><strong>Phím cách</strong> — phát / tạm dừng &nbsp;·&nbsp; <strong>→</strong> — nghỉ giải lao, hoặc kết thúc giờ nghỉ sớm.</p>
     <h2>Flowtime hay Pomodoro — nên dùng cái nào?</h2>
     <p>Dùng Pomodoro (<a href="/vi/" target="_blank" rel="noopener noreferrer">hẹn giờ chính</a>) khi ngày của bạn hay bị gián đoạn và bạn cần khuôn khổ để bắt đầu. Dùng flowtime khi công việc khó lường hoặc đòi hỏi sáng tạo sâu và một báo thức cố định sẽ phá vỡ sự tập trung. Nhiều người dùng Pomodoro cho việc vặt và flowtime cho làm việc sâu — danh sách việc dùng chung phía trên đi cùng bạn cả hai.</p>
 </div>
@@ -1395,6 +1400,13 @@ html.theme-dark .ft-log-band { background: #1f1813; }
       <div class="tt-card-text">
         <h3>Hẹn Giờ Mắt 20-20-20</h3>
         <p>Mỗi 20 phút, nhìn ra xa 6 mét trong 20 giây. Thói quen chăm sóc mắt chống mỏi mắt do màn hình.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="/vi/custom-timer/">
+      <img src="/assets/images/custom-timer-card.png" alt="Linh vật gà con của trang Tự Tạo Hẹn Giờ" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Tự Tạo Hẹn Giờ</h3>
+        <p>Xếp chồng, đặt tên và lặp các giai đoạn của riêng bạn — hẹn giờ tự lắp từ đầu cho học tập, tập luyện hoặc interval, lưu ngay trong trình duyệt này.</p>
       </div>
     </a>
   </div>
@@ -1884,6 +1896,18 @@ $('breakBtn').addEventListener('click', function () {
   if (phase === 'break') { endBreak(false); return; }  // end early → bank the rest
   takeBreak();
 });
+
+/* ── keyboard shortcuts (same as custom-timer): Space = play/pause, → = break / end break ── */
+document.addEventListener('keydown', function (e) {
+  var zo = document.getElementById('tm_zero_overlay');
+  if (zo && !zo.classList.contains('d-none')) return;
+  var ro = document.getElementById('rsOverlay');
+  if (ro && ro.classList.contains('open')) return;
+  var tag = (e.target && e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+  if (e.code === 'Space') { e.preventDefault(); $('playBtn').click(); }
+  else if (e.key === 'ArrowRight') { $('breakBtn').click(); }
+});
 $('resetBtn').addEventListener('click', resetSession);
 $('logClear').addEventListener('click', function () {
   logArr = []; saveLog(); renderLog(); toast('Đã xóa nhật ký');
@@ -2104,7 +2128,7 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
             } else {
                 volIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
             }
-        }
+        }        updatePresetSelValue();
     }
 
     if (volSlider) {
@@ -2146,6 +2170,54 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
             else if (_wasRunning && Object.keys(activeNodes).length === 0) { playForCurrentMode(); }
             else if (_wasRunning) { updatePresetLabel(_lastPresetName); }
             return false;
+        });
+    }
+
+    // ---- UI: Preset dropdown on the pill ----
+    // Shows and edits the CURRENT mode's ambience slot — the same
+    // 'tt_timer_ambience_settings_v1' slots the settings modal's
+    // ambience dropdowns edit, so the two stay in sync both ways:
+    // pill change saves to the slot; modal save refreshes the pill
+    // via updatePillUI().
+    const presetSel = document.getElementById('ambiencePresetSel');
+
+    function currentSlotKey() {
+        const mode = detectMode();
+        return mode === 'Short Break' ? 'shortBreak' : (mode === 'Long Break' ? 'longBreak' : 'pomodoro');
+    }
+
+    function updatePresetSelValue() {
+        if (!presetSel) return;
+        const s = loadSettings();
+        presetSel.value = s[currentSlotKey()] || '0';
+    }
+
+    function populatePresetSel() {
+        if (!presetSel) return;
+        let presets;
+        try {
+            const raw = localStorage.getItem(PRESETS_KEY);
+            presets = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+        } catch(e){ presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS)); }
+        presetSel.innerHTML = '';
+        const off = document.createElement('option');
+        off.value = '0'; off.textContent = 'Off'; presetSel.appendChild(off);
+        for (let i = 1; i <= 4; i++) {
+            const opt = document.createElement('option');
+            opt.value = String(i);
+            opt.textContent = (presets[i] && presets[i].name) ? presets[i].name : DEFAULT_PRESETS[i].name;
+            presetSel.appendChild(opt);
+        }
+        updatePresetSelValue();
+    }
+
+    if (presetSel) {
+        presetSel.addEventListener('change', function() {
+            const s = loadSettings();
+            s[currentSlotKey()] = presetSel.value;
+            saveSettings(s);
+            updatePillUI();
+            if (_wasRunning) { stopAll(); playForCurrentMode(); }   // live switch while playing
         });
     }
 
@@ -2216,6 +2288,7 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
             }
             if (mode !== _lastMode) {
                 _lastMode = mode;
+                updatePillUI();
                 if (running) {
                     stopAll();
                     playForCurrentMode();
@@ -2288,9 +2361,23 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
     if (typeof window.jQuery !== 'undefined') {
         window.jQuery('#custom-timer').on('show.bs.modal', populateDropdowns);
     }
-    window.addEventListener('focus', populateDropdowns);
+    // Re-read the ambience slots every time the settings modal opens, so
+    // changes made via the pill dropdown show up instantly (previously the
+    // modal only refreshed on window focus / reload).
+    const settingsBtn = document.getElementById('rewardSettingsBtn');
+    if (settingsBtn) settingsBtn.addEventListener('click', function() {
+        // populateDropdowns restores the currently-shown value after
+        // rebuilding the options — clear first so the freshly-saved
+        // pill choice actually wins.
+        ['pomodoro_ambience', 'short_break_ambience', 'long_break_ambience'].forEach(function(id) {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        populateDropdowns();
+    });
+    window.addEventListener('focus', function() { populateDropdowns(); populatePresetSel(); });
     window.addEventListener('storage', function(e) {
-        if (e.key === PRESETS_KEY) populateDropdowns();
+        if (e.key === PRESETS_KEY) { populateDropdowns(); populatePresetSel(); }
     });
 
     // Let the custom-timer modal re-apply ambience right after saving.
@@ -2305,6 +2392,7 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
     // Init
     updatePillUI();
     populateDropdowns();
+    populatePresetSel();
     console.log('[Ambience] 20-20-20 loaded. Vol:', getVolume(), 'Mode:', detectMode());
 })();
 </script>
