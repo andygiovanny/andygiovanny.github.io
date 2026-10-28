@@ -554,7 +554,7 @@
     .bsa-left-sidebar-wrapper {
         position: absolute;
         left: 10px;
-        top: 80px;
+        top: 300px;
         z-index: 1000;
         overflow: hidden;
         border-radius: 12px;
@@ -565,18 +565,18 @@
     .bsa-right-sidebar-wrapper {
         position: absolute;
         right: 10px;
-        top: 80px;
+        top: 300px;
         z-index: 1000;
         overflow: hidden;
         border-radius: 12px;
         background-color: transparent;
     }
 
-    /* Show the side ads only when the viewport is wide enough to keep them
-       clear of the edge-to-edge content (container ~1170px + two ~330px ad
-       lanes); below that they crowd the header buttons and mode tabs. */
+    /* Side ads sit BELOW the header + mode-tab rows (top: 300px) so they
+       can never crowd the buttons; shown from 1400px up, where the
+       centered content leaves clear lanes on both sides. */
     .bsa-side-ad { display: none; }
-    @media (min-width: 1850px) { .bsa-side-ad { display: block; } }
+    @media (min-width: 1400px) { .bsa-side-ad { display: block; } }
   
   
 </style>

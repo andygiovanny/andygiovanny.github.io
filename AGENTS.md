@@ -128,6 +128,27 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-10-28 (Kimi Work, pt 27):** main-page side ads brought BACK —
+  Andy wanted them visible after all. The pt-22 1850px gate was why they
+  never showed at his 140% zoom (~1810 CSS px). New approach on all 5
+  index pages: ads moved DOWN (`top: 80px` → `300px`, below the header +
+  mode-tab rows so they can't crowd buttons) and the gate lowered to
+  `min-width: 1400px` (clean lanes beside the centered content from 1400px
+  up; hidden on smaller screens instead of overlapping like the original
+  d-lg-block did). Files synced to the GitHub clone; Andy to commit+push.
+  Backups `_backups/2026-10-28_admove/`. NOTE: pt-26's "main index hides
+  ads below 1850px" is superseded by this entry.
+- **2026-10-28 (Kimi Work, pt 26):** "no side ads" investigation — VERDICT:
+  ad fill, not code. Live audit of all 6 page types: loader
+  (`cdn4.buysellads.net/pub/tomatotimers.js`) ×1, both zone divs, and the
+  positioning/gating CSS present and identical to local everywhere; both
+  zone IDs are registered inside the BSA publisher script; ads.txt live
+  (35 KB, all partners). Empty slots are normal for geo=36 (Indonesia —
+  remnant/backfill demand, the "NetShort"-type app ads come and go between
+  pageviews; Andy's own screenshots earlier the same day showed the same
+  code serving ads). ONE INTENTIONAL exception: main index hides side ads
+  below 1850px viewport (pt 22 fix) — at 140% zoom that's expected.
+  No files changed.
 - **2026-10-28 (Kimi Work, pt 25):** TWO-CLONE PROBLEM found & synced.
   GitHub Desktop watches `C:\Users\andyg\Documents\GitHub\andygiovanny.github.io`
   (HEAD = 999e0b7 "asd", clean) — the "asd" commit came from there, NOT from
