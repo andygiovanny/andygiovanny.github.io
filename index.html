@@ -560,7 +560,7 @@
     .bsa-left-sidebar-wrapper {
         position: absolute;
         left: 10px;
-        top: 300px;
+        top: 80px;
         z-index: 1000;
         overflow: hidden;
         border-radius: 12px;
@@ -571,16 +571,16 @@
     .bsa-right-sidebar-wrapper {
         position: absolute;
         right: 10px;
-        top: 300px;
+        top: 80px;
         z-index: 1000;
         overflow: hidden;
         border-radius: 12px;
         background-color: transparent;
     }
 
-    /* Side ads sit BELOW the header + mode-tab rows (top: 300px) so they
-       can never crowd the buttons; shown from 1400px up, where the
-       centered content leaves clear lanes on both sides. */
+    /* Side ads start just below the promo bar (top: 80px), same as every
+       other page; the 1090px content cap keeps the header buttons clear.
+       Shown from 1400px up, where the centered content leaves clear lanes. */
     .bsa-side-ad { display: none; }
     @media (min-width: 1400px) { .bsa-side-ad { display: block; } }
   

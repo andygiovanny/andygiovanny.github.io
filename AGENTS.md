@@ -128,6 +128,16 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-10-29 (Kimi Work):** main-page side ads moved from `top: 300px`
+  back up to `top: 80px` (both `.bsa-left/right-sidebar-wrapper` in
+  `index.html`) so they start right below the promo bar like flowtime
+  instead of floating mid-page over the to-do section. Safe now because
+  the header content is capped at 1090px (2026-10-28 pt 28), which leaves
+  clear side lanes at the 1400px+ viewports where `.bsa-side-ad` shows.
+  English `index.html` only — translations (id/es/pt/vi `index.html`) still
+  at 300px pending Andy's review, per the English-first rule. Backup
+  `_backups/2026-10-29_main-ad-top/`. Next: Andy eyeballs it live, then the
+  same 80px change goes to the 4 translated main pages.
 - **2026-10-28 (Kimi Work, pt 30):** pt-29's to-do gap fix extended to the
   remaining 15 pages (52-17, 20-20-20-rule, flowtime × en/id/es/pt/vi) with
   Andy's go — identical rule text, same replacement
