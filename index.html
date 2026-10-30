@@ -379,6 +379,47 @@
         .mode-tabs { display: block; }
         .mode-tabs .button-style-1 { width: 49% !important; }
     }
+
+    /* Match the other pages' narrower content column so the side ads keep
+       clear lanes: 52-17's header content is ~1060px (1140 max-width minus
+       40px padding each side) — cap this page's 1170px Bootstrap container
+       to the same effective width (1090 incl. its 15px padding). */
+    .header-background > .container { max-width: 1090px !important; }
+
+    /* Pinned countdown chip (days-until) — floats left of the mascot on wide
+       screens, tucks under it centered on narrow ones. Hidden unless a pin
+       exists in localStorage 'tt_countdowns_v1'. */
+    .pin-chip { display: flex; align-items: center; gap: 10px; width: max-content;
+        max-width: 215px; background: #fffdf7; border: 1px solid #E2D0AF;
+        border-left: 5px solid #DE4B3A; border-radius: 14px; padding: 8px 12px 8px 10px;
+        cursor: pointer; box-shadow: 0 3px 10px rgba(88, 36, 14, .08); text-align: left; }
+    .pin-chip:hover { border-color: #DE4B3A; }
+    .pin-chip .pc-icon { flex: 0 0 auto; width: 40px; height: 40px; display: flex;
+        align-items: center; justify-content: center; font-size: 30px; line-height: 1; }
+    .pin-chip .pc-icon img { width: 40px; height: 40px; object-fit: contain; display: block; }
+    .pin-chip .pc-body { min-width: 0; }
+    .pin-chip .pc-name { display: block; font-size: 13px; font-weight: 700; color: #58240E;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pin-chip .pc-time { display: block; font-size: 14px; font-weight: 700; color: #58240E;
+        font-variant-numeric: tabular-nums; white-space: nowrap; margin-top: 1px; }
+    .pin-chip .pc-time .pc-days { color: #DE4B3A; }
+    @media (min-width: 1300px) {
+        .pin-chip { position: absolute; left: 4px; top: 96px; z-index: 5; margin: 0; }
+    }
+    @media (max-width: 1299.98px) {
+        .pin-chip { margin: -6px auto 8px; }
+    }
+    body.theme-dark .pin-chip { background: #2a2018; border-color: #3a2d20;
+        box-shadow: 0 3px 10px rgba(0,0,0,.3); }
+    body.theme-dark .pin-chip:hover { border-color: #E0A458; }
+    body.theme-dark .pin-chip .pc-name,
+    body.theme-dark .pin-chip .pc-time { color: #E8D9B8; }
+    body.theme-dark .pin-chip .pc-time .pc-days { color: #E0A458; }
+    body.theme-classic .pin-chip { background: #feece5; border-color: rgba(198,94,94,.35);
+        box-shadow: 0 3px 10px rgba(88,20,20,.15); }
+    body.theme-classic .pin-chip .pc-name,
+    body.theme-classic .pin-chip .pc-time { color: #a34a4a; }
+    body.theme-classic .pin-chip .pc-time .pc-days { color: #c65e5e; }
 </style>
     
     
@@ -572,11 +613,11 @@
         background-color: transparent;
     }
 
-    /* Show the side ads only when the viewport is wide enough to keep them
-       clear of the edge-to-edge content (container ~1170px + two ~330px ad
-       lanes); below that they crowd the header buttons and mode tabs. */
+    /* Side ads start just below the promo bar (top: 80px), same as every
+       other page; the 1090px content cap keeps the header buttons clear.
+       Shown from 1400px up, where the centered content leaves clear lanes. */
     .bsa-side-ad { display: none; }
-    @media (min-width: 1850px) { .bsa-side-ad { display: block; } }
+    @media (min-width: 1400px) { .bsa-side-ad { display: block; } }
   
   
 </style>
@@ -590,8 +631,10 @@
 .tm-done-wrap.d-none { display: none !important; }
 
 /* Legacy stylesheet fixes this at 400px (old scrollable list). Let cards grow
-   naturally so the section pushes the content below it down instead. */
-.todo-list-min-height { height: auto !important; min-height: 400px; }
+   naturally so the section pushes the content below it down instead — NO
+   min-height: an empty/short list collapses to its real height instead of
+   leaving a dead gap above the videos section. */
+.todo-list-min-height { height: auto !important; }
 
 .tm-active-line {
     min-height: 22px;
@@ -1309,6 +1352,103 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             <div style="min-height: 250px;" class="w-100 d-flex align-items-center justify-content-center">
                 <img src="assets/images/tomato-cartoon.svg" class="tomato-cartoon" id="tomato-cartoon" style="max-height: 300px; width: auto; margin: 0 auto;">
             </div>
+
+            <!-- Pinned countdown chip (days-until) — populated by the script below;
+                 stays display:none when nothing is pinned -->
+            <div class="pin-chip" id="pinChip" style="display:none" role="link" tabindex="0"
+                 title="Pinned countdown — open Days Until">
+                <span class="pc-icon" id="pcIcon"></span>
+                <span class="pc-body">
+                    <span class="pc-name" id="pcName"></span>
+                    <span class="pc-time" id="pcTime"></span>
+                </span>
+            </div>
+<script>
+(function () {
+    var KEY = 'tt_countdowns_v1';
+    var chip = document.getElementById('pinChip');
+    if (!chip) return;
+    var pinned = null, timer = null;
+
+    function parseTarget(s) {
+        var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(s);
+        if (!m) return null;
+        var d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], 0, 0);
+        if (d.getFullYear() !== +m[1] || d.getMonth() !== +m[2] - 1 || d.getDate() !== +m[3]) return null;
+        return d;
+    }
+    function readPin() {
+        try {
+            var raw = localStorage.getItem(KEY);
+            if (!raw) return null;
+            var list = (JSON.parse(raw) || {}).countdowns || [];
+            for (var i = 0; i < list.length; i++) {
+                var c = list[i];
+                if (c && c.pinned && typeof c.target === 'string') {
+                    var t = parseTarget(c.target);
+                    if (t) return { name: String(c.name || 'Countdown'), target: t,
+                                    color: c.color, icon: c.icon };
+                }
+            }
+        } catch (e) {}
+        return null;
+    }
+    function setIcon(el, v) {
+        el.innerHTML = '';
+        if (typeof v === 'string' && v.indexOf('img:') === 0) {
+            var img = document.createElement('img');
+            img.src = '/assets/images/icons/' + v.slice(4) + '.png';
+            img.alt = '';
+            el.appendChild(img);
+        } else if (v) { el.textContent = v; }
+    }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function render() {
+        if (!pinned) return;
+        var now = new Date();
+        var startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        var isToday = pinned.target >= startToday &&
+                      pinned.target < startToday.getTime() + 86400000;
+        var timeEl = document.getElementById('pcTime');
+        var diff = pinned.target - now;
+        if (diff <= 0) { timeEl.textContent = isToday ? '🎉 Today' : 'Ended'; return; }
+        var sec = Math.floor(diff / 1000);
+        var days = Math.floor(sec / 86400);
+        var clock = pad(Math.floor(sec % 86400 / 3600)) + ':' +
+                    pad(Math.floor(sec % 3600 / 60)) + ':' + pad(sec % 60);
+        timeEl.innerHTML = '';
+        if (isToday) {
+            timeEl.appendChild(document.createTextNode('🎉 Today · ' + clock));
+        } else {
+            var dEl = document.createElement('span');
+            dEl.className = 'pc-days';
+            dEl.textContent = days + (days === 1 ? ' day' : ' days');
+            timeEl.appendChild(dEl);
+            timeEl.appendChild(document.createTextNode(' · ' + clock));
+        }
+    }
+    function show() {
+        pinned = readPin();
+        if (!pinned) { chip.style.display = 'none'; return; }
+        document.getElementById('pcName').textContent = pinned.name;
+        setIcon(document.getElementById('pcIcon'), pinned.icon);
+        if (pinned.color) chip.style.borderLeftColor = pinned.color;
+        chip.style.display = 'flex';
+        render();
+        if (timer) clearInterval(timer);
+        timer = setInterval(render, 1000);
+    }
+    chip.addEventListener('click', function () { window.location.href = '/days-until/'; });
+    chip.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+            ev.preventDefault();
+            window.location.href = '/days-until/';
+        }
+    });
+    window.addEventListener('storage', function (ev) { if (ev.key === KEY) show(); });
+    show();
+})();
+</script>
             
             <div class="w-100 p-1">
                 <div class="timer-time timer-container">

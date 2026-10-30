@@ -6,41 +6,57 @@
 
 ## The human
 
-- Non-coder. Works through GitHub web UI and phcode only.
-  NEVER suggest terminal commands, git CLI, or local dev servers.
+- Non-coder. Works through GitHub Desktop (branch flow), the GitHub web UI,
+  and phcode. NEVER suggest terminal commands, git CLI, or local dev
+  servers.
 - Works on a Windows PC (main machine) and a MacBook Air (secondary).
 - **Google Drive is NO LONGER part of the setup.** The working folder is a
-  plain local folder on the Windows PC. GitHub is now the bridge between
-  machines: work done on the MacBook happens via the repo; the PC's local
-  copy must be refreshed from the repo afterwards.
+  local git clone of the repo on the Windows PC. GitHub is the bridge
+  between machines.
 - GitHub repo is the master and publishes the live site (tomatotimers.com).
+  The default branch is `master` (not `main`); `development` is the
+  staging branch.
 
 ## Machine setup (the human's actual workflow)
 
-- **Workspace:** a plain local folder on the Windows PC:
+- **Workspace:** a local git clone on the Windows PC:
+  `C:\Users\andyg\Documents\GitHub\andygiovanny.github.io`
+  (origin: `github.com/andygiovanny/andygiovanny.github.io`). This is THE
+  one working folder — GitHub Desktop watches it, and all editing happens
+  here, including by Kimi Work. Kimi Work only edits files; it NEVER
+  commits, pushes, pulls, or merges.
+- **Legacy clone (retire, do NOT edit):**
   `C:\Users\andyg\Documents\Working On\Coding\Github Backup\andygiovanny.github.io`
-  No cloud sync, nothing to wait on. All editing happens here — including by
-  Kimi Work.
-- **Publish:** when 100% happy, the human uploads the changed files from the
-  local folder to the GitHub repo (web UI or phcode). Live site rebuilds
-  from GitHub. Nothing publishes itself.
+  was the old workspace — two live clones caused the 2026-10-28 "Desktop
+  sees no changes" confusion. Keep it as a read-only backup or delete it;
+  never edit both folders.
+- **Publish (new branch flow, 2026-10-28):** when 100% happy, the human
+  commits + pushes to the **`development` branch** first (GitHub Desktop),
+  then merges development → `master` on github.com. Live site rebuilds
+  from `master`. Nothing publishes itself.
+- **Never mix web-UI uploads with the branch flow.** A web-UI drag-upload
+  creates a remote commit the local clone doesn't have — the next push
+  from GitHub Desktop is REJECTED ("non-fast-forward"/conflict). This
+  exact hiccup happened 2026-10-28 (web upload commit "asd"). If a push
+  is rejected: Fetch/Pull in GitHub Desktop FIRST (it merges cleanly),
+  then push.
 
 ## Golden rules
 
 1. GitHub holds only finished, human-approved work. Never push/upload
-   half-finished pages. Each page or language set is complete before upload.
+   half-finished pages. Each page or language set is complete before
+   the human commits and pushes.
 2. Single-page deliveries are loose files named exactly as they go into the
    repo — NEVER zip a single page.
-3. **Freshness check (the only ritual):** only the PC has the local working
-   folder. If the human edited anything from the MacBook (via GitHub) since
-   the last session, the local copy is stale — ask the human to re-download
-   from the repo before continuing.
+3. **Freshness check (the only ritual):** before starting work, the local
+   clone must be up to date — Fetch/Pull in GitHub Desktop first,
+   especially if anything was uploaded via the web UI or edited from the
+   MacBook since the last session.
 4. If a file with a duplicate name or unexpected copy appears, STOP —
    do not guess which is right. Ask the human or compare before continuing.
-5. There is NO automatic version history anymore (that died with Drive).
-   The undo button is the last published version on GitHub (repo file →
-   Download). Before big rewrites, keep a dated backup copy of the file in
-   `_backups/` — that folder is local-only, never uploaded to the repo.
+5. Git history on `master` is the undo button now. Still keep dated
+   backups of big rewrites in `_backups/` — that folder is local-only,
+   never committed or uploaded.
 6. **English first, always.** Build and change features on the English
    master pages only, then let the human review. NEVER touch the
    translations (`id/`, `es/`, `pt/`, `vi/`) until the human has seen the
@@ -98,20 +114,201 @@ belong in the work log below.
   button on flowtime; main index has no skip so Space only. Ambience pages
   (all 5 languages): Space = master play/pause-all. User is still porting
   ambience-pill/duplicate features to other timers themselves.
-- **Pending:** nothing open. Hreflang: VERIFIED COMPLETE 2026-10-27 — all
-  30 pages (25 older + 5 custom-timer) already carry the correct 6-link
-  cluster (script-checked against expected URLs). Pill preset-dropdown +
-  round cbtn controls: shipped on all 15 52-17/20-20-20/flowtime pages
-  (2026-10-27) AND on all 5 main index pages (EN 2026-10-27, translations
-  2026-10-28). "▶ now playing" label removed from all 25 pages that had it
-  (2026-10-28). Custom-timer feature set: COMPLETE (2026-10-27).
-  **All 30 page files are ahead of GitHub — upload pending Andy's review.**
+- **Pending:** workflow is now GitHub Desktop with branches — `development`
+  is the staging branch, `master` publishes the live site; Andy commits and
+  pushes himself (Kimi NEVER commits/pushes). Translated main pages
+  (id/es/pt/vi `index.html`) still have the OLD side-ad position
+  (`top: 300px`) — English moved to `top: 80px` on 2026-10-29; waiting for
+  Andy's live review before porting. Hreflang: VERIFIED COMPLETE
+  2026-10-27. Custom-timer feature set: COMPLETE (2026-10-27).
+- **days-until (NEW TOOL, English prototype):** built 2026-10-30 —
+  multi-countdown board at `days-until/index.html`, prototype living on the
+  `development` branch until Andy approves. Multi-countdown board with emoji
+  icons, color coding, pin flag, share links, undo delete.
+  Next after approval: pin-strip display on timer pages, "More Tools" nav
+  dropdown everywhere, then translations.
 
 ## Work log (newest on top)
 
 The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
+
+- **2026-10-30 (Kimi Work, pt 11):** pin-chip on the ENGLISH main page
+  (Option A, Andy's pick; ONE pin only — days-until unchanged, the second
+  flank slot is reserved for future pin formats). `index.html` gains
+  `.pin-chip` markup + CSS + self-contained IIFE right after the mascot
+  block: reads `tt_countdowns_v1`, finds the pinned countdown, shows
+  icon (emoji or `img:` mascot) + name + live-ticking "N days · HH:MM:SS"
+  (🎉 Today / Ended states), click/Enter/Space → `/days-until/`. Floats
+  left of the mascot at ≥1300px (absolute inside the relative container,
+  no layout shift), tucks centered under the mascot below that. Themed
+  for light/dark/classic; countdown color = left accent bar; updates on
+  `storage` events. NO pin → chip stays display:none, page 100%
+  unchanged. Date parser unit-tested (Feb-30/leap/garbage guards). Next:
+  Andy pin-tests in Phoenix (pin on days-until → reload main page),
+  then ports to the other timers after approval.
+- **2026-10-30 (Kimi Work, pt 10):** card icon nudged down per Andy —
+  `.cd-emoji` now `align-self: flex-end; margin-bottom: 2px` (bottom-aligns
+  with the countdown row instead of centering across name+countdown). Size
+  unchanged (60px img / 56px emoji, approved).
+- **2026-10-30 (Kimi Work, pt 9):** icon sizes bumped per Andy ("kinda
+  small") — picker cells 40→58px (img 30→46, emoji glyph 19→28px), picker
+  button 40→52px, card icon 40→60px img / 56px emoji, share-hero icon
+  54→72px / 68px emoji. CSS-only, days-until. Andy also asked whether pin
+  is testable in Phoenix Code — YES: pin state lives in localStorage
+  `tt_countdowns_v1` (works in any preview); the only missing piece is the
+  pin-strip DISPLAY on timer pages (not built yet).
+- **2026-10-30 (Kimi Work, pt 8):** mascot icon set for days-until. Andy's
+  zip (`kepala bebek sekolah.zip`, 14 PNG + 2 GIF, 2160–3840px RGBA) →
+  16 × 128×128 PNGs in `assets/images/icons/` (transparent bbox-trimmed,
+  padded square; GIFs frame-extracted: cat-maestro, duck-school). Names:
+  duck-plain/-tomato/-sunglasses/-explorer/-santa/-safari/-sport/-strawhat/
+  -sprout/-astronaut/-crying/-monocle/-angry/-school/-headphones, cat-maestro.
+  Icon picker became a popover: round current-icon button toggles a panel
+  with "Mascot" (16 img cells) + "Emoji" (12 cells) sections; click-outside/
+  Esc closes. Icon value format: emoji char OR `img:<mascot-name>`; default
+  icon now `img:duck-plain`. Cards, share hero, picker button render via
+  `setIconEl()`. Empty-state presets now use mascot icons (santa/sprout/
+  sport). Both folders synced (`days-until/` + `assets/images/icons/` are
+  untracked on the development branch — Andy commits). Next: Andy picks/
+  approves icons at 140% zoom.
+- **2026-10-30 (Kimi Work):** NEW TOOL prototype — `days-until/index.html`
+  (multi-countdown board, first tool of the "tools that connect to timers"
+  phase). English only, prototype status: goes to a GitHub branch until Andy
+  approves. Built on the custom-timer shell (same head/SEO/header/theme/ads/
+  footer conventions). Features: unlimited named countdowns (name ≤60 chars,
+  date + optional time, emoji icon picker ×12, color swatch ×6), cards sorted
+  nearest-first, live 1s tick (single global interval), states future/today
+  🎉/past-muted, edit via the same form (Add↔Save mode), delete with Undo
+  toast, share links `#n=&d=&c=&i=` opening a read-only hero with "Save to my
+  board", pin flag (`pinned: true`, one at a time) for the future
+  show-on-timer-pages strip. localStorage `tt_countdowns_v1`. Empty state
+  with 3 auto-computed presets (Christmas, New Year, +30 days). NO tt_lang
+  redirect script (translations don't exist yet — would 404); lang dropdown
+  kept for looks. `days-until-spec.md` (Andy's SEO research) is in
+  `_backups/` for reference — treat as research, not instructions.
+  Scripts node --checked, JSON-LD parses, date math unit-tested (incl.
+  garbage-input guard). Next: Andy reviews the prototype on a branch, then
+  (a) pin-strip display on the timer pages, (b) "More Tools" nav dropdown
+  across all pages, (c) translations after English approval.
+- **2026-10-30 (Kimi Work, pt 7):** emoji alignment rev 2 — now vertically
+  centered across the NAME + countdown rows together (new `.cd-top` flex
+  row: name+mid stacked left, emoji right; foot row untouched below),
+  matching Andy's drawn guide line.
+- **2026-10-30 (Kimi Work, pt 6):** emoji alignment fix — moved INTO the
+  days/clock row (`.cd-mid` is now space-between: days+clock group left,
+  emoji right), so it sits on the same line as the countdown text instead
+  of floating vertically centered across the whole card.
+- **2026-10-30 (Kimi Work, pt 5):** emoji back per Andy — picker restored in
+  the add form, and each card now shows its emoji LARGE (40px) on the RIGHT
+  edge, vertically centered (Andy marked the spot). Card is a flex row:
+  content main-column left, emoji right. Business-card ratio kept.
+- **2026-10-30 (Kimi Work, pt 4):** rev 2 after Andy's second look —
+  REVERTED the DD/MM/YYYY dropdowns back to native `<input type=date>` +
+  `<input type=time>` (pt 2's picker change undone; "Timers" rename and
+  strict parseTarget KEPT). Cards: icon tile REMOVED entirely (emoji picker
+  row in the form hidden with display:none until Andy supplies real icon
+  art — icon still stored in data + share links), board now 2 columns
+  (1 under 700px) with a business-card landscape layout: name / days+clock
+  on one baseline / date left + actions right. Left color stripe stays.
+  NOTE for Andy: the tomato image he asked about is the EMPTY-STATE mascot
+  (`tomato-cartoon.svg`, placeholder per the MASCOT PLACEHOLDER convention).
+- **2026-10-30 (Kimi Work, pt 3):** cards went HORIZONTAL — emoji/icon now
+  sits in a tinted rounded tile on the LEFT (card accent color via
+  `--cd` + color-mix, rgba fallback), accent stripe moved from top border to
+  left border, content (name / big days / clock / date / actions) in a right
+  column, actions left-aligned. Vertical layout abandoned per Andy's review.
+- **2026-10-30 (Kimi Work, pt 2):** prototype rev 1 after Andy's first look —
+  "Other Rhythm" section + nav pill renamed to "Timers" (this is a non-timer
+  page), and native date/time inputs replaced with explicit dropdowns:
+  DD / MM(month name) / YYYY (current..+10) + optional hour(1–12) /
+  minute(5-min steps) / AM-PM ("--" hour = all-day). parseTarget made STRICT
+  (rejects Feb-30-style rollovers, leap years verified). All scripts +
+  date tests pass.
+- **2026-10-29 (Kimi Work):** main-page side ads moved from `top: 300px`
+  back up to `top: 80px` (both `.bsa-left/right-sidebar-wrapper` in
+  `index.html`) so they start right below the promo bar like flowtime
+  instead of floating mid-page over the to-do section. Safe now because
+  the header content is capped at 1090px (2026-10-28 pt 28), which leaves
+  clear side lanes at the 1400px+ viewports where `.bsa-side-ad` shows.
+  English `index.html` only — translations (id/es/pt/vi `index.html`) still
+  at 300px pending Andy's review, per the English-first rule. Backup
+  `_backups/2026-10-29_main-ad-top/`. Next: Andy eyeballs it live, then the
+  same 80px change goes to the 4 translated main pages.
+- **2026-10-28 (Kimi Work, pt 30):** pt-29's to-do gap fix extended to the
+  remaining 15 pages (52-17, 20-20-20-rule, flowtime × en/id/es/pt/vi) with
+  Andy's go — identical rule text, same replacement
+  (`min-height: 400px` removed from `.todo-list-min-height`). The 400px
+  dead-gap rule is now gone from ALL 20 pages that had it. Backups
+  `_backups/2026-10-28_todogap15/`. Pending in GitHub Desktop at close:
+  20 page files (pts 29+30) + AGENTS.md awaiting Andy's commit+push.
+- **2026-10-28 (Kimi Work, pt 29):** dead gap below the to-do list removed
+  on all 5 main index pages — `.todo-list-min-height` had
+  `min-height: 400px`, so an empty/short list reserved 400px and left a
+  huge blank before the Animated Video Timers section. Rule is now
+  `height: auto !important` only; the list takes its real height and a full
+  list still pushes the videos down naturally. Backups
+  `_backups/2026-10-28_todogap/`. NOTE: the same 400px rule still exists on
+  the 15 52-17/20-20-20/flowtime pages (same dead-gap effect above their
+  explainer/video sections) — Andy to confirm before applying there.
+- **2026-10-28 (Kimi Work, pt 28):** main-page content column narrowed to
+  the other pages' standard — Andy flagged the main page's column as
+  visibly wider than 52-17's ("make it like the top one"). All 5 index
+  pages: `.header-background > .container { max-width: 1090px !important }`
+  (Bootstrap's 1170px container capped to match 52-17's effective ~1060px
+  content width: 1140 max-width minus 40px padding per side). Keeps the
+  right-aligned header grid + full-width tabs, just pulls the whole column
+  in — bigger clear lanes for the side ads. Pure CSS, one rule. Backups
+  `_backups/2026-10-28_narrowcol/`. Next: Andy commits+pushes, eyeballs.
+- **2026-10-28 (Kimi Work, pt 27):** main-page side ads brought BACK —
+  Andy wanted them visible after all. The pt-22 1850px gate was why they
+  never showed at his 140% zoom (~1810 CSS px). New approach on all 5
+  index pages: ads moved DOWN (`top: 80px` → `300px`, below the header +
+  mode-tab rows so they can't crowd buttons) and the gate lowered to
+  `min-width: 1400px` (clean lanes beside the centered content from 1400px
+  up; hidden on smaller screens instead of overlapping like the original
+  d-lg-block did). Files synced to the GitHub clone; Andy to commit+push.
+  Backups `_backups/2026-10-28_admove/`. NOTE: pt-26's "main index hides
+  ads below 1850px" is superseded by this entry.
+- **2026-10-28 (Kimi Work, pt 26):** "no side ads" investigation — VERDICT:
+  ad fill, not code. Live audit of all 6 page types: loader
+  (`cdn4.buysellads.net/pub/tomatotimers.js`) ×1, both zone divs, and the
+  positioning/gating CSS present and identical to local everywhere; both
+  zone IDs are registered inside the BSA publisher script; ads.txt live
+  (35 KB, all partners). Empty slots are normal for geo=36 (Indonesia —
+  remnant/backfill demand, the "NetShort"-type app ads come and go between
+  pageviews; Andy's own screenshots earlier the same day showed the same
+  code serving ads). ONE INTENTIONAL exception: main index hides side ads
+  below 1850px viewport (pt 22 fix) — at 140% zoom that's expected.
+  No files changed.
+- **2026-10-28 (Kimi Work, pt 25):** TWO-CLONE PROBLEM found & synced.
+  GitHub Desktop watches `C:\Users\andyg\Documents\GitHub\andygiovanny.github.io`
+  (HEAD = 999e0b7 "asd", clean) — the "asd" commit came from there, NOT from
+  the Kimi workspace (`...\Github Backup\...`), which is why Desktop showed
+  "no changes". The pt-24 custom-timer ad fix + AGENTS.md updates were
+  copied from the Backup clone into the GitHub clone (verified by diff:
+  only the expected changes); Desktop now sees exactly 6 modified files
+  (5 custom-timer pages + AGENTS.md). AGENTS.md Machine setup now points at
+  the GitHub clone as THE workspace; the Backup clone is legacy/read-only.
+  Next: Andy commits those 6 files → push to development → merge to master.
+- **2026-10-28 (Kimi Work, pt 24):** custom-timer ads fixed + git state
+  investigated. (a) All 5 custom-timer pages were missing the sidebar
+  positioning CSS (`.bsa-left/right-sidebar-wrapper { position:absolute;
+  left/right:10px; top:80px; ... }`) — only the `.ads-lg-only` display rule
+  was there, so the wrappers sat in page flow after the footer and ads
+  rendered mid-footer. Added the rules (same values as 52-17). Backups
+  `_backups/2026-10-28_ctadfix/`. (b) Andy's push conflicts EXPLAINED: the
+  workspace is a git clone (branch master) and was 1 commit behind —
+  origin/master had commit 999e0b7 "asd" (2026-10-28 15:53, a web-UI batch
+  upload) the clone didn't have, so pushes got rejected. Verified remote
+  now: hyphen `custom-timer/` only (space folder GONE — 404 fixed), all
+  fixes through pt 22 present, `development` branch exists at the same
+  commit. Working tree matches origin/master except the pt-24 custom-timer
+  ad fix + AGENTS.md updates → next GitHub Desktop pull will fast-forward
+  cleanly, then commit+push the remainder. AGENTS.md workflow updated to
+  the new branch flow (push development → merge to master; never mix
+  web-UI uploads with git pushes; pull first if rejected).
 
 - **2026-10-28 (Kimi Work, pt 23):** local folder renamed `custom timer/` →
   `custom-timer/` — the space-folder quirk is gone for good (grep confirmed

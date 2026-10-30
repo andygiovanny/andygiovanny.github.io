@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- NOTE: no tt_lang redirect script here until id/es/pt/vi translations exist
+     (redirecting would 404). Lang dropdown below stays for visual consistency. -->
+<title>Days Until — Free Countdown Tracker for Deadlines &amp; Events | TomatoTimers</title>
+<link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
+<link rel="icon" type="image/png" href="/assets/images/favicon.png"/>
+<meta name="description" content="Create unlimited countdowns to deadlines, exams, birthdays & big days. Free, no sign-up, saved on your device. Pin one to your timers and share any countdown with a link.">
+<meta name="keywords" content="days until, countdown tracker, deadline countdown, multiple countdowns online, exam countdown, event countdown, countdown maker">
+<meta name="robots" content="index, follow">
+<meta name="author" content="TomatoTimers">
+<link rel="canonical" href="https://www.tomatotimers.com/days-until/">
+<link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/days-until/">
+<link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/days-until/">
+<meta property="og:title" content="Days Until — Free Countdown Tracker for Deadlines &amp; Events | TomatoTimers">
+<meta property="og:description" content="Create unlimited countdowns to deadlines, exams, birthdays & big days. Free, no sign-up, saved on your device.">
+<meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<meta property="og:url" content="https://www.tomatotimers.com/days-until/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Days Until — Free Countdown Tracker for Deadlines &amp; Events">
+<meta name="twitter:description" content="Create unlimited countdowns to deadlines, exams, birthdays & big days. Free, no sign-up, saved on your device.">
+<meta name="twitter:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Days Until — Countdown Tracker | TomatoTimers",
+  "url": "https://www.tomatotimers.com/days-until/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Free online countdown tracker: create unlimited named countdowns to deadlines, exams, birthdays and events, watch them tick live, pin one to your timer pages and share any countdown with a link. Config is stored in the browser only."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Pomodoro Timer",
+      "item": "https://www.tomatotimers.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Days Until",
+      "item": "https://www.tomatotimers.com/days-until/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I track multiple countdowns at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — that's the whole point. Add as many named countdowns as you like (exams, deadlines, birthdays, trips) and they all live on one board, sorted so the nearest date is always on top, each ticking live down to the second."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data saved? Do I need an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No account, ever. Your countdowns are saved in this browser's local storage, so they're still here when you come back — but they live on this device only and nothing is uploaded anywhere."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I share a countdown with someone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Every card has a share button that copies a link with that countdown's name, date, color and icon baked in. Anyone who opens it sees your live ticking countdown and can save it to their own board or make their own — no sign-up on either side."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does pinning a countdown do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pinning marks one countdown as your current focus. Your pinned countdown can then show on your TomatoTimers timer pages, so the deadline you're racing stays visible while you work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between this and a calendar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A calendar tells you when things are; a countdown tells you what you're racing toward. Days Until shows the live distance to each date — days, hours, minutes and seconds — which makes deadlines feel real in a way a calendar grid never does."
+      }
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXWPJH9V4X"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXWPJH9V4X', {
+        'page_path': window.location.pathname
+        });
+</script>
+<link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf2e9;
+    --panel: #FFFFFF;
+    --text: #58240E;
+    --muted: #8C5A3E;
+    --accent: #DE4B3A;
+    --tomato: #DE4B3A;
+    --border: #E2D0AF;
+    --panel2: #FFFFFF;
+    --input: #FFFFFF;
+  }
+  html.theme-dark {
+    --bg: #14100c;
+    --panel: #1f1813;
+    --text: #E8D9B8;
+    --muted: #A98F6F;
+    --accent: #E0A458;
+    --tomato: #DE4B3A;
+    --border: #3a2d20;
+    --panel2: #2a2018;
+    --input: #17110c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  body { font-family: 'Baloo Tammudu', cursive; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── YouTube promo banner (same red slice as every other page) ── */
+  #yt-promo { background-color: #752222; padding: 6px 20px; display: flex; align-items: center;
+    justify-content: space-between; gap: 15px; border-radius: 6px; flex-wrap: wrap; }
+  .yt-promo-left { display: flex; align-items: center; gap: 12px; }
+  #yt-promo span { font-size: 15px; color: #fff; }
+
+  /* ── header: same centered layout as the other timers ── */
+  .header { max-width: 1140px; margin: 0 auto; padding: 16px 40px 8px;
+    display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: center; gap: 30px; }
+  .header-left { flex: 0 0 350px; max-width: none; box-sizing: border-box; display: flex; flex-direction: column;
+    align-items: flex-start; gap: 12px; padding-left: 10px; }
+  .header-logo { width: 240px; max-width: 240px; height: auto; display: block; margin-left: 20px; }
+  .header-nav { flex: 1 1 auto; max-width: none; box-sizing: border-box; display: grid;
+    grid-template-columns: repeat(2, minmax(0, 324px)); justify-content: center; gap: 8px; padding-top: 22px; }
+  .button-row { display: contents; }
+  .button-row .button-style { min-width: 0; text-align: center; width: 100%; }
+  .button-style {
+    font-family: inherit; background-color: #fff; color: #8e552b; text-transform: uppercase;
+    padding: 16px 20px 10px; font-size: 16px; white-space: nowrap; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50px; border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06); }
+  .button-style:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+  html.theme-dark .button-style { background-color: #2a2018; color: #E8D9B8; border: 1px solid #3a2d20; box-shadow: none; }
+  html.theme-dark .button-style:hover { color: #E0A458; border-color: #E0A458; }
+  @media (max-width: 991px) {
+    .header { padding-left: 15px; padding-right: 15px; }
+    .header-left { flex: 0 0 100%; max-width: 100%; padding-left: 0; align-items: center; }
+    .header-logo { margin-left: 0; }
+    .header-nav { flex: 0 0 100%; max-width: 100%; padding-top: 0; grid-template-columns: 1fr 1fr; }
+    .button-row:first-child .button-style,
+    .button-row:last-child .button-style { min-width: 0; white-space: normal; line-height: 1.25; }
+    .header-logo { width: 200px; }
+  }
+
+  /* ── Theme / language dropdown pills ── */
+  .theme-select {
+    font-family: inherit; font-size: 15px; padding: 7px 34px 4px 16px; border-radius: 50px;
+    border: 2px solid rgba(88, 36, 14, 0.18);
+    background: #FFFFFF url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%2358240E' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #58240E; cursor: pointer; outline: none; line-height: 1.2;
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06); }
+  .theme-select option { background: #FFFFFF; color: #58240E; }
+  html.theme-dark .theme-select {
+    background: #2a2018 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23A98F6F' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #E8D9B8; border-color: #3a2d20; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }
+  html.theme-dark .theme-select option { background: #2a2018; color: #E8D9B8; }
+  .lang-globe { color: #58240E; }
+  html.theme-dark .lang-globe { color: #E8D9B8; }
+  html.theme-classic .lang-globe { color: #c65e5e; }
+
+  /* ── board stage ── */
+  .stage { max-width: 980px; margin: 0 auto; padding: 18px 20px 24px; }
+
+  /* shared-countdown hero (read-only view when opening a #share link) */
+  #shareHero { display: none; text-align: center; padding: 26px 16px 30px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 3px 10px rgba(88,36,14,.08);
+    max-width: 640px; margin: 0 auto 26px; border-top-width: 6px; border-top-style: solid; }
+  #shareHero.on { display: block; }
+  #shareHero .sh-icon { font-size: 68px; line-height: 1; }
+  #shareHero .sh-name { font-size: 28px; font-weight: 700; margin-top: 6px; }
+  #shareHero .sh-date { color: var(--muted); font-size: 15px; margin-bottom: 10px; }
+  #shareHero .sh-actions { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  /* add / edit form */
+  .add-form { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 3px 10px rgba(88,36,14,.06); }
+  .add-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .add-row .grow { flex: 1; min-width: 160px; }
+  .add-form input[type=text] { width: 100%; font-family: inherit; font-size: 15px; color: var(--text);
+    background: var(--input); border: 1px solid var(--border); border-radius: 50px;
+    padding: 9px 16px 7px; outline: none; }
+  .add-form input[type=date], .add-form input[type=time] { font-family: inherit; font-size: 14px; color: var(--text);
+    background: var(--input); border: 1px solid var(--border); border-radius: 50px;
+    padding: 8px 12px 6px; outline: none; }
+  .add-form input:focus { border-color: var(--accent); }
+  .add-form input[type=date] { flex: 1; min-width: 150px; }
+  .add-form input[type=time] { width: 110px; }
+  .emoji-row { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+  .emoji-pick { width: 34px; height: 34px; border-radius: 50%; border: 2px solid transparent; background: var(--input);
+    font-size: 17px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+    line-height: 1; padding: 0 0 2px; }
+  .emoji-pick.sel { border-color: var(--text); background: var(--panel2); }
+  /* icon picker: single button + expandable panel (Mascot images + Emoji) */
+  .icon-pick-btn { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--border);
+    background: var(--input); cursor: pointer; font-size: 26px; display: inline-flex;
+    align-items: center; justify-content: center; padding: 0; flex: 0 0 auto; line-height: 1; }
+  .icon-pick-btn:hover { border-color: var(--accent); }
+  .icon-pick-btn img { width: 40px; height: 40px; object-fit: contain; }
+  .icon-panel { background: var(--input); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
+  .icon-sec-label { font-size: 11.5px; color: var(--muted); margin: 2px 0 6px 4px;
+    text-transform: uppercase; letter-spacing: .5px; }
+  .icon-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .icon-grid:last-child { margin-bottom: 0; }
+  .icon-cell { width: 58px; height: 58px; border-radius: 12px; border: 2px solid transparent;
+    background: var(--panel); cursor: pointer; display: inline-flex; align-items: center;
+    justify-content: center; font-size: 28px; padding: 0; line-height: 1; }
+  .icon-cell img { width: 46px; height: 46px; object-fit: contain; }
+  .icon-cell.sel { border-color: var(--text); }
+  .icon-cell:hover { border-color: var(--accent); }
+  .cd-emoji img { width: 60px; height: 60px; object-fit: contain; display: block; }
+  .sh-icon img { width: 72px; height: 72px; object-fit: contain; }
+  .dot-row { display: flex; gap: 6px; align-items: center; padding: 0 4px; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
+  .dot.sel { border-color: var(--text); }
+  .add-btn { background: var(--tomato); color: #fff; border: none; border-radius: 50px; cursor: pointer;
+    font-family: inherit; font-size: 15px; padding: 10px 26px 8px; box-shadow: 0 3px 10px rgba(222,75,58,.3); }
+  .add-btn:hover { transform: scale(1.04); }
+  .cancel-edit-btn { background: none; border: 1px solid var(--border); border-radius: 50px; cursor: pointer;
+    font-family: inherit; font-size: 13px; color: var(--muted); padding: 10px 16px 8px; display: none; }
+  .cancel-edit-btn.on { display: inline-block; }
+  .cancel-edit-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .add-err { color: var(--accent); font-size: 13.5px; min-height: 18px; padding-left: 6px; }
+
+  /* cards grid — landscape business-card ratio, no icon, left color stripe */
+  .board { margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 700px) { .board { grid-template-columns: 1fr; } }
+  .cd-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    border-left: 5px solid var(--tomato); padding: 12px 18px 10px;
+    box-shadow: 0 3px 10px rgba(88,36,14,.08); position: relative;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .cd-main { flex: 1; min-width: 0; }
+  .cd-emoji { flex: 0 0 auto; font-size: 56px; line-height: 1; align-self: flex-end; margin-bottom: 2px; }
+  .cd-card.is-past { opacity: .55; }
+  .cd-card.is-today { background: #FDF6E3; }
+  html.theme-dark .cd-card { box-shadow: 0 3px 10px rgba(0,0,0,.3); }
+  html.theme-dark .cd-card.is-today { background: #241a10; }
+  .cd-name { font-size: 16px; font-weight: 700; word-break: break-word; }
+  .cd-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .cd-topleft { flex: 1; min-width: 0; }
+  .cd-mid { display: flex; align-items: baseline; gap: 12px; margin-top: 2px; flex-wrap: wrap; }
+  .cd-days { font-size: 34px; line-height: 1.05; color: var(--text); font-variant-numeric: tabular-nums; }
+  .cd-days small { font-size: 15px; color: var(--muted); font-weight: 400; }
+  .cd-clock { font-size: 17px; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+  .cd-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    margin-top: 4px; flex-wrap: wrap; }
+  .cd-date { font-size: 13px; color: var(--muted); }
+  .cd-actions { display: flex; justify-content: flex-end; gap: 2px; }
+  .cd-actions button { background: none; border: none; cursor: pointer; color: var(--muted);
+    font-family: inherit; font-size: 13px; padding: 4px 8px 2px; border-radius: 50px; }
+  .cd-actions button:hover { color: var(--accent); background: var(--panel2); }
+  .cd-actions button.pinned { color: var(--tomato); }
+  .pin-flag { position: absolute; top: 8px; right: 12px; font-size: 13px; }
+
+  /* empty state */
+  .empty { text-align: center; padding: 30px 16px 8px; }
+  .empty img { width: 150px; height: auto; opacity: .95; }
+  .empty p { color: var(--muted); font-size: 15px; margin: 8px 0 12px; }
+  .preset-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .preset-pill { background: var(--panel); border: 1px solid var(--border); border-radius: 50px;
+    padding: 9px 18px 7px; font-family: inherit; font-size: 14px; color: var(--text); cursor: pointer; }
+  .preset-pill:hover { color: var(--accent); border-color: var(--accent); }
+  .preset-pill .pill-icon { display: inline-flex; vertical-align: -2px; }
+  .preset-pill .pill-icon img { width: 18px; height: 18px; display: block; }
+
+  /* ── explainer (visible text, same pattern as other timer pages) ── */
+  .explainer { max-width: 640px; margin: 50px auto 0; padding: 0 20px 60px; text-align: left; color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .explainer h2 { color: var(--text); font-size: 22px; margin: 18px 0 6px; }
+  .explainer strong { color: var(--text); }
+  .explainer a { color: var(--accent); }
+
+  /* ── cross-link cards (same pattern as main timer / 20-20-20 / ambience) ── */
+  .tt-cards { max-width: 1200px; margin: 48px auto 0; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; }
+  .tt-cards-title { font-size: 1.5rem; color: var(--text); margin: 0 0 14px; }
+  .tt-card-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+                 padding: 6px 4px 18px; -webkit-overflow-scrolling: touch; }
+  .tt-card-row::-webkit-scrollbar { height: 8px; }
+  .tt-card-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+  .tt-card { flex: 0 0 240px; scroll-snap-align: start; background: var(--panel); border-radius: 18px;
+             overflow: hidden; text-decoration: none; border: 1px solid var(--border);
+             box-shadow: 0 3px 10px rgba(88, 36, 14, .08);
+             transition: transform .18s ease, box-shadow .18s ease; }
+  .tt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(88, 36, 14, .14); }
+  .tt-card img { width: 100%; height: 170px; object-fit: contain; padding: 18px;
+                 background: #FBF3E4; box-sizing: border-box; }
+  .tt-card-text { padding: 12px 16px 16px; }
+  .tt-card h3 { font-size: 1.05rem; color: var(--text); margin: 0 0 4px; }
+  .tt-card p { font-size: .85rem; color: var(--muted); margin: 0; line-height: 1.45; }
+  html.theme-dark .tt-cards-title { color: var(--accent); }
+  html.theme-dark .tt-card { background: var(--panel2); box-shadow: 0 3px 10px rgba(0, 0, 0, .3); }
+  html.theme-dark .tt-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+  html.theme-dark .tt-card img { background: #1c1410; }
+  html.theme-dark .tt-card h3 { color: var(--accent); }
+
+  /* ── toast, footer ── */
+  #toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 50px; padding: 10px 22px 8px; font-size: 15px; opacity: 0; transition: all .3s; z-index: 60;
+    display: flex; align-items: center; gap: 12px; }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  #toast button { background: none; border: none; color: var(--accent); font-family: inherit;
+    font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0; }
+  .site-footer { text-align: center; padding: 28px 20px 34px; color: var(--muted); font-size: 14px;
+    border-top: 1px solid var(--border); margin-top: 30px; }
+  .site-footer a { color: var(--text); text-decoration: none; }
+  .site-footer a:hover { color: var(--accent); }
+  .site-footer .foot-links { display: flex; justify-content: center; align-items: center; gap: 12px; }
+  .site-footer .foot-brand { font-weight: 700; }
+  .site-footer .foot-ad { color: var(--accent); font-weight: 700; transition: opacity .2s ease; }
+  .site-footer .foot-note { margin-top: 8px; font-size: 12.5px; }
+</style>
+<script>
+(function () {
+  var THEME_KEY = 'site-theme';
+  function apply(t) {
+    document.documentElement.classList.remove('theme-dark', 'theme-classic');
+    if (t === 'dark') document.documentElement.classList.add('theme-dark');
+    else if (t === 'classic') document.documentElement.classList.add('theme-classic');
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.value = t;
+  }
+  function saved() { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch (e) { return 'light'; } }
+  apply(saved());
+  document.addEventListener('DOMContentLoaded', function () {
+    apply(saved());
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.addEventListener('change', function () {
+      try { localStorage.setItem(THEME_KEY, this.value); } catch (e) {}
+      apply(this.value);
+    });
+  });
+})();
+</script>
+<base target="_blank">
+<base target="_blank">
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- YouTube Promo Banner -->
+<div id="yt-promo">
+  <div class="yt-promo-left">
+    <a href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w" target="_blank" rel="noopener noreferrer">
+      <img src="/assets/images/YT.png" alt="Subscribe" style="height: 28px;"
+           onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/YT.png';}">
+    </a>
+    <span>Keyboard shortcuts are available now, shortcut list down below! Support the channel and check out the videos!</span>
+  </div>
+  <div class="g-ytsubscribe"
+       data-channelid="UC-u-z82nVkW81veR76iFx_w"
+       data-layout="default"
+       data-count="default">
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <a class="logo" href="https://www.tomatotimers.com/" target="_self" style="text-decoration:none; display:flex; align-items:center;">
+      <img id="logo" src="/assets/images/logo.svg" alt="TomatoTimers" class="header-logo"
+           onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
+    </a>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="position:relative; display:inline-block;">
+    <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4A8.02 8.02 0 0 1 4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13z"/></svg>
+    <select id="lang-select" class="theme-select" aria-label="Choose language" onchange="if(this.value){try{localStorage.setItem('tt_lang',this.value.replace(/\//g,'')||'en')}catch(e){}window.location.href=this.value}" style="padding-left:38px;">
+      <option value="/days-until/" selected>English</option>
+      <option value="/id/days-until/">Bahasa Indonesia</option>
+      <option value="/es/days-until/">Español</option>
+      <option value="/pt/days-until/">Português</option>
+      <option value="/vi/days-until/">Tiếng Việt</option>
+    </select>
+    </span>
+    <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+      <option value="light">Light Theme</option>
+      <option value="dark">Dark Theme</option>
+    </select>
+    </div>
+  </div>
+  <div class="header-nav">
+    <div class="button-row">
+      <button type="button" class="button-style" onclick="document.getElementById('explainer').scrollIntoView({behavior:'smooth'})">How It Works</button>
+      <button type="button" class="button-style" onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Timers</button>
+    </div>
+    <div class="button-row">
+      <a href="https://www.tomatotimers.com/" target="_self" class="button-style">Pomodoro Timer</a>
+      <a href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener noreferrer" class="button-style">Ambience Studio 🎵</a>
+    </div>
+  </div>
+</div>
+
+<h1 class="sr-only">Days Until — Deadline &amp; Event Countdown Tracker</h1>
+
+<div class="stage">
+
+  <!-- Read-only hero shown when the page is opened via a share link -->
+  <div id="shareHero" role="region" aria-label="Shared countdown">
+    <div class="sh-icon" id="shIcon">🎯</div>
+    <div class="sh-name" id="shName"></div>
+    <div class="sh-date" id="shDate"></div>
+    <div class="cd-days" id="shDays"></div>
+    <div class="cd-clock" id="shClock"></div>
+    <div class="sh-actions">
+      <button type="button" class="add-btn" id="shSave">Save to my board</button>
+      <button type="button" class="preset-pill" id="shOwn">Make your own →</button>
+    </div>
+  </div>
+
+  <!-- Add / edit form -->
+  <form class="add-form" id="addForm" autocomplete="off">
+    <div class="add-row">
+      <button type="button" class="icon-pick-btn" id="iconPickBtn" aria-label="Pick an icon" aria-haspopup="true" aria-expanded="false" title="Pick an icon"></button>
+      <div class="dot-row" id="dotRow" role="radiogroup" aria-label="Pick a color"></div>
+    </div>
+    <div class="icon-panel" id="iconPanel" style="display:none;">
+      <div class="icon-sec-label">Mascot</div>
+      <div class="icon-grid" id="mascotGrid" role="radiogroup" aria-label="Mascot icons"></div>
+      <div class="icon-sec-label">Emoji</div>
+      <div class="icon-grid" id="emojiGrid" role="radiogroup" aria-label="Emoji icons"></div>
+    </div>
+    <div class="add-row">
+      <div class="grow">
+        <label class="sr-only" for="cdName">Countdown name</label>
+        <input type="text" id="cdName" maxlength="60" placeholder="What are you counting down to? (e.g. Biology Final)" required>
+      </div>
+      <label class="sr-only" for="cdDate">Target date</label>
+      <input type="date" id="cdDate" required aria-label="Target date">
+      <label class="sr-only" for="cdTime">Target time (optional)</label>
+      <input type="time" id="cdTime" aria-label="Target time (optional)">
+      <button type="submit" class="add-btn" id="addBtn">Add</button>
+      <button type="button" class="cancel-edit-btn" id="cancelEdit">Cancel edit</button>
+    </div>
+    <div class="add-err" id="addErr" role="alert"></div>
+  </form>
+
+  <!-- The board -->
+  <div class="board" id="board" aria-live="off"></div>
+
+  <!-- Empty state -->
+  <div class="empty" id="emptyState" style="display:none;">
+    <!-- MASCOT PLACEHOLDER: permanent art TBD — reusing tomato-cartoon.svg for now -->
+    <img src="/assets/images/tomato-cartoon.svg" alt="Tomato mascot waiting for your first countdown">
+    <p>No countdowns yet — add your first one, or start from a suggestion:</p>
+    <div class="preset-row" id="presetRow"></div>
+  </div>
+
+</div>
+
+<div class="explainer" id="explainer">
+  <h2>How It Works</h2>
+  <p><strong>Days Until</strong> is a countdown board for the dates you're racing toward. Add a countdown with a name, a date and an optional time, pick an icon and a color, and it joins your board — sorted so the nearest deadline is always on top, every card ticking live down to the second. Use it as an <strong>exam countdown</strong> through finals season, a <strong>deadline tracker</strong> for work, a <strong>birthday countdown</strong>, a <strong>vacation countdown</strong>, a <strong>wedding countdown</strong> or a retirement clock — one board for all of it. Everything runs in your browser: no account, no sign-up, and your dates never leave this device.</p>
+
+  <h2>Can I track multiple countdowns at once?</h2>
+  <p>Yes — that's the whole point. Add as many named countdowns as you like and they all live on one board, sorted nearest-first, each ticking live. The board is the answer to "what am I racing toward right now?"</p>
+
+  <h2>Is my data saved? Do I need an account?</h2>
+  <p>No account, ever. Your countdowns are saved in this browser's local storage, so they're still here when you come back — but they live on this device only and nothing is uploaded anywhere.</p>
+
+  <h2>How do I share a countdown with someone?</h2>
+  <p>Every card has a <strong>share</strong> button that copies a link with that countdown's name, date, color and icon baked in. Anyone who opens it sees your live ticking countdown and can save it to their own board or make their own — no sign-up on either side.</p>
+
+  <h2>What does pinning a countdown do?</h2>
+  <p>Pinning marks one countdown as your current focus — the deadline you're actively racing. Your pinned countdown can then show on your TomatoTimers timer pages, so it stays visible while you work.</p>
+
+  <h2>What's the difference between this and a calendar?</h2>
+  <p>A calendar tells you when things are; a countdown tells you what you're racing toward. Watching "12 days, 4 hours" tick down makes a deadline feel real in a way a calendar grid never does — and when it arrives, the card celebrates with you.</p>
+</div>
+
+<section id="other-rhythm" class="tt-cards" aria-label="Timers">
+  <h2 class="tt-cards-title">Timers</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/">
+      <img src="/assets/images/tomato-cartoon.svg" alt="Tomato mascot of the Pomodoro focus timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Pomodoro Timer</h3>
+        <p>The classic 25-minute focus rhythm with short and long breaks — our main timer for deep work and study sessions.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/52-17/">
+      <img src="/assets/images/52-17-card.png" alt="Chick mascot with 52/17 sprint and rest timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>52/17 Timer</h3>
+        <p>Work 52 focused minutes, then take 17 to truly unplug — the deep-work rhythm measured from the most productive people.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/20-20-20-rule/">
+      <img src="/assets/images/1.svg" alt="Tomato chick mascot of the 20-20-20 eye break timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>20-20-20 Rule Timer</h3>
+        <p>Every 20 minutes, look 20 feet away for 20 seconds — a gentle eye-break rhythm that fights digital eye strain.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/flowtime/">
+      <img src="/assets/images/flowtime-card.png" alt="Chick mascot working at a laptop for the flowtime technique timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Flowtime Technique Timer</h3>
+        <p>Work as long as you're in flow while your break charges in real time — earn rest sized to the work you actually did.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/custom-timer/">
+      <img src="/assets/images/custom-timer-card.png" alt="Chick mascot building a custom timer" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Build Your Own Timer</h3>
+        <p>Stack, name and loop your own phases — a custom timer for study, workouts, classrooms or meetings.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-links">
+    <a class="foot-brand" href="https://www.tomatotimers.com/" target="_self">Tomato Timer</a>
+    <span>&bull;</span>
+    <a class="foot-ad" href="https://optimize-tomatotimers.bsa-whitelabel.com/checkout/new" target="_blank" rel="noopener noreferrer">Advertise Here &#127919;</a>
+  </div>
+  <div>
+    Found a bug? <a href="/cdn-cgi/l/email-protection#35545b514c525c5a43545b5b4c535057475c545b415a755258545c591b565a58" style="color: #DE4B3A; text-decoration: none; font-weight: 700;">Email me</a>
+  </div>
+  <div class="foot-note">Free &amp; no sign-up — your countdowns stay in this browser.</div>
+</footer>
+
+<!-- Tomatotimers_S2S_Leftsidebar_ROS -->
+<div class="bsa-left-sidebar-wrapper ads-lg-only">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785230759691-0_123456"></div>
+</div>
+<!-- Tomatotimers_S2S_Rightsidebar_ROS -->
+<div class="bsa-right-sidebar-wrapper ads-lg-only">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785233220314-9_123456"></div>
+</div>
+
+<script>
+(function () {
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+var LS = {
+  get: function (k, d) { try { var v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* ── choices: mascot image icons (assets/images/icons/) + emoji fallback ── */
+var EMOJIS = ['🎯', '📌', '🎂', '💍', '🏖️', '🎓', '🚀', '💼', '🏃', '🎄', '✈️', '🎉'];
+var MASCOTS = ['duck-plain', 'duck-tomato', 'duck-sunglasses', 'cat-maestro',
+  'duck-explorer', 'duck-santa', 'duck-safari', 'duck-sport',
+  'duck-strawhat', 'duck-sprout', 'duck-astronaut', 'duck-crying',
+  'duck-monocle', 'duck-angry', 'duck-school', 'duck-headphones'];
+var DEFAULT_ICON = 'img:duck-plain';
+var COLORS = ['#DE4B3A', '#E0A458', '#7FA653', '#4A90D9', '#9B59B6', '#E8739C'];
+var STORE_KEY = 'tt_countdowns_v1';
+
+/* icon value = emoji char, or "img:<mascot-name>" for a mascot image */
+function isImgIcon(v) { return typeof v === 'string' && v.indexOf('img:') === 0; }
+function validIcon(v) {
+  if (typeof v !== 'string' || !v) return DEFAULT_ICON;
+  if (isImgIcon(v)) return MASCOTS.indexOf(v.slice(4)) >= 0 ? v : DEFAULT_ICON;
+  return v.length <= 8 ? v : DEFAULT_ICON;
+}
+function setIconEl(el, v) {
+  el.innerHTML = '';
+  if (isImgIcon(v)) {
+    var img = document.createElement('img');
+    img.src = '/assets/images/icons/' + v.slice(4) + '.png';
+    img.alt = '';
+    img.setAttribute('aria-hidden', 'true');
+    el.appendChild(img);
+  } else {
+    el.textContent = v;
+  }
+}
+
+/* ── toast (with optional Undo action) ── */
+var toastTimer = null;
+function toast(msg, undoLabel, undoFn) {
+  var t = $('toast');
+  t.innerHTML = '';
+  t.appendChild(document.createTextNode(msg));
+  if (undoFn) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = undoLabel;
+    b.addEventListener('click', function () { undoFn(); hideToast(); });
+    t.appendChild(b);
+  }
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, undoFn ? 4000 : 2600);
+}
+function hideToast() { $('toast').classList.remove('show'); clearTimeout(toastTimer); }
+
+/* ── data layer ── */
+function uid() { return 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function normCd(x) {
+  if (!x || typeof x.name !== 'string' || !x.target) return null;
+  var t = parseTarget(x.target);
+  if (!t) return null;
+  return {
+    id: typeof x.id === 'string' ? x.id : uid(),
+    name: x.name.slice(0, 60),
+    target: x.target,
+    color: COLORS.indexOf(x.color) >= 0 ? x.color : COLORS[0],
+    icon: validIcon(x.icon),
+    pinned: !!x.pinned,
+    created: Number(x.created) || Date.now()
+  };
+}
+var store = LS.get(STORE_KEY, null);
+if (!store || !Array.isArray(store.countdowns)) store = { countdowns: [] };
+store.countdowns = store.countdowns.map(normCd).filter(Boolean);
+function save() { LS.set(STORE_KEY, store); }
+
+/* Store target as "YYYY-MM-DDTHH:MM" local; parse manually to stay in local time.
+   Strict: rejects rollover dates (e.g. Feb 31 must NOT silently become Mar 3). */
+function parseTarget(s) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/.exec(String(s));
+  if (!m) return null;
+  var y = +m[1], mo = +m[2], dy = +m[3];
+  var d = new Date(y, mo - 1, dy, +(m[4] || 0), +(m[5] || 0), 0, 0);
+  if (isNaN(d.getTime())) return null;
+  if (d.getFullYear() !== y || d.getMonth() !== mo - 1 || d.getDate() !== dy) return null;
+  return d;
+}
+function toTargetStr(dateStr, timeStr) {
+  return dateStr + 'T' + (timeStr || '00:00');
+}
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+function sameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+function startOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function humanDate(d) {
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var s = months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  if (d.getHours() || d.getMinutes()) {
+    var h = d.getHours(), ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if (h === 0) h = 12;
+    s += ' · ' + h + ':' + pad2(d.getMinutes()) + ' ' + ap;
+  }
+  return s;
+}
+
+/* Remaining time → display pieces. Returns {state, days, clock}:
+   state: 'future' | 'today' | 'past' */
+function pieces(cd, now) {
+  var t = parseTarget(cd.target);
+  if (!t) return { state: 'past', days: 0 };
+  var diff = t.getTime() - now.getTime();
+  if (diff <= 0) {
+    if (sameDay(t, now)) return { state: 'today' };
+    var pastDays = Math.round((startOfDay(now) - startOfDay(t)) / 86400000);
+    return { state: 'past', days: pastDays };
+  }
+  var totalSec = Math.floor(diff / 1000);
+  var days = Math.floor(totalSec / 86400);
+  var rem = totalSec % 86400;
+  var clock = pad2(Math.floor(rem / 3600)) + ':' + pad2(Math.floor((rem % 3600) / 60)) + ':' + pad2(rem % 60);
+  return { state: 'future', days: days, clock: clock };
+}
+
+/* ── form state ── */
+var editId = null;
+var selIcon = DEFAULT_ICON;
+var selColor = COLORS[0];
+
+/* icon picker panel (open/close + outside-click + Esc) */
+var iconPanelOpen = false;
+function openIconPanel() {
+  iconPanelOpen = true;
+  $('iconPanel').style.display = 'block';
+  $('iconPickBtn').setAttribute('aria-expanded', 'true');
+}
+function closeIconPanel() {
+  iconPanelOpen = false;
+  $('iconPanel').style.display = 'none';
+  $('iconPickBtn').setAttribute('aria-expanded', 'false');
+}
+
+function renderPickers() {
+  var mg = $('mascotGrid');
+  mg.innerHTML = '';
+  MASCOTS.forEach(function (m) {
+    var v = 'img:' + m;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'icon-cell' + (v === selIcon ? ' sel' : '');
+    setIconEl(b, v);
+    b.setAttribute('aria-label', 'Mascot icon ' + m);
+    b.setAttribute('aria-checked', v === selIcon ? 'true' : 'false');
+    b.setAttribute('role', 'radio');
+    b.addEventListener('click', function () { selIcon = v; renderPickers(); closeIconPanel(); });
+    mg.appendChild(b);
+  });
+  var eg = $('emojiGrid');
+  eg.innerHTML = '';
+  EMOJIS.forEach(function (e) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'icon-cell' + (e === selIcon ? ' sel' : '');
+    b.textContent = e;
+    b.setAttribute('aria-label', 'Icon ' + e);
+    b.setAttribute('aria-checked', e === selIcon ? 'true' : 'false');
+    b.setAttribute('role', 'radio');
+    b.addEventListener('click', function () { selIcon = e; renderPickers(); closeIconPanel(); });
+    eg.appendChild(b);
+  });
+  setIconEl($('iconPickBtn'), selIcon);
+  var dr = $('dotRow');
+  dr.innerHTML = '';
+  COLORS.forEach(function (c) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dot' + (c === selColor ? ' sel' : '');
+    b.style.backgroundColor = c;
+    b.setAttribute('aria-label', 'Color ' + c);
+    b.setAttribute('aria-checked', c === selColor ? 'true' : 'false');
+    b.setAttribute('role', 'radio');
+    b.addEventListener('click', function () { selColor = c; renderPickers(); });
+    dr.appendChild(b);
+  });
+}
+
+function resetForm() {
+  editId = null;
+  $('cdName').value = '';
+  $('cdDate').value = '';
+  $('cdTime').value = '';
+  selIcon = DEFAULT_ICON;
+  selColor = COLORS[0];
+  $('addBtn').textContent = 'Add';
+  $('cancelEdit').classList.remove('on');
+  $('addErr').textContent = '';
+  renderPickers();
+  if (iconPanelOpen) closeIconPanel();
+}
+
+function startEdit(id) {
+  var cd = store.countdowns.filter(function (c) { return c.id === id; })[0];
+  if (!cd) return;
+  editId = id;
+  $('cdName').value = cd.name;
+  var t = parseTarget(cd.target);
+  $('cdDate').value = t.getFullYear() + '-' + pad2(t.getMonth() + 1) + '-' + pad2(t.getDate());
+  $('cdTime').value = (t.getHours() || t.getMinutes()) ? pad2(t.getHours()) + ':' + pad2(t.getMinutes()) : '';
+  selIcon = cd.icon;
+  selColor = cd.color;
+  $('addBtn').textContent = 'Save';
+  $('cancelEdit').classList.add('on');
+  $('addErr').textContent = '';
+  renderPickers();
+  $('cdName').focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+$('addForm').addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  var name = $('cdName').value.trim().slice(0, 60);
+  var dateStr = $('cdDate').value;
+  var timeStr = $('cdTime').value;
+  if (!name) { $('addErr').textContent = 'Give your countdown a name.'; return; }
+  if (!dateStr || !parseTarget(toTargetStr(dateStr, timeStr))) { $('addErr').textContent = 'Pick a valid target date.'; return; }
+  if (editId) {
+    var cd = store.countdowns.filter(function (c) { return c.id === editId; })[0];
+    if (cd) {
+      cd.name = name;
+      cd.target = toTargetStr(dateStr, timeStr);
+      cd.icon = selIcon;
+      cd.color = selColor;
+      save();
+      toast('Countdown updated.');
+    }
+  } else {
+    store.countdowns.push({
+      id: uid(), name: name, target: toTargetStr(dateStr, timeStr),
+      color: selColor, icon: selIcon, pinned: false, created: Date.now()
+    });
+    save();
+    toast('Countdown added.');
+  }
+  resetForm();
+  renderBoard();
+});
+
+$('cancelEdit').addEventListener('click', function () { resetForm(); });
+
+/* ── board actions ── */
+function delCd(id) {
+  var idx = -1;
+  store.countdowns.forEach(function (c, i) { if (c.id === id) idx = i; });
+  if (idx < 0) return;
+  var removed = store.countdowns.splice(idx, 1)[0];
+  save();
+  renderBoard();
+  toast('Deleted "' + removed.name + '"', 'Undo', function () {
+    store.countdowns.splice(Math.min(idx, store.countdowns.length), 0, removed);
+    save();
+    renderBoard();
+  });
+}
+function pinCd(id) {
+  var wasPinned = false;
+  store.countdowns.forEach(function (c) {
+    if (c.id === id) wasPinned = c.pinned;
+    c.pinned = false;
+  });
+  if (!wasPinned) {
+    store.countdowns.forEach(function (c) { if (c.id === id) c.pinned = true; });
+    toast('Pinned — it will show on your timer pages.');
+  } else {
+    toast('Unpinned.');
+  }
+  save();
+  renderBoard();
+}
+function shareCd(cd) {
+  var url = 'https://www.tomatotimers.com/days-until/#n=' + encodeURIComponent(cd.name) +
+    '&d=' + encodeURIComponent(cd.target) +
+    '&c=' + encodeURIComponent(cd.color) +
+    '&i=' + encodeURIComponent(cd.icon);
+  function done() { toast('Share link copied.'); }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done, function () { fallbackCopy(url); done(); });
+  } else {
+    fallbackCopy(url); done();
+  }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+/* ── render ── */
+var tickables = []; /* [{cd, daysEl, clockEl, card}] rebuilt on every render */
+
+function makeCard(cd) {
+  var t = parseTarget(cd.target);
+  var card = document.createElement('div');
+  card.className = 'cd-card';
+  card.style.borderLeftColor = cd.color;
+  card.style.setProperty('--cd', cd.color);
+
+  if (cd.pinned) {
+    var flag = document.createElement('span');
+    flag.className = 'pin-flag';
+    flag.textContent = '📌';
+    flag.title = 'Pinned to your timer pages';
+    card.appendChild(flag);
+  }
+
+  var main = document.createElement('div');
+  main.className = 'cd-main';
+  card.appendChild(main);
+
+  var top = document.createElement('div');
+  top.className = 'cd-top';
+  main.appendChild(top);
+
+  var topLeft = document.createElement('div');
+  topLeft.className = 'cd-topleft';
+  top.appendChild(topLeft);
+
+  var name = document.createElement('div');
+  name.className = 'cd-name';
+  name.textContent = cd.name;
+  topLeft.appendChild(name);
+
+  var mid = document.createElement('div');
+  mid.className = 'cd-mid';
+  topLeft.appendChild(mid);
+
+  var days = document.createElement('div');
+  days.className = 'cd-days';
+  mid.appendChild(days);
+
+  var clock = document.createElement('div');
+  clock.className = 'cd-clock';
+  mid.appendChild(clock);
+
+  var emoji = document.createElement('div');
+  emoji.className = 'cd-emoji';
+  setIconEl(emoji, cd.icon);
+  top.appendChild(emoji);
+
+  var foot = document.createElement('div');
+  foot.className = 'cd-foot';
+  main.appendChild(foot);
+
+  var date = document.createElement('div');
+  date.className = 'cd-date';
+  date.textContent = humanDate(t);
+  foot.appendChild(date);
+
+  var actions = document.createElement('div');
+  actions.className = 'cd-actions';
+
+  var pinBtn = document.createElement('button');
+  pinBtn.type = 'button';
+  pinBtn.className = cd.pinned ? 'pinned' : '';
+  pinBtn.textContent = cd.pinned ? '📌 pinned' : '📌 pin';
+  pinBtn.setAttribute('aria-label', (cd.pinned ? 'Unpin ' : 'Pin ') + cd.name);
+  pinBtn.addEventListener('click', function () { pinCd(cd.id); });
+  actions.appendChild(pinBtn);
+
+  var shareBtn = document.createElement('button');
+  shareBtn.type = 'button';
+  shareBtn.textContent = '🔗 share';
+  shareBtn.setAttribute('aria-label', 'Copy share link for ' + cd.name);
+  shareBtn.addEventListener('click', function () { shareCd(cd); });
+  actions.appendChild(shareBtn);
+
+  var editBtn = document.createElement('button');
+  editBtn.type = 'button';
+  editBtn.textContent = 'edit';
+  editBtn.setAttribute('aria-label', 'Edit ' + cd.name);
+  editBtn.addEventListener('click', function () { startEdit(cd.id); });
+  actions.appendChild(editBtn);
+
+  var delBtn = document.createElement('button');
+  delBtn.type = 'button';
+  delBtn.textContent = 'delete';
+  delBtn.setAttribute('aria-label', 'Delete ' + cd.name);
+  delBtn.addEventListener('click', function () { delCd(cd.id); });
+  actions.appendChild(delBtn);
+
+  foot.appendChild(actions);
+  return { el: card, cd: cd, daysEl: days, clockEl: clock };
+}
+
+function paintCard(tk, now) {
+  var p = pieces(tk.cd, now);
+  tk.el.classList.toggle('is-past', p.state === 'past');
+  tk.el.classList.toggle('is-today', p.state === 'today');
+  if (p.state === 'future') {
+    tk.daysEl.innerHTML = '';
+    tk.daysEl.appendChild(document.createTextNode(p.days + ' '));
+    var small = document.createElement('small');
+    small.textContent = p.days === 1 ? 'day' : 'days';
+    tk.daysEl.appendChild(small);
+    tk.clockEl.textContent = p.clock;
+  } else if (p.state === 'today') {
+    tk.daysEl.textContent = "It's today! 🎉";
+    tk.clockEl.textContent = '';
+  } else {
+    tk.daysEl.innerHTML = '';
+    tk.daysEl.appendChild(document.createTextNode(p.days + ' '));
+    var s2 = document.createElement('small');
+    s2.textContent = p.days === 1 ? 'day since' : 'days since';
+    tk.daysEl.appendChild(s2);
+    tk.clockEl.textContent = '';
+  }
+}
+
+function renderBoard() {
+  var board = $('board');
+  board.innerHTML = '';
+  tickables = [];
+  var list = store.countdowns.slice().sort(function (a, b) {
+    return parseTarget(a.target).getTime() - parseTarget(b.target).getTime();
+  });
+  list.forEach(function (cd) {
+    var tk = makeCard(cd);
+    paintCard(tk, new Date());
+    tickables.push(tk);
+    board.appendChild(tk.el);
+  });
+  $('emptyState').style.display = list.length ? 'none' : 'block';
+}
+
+/* ── single global ticker — never start a second interval without clearing ── */
+var tickTimer = null;
+function runTicker() {
+  if (tickTimer) clearInterval(tickTimer);
+  tickTimer = setInterval(function () {
+    var now = new Date();
+    tickables.forEach(function (tk) { paintCard(tk, now); });
+    if (sharedView) paintShared(now);
+  }, 1000);
+}
+
+/* ── share-link view (#n=…&d=…&c=…&i=…) ── */
+var sharedView = null;
+function parseHash() {
+  if (!location.hash || location.hash.length < 2) return null;
+  var out = {};
+  location.hash.slice(1).split('&').forEach(function (pair) {
+    var kv = pair.split('=');
+    if (kv.length === 2) out[kv[0]] = decodeURIComponent(kv[1].replace(/\+/g, ' '));
+  });
+  if (!out.n || !out.d || !parseTarget(out.d)) return null;
+  return {
+    name: String(out.n).slice(0, 60),
+    target: out.d,
+    color: COLORS.indexOf(out.c) >= 0 ? out.c : COLORS[0],
+    icon: out.i ? validIcon(out.i) : DEFAULT_ICON
+  };
+}
+function paintShared(now) {
+  if (!sharedView) return;
+  var p = pieces(sharedView, now);
+  var dEl = $('shDays'), cEl = $('shClock');
+  if (p.state === 'future') {
+    dEl.textContent = p.days + (p.days === 1 ? ' day' : ' days');
+    cEl.textContent = p.clock;
+  } else if (p.state === 'today') {
+    dEl.textContent = "It's today! 🎉";
+    cEl.textContent = '';
+  } else {
+    dEl.textContent = p.days + (p.days === 1 ? ' day since' : ' days since');
+    cEl.textContent = '';
+  }
+}
+function initShareView() {
+  var parsed = parseHash();
+  if (!parsed) return;
+  sharedView = parsed;
+  var hero = $('shareHero');
+  hero.classList.add('on');
+  hero.style.borderTopColor = parsed.color;
+  setIconEl($('shIcon'), parsed.icon);
+  $('shName').textContent = parsed.name;
+  $('shDate').textContent = humanDate(parseTarget(parsed.target));
+  paintShared(new Date());
+}
+$('shSave').addEventListener('click', function () {
+  if (!sharedView) return;
+  store.countdowns.push({
+    id: uid(), name: sharedView.name, target: sharedView.target,
+    color: sharedView.color, icon: sharedView.icon, pinned: false, created: Date.now()
+  });
+  save();
+  history.replaceState(null, '', location.pathname);
+  sharedView = null;
+  $('shareHero').classList.remove('on');
+  renderBoard();
+  toast('Saved to your board.');
+});
+$('shOwn').addEventListener('click', function () {
+  history.replaceState(null, '', location.pathname);
+  sharedView = null;
+  $('shareHero').classList.remove('on');
+  $('cdName').focus();
+});
+
+/* ── empty-state presets (computed so they never go stale) ── */
+function addPreset(name, dateObj, icon, color) {
+  store.countdowns.push({
+    id: uid(), name: name,
+    target: dateObj.getFullYear() + '-' + pad2(dateObj.getMonth() + 1) + '-' + pad2(dateObj.getDate()) + 'T00:00',
+    color: color, icon: icon, pinned: false, created: Date.now()
+  });
+  save();
+  renderBoard();
+}
+function initPresets() {
+  var row = $('presetRow');
+  row.innerHTML = '';
+  var now = new Date();
+  var xmas = new Date(now.getFullYear(), 11, 25);
+  if (startOfDay(xmas) <= startOfDay(now)) xmas = new Date(now.getFullYear() + 1, 11, 25);
+  var ny = new Date(now.getFullYear() + 1, 0, 1);
+  var month = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 30);
+  [
+    { n: 'Christmas', d: xmas, i: 'img:duck-santa', c: '#7FA653' },
+    { n: "New Year's Day", d: ny, i: 'img:duck-sprout', c: '#DE4B3A' },
+    { n: 'One month from today', d: month, i: 'img:duck-sport', c: '#4A90D9' }
+  ].forEach(function (p) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'preset-pill';
+    var ic = document.createElement('span');
+    ic.className = 'pill-icon';
+    setIconEl(ic, p.i);
+    b.appendChild(ic);
+    b.appendChild(document.createTextNode(' ' + p.n));
+    b.addEventListener('click', function () { addPreset(p.n, p.d, p.i, p.c); });
+    row.appendChild(b);
+  });
+}
+
+/* ── icon panel toggle ── */
+$('iconPickBtn').addEventListener('click', function (ev) {
+  ev.stopPropagation();
+  if (iconPanelOpen) closeIconPanel(); else openIconPanel();
+});
+$('iconPanel').addEventListener('click', function (ev) { ev.stopPropagation(); });
+document.addEventListener('click', function () { if (iconPanelOpen) closeIconPanel(); });
+document.addEventListener('keydown', function (ev) {
+  if (ev.key === 'Escape' && iconPanelOpen) closeIconPanel();
+});
+
+/* ── boot ── */
+renderPickers();
+initPresets();
+initShareView();
+renderBoard();
+runTicker();
+})();
+</script>
+
+<!-- BuySellAds loader — same as every page -->
+<script>
+(function () {
+  var bsa_optimize = document.createElement('script');
+  bsa_optimize.type = 'text/javascript';
+  bsa_optimize.async = true;
+  bsa_optimize.src = 'https://cdn4.buysellads.net/pub/tomatotimers.js?' + (new Date() - new Date() % 600000);
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+})();
+</script>
+
+<style>
+    /* Sidebar ad wrappers — pinned to the screen edges at ≥992px,
+       same as the other timer pages */
+    .ads-lg-only { display: none; }
+    @media (min-width: 992px) { .ads-lg-only { display: block; } }
+    .bsa-left-sidebar-wrapper {
+        position: absolute; left: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
+    .bsa-right-sidebar-wrapper {
+        position: absolute; right: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
+</style>
+</body>
+</html>
