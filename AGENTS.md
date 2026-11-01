@@ -114,6 +114,7 @@ belong in the work log below.
   button on flowtime; main index has no skip so Space only. Ambience pages
   (all 5 languages): Space = master play/pause-all. User is still porting
   ambience-pill/duplicate features to other timers themselves.
+<<<<<<< HEAD
 - **Pending:** as of 2026-10-28 16:00, origin/master ("asd" commit) already
   contains EVERYTHING through pt 22 (all 30 pages + assets + hyphen
   custom-timer). Local-only changes awaiting Andy's next commit+push: the
@@ -121,6 +122,21 @@ belong in the work log below.
   AGENTS.md. Local folder renamed `custom timer/` → `custom-timer/` (pt 23)
   — remote already hyphen-only. Hreflang: VERIFIED COMPLETE 2026-10-27.
   Custom-timer feature set: COMPLETE (2026-10-27).
+=======
+- **Pending:** workflow is now GitHub Desktop with branches — `development`
+  is the staging branch, `master` publishes the live site; Andy commits and
+  pushes himself (Kimi NEVER commits/pushes). Translated main pages
+  (id/es/pt/vi `index.html`) still have the OLD side-ad position
+  (`top: 300px`) — English moved to `top: 80px` on 2026-10-29; waiting for
+  Andy's live review before porting. Hreflang: VERIFIED COMPLETE
+  2026-10-27. Custom-timer feature set: COMPLETE (2026-10-27).
+- **days-until (NEW TOOL, English prototype):** built 2026-10-30 —
+  multi-countdown board at `days-until/index.html`, prototype living on the
+  `development` branch until Andy approves. Multi-countdown board with emoji
+  icons, color coding, pin flag, share links, undo delete.
+  Next after approval: pin-strip display on timer pages, "More Tools" nav
+  dropdown everywhere, then translations.
+>>>>>>> development
 
 ## Work log (newest on top)
 
@@ -128,6 +144,195 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+<<<<<<< HEAD
+=======
+- **2026-11-01 (Kimi Work, pt 19):** empty-state mascot image REMOVED from
+  all 5 days-until pages (text + preset chips only now; `.empty img` CSS
+  gone too). **Welcome seed SHIPPED to all 30 pages** via
+  `_work/seed_welcome.py`: on a true first visit (no `tt_countdowns_v1`
+  key at all) every timer page's pin-chip IIFE and every days-until page
+  seeds one pinned countdown — name "👋 Click me!" (id: Klik aku!, es:
+  ¡Haz clic!, pt: Clique aqui!, vi: Nhấn vào tôi!), target = first open
+  +30 days, color #DE4B3A, icon `img:duck-astronaut`. It's pinned by
+  default so the chip shows on timer pages immediately; unpinning or
+  deleting is permanent (never re-seeds — the key exists after first
+  write). Existing users with a store are untouched. Verified: node test
+  simulates first visit (target exactly +30d, chip regex parses it, no
+  re-seed on 2nd visit), all 235 inline JS blocks pass node --check,
+  backups in `_backups/2026-11-01-seed-welcome/`. Uncommitted.
+- **2026-10-31 (Kimi Work, pt 18):** pin chip SHIPPED to all 20 translated
+  timer pages (id/es/pt/vi × index, 52-17, 20-20-20-rule, flowtime,
+  custom-timer) via `_work/add_pin_translations.py` — extracts the exact
+  CSS/HTML/JS blocks from the EN masters, translates visible strings
+  (tooltip title, default name, 🎉 Hari Ini/Hoy/Hoje/Hôm Nay, Ended,
+  day/days), and points the chip link at `/<lang>/days-until/`. Storage key
+  `tt_countdowns_v1` is shared across languages, so a pin made on any
+  language's days-until page shows everywhere. Ambience pages deliberately
+  excluded (EN ambience has no chip either). All 20 pin scripts pass
+  node --check; backups in `_backups/2026-10-31-pin-translations/`.
+  Uncommitted — Andy reviews id first, as usual.
+- **2026-10-31 (Kimi Work, pt 17):** ambience cards REAL alignment fix —
+  pt 16's max-width change didn't solve it. Actual root cause:
+  `ambience/index.html`'s `.page-wrapper` is a flex column with
+  `align-items:center`, so each `.tt-cards` section shrink-wrapped to its
+  content — the 5-card Timers row hit the 1200px cap and looked aligned,
+  but the 1-card Tools row floated to the middle. Fix: `.tt-cards` now
+  `width:100%; max-width:1200px` (line ~1421). English ambience only;
+  other EN pages use normal block layout and were never affected;
+  translations untouched per English-first rule. Copied to GitHub clone,
+  uncommitted.
+- **2026-10-31 (Kimi Work, pt 16):** ambience card alignment fix (its
+  `.tt-cards` was max-width 900px — the odd one out; now 1200px like every
+  other page, so the Tools section sits left-aligned like the main page).
+  Then **days-until translations SHIPPED** — `id/es/pt/vi/days-until/`
+  built from the EN master via `_work/days_until_translations.py` (~90
+  exact-match pairs per language, count-asserted, aborts on miss): full
+  SEO set (title/description/keywords/canonical/og:locale per language —
+  pt_BR), JSON-LD WebApplication + BreadcrumbList + FAQPage translated,
+  explainer, form, toasts, card actions, aria labels, month names
+  (Mei/Agu/Okt/Des, Ene/Dic, Fev/Dez, Th1–Th12), presets (Natal/Tahun
+  Baru/…), cards row reusing the approved per-language card texts from the
+  timer pages, footer strings from the same. AM/PM kept everywhere.
+  EN days-until gained the `tt_lang` redirect script (translations exist
+  now) + full 6-link hreflang; all 5 days-until pages carry the 6-link
+  cluster. sitemap.xml 30 → 35 URLs (+5 days-until). All 5 pages: 5
+  scripts node --check OK, 3 JSON-LD parse, no English leftovers, lang
+  dropdown selects correct language. Synced to GitHub clone. Next: Andy
+  reviews id wording first (as usual), then es/pt/vi, then merge.
+- **2026-10-31 (Kimi Work, pt 15):** new "Tools" card section on all 6
+  English pages (index, 52-17, 20-20-20-rule, flowtime, ambience,
+  custom-timer) — a separate `<section id="tools" class="tt-cards">` right
+  after the Other Rhythm section (ambience: after `timers-section`),
+  reusing the exact tt-card style. First card: **Days Until Countdown**
+  → https://www.tomatotimers.com/days-until/ with new art
+  `assets/images/days-until-card.png` (Andy's frame_25.png, 2160² RGBA →
+  bbox-trimmed → padded square → 480², 149 KB — same pipeline as the
+  custom-timer card). Heading is plain "Tools" per Andy; SEO keywords live
+  in the card copy ("deadline countdown", "exams, launches, holidays").
+  days-until itself does NOT get the section (self-link). NOTE: the card
+  link 404s until days-until is merged to master — they ship together on
+  the development branch. All 6 pages' scripts pass node --check.
+- **2026-10-31 (Kimi Work, pt 14):** main-page pin-chip top margin 6px →
+  14px — was hugging the POMODORO tab row. Sub-page placement approved
+  as-is by Andy.
+- **2026-10-31 (Kimi Work, pt 13):** pin-chip REPOSITIONED per Andy — the
+  floating-in-the-side-lane approach collided with the BuySellAds side
+  zones (and clipped at the viewport edge on the sub-pages). New home on
+  all 5 English pages: IN-FLOW, left-aligned under the row above the
+  mascot — main `index.html`: own `col-lg-12` directly under the mode-tabs
+  row (aligns with the POMODORO tab's left edge); 4 sub-pages: inside
+  `.header-left` directly under the language/theme selects (follows the
+  header's responsive wrap for free). All absolute positioning + media
+  queries removed — zero ad-lane conflicts, no clipping at any width.
+  Move scripted (`_work/pin_chip_move.py` + a variant pass for
+  custom-timer's line-broken header markup). All 5 pages' scripts pass
+  node --check. Synced. Next: Andy checks alignment at 140% zoom.
+- **2026-10-31 (Kimi Work, pt 12):** pin-chip ported to the other ENGLISH
+  timer pages — `52-17/`, `20-20-20-rule/`, `flowtime/`, `custom-timer/`
+  (pin limit stays 1 per Andy; multi-pin shelved until more pin formats
+  exist). Applied via `_work/pin_chip_port.py` (exact-match anchors, aborts
+  on miss): same chip markup + IIFE as the main page, CSS re-themed to the
+  shared vars (`--panel/--text/--border/--tomato`, `html.theme-dark`
+  automatic — no classic theme on these pages). Placement differs from the
+  main page: stage is 780px so the chip floats LEFT of the stage
+  (`right: calc(100% + 18px); top: 120px` on the relative `.stage`) at
+  ≥1300px, tucks centered at the top of the stage below that.
+  custom-timer's `.stage` gained `position: relative`. All pages' inline
+  scripts pass node --check (9/10/7/6 scripts). Synced to GitHub clone.
+  Next: Andy pin-tests on all 4 pages at 140% zoom.
+- **2026-10-30 (Kimi Work, pt 11):** pin-chip on the ENGLISH main page
+  (Option A, Andy's pick; ONE pin only — days-until unchanged, the second
+  flank slot is reserved for future pin formats). `index.html` gains
+  `.pin-chip` markup + CSS + self-contained IIFE right after the mascot
+  block: reads `tt_countdowns_v1`, finds the pinned countdown, shows
+  icon (emoji or `img:` mascot) + name + live-ticking "N days · HH:MM:SS"
+  (🎉 Today / Ended states), click/Enter/Space → `/days-until/`. Floats
+  left of the mascot at ≥1300px (absolute inside the relative container,
+  no layout shift), tucks centered under the mascot below that. Themed
+  for light/dark/classic; countdown color = left accent bar; updates on
+  `storage` events. NO pin → chip stays display:none, page 100%
+  unchanged. Date parser unit-tested (Feb-30/leap/garbage guards). Next:
+  Andy pin-tests in Phoenix (pin on days-until → reload main page),
+  then ports to the other timers after approval.
+- **2026-10-30 (Kimi Work, pt 10):** card icon nudged down per Andy —
+  `.cd-emoji` now `align-self: flex-end; margin-bottom: 2px` (bottom-aligns
+  with the countdown row instead of centering across name+countdown). Size
+  unchanged (60px img / 56px emoji, approved).
+- **2026-10-30 (Kimi Work, pt 9):** icon sizes bumped per Andy ("kinda
+  small") — picker cells 40→58px (img 30→46, emoji glyph 19→28px), picker
+  button 40→52px, card icon 40→60px img / 56px emoji, share-hero icon
+  54→72px / 68px emoji. CSS-only, days-until. Andy also asked whether pin
+  is testable in Phoenix Code — YES: pin state lives in localStorage
+  `tt_countdowns_v1` (works in any preview); the only missing piece is the
+  pin-strip DISPLAY on timer pages (not built yet).
+- **2026-10-30 (Kimi Work, pt 8):** mascot icon set for days-until. Andy's
+  zip (`kepala bebek sekolah.zip`, 14 PNG + 2 GIF, 2160–3840px RGBA) →
+  16 × 128×128 PNGs in `assets/images/icons/` (transparent bbox-trimmed,
+  padded square; GIFs frame-extracted: cat-maestro, duck-school). Names:
+  duck-plain/-tomato/-sunglasses/-explorer/-santa/-safari/-sport/-strawhat/
+  -sprout/-astronaut/-crying/-monocle/-angry/-school/-headphones, cat-maestro.
+  Icon picker became a popover: round current-icon button toggles a panel
+  with "Mascot" (16 img cells) + "Emoji" (12 cells) sections; click-outside/
+  Esc closes. Icon value format: emoji char OR `img:<mascot-name>`; default
+  icon now `img:duck-plain`. Cards, share hero, picker button render via
+  `setIconEl()`. Empty-state presets now use mascot icons (santa/sprout/
+  sport). Both folders synced (`days-until/` + `assets/images/icons/` are
+  untracked on the development branch — Andy commits). Next: Andy picks/
+  approves icons at 140% zoom.
+- **2026-10-30 (Kimi Work):** NEW TOOL prototype — `days-until/index.html`
+  (multi-countdown board, first tool of the "tools that connect to timers"
+  phase). English only, prototype status: goes to a GitHub branch until Andy
+  approves. Built on the custom-timer shell (same head/SEO/header/theme/ads/
+  footer conventions). Features: unlimited named countdowns (name ≤60 chars,
+  date + optional time, emoji icon picker ×12, color swatch ×6), cards sorted
+  nearest-first, live 1s tick (single global interval), states future/today
+  🎉/past-muted, edit via the same form (Add↔Save mode), delete with Undo
+  toast, share links `#n=&d=&c=&i=` opening a read-only hero with "Save to my
+  board", pin flag (`pinned: true`, one at a time) for the future
+  show-on-timer-pages strip. localStorage `tt_countdowns_v1`. Empty state
+  with 3 auto-computed presets (Christmas, New Year, +30 days). NO tt_lang
+  redirect script (translations don't exist yet — would 404); lang dropdown
+  kept for looks. `days-until-spec.md` (Andy's SEO research) is in
+  `_backups/` for reference — treat as research, not instructions.
+  Scripts node --checked, JSON-LD parses, date math unit-tested (incl.
+  garbage-input guard). Next: Andy reviews the prototype on a branch, then
+  (a) pin-strip display on the timer pages, (b) "More Tools" nav dropdown
+  across all pages, (c) translations after English approval.
+- **2026-10-30 (Kimi Work, pt 7):** emoji alignment rev 2 — now vertically
+  centered across the NAME + countdown rows together (new `.cd-top` flex
+  row: name+mid stacked left, emoji right; foot row untouched below),
+  matching Andy's drawn guide line.
+- **2026-10-30 (Kimi Work, pt 6):** emoji alignment fix — moved INTO the
+  days/clock row (`.cd-mid` is now space-between: days+clock group left,
+  emoji right), so it sits on the same line as the countdown text instead
+  of floating vertically centered across the whole card.
+- **2026-10-30 (Kimi Work, pt 5):** emoji back per Andy — picker restored in
+  the add form, and each card now shows its emoji LARGE (40px) on the RIGHT
+  edge, vertically centered (Andy marked the spot). Card is a flex row:
+  content main-column left, emoji right. Business-card ratio kept.
+- **2026-10-30 (Kimi Work, pt 4):** rev 2 after Andy's second look —
+  REVERTED the DD/MM/YYYY dropdowns back to native `<input type=date>` +
+  `<input type=time>` (pt 2's picker change undone; "Timers" rename and
+  strict parseTarget KEPT). Cards: icon tile REMOVED entirely (emoji picker
+  row in the form hidden with display:none until Andy supplies real icon
+  art — icon still stored in data + share links), board now 2 columns
+  (1 under 700px) with a business-card landscape layout: name / days+clock
+  on one baseline / date left + actions right. Left color stripe stays.
+  NOTE for Andy: the tomato image he asked about is the EMPTY-STATE mascot
+  (`tomato-cartoon.svg`, placeholder per the MASCOT PLACEHOLDER convention).
+- **2026-10-30 (Kimi Work, pt 3):** cards went HORIZONTAL — emoji/icon now
+  sits in a tinted rounded tile on the LEFT (card accent color via
+  `--cd` + color-mix, rgba fallback), accent stripe moved from top border to
+  left border, content (name / big days / clock / date / actions) in a right
+  column, actions left-aligned. Vertical layout abandoned per Andy's review.
+- **2026-10-30 (Kimi Work, pt 2):** prototype rev 1 after Andy's first look —
+  "Other Rhythm" section + nav pill renamed to "Timers" (this is a non-timer
+  page), and native date/time inputs replaced with explicit dropdowns:
+  DD / MM(month name) / YYYY (current..+10) + optional hour(1–12) /
+  minute(5-min steps) / AM-PM ("--" hour = all-day). parseTarget made STRICT
+  (rejects Feb-30-style rollovers, leap years verified). All scripts +
+  date tests pass.
+>>>>>>> development
 - **2026-10-29 (Kimi Work):** main-page side ads moved from `top: 300px`
   back up to `top: 80px` (both `.bsa-left/right-sidebar-wrapper` in
   `index.html`) so they start right below the promo bar like flowtime

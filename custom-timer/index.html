@@ -215,7 +215,26 @@
   html.theme-classic .lang-globe { color: #c65e5e; }
 
   /* ── main stage ── */
-  .stage { max-width: 780px; margin: 0 auto; padding: 12px 20px 24px; text-align: center; }
+  .stage { max-width: 780px; margin: 0 auto; padding: 12px 20px 24px; text-align: center; position: relative; }
+  /* ── pinned countdown chip (days-until) — sits in .header-left under the
+     language/theme selects. Hidden
+     unless a pin exists in localStorage 'tt_countdowns_v1'. ── */
+  .pin-chip { display: flex; align-items: center; gap: 10px; width: max-content;
+    max-width: 215px; background: var(--panel); border: 1px solid var(--border);
+    border-left: 5px solid var(--tomato); border-radius: 14px; padding: 8px 12px 8px 10px;
+    cursor: pointer; box-shadow: 0 3px 10px rgba(88, 36, 14, .08); text-align: left; }
+  .pin-chip:hover { border-color: var(--accent); }
+  .pin-chip .pc-icon { flex: 0 0 auto; width: 40px; height: 40px; display: flex;
+    align-items: center; justify-content: center; font-size: 30px; line-height: 1; }
+  .pin-chip .pc-icon img { width: 40px; height: 40px; object-fit: contain; display: block; }
+  .pin-chip .pc-body { min-width: 0; }
+  .pin-chip .pc-name { display: block; font-size: 13px; font-weight: 700; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pin-chip .pc-time { display: block; font-size: 14px; font-weight: 700; color: var(--text);
+    font-variant-numeric: tabular-nums; white-space: nowrap; margin-top: 1px; }
+  .pin-chip .pc-time .pc-days { color: var(--tomato); }
+  html.theme-dark .pin-chip { box-shadow: 0 3px 10px rgba(0,0,0,.3); }
+
   .mascot-wrap { min-height: 380px; display: flex; align-items: center; justify-content: center; }
   .mascot-vid { width: 360px; height: 360px; object-fit: contain; }
   .mascot-dark { display: none; }
@@ -512,6 +531,114 @@
       <option value="dark">Dark Theme</option>
     </select>
     </div>
+  <!-- Pinned countdown chip (days-until) — populated by the script below;
+       stays display:none when nothing is pinned -->
+  <div class="pin-chip" id="pinChip" style="display:none" role="link" tabindex="0"
+       title="Pinned countdown — open Days Until">
+    <span class="pc-icon" id="pcIcon"></span>
+    <span class="pc-body">
+      <span class="pc-name" id="pcName"></span>
+      <span class="pc-time" id="pcTime"></span>
+    </span>
+  </div>
+  <script>
+  (function () {
+    var KEY = 'tt_countdowns_v1';
+    var chip = document.getElementById('pinChip');
+    if (!chip) return;
+    var pinned = null, timer = null;
+    /* First visit ever: seed a pinned welcome countdown (+30 days) so new
+       users discover the pin feature. Once removed it never comes back. */
+    if (localStorage.getItem(KEY) == null) {
+      try {
+        var st = new Date(Date.now() + 30 * 86400000);
+        localStorage.setItem(KEY, JSON.stringify({ countdowns: [{ id: 'seed_welcome',
+          name: '👋 Click me!',
+          target: st.getFullYear() + '-' + pad(st.getMonth() + 1) + '-' + pad(st.getDate()) +
+                  'T' + pad(st.getHours()) + ':' + pad(st.getMinutes()),
+          color: '#DE4B3A', icon: 'img:duck-astronaut', pinned: true, created: Date.now() }] }));
+      } catch (e) {}
+    }
+
+    function parseTarget(s) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(s);
+      if (!m) return null;
+      var d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], 0, 0);
+      if (d.getFullYear() !== +m[1] || d.getMonth() !== +m[2] - 1 || d.getDate() !== +m[3]) return null;
+      return d;
+    }
+    function readPin() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) return null;
+        var list = (JSON.parse(raw) || {}).countdowns || [];
+        for (var i = 0; i < list.length; i++) {
+          var c = list[i];
+          if (c && c.pinned && typeof c.target === 'string') {
+            var t = parseTarget(c.target);
+            if (t) return { name: String(c.name || 'Countdown'), target: t,
+                            color: c.color, icon: c.icon };
+          }
+        }
+      } catch (e) {}
+      return null;
+    }
+    function setIcon(el, v) {
+      el.innerHTML = '';
+      if (typeof v === 'string' && v.indexOf('img:') === 0) {
+        var img = document.createElement('img');
+        img.src = '/assets/images/icons/' + v.slice(4) + '.png';
+        img.alt = '';
+        el.appendChild(img);
+      } else if (v) { el.textContent = v; }
+    }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function render() {
+      if (!pinned) return;
+      var now = new Date();
+      var startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var isToday = pinned.target >= startToday &&
+                    pinned.target < startToday.getTime() + 86400000;
+      var timeEl = document.getElementById('pcTime');
+      var diff = pinned.target - now;
+      if (diff <= 0) { timeEl.textContent = isToday ? '🎉 Today' : 'Ended'; return; }
+      var sec = Math.floor(diff / 1000);
+      var days = Math.floor(sec / 86400);
+      var clock = pad(Math.floor(sec % 86400 / 3600)) + ':' +
+                  pad(Math.floor(sec % 3600 / 60)) + ':' + pad(sec % 60);
+      timeEl.innerHTML = '';
+      if (isToday) {
+        timeEl.appendChild(document.createTextNode('🎉 Today · ' + clock));
+      } else {
+        var dEl = document.createElement('span');
+        dEl.className = 'pc-days';
+        dEl.textContent = days + (days === 1 ? ' day' : ' days');
+        timeEl.appendChild(dEl);
+        timeEl.appendChild(document.createTextNode(' · ' + clock));
+      }
+    }
+    function show() {
+      pinned = readPin();
+      if (!pinned) { chip.style.display = 'none'; return; }
+      document.getElementById('pcName').textContent = pinned.name;
+      setIcon(document.getElementById('pcIcon'), pinned.icon);
+      if (pinned.color) chip.style.borderLeftColor = pinned.color;
+      chip.style.display = 'flex';
+      render();
+      if (timer) clearInterval(timer);
+      timer = setInterval(render, 1000);
+    }
+    chip.addEventListener('click', function () { window.location.href = '/days-until/'; });
+    chip.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        window.location.href = '/days-until/';
+      }
+    });
+    window.addEventListener('storage', function (ev) { if (ev.key === KEY) show(); });
+    show();
+  })();
+  </script>
   </div>
   <div class="header-nav">
     <div class="button-row">
@@ -718,6 +845,19 @@
     </a>
   </div>
 </section>
+<section id="tools" class="tt-cards" aria-label="Tools">
+  <h2 class="tt-cards-title">Tools</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/days-until/">
+      <img src="/assets/images/days-until-card.png" alt="Chick mascot of the Days Until deadline countdown tool" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Days Until Countdown</h3>
+        <p>Live countdown to the deadlines that matter — exams, launches, holidays — with icons, colors and a pin that rides along on your timer pages.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
 
 <footer class="site-footer">
   <div class="foot-links">
