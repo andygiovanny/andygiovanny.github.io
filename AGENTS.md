@@ -114,15 +114,6 @@ belong in the work log below.
   button on flowtime; main index has no skip so Space only. Ambience pages
   (all 5 languages): Space = master play/pause-all. User is still porting
   ambience-pill/duplicate features to other timers themselves.
-<<<<<<< HEAD
-- **Pending:** as of 2026-10-28 16:00, origin/master ("asd" commit) already
-  contains EVERYTHING through pt 22 (all 30 pages + assets + hyphen
-  custom-timer). Local-only changes awaiting Andy's next commit+push: the
-  custom-timer ad-positioning fix (pt 24, 5 custom-timer files) and this
-  AGENTS.md. Local folder renamed `custom timer/` → `custom-timer/` (pt 23)
-  — remote already hyphen-only. Hreflang: VERIFIED COMPLETE 2026-10-27.
-  Custom-timer feature set: COMPLETE (2026-10-27).
-=======
 - **Pending:** workflow is now GitHub Desktop with branches — `development`
   is the staging branch, `master` publishes the live site; Andy commits and
   pushes himself (Kimi NEVER commits/pushes). Translated main pages
@@ -136,7 +127,6 @@ belong in the work log below.
   icons, color coding, pin flag, share links, undo delete.
   Next after approval: pin-strip display on timer pages, "More Tools" nav
   dropdown everywhere, then translations.
->>>>>>> development
 
 ## Work log (newest on top)
 
@@ -144,8 +134,18 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
-<<<<<<< HEAD
-=======
+- **2026-11-01 (Kimi Work, pt 20):** HOTFIX — live pin chip rendered
+  "transparent" (text only, no card). Cause: the development→master merge
+  committed UNRESOLVED conflict markers (`<<<<<<< HEAD` / `=======` /
+  `>>>>>>> development`) into `index.html` (wrapping the entire pin-chip
+  CSS block, so the browser dropped those rules) and `AGENTS.md` (2
+  regions). origin/development is clean — markers existed on master only.
+  Resolved by hand: kept the development side everywhere, deleted all 9
+  marker lines across the 2 files, full-repo scan confirms zero markers
+  left. LESSON: after any merge, grep for `^<<<<<<<` before committing —
+  GitHub Desktop/web can leave markers in a file that still gets committed.
+  Andy to commit `index.html` + `AGENTS.md` directly on master and push
+  (one-time hotfix exception to the development-first flow).
 - **2026-11-01 (Kimi Work, pt 19):** empty-state mascot image REMOVED from
   all 5 days-until pages (text + preset chips only now; `.empty img` CSS
   gone too). **Welcome seed SHIPPED to all 30 pages** via
@@ -332,7 +332,6 @@ what changed (file names), what's next.
   minute(5-min steps) / AM-PM ("--" hour = all-day). parseTarget made STRICT
   (rejects Feb-30-style rollovers, leap years verified). All scripts +
   date tests pass.
->>>>>>> development
 - **2026-10-29 (Kimi Work):** main-page side ads moved from `top: 300px`
   back up to `top: 80px` (both `.bsa-left/right-sidebar-wrapper` in
   `index.html`) so they start right below the promo bar like flowtime
