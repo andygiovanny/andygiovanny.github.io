@@ -403,12 +403,7 @@
     .pin-chip .pc-time { display: block; font-size: 14px; font-weight: 700; color: #58240E;
         font-variant-numeric: tabular-nums; white-space: nowrap; margin-top: 1px; }
     .pin-chip .pc-time .pc-days { color: #DE4B3A; }
-    @media (min-width: 1300px) {
-        .pin-chip { position: absolute; left: 4px; top: 96px; z-index: 5; margin: 0; }
-    }
-    @media (max-width: 1299.98px) {
-        .pin-chip { margin: -6px auto 8px; }
-    }
+    .pin-chip { margin: 14px 0 2px; }
     body.theme-dark .pin-chip { background: #2a2018; border-color: #3a2d20;
         box-shadow: 0 3px 10px rgba(0,0,0,.3); }
     body.theme-dark .pin-chip:hover { border-color: #E0A458; }
@@ -1313,46 +1308,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     <button type="button" class="btn button-style-1 rounded-pill" onclick="onLoopTimer()" id="loop_timer_button">Loop</button>
 </div>
 
-          
-          <!-- Tomatotimers_S2S_Leftsidebar_ROS -->
-
-<div class="bsa-left-sidebar-wrapper bsa-side-ad">
-    <style>
-        @media only screen and (min-width: 0px) and (min-height: 0px) {
-            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
-        }
-        @media only screen and (min-width: 990px) and (min-height: 0px) {
-            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
-        }
-        @media only screen and (min-width: 1600px) and (min-height: 0px) {
-            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
-        }
-    </style>
-    <div id="bsa-zone_1785230759691-0_123456"></div>
-</div>
-          
-          
-
-          
-          
-<div class="container mt-1" style="position: relative;">
-    <div class="tm-zero-overlay d-none" id="tm_zero_overlay" role="alertdialog" aria-live="assertive">
-        <div class="tm-zero-box">
-            <div class="tm-zero-text" id="tm_zero_text"></div>
-            <div class="tm-zero-row">
-                <input type="text" id="tm_zero_input" class="tm-input" placeholder="e.g. 25m" aria-label="Add more time">
-                <button type="button" class="tm-zero-btn tm-zero-add" id="tm_zero_add">Add time &amp; resume</button>
-                <button type="button" class="tm-zero-btn tm-zero-done" id="tm_zero_done">Mark done</button>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-7 text-center d-flex flex-column align-items-center justify-content-start pt-1">
-            
-            <div style="min-height: 250px;" class="w-100 d-flex align-items-center justify-content-center">
-                <img src="assets/images/tomato-cartoon.svg" class="tomato-cartoon" id="tomato-cartoon" style="max-height: 300px; width: auto; margin: 0 auto;">
-            </div>
-
+<div class="col-lg-12" style="text-align:left">
             <!-- Pinned countdown chip (days-until) — populated by the script below;
                  stays display:none when nothing is pinned -->
             <div class="pin-chip" id="pinChip" style="display:none" role="link" tabindex="0"
@@ -1369,6 +1325,18 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     var chip = document.getElementById('pinChip');
     if (!chip) return;
     var pinned = null, timer = null;
+    /* First visit ever: seed a pinned welcome countdown (+30 days) so new
+       users discover the pin feature. Once removed it never comes back. */
+    if (localStorage.getItem(KEY) == null) {
+      try {
+        var st = new Date(Date.now() + 30 * 86400000);
+        localStorage.setItem(KEY, JSON.stringify({ countdowns: [{ id: 'seed_welcome',
+          name: '👋 Click me!',
+          target: st.getFullYear() + '-' + pad(st.getMonth() + 1) + '-' + pad(st.getDate()) +
+                  'T' + pad(st.getHours()) + ':' + pad(st.getMinutes()),
+          color: '#DE4B3A', icon: 'img:duck-astronaut', pinned: true, created: Date.now() }] }));
+      } catch (e) {}
+    }
 
     function parseTarget(s) {
         var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(s);
@@ -1449,6 +1417,48 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     show();
 })();
 </script>
+</div>
+
+          
+          <!-- Tomatotimers_S2S_Leftsidebar_ROS -->
+
+<div class="bsa-left-sidebar-wrapper bsa-side-ad">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+        @media only screen and (min-width: 1600px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785230759691-0_123456"></div>
+</div>
+          
+          
+
+          
+          
+<div class="container mt-1" style="position: relative;">
+    <div class="tm-zero-overlay d-none" id="tm_zero_overlay" role="alertdialog" aria-live="assertive">
+        <div class="tm-zero-box">
+            <div class="tm-zero-text" id="tm_zero_text"></div>
+            <div class="tm-zero-row">
+                <input type="text" id="tm_zero_input" class="tm-input" placeholder="e.g. 25m" aria-label="Add more time">
+                <button type="button" class="tm-zero-btn tm-zero-add" id="tm_zero_add">Add time &amp; resume</button>
+                <button type="button" class="tm-zero-btn tm-zero-done" id="tm_zero_done">Mark done</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-7 text-center d-flex flex-column align-items-center justify-content-start pt-1">
+            
+            <div style="min-height: 250px;" class="w-100 d-flex align-items-center justify-content-center">
+                <img src="assets/images/tomato-cartoon.svg" class="tomato-cartoon" id="tomato-cartoon" style="max-height: 300px; width: auto; margin: 0 auto;">
+            </div>
+
             
             <div class="w-100 p-1">
                 <div class="timer-time timer-container">
@@ -2143,6 +2153,19 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     </a>
   </div>
 </section>
+<section id="tools" class="tt-cards" aria-label="Tools">
+  <h2 class="tt-cards-title">Tools</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/days-until/">
+      <img src="/assets/images/days-until-card.png" alt="Chick mascot of the Days Until deadline countdown tool" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Days Until Countdown</h3>
+        <p>Live countdown to the deadlines that matter — exams, launches, holidays — with icons, colors and a pin that rides along on your timer pages.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
 
 <div class="container-fluid footer-background">
     <div class="container">

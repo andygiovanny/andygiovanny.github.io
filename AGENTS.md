@@ -134,6 +134,100 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-01 (Kimi Work, pt 19):** empty-state mascot image REMOVED from
+  all 5 days-until pages (text + preset chips only now; `.empty img` CSS
+  gone too). **Welcome seed SHIPPED to all 30 pages** via
+  `_work/seed_welcome.py`: on a true first visit (no `tt_countdowns_v1`
+  key at all) every timer page's pin-chip IIFE and every days-until page
+  seeds one pinned countdown — name "👋 Click me!" (id: Klik aku!, es:
+  ¡Haz clic!, pt: Clique aqui!, vi: Nhấn vào tôi!), target = first open
+  +30 days, color #DE4B3A, icon `img:duck-astronaut`. It's pinned by
+  default so the chip shows on timer pages immediately; unpinning or
+  deleting is permanent (never re-seeds — the key exists after first
+  write). Existing users with a store are untouched. Verified: node test
+  simulates first visit (target exactly +30d, chip regex parses it, no
+  re-seed on 2nd visit), all 235 inline JS blocks pass node --check,
+  backups in `_backups/2026-11-01-seed-welcome/`. Uncommitted.
+- **2026-10-31 (Kimi Work, pt 18):** pin chip SHIPPED to all 20 translated
+  timer pages (id/es/pt/vi × index, 52-17, 20-20-20-rule, flowtime,
+  custom-timer) via `_work/add_pin_translations.py` — extracts the exact
+  CSS/HTML/JS blocks from the EN masters, translates visible strings
+  (tooltip title, default name, 🎉 Hari Ini/Hoy/Hoje/Hôm Nay, Ended,
+  day/days), and points the chip link at `/<lang>/days-until/`. Storage key
+  `tt_countdowns_v1` is shared across languages, so a pin made on any
+  language's days-until page shows everywhere. Ambience pages deliberately
+  excluded (EN ambience has no chip either). All 20 pin scripts pass
+  node --check; backups in `_backups/2026-10-31-pin-translations/`.
+  Uncommitted — Andy reviews id first, as usual.
+- **2026-10-31 (Kimi Work, pt 17):** ambience cards REAL alignment fix —
+  pt 16's max-width change didn't solve it. Actual root cause:
+  `ambience/index.html`'s `.page-wrapper` is a flex column with
+  `align-items:center`, so each `.tt-cards` section shrink-wrapped to its
+  content — the 5-card Timers row hit the 1200px cap and looked aligned,
+  but the 1-card Tools row floated to the middle. Fix: `.tt-cards` now
+  `width:100%; max-width:1200px` (line ~1421). English ambience only;
+  other EN pages use normal block layout and were never affected;
+  translations untouched per English-first rule. Copied to GitHub clone,
+  uncommitted.
+- **2026-10-31 (Kimi Work, pt 16):** ambience card alignment fix (its
+  `.tt-cards` was max-width 900px — the odd one out; now 1200px like every
+  other page, so the Tools section sits left-aligned like the main page).
+  Then **days-until translations SHIPPED** — `id/es/pt/vi/days-until/`
+  built from the EN master via `_work/days_until_translations.py` (~90
+  exact-match pairs per language, count-asserted, aborts on miss): full
+  SEO set (title/description/keywords/canonical/og:locale per language —
+  pt_BR), JSON-LD WebApplication + BreadcrumbList + FAQPage translated,
+  explainer, form, toasts, card actions, aria labels, month names
+  (Mei/Agu/Okt/Des, Ene/Dic, Fev/Dez, Th1–Th12), presets (Natal/Tahun
+  Baru/…), cards row reusing the approved per-language card texts from the
+  timer pages, footer strings from the same. AM/PM kept everywhere.
+  EN days-until gained the `tt_lang` redirect script (translations exist
+  now) + full 6-link hreflang; all 5 days-until pages carry the 6-link
+  cluster. sitemap.xml 30 → 35 URLs (+5 days-until). All 5 pages: 5
+  scripts node --check OK, 3 JSON-LD parse, no English leftovers, lang
+  dropdown selects correct language. Synced to GitHub clone. Next: Andy
+  reviews id wording first (as usual), then es/pt/vi, then merge.
+- **2026-10-31 (Kimi Work, pt 15):** new "Tools" card section on all 6
+  English pages (index, 52-17, 20-20-20-rule, flowtime, ambience,
+  custom-timer) — a separate `<section id="tools" class="tt-cards">` right
+  after the Other Rhythm section (ambience: after `timers-section`),
+  reusing the exact tt-card style. First card: **Days Until Countdown**
+  → https://www.tomatotimers.com/days-until/ with new art
+  `assets/images/days-until-card.png` (Andy's frame_25.png, 2160² RGBA →
+  bbox-trimmed → padded square → 480², 149 KB — same pipeline as the
+  custom-timer card). Heading is plain "Tools" per Andy; SEO keywords live
+  in the card copy ("deadline countdown", "exams, launches, holidays").
+  days-until itself does NOT get the section (self-link). NOTE: the card
+  link 404s until days-until is merged to master — they ship together on
+  the development branch. All 6 pages' scripts pass node --check.
+- **2026-10-31 (Kimi Work, pt 14):** main-page pin-chip top margin 6px →
+  14px — was hugging the POMODORO tab row. Sub-page placement approved
+  as-is by Andy.
+- **2026-10-31 (Kimi Work, pt 13):** pin-chip REPOSITIONED per Andy — the
+  floating-in-the-side-lane approach collided with the BuySellAds side
+  zones (and clipped at the viewport edge on the sub-pages). New home on
+  all 5 English pages: IN-FLOW, left-aligned under the row above the
+  mascot — main `index.html`: own `col-lg-12` directly under the mode-tabs
+  row (aligns with the POMODORO tab's left edge); 4 sub-pages: inside
+  `.header-left` directly under the language/theme selects (follows the
+  header's responsive wrap for free). All absolute positioning + media
+  queries removed — zero ad-lane conflicts, no clipping at any width.
+  Move scripted (`_work/pin_chip_move.py` + a variant pass for
+  custom-timer's line-broken header markup). All 5 pages' scripts pass
+  node --check. Synced. Next: Andy checks alignment at 140% zoom.
+- **2026-10-31 (Kimi Work, pt 12):** pin-chip ported to the other ENGLISH
+  timer pages — `52-17/`, `20-20-20-rule/`, `flowtime/`, `custom-timer/`
+  (pin limit stays 1 per Andy; multi-pin shelved until more pin formats
+  exist). Applied via `_work/pin_chip_port.py` (exact-match anchors, aborts
+  on miss): same chip markup + IIFE as the main page, CSS re-themed to the
+  shared vars (`--panel/--text/--border/--tomato`, `html.theme-dark`
+  automatic — no classic theme on these pages). Placement differs from the
+  main page: stage is 780px so the chip floats LEFT of the stage
+  (`right: calc(100% + 18px); top: 120px` on the relative `.stage`) at
+  ≥1300px, tucks centered at the top of the stage below that.
+  custom-timer's `.stage` gained `position: relative`. All pages' inline
+  scripts pass node --check (9/10/7/6 scripts). Synced to GitHub clone.
+  Next: Andy pin-tests on all 4 pages at 140% zoom.
 - **2026-10-30 (Kimi Work, pt 11):** pin-chip on the ENGLISH main page
   (Option A, Andy's pick; ONE pin only — days-until unchanged, the second
   flank slot is reserved for future pin formats). `index.html` gains
