@@ -142,6 +142,30 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-05 (Kimi Work, pt 35):** pin-row PORTED to all 16 translated
+  sub-pages (id/es/pt/vi × 52-17, 20-20-20-rule, flowtime, custom-timer) on
+  Andy's OK — identical move as pt 34 via `_work/pinrow_port_translations.py`
+  (variant-tolerant: comment block replaced by span, custom-timer pages use
+  the sr-only h1 anchor). Verified: header-left chip-free, exactly one
+  .pin-row with both chips before .stage, language-prefixed chip links intact,
+  140 inline JS blocks node --check, JSON-LD parses. Backups in
+  `_backups/2026-11-04-pinrow/`. ALL 20 sub-pages now have side-by-side
+  chips — ready to push.
+- **2026-11-05 (Kimi Work, pt 34):** pin chips SIDE BY SIDE on the 4 ENGLISH
+  sub-pages too (52-17, 20-20-20-rule, flowtime, custom-timer) — Andy didn't
+  want them stacked there. Chips moved OUT of the 350px `.header-left` column
+  into a new full-width `.pin-row` div sitting between `</div>` (header close)
+  and `.stage` (custom-timer: before the sr-only h1). `.pin-row` =
+  max-width 1140px centered, padding-left 50px (header 40 + header-left 10) so
+  the chips align exactly with the language/theme selects above, flex row,
+  gap 8px, wraps on narrow; ≤991px rule centers them (padding 15px). Empty
+  row = 0 height, so zero layout shift when nothing is pinned. `#streakChip`
+  lost its `margin-top: 8px` (gap handles it). No JS changes — the chip IIFEs
+  are location-independent. Custom-timer needed its own comment anchor
+  (different line wrap). Verified: 39 inline JS blocks node --check, 12
+  JSON-LD parse, header-left chip-free, pin-row before stage on all 4.
+  Backups `_backups/2026-11-04-pinrow/`. ENGLISH ONLY — the 16 translated
+  sub-pages wait for Andy's OK (English-first rule).
 - **2026-11-04 (Kimi Work, pt 33):** pin-chip shake fix — the days-until
   chip visibly jittered every second because Baloo's digits aren't
   fixed-width (each tick changed the chip width, nudging the streak chip

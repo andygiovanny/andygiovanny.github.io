@@ -164,6 +164,7 @@
   @media (max-width: 991px) {
     .header { padding-left: 15px; padding-right: 15px; }
     .header-left { flex: 0 0 100%; max-width: 100%; padding-left: 0; align-items: center; }
+    .pin-row { padding-left: 15px; padding-right: 15px; justify-content: center; }
     .header-logo { margin-left: 0; }
     .header-nav { flex: 0 0 100%; max-width: 100%; padding-top: 0; grid-template-columns: 1fr 1fr; }
     .button-row:first-child .button-style,
@@ -835,15 +836,17 @@
   /* ── page additions: todo band, footer, overlay host ── */
   .stage { position: relative; }
 
-  /* ── pinned countdown chip (days-until) — sits in .header-left under the
-     language/theme selects. Hidden unless a pin exists in localStorage
-     'tt_countdowns_v1'. ── */
+  /* ── pinned chips (days-until + streaks) — own row under the header,
+     side by side, aligned with the language/theme selects. Hidden unless
+     a pin exists in localStorage ('tt_countdowns_v1' / 'tt_streaks_v1'). ── */
+  .pin-row { max-width: 1140px; margin: 0 auto; padding: 0 40px 0 50px;
+    display: flex; gap: 8px; flex-wrap: wrap; }
   .pin-chip { display: flex; align-items: center; gap: 10px; width: max-content;
     max-width: 215px; background: var(--panel); border: 1px solid var(--border);
     border-left: 5px solid var(--tomato); border-radius: 14px; padding: 8px 12px 8px 10px;
     cursor: pointer; box-shadow: 0 3px 10px rgba(88, 36, 14, .08); text-align: left; }
   .pin-chip:hover { border-color: var(--accent); }
-    #streakChip { margin-top: 8px; max-width: 260px; padding-right: 18px; }
+    #streakChip { max-width: 260px; padding-right: 18px; }
   .pin-chip .pc-icon { flex: 0 0 auto; width: 40px; height: 40px; display: flex;
     align-items: center; justify-content: center; font-size: 30px; line-height: 1; }
   .pin-chip .pc-icon img { width: 40px; height: 40px; object-fit: contain; display: block; }
@@ -1128,6 +1131,20 @@
       <option value="light">Tema Claro</option>
       <option value="dark">Tema Escuro</option>
     </select></div>
+  </div>
+  <div class="header-nav">
+    <div class="button-row">
+      <button type="button" class="button-style" onclick="document.getElementById('explainer').scrollIntoView({behavior:'smooth'})">O que é 52/17?</button>
+      <button type="button" class="button-style" onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Outros Ritmos</button>
+    </div>
+    <div class="button-row">
+      <button type="button" class="button-style" id="customTimerBtn">Timer Personalizado</button>
+      <a href="https://www.tomatotimers.com/pt/ambience/" target="_blank" rel="noopener noreferrer" class="button-style">Ambience Studio 🎵</a>
+    </div>
+  </div>
+</div>
+
+<div class="pin-row">
   <!-- Pinned countdown chip (days-until) — populated by the script below;
        stays display:none when nothing is pinned -->
   <div class="pin-chip" id="pinChip" style="display:none" role="link" tabindex="0"
@@ -1344,17 +1361,6 @@
     show();
 })();
 </script>
-  </div>
-  <div class="header-nav">
-    <div class="button-row">
-      <button type="button" class="button-style" onclick="document.getElementById('explainer').scrollIntoView({behavior:'smooth'})">O que é 52/17?</button>
-      <button type="button" class="button-style" onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Outros Ritmos</button>
-    </div>
-    <div class="button-row">
-      <button type="button" class="button-style" id="customTimerBtn">Timer Personalizado</button>
-      <a href="https://www.tomatotimers.com/pt/ambience/" target="_blank" rel="noopener noreferrer" class="button-style">Ambience Studio 🎵</a>
-    </div>
-  </div>
 </div>
 
 <div class="stage">
