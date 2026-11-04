@@ -142,6 +142,14 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-04 (Kimi Work, pt 33):** pin-chip shake fix — the days-until
+  chip visibly jittered every second because Baloo's digits aren't
+  fixed-width (each tick changed the chip width, nudging the streak chip
+  beside it). Fix: `.pin-chip .pc-time` gets `min-width: 130px` so
+  per-second digit changes never resize the chip. 5 ENGLISH pages only
+  (index, 52-17, 20-20-20-rule, flowtime, custom-timer) — same one-line
+  change ported to the 20 translations on Andy's OK, same session. All 26
+  changed files staged for Andy's push (side-by-side chips + shake fix).
 - **2026-11-04 (Kimi Work, pt 32):** BRANCH RESCUE — master and development
   had diverged: master held the late-Oct fixes (translated pages' ads at
   top:300px + 1400px gate, 1090px column cap, 400px todo-gap removal) while
