@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Streak Counter — Check-in Hàng Ngày &amp; Đếm Ngày Từ Bất Cứ Điều Gì | TomatoTimers</title>
+<link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
+<link rel="icon" type="image/png" href="/assets/images/favicon.png"/>
+<meta name="description" content="Bộ đếm chuỗi miễn phí với chế độ xem lịch lớn: xây chuỗi check-in hàng ngày hoặc đếm số ngày từ bất cứ điều gì. Màu sắc, biểu tượng, xuất JSON, không cần đăng ký — dữ liệu ở lại trong trình duyệt của bạn.">
+<meta name="keywords" content="bộ đếm chuỗi, theo dõi thói quen, số ngày liên tiếp, đừng phá chuỗi, đếm ngày từ khi, lịch chuỗi ngày">
+<meta name="robots" content="index, follow">
+<meta name="author" content="TomatoTimers">
+<link rel="canonical" href="https://www.tomatotimers.com/vi/streaks/">
+<link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/streaks/">
+<link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/streaks/">
+<link rel="alternate" hreflang="es" href="https://www.tomatotimers.com/es/streaks/">
+<link rel="alternate" hreflang="pt" href="https://www.tomatotimers.com/pt/streaks/">
+<link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/streaks/">
+<link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/streaks/">
+<meta property="og:title" content="Streak Counter — Check-in Hàng Ngày &amp; Đếm Ngày Từ Bất Cứ Điều Gì | TomatoTimers">
+<meta property="og:description" content="Bộ đếm chuỗi miễn phí với chế độ xem lịch lớn: xây chuỗi check-in hàng ngày hoặc đếm số ngày từ bất cứ điều gì. Không cần đăng ký — dữ liệu ở lại trong trình duyệt của bạn.">
+<meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<meta property="og:url" content="https://www.tomatotimers.com/vi/streaks/">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Streak Counter — Check-in Hàng Ngày &amp; Đếm Ngày Từ Bất Cứ Điều Gì">
+<meta name="twitter:description" content="Bộ đếm chuỗi miễn phí với chế độ xem lịch lớn: xây chuỗi check-in hàng ngày hoặc đếm số ngày từ bất cứ điều gì. Không cần đăng ký — dữ liệu ở lại trong trình duyệt của bạn.">
+<meta name="twitter:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Streak Counter — Chuỗi Ngày & Bộ Đếm Ngày | TomatoTimers",
+  "url": "https://www.tomatotimers.com/vi/streaks/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Bộ đếm chuỗi online miễn phí: xây chuỗi check-in hàng ngày hoặc đếm số ngày từ bất cứ điều gì, xem mỗi chuỗi vẽ đường màu riêng trên lịch lớn, ghim một chuỗi lên các trang hẹn giờ và xuất dữ liệu bất cứ lúc nào. Chỉ lưu trong trình duyệt."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Hẹn Giờ Pomodoro",
+      "item": "https://www.tomatotimers.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Streak Counter",
+      "item": "https://www.tomatotimers.com/vi/streaks/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Bộ đếm chuỗi hoạt động thế nào?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hai cách. Chuỗi check-in yêu cầu bạn chạm một lần mỗi ngày — mỗi lần check-in nối dài chuỗi của bạn, và lịch vẽ nó thành một đường màu. Chuỗi đếm lên chỉ cần ngày bắt đầu rồi tự tăng mãi mãi, hoàn hảo cho kiểu theo dõi 'số ngày kể từ khi bỏ'. Cả hai cùng nằm trên một lịch lớn, mỗi chuỗi có màu và biểu tượng riêng."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Nếu lỡ một ngày thì sao?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Với chuỗi check-in, chuỗi hiện tại sẽ đứt — nhưng chuỗi dài nhất của bạn được giữ mãi mãi, nên một lần lỡ không bao giờ xóa thành tích đáng tự hào nhất. Quên check-in hôm qua? Không phạt đâu: chạm vào bất kỳ ngày nào trong quá khứ trên lịch để điền lại. Hoạt động theo hệ thống danh dự, giống lịch giấy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Chuỗi check-in và chuỗi đếm lên khác nhau thế nào?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chuỗi check-in là một nghi thức hàng ngày — bạn đánh dấu mỗi ngày mình xuất hiện, và bỏ lỡ một ngày sẽ reset số đếm hiện tại. Đếm lên thì tự động: đặt ngày bạn bắt đầu (hoặc bỏ) một việc và nó cứ tăng mãi không cần chăm sóc. Dùng check-in cho thói quen bạn đang xây, đếm lên cho những thứ bạn đã bỏ lại phía sau."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Dữ liệu của tôi có được lưu không? Chuyển sang thiết bị khác được không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Không cần tài khoản, bao giờ hết. Chuỗi của bạn được lưu trong bộ nhớ cục bộ của trình duyệt này, nên vẫn còn đây khi bạn quay lại — nhưng chúng chỉ sống trên thiết bị này và không có gì được tải lên cả. Để di chuyển hoặc sao lưu dữ liệu, dùng Xuất để tải file JSON và Nhập để khôi phục ở bất cứ đâu; mỗi chuỗi cũng có thể tải xuống dạng CSV gồm các ngày."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ghim một chuỗi có tác dụng gì?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ghim đánh dấu một chuỗi là tâm điểm hiện tại của bạn. Chuỗi đã ghim có thể hiện trên các trang hẹn giờ TomatoTimers của bạn, nên chuỗi bạn đang xây luôn hiển thị trong khi làm việc — và những ngày bạn chưa check-in, nó ở đó để nhắc bạn."
+      }
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXWPJH9V4X"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXWPJH9V4X', {
+        'page_path': window.location.pathname
+        });
+</script>
+<link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf2e9;
+    --panel: #FFFFFF;
+    --text: #58240E;
+    --muted: #8C5A3E;
+    --accent: #DE4B3A;
+    --tomato: #DE4B3A;
+    --border: #E2D0AF;
+    --panel2: #FFFFFF;
+    --input: #FFFFFF;
+  }
+  html.theme-dark {
+    --bg: #14100c;
+    --panel: #1f1813;
+    --text: #E8D9B8;
+    --muted: #A98F6F;
+    --accent: #E0A458;
+    --tomato: #DE4B3A;
+    --border: #3a2d20;
+    --panel2: #2a2018;
+    --input: #17110c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  body { font-family: 'Baloo Tammudu', cursive; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── YouTube promo banner (same red slice as every other page) ── */
+  #yt-promo { background-color: #752222; padding: 6px 20px; display: flex; align-items: center;
+    justify-content: space-between; gap: 15px; border-radius: 6px; flex-wrap: wrap; }
+  .yt-promo-left { display: flex; align-items: center; gap: 12px; }
+  #yt-promo span { font-size: 15px; color: #fff; }
+
+  /* ── header: same centered layout as the other timers ── */
+  .header { max-width: 1140px; margin: 0 auto; padding: 16px 40px 8px;
+    display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: center; gap: 30px; }
+  .header-left { flex: 0 0 350px; max-width: none; box-sizing: border-box; display: flex; flex-direction: column;
+    align-items: flex-start; gap: 12px; padding-left: 10px; }
+  .header-logo { width: 240px; max-width: 240px; height: auto; display: block; margin-left: 20px; }
+  .header-nav { flex: 1 1 auto; max-width: none; box-sizing: border-box; display: grid;
+    grid-template-columns: repeat(2, minmax(0, 324px)); justify-content: center; gap: 8px; padding-top: 22px; }
+  .button-row { display: contents; }
+  .button-row .button-style { min-width: 0; text-align: center; width: 100%; }
+  .button-style {
+    font-family: inherit; background-color: #fff; color: #8e552b; text-transform: uppercase;
+    padding: 16px 20px 10px; font-size: 16px; white-space: nowrap; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50px; border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06); }
+  .button-style:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+  html.theme-dark .button-style { background-color: #2a2018; color: #E8D9B8; border: 1px solid #3a2d20; box-shadow: none; }
+  html.theme-dark .button-style:hover { color: #E0A458; border-color: #E0A458; }
+  @media (max-width: 991px) {
+    .header { padding-left: 15px; padding-right: 15px; }
+    .header-left { flex: 0 0 100%; max-width: 100%; padding-left: 0; align-items: center; }
+    .header-logo { margin-left: 0; }
+    .header-nav { flex: 0 0 100%; max-width: 100%; padding-top: 0; grid-template-columns: 1fr 1fr; }
+    .button-row:first-child .button-style,
+    .button-row:last-child .button-style { min-width: 0; white-space: normal; line-height: 1.25; }
+    .header-logo { width: 200px; }
+  }
+
+  /* ── Theme / language dropdown pills ── */
+  .theme-select {
+    font-family: inherit; font-size: 15px; padding: 7px 34px 4px 16px; border-radius: 50px;
+    border: 2px solid rgba(88, 36, 14, 0.18);
+    background: #FFFFFF url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%2358240E' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #58240E; cursor: pointer; outline: none; line-height: 1.2;
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06); }
+  .theme-select option { background: #FFFFFF; color: #58240E; }
+  html.theme-dark .theme-select {
+    background: #2a2018 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23A98F6F' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #E8D9B8; border-color: #3a2d20; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }
+  html.theme-dark .theme-select option { background: #2a2018; color: #E8D9B8; }
+  .lang-globe { color: #58240E; }
+  html.theme-dark .lang-globe { color: #E8D9B8; }
+
+  /* ── board stage ── */
+  .stage { max-width: 980px; margin: 0 auto; padding: 18px 20px 24px; }
+  .lead { text-align: center; color: var(--muted); font-size: 15.5px; margin: 2px auto 16px; max-width: 640px; }
+
+  /* add / edit form */
+  .add-form { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 3px 10px rgba(88,36,14,.06); }
+  .add-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .add-row .grow { flex: 1; min-width: 160px; }
+  .add-form input[type=text] { width: 100%; font-family: inherit; font-size: 15px; color: var(--text);
+    background: var(--input); border: 1px solid var(--border); border-radius: 50px;
+    padding: 9px 16px 7px; outline: none; }
+  .add-form input[type=date] { font-family: inherit; font-size: 14px; color: var(--text);
+    background: var(--input); border: 1px solid var(--border); border-radius: 50px;
+    padding: 8px 12px 6px; outline: none; }
+  .add-form input:focus { border-color: var(--accent); }
+  .add-form input:disabled { opacity: .55; cursor: not-allowed; }
+  .icon-pick-btn { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--border);
+    background: var(--input); cursor: pointer; font-size: 26px; display: inline-flex;
+    align-items: center; justify-content: center; padding: 0; flex: 0 0 auto; line-height: 1; }
+  .icon-pick-btn:hover { border-color: var(--accent); }
+  .icon-pick-btn img { width: 40px; height: 40px; object-fit: contain; }
+  .icon-panel { background: var(--input); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
+  .icon-sec-label { font-size: 11.5px; color: var(--muted); margin: 2px 0 6px 4px;
+    text-transform: uppercase; letter-spacing: .5px; }
+  .icon-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .icon-grid:last-child { margin-bottom: 0; }
+  .icon-cell { width: 58px; height: 58px; border-radius: 12px; border: 2px solid transparent;
+    background: var(--panel); cursor: pointer; display: inline-flex; align-items: center;
+    justify-content: center; font-size: 28px; padding: 0; line-height: 1; }
+  .icon-cell img { width: 46px; height: 46px; object-fit: contain; }
+  .icon-cell.sel { border-color: var(--text); }
+  .icon-cell:hover { border-color: var(--accent); }
+  .dot-row { display: flex; gap: 6px; align-items: center; padding: 0 4px; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
+  .dot.sel { border-color: var(--text); }
+  .mode-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .mode-pill { border: 1px solid var(--border); background: var(--input); border-radius: 50px;
+    padding: 8px 14px 6px; font-family: inherit; font-size: 13.5px; cursor: pointer; color: var(--muted); }
+  .mode-pill.sel { color: var(--text); border-color: var(--text); background: var(--panel2); font-weight: 700; }
+  .mode-pill:disabled { opacity: .55; cursor: not-allowed; }
+  .start-lbl { font-size: 13px; color: var(--muted); padding-left: 4px; }
+  .add-btn { background: var(--tomato); color: #fff; border: none; border-radius: 50px; cursor: pointer;
+    font-family: inherit; font-size: 15px; padding: 10px 26px 8px; box-shadow: 0 3px 10px rgba(222,75,58,.3); }
+  .add-btn:hover { transform: scale(1.04); }
+  .cancel-edit-btn { background: none; border: 1px solid var(--border); border-radius: 50px; cursor: pointer;
+    font-family: inherit; font-size: 13px; color: var(--muted); padding: 10px 16px 8px; display: none; }
+  .cancel-edit-btn.on { display: inline-block; }
+  .cancel-edit-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .add-err { color: var(--accent); font-size: 13.5px; min-height: 18px; padding-left: 6px; }
+
+  /* streak filter chips */
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 12px; justify-content: center; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 50px; padding: 0 14px; height: 30px;
+    font-family: inherit; font-size: 13.5px; line-height: 1; color: var(--text); cursor: pointer; }
+  .chip:hover { border-color: var(--accent); }
+  .chip.sel { border-color: var(--text); box-shadow: inset 0 0 0 1px var(--text); }
+  .chip > span { line-height: 1; display: inline-flex; align-items: center; }
+  .chip .cdot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+  .chip .cicon { font-size: 15px; }
+  .chip .cicon img { width: 18px; height: 18px; display: block; }
+  /* Baloo glyphs ride high in the em box — nudge text spans down to optical center */
+  .chip .cname, .chip .cnum { transform: translateY(1.5px); }
+  .chip .cnum { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* ── the big calendar ── */
+  .cal-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    padding: 14px; box-shadow: 0 3px 10px rgba(88,36,14,.06); }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    margin-bottom: 10px; flex-wrap: wrap; }
+  .cal-title { font-size: 19px; font-weight: 700; }
+  .cal-nav { display: flex; gap: 6px; }
+  .cal-nav button { background: var(--input); border: 1px solid var(--border); color: var(--text);
+    border-radius: 50px; font-family: inherit; font-size: 13.5px; padding: 6px 14px 4px; cursor: pointer; }
+  .cal-nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .cal-dows { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 3px; }
+  .cal-dow { text-align: center; font-size: 11.5px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .5px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .cal-day { position: relative; min-height: 66px; background: var(--input);
+    border: 1px solid transparent; border-radius: 9px; padding: 5px 5px 4px; }
+  .cal-day.other .dnum { opacity: .35; }
+  .cal-day.future { opacity: .45; }
+  .cal-day.today { border-color: var(--accent); }
+  .cal-day.clickable { cursor: pointer; }
+  .cal-day.clickable:hover { border-color: var(--text); }
+  .dnum { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .cal-day.today .dnum { color: var(--accent); font-weight: 700; }
+  .cal-bars { position: absolute; left: 0; right: 0; bottom: 5px; height: 35px; }
+  .bar { position: absolute; left: 4px; right: 4px; height: 5px; border-radius: 3px; }
+  .bar.cl { left: -3px; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+  .bar.cr { right: -3px; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .bar.big { height: 9px; }
+  .cal-more { position: absolute; top: 3px; right: 4px; font-size: 9.5px; color: var(--muted);
+    line-height: 1; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2px 5px; }
+  .cal-ms { position: absolute; top: 3px; right: 5px; font-size: 11px; line-height: 1; }
+  .cal-hint { font-size: 12.5px; color: var(--muted); margin-top: 8px; text-align: center; }
+  @media (max-width: 640px) {
+    .cal-day { min-height: 56px; }
+    .bar { height: 4px; }
+    .bar.big { height: 7px; }
+    .dnum { font-size: 11px; }
+  }
+
+  /* stats band under the calendar */
+  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; align-items: stretch; }
+  .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+    padding: 12px 18px 10px; flex: 1 1 110px; text-align: center;
+    display: flex; flex-direction: column; justify-content: center; }
+  .stat .num { font-size: 30px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+  .stat .num small { font-size: 14px; color: var(--muted); font-weight: 400; }
+  .stat .lbl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; }
+  .checkin-card { flex: 2 1 240px; display: flex; align-items: center; justify-content: center; }
+  .checkin-btn { background: var(--tomato); color: #fff; border: none; border-radius: 50px;
+    font-family: inherit; font-size: 17px; padding: 14px 34px 11px; cursor: pointer;
+    box-shadow: 0 3px 10px rgba(222,75,58,.3); width: 100%; }
+  .checkin-btn:hover { transform: scale(1.03); }
+  .checkin-btn.done { background: #7FA653; box-shadow: none; }
+  .stat-note { font-size: 13.5px; color: var(--muted); text-align: center; width: 100%; padding: 6px 10px; }
+
+  /* manage list */
+  .manage { margin-top: 16px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 6px 14px; }
+  .mrow { display: flex; align-items: center; gap: 10px; padding: 9px 0;
+    border-bottom: 1px dashed var(--border); }
+  .mrow:last-child { border-bottom: none; }
+  .micon { font-size: 20px; width: 26px; text-align: center; flex: 0 0 auto; line-height: 1; }
+  .micon img { width: 24px; height: 24px; display: block; }
+  .mname { flex: 1; min-width: 0; font-weight: 700; font-size: 14.5px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mcur { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; flex: 0 0 auto; }
+  .mmode-plain { font-size: 12px; color: var(--muted); flex: 0 0 auto; padding: 2px 4px 0; }
+  .mcheck { border: 1px solid var(--border); background: var(--input); color: var(--text);
+    border-radius: 50px; font-family: inherit; font-size: 12.5px; padding: 4px 12px 2px;
+    cursor: pointer; flex: 0 0 auto; }
+  .mcheck:hover { border-color: var(--accent); color: var(--accent); }
+  .mcheck.done { color: #7FA653; border-color: #7FA653; }
+  .mrow.off .micon, .mrow.off .mname, .mrow.off .mcur { opacity: .45; }
+  .mactions { display: flex; flex: 0 0 auto; }
+  .mactions button { background: none; border: none; cursor: pointer; color: var(--muted);
+    font-family: inherit; font-size: 12.5px; padding: 4px 7px 2px; border-radius: 50px; }
+  .mactions button:hover { color: var(--accent); background: var(--panel2); }
+  .mactions button.pinned { color: var(--tomato); }
+  .mactions button.arm { color: #fff; background: var(--tomato); }
+
+  /* export / import row */
+  .data-row { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
+  .data-btn { background: var(--panel); border: 1px solid var(--border); border-radius: 50px;
+    font-family: inherit; font-size: 13.5px; color: var(--text); padding: 9px 18px 7px; cursor: pointer; }
+  .data-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .data-note { font-size: 12px; color: var(--muted); }
+
+  /* empty state */
+  .empty { text-align: center; padding: 30px 16px 8px; }
+  .empty p { color: var(--muted); font-size: 15px; margin: 8px 0 12px; }
+  .preset-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .preset-pill { background: var(--panel); border: 1px solid var(--border); border-radius: 50px;
+    padding: 9px 18px 7px; font-family: inherit; font-size: 14px; color: var(--text); cursor: pointer; }
+  .preset-pill:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── explainer (visible text, same pattern as other timer pages) ── */
+  .explainer { max-width: 640px; margin: 50px auto 0; padding: 0 20px 60px; text-align: left; color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .explainer h2 { color: var(--text); font-size: 22px; margin: 18px 0 6px; }
+  .explainer strong { color: var(--text); }
+  .explainer a { color: var(--accent); }
+
+  /* ── cross-link cards (same pattern as the other pages) ── */
+  .tt-cards { max-width: 1200px; margin: 48px auto 0; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; }
+  .tt-cards-title { font-size: 1.5rem; color: var(--text); margin: 0 0 14px; }
+  .tt-card-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+                 padding: 6px 4px 18px; -webkit-overflow-scrolling: touch; }
+  .tt-card-row::-webkit-scrollbar { height: 8px; }
+  .tt-card-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+  .tt-card { flex: 0 0 240px; scroll-snap-align: start; background: var(--panel); border-radius: 18px;
+             overflow: hidden; text-decoration: none; border: 1px solid var(--border);
+             box-shadow: 0 3px 10px rgba(88, 36, 14, .08);
+             transition: transform .18s ease, box-shadow .18s ease; }
+  .tt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(88, 36, 14, .14); }
+  .tt-card img { width: 100%; height: 170px; object-fit: contain; padding: 18px;
+                 background: #FBF3E4; box-sizing: border-box; }
+  .tt-card-text { padding: 12px 16px 16px; }
+  .tt-card h3 { font-size: 1.05rem; color: var(--text); margin: 0 0 4px; }
+  .tt-card p { font-size: .85rem; color: var(--muted); margin: 0; line-height: 1.45; }
+  html.theme-dark .tt-cards-title { color: var(--accent); }
+  html.theme-dark .tt-card { background: var(--panel2); box-shadow: 0 3px 10px rgba(0, 0, 0, .3); }
+  html.theme-dark .tt-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+  html.theme-dark .tt-card img { background: #1c1410; }
+  html.theme-dark .tt-card h3 { color: var(--accent); }
+
+  /* ── toast, footer ── */
+  #toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 50px; padding: 10px 22px 8px; font-size: 15px; opacity: 0; transition: all .3s; z-index: 60;
+    display: flex; align-items: center; gap: 12px; }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  #toast button { background: none; border: none; color: var(--accent); font-family: inherit;
+    font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0; }
+  .site-footer { text-align: center; padding: 28px 20px 34px; color: var(--muted); font-size: 14px;
+    border-top: 1px solid var(--border); margin-top: 30px; }
+  .site-footer a { color: var(--text); text-decoration: none; }
+  .site-footer a:hover { color: var(--accent); }
+  .site-footer .foot-links { display: flex; justify-content: center; align-items: center; gap: 12px; }
+  .site-footer .foot-brand { font-weight: 700; }
+  .site-footer .foot-ad { color: var(--accent); font-weight: 700; transition: opacity .2s ease; }
+  .site-footer .foot-note { margin-top: 8px; font-size: 12.5px; }
+</style>
+<script>
+(function () {
+  var THEME_KEY = 'site-theme';
+  function apply(t) {
+    document.documentElement.classList.remove('theme-dark', 'theme-classic');
+    if (t === 'dark') document.documentElement.classList.add('theme-dark');
+    else if (t === 'classic') document.documentElement.classList.add('theme-classic');
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.value = t;
+  }
+  function saved() { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch (e) { return 'light'; } }
+  apply(saved());
+  document.addEventListener('DOMContentLoaded', function () {
+    apply(saved());
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.addEventListener('change', function () {
+      try { localStorage.setItem(THEME_KEY, this.value); } catch (e) {}
+      apply(this.value);
+    });
+  });
+})();
+</script>
+<base target="_blank">
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- YouTube Promo Banner -->
+<div id="yt-promo">
+  <div class="yt-promo-left">
+    <a href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w" target="_blank" rel="noopener noreferrer">
+      <img src="/assets/images/YT.png" alt="Subscribe" style="height: 28px;"
+           onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/YT.png';}">
+    </a>
+    <span>Ủng hộ kênh và xem video nhé!</span>
+  </div>
+  <div class="g-ytsubscribe"
+       data-channelid="UC-u-z82nVkW81veR76iFx_w"
+       data-layout="default"
+       data-count="default">
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <a class="logo" href="https://www.tomatotimers.com/" target="_self" style="text-decoration:none; display:flex; align-items:center;">
+      <img id="logo" src="/assets/images/logo.svg" alt="TomatoTimers" class="header-logo"
+           onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
+    </a>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="position:relative; display:inline-block;">
+    <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4A8.02 8.02 0 0 1 4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13z"/></svg>
+    <select id="lang-select" class="theme-select" aria-label="Choose language" onchange="if(this.value){try{localStorage.setItem('tt_lang',this.value.replace(/\//g,'')||'en')}catch(e){}window.location.href=this.value}" style="padding-left:38px;">
+      <option value="/streaks/">English</option>
+      <option value="/id/streaks/">Bahasa Indonesia</option>
+      <option value="/es/streaks/">Español</option>
+      <option value="/pt/streaks/">Português</option>
+      <option value="/vi/streaks/" selected>Tiếng Việt</option>
+    </select>
+    </span>
+    <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+      <option value="light">Giao Diện Sáng</option>
+      <option value="dark">Giao Diện Tối</option>
+    </select>
+    </div>
+  </div>
+  <div class="header-nav">
+    <div class="button-row">
+      <button type="button" class="button-style" onclick="document.getElementById('explainer').scrollIntoView({behavior:'smooth'})">Cách Hoạt Động</button>
+      <button type="button" class="button-style" onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Hẹn Giờ</button>
+    </div>
+    <div class="button-row">
+      <a href="https://www.tomatotimers.com/" target="_self" class="button-style">Hẹn Giờ Pomodoro</a>
+      <a href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener noreferrer" class="button-style">Ambience Studio 🎵</a>
+    </div>
+  </div>
+</div>
+
+<h1 class="sr-only">Streak Counter — Chuỗi Check-in Hàng Ngày &amp; Bộ Đếm Ngày</h1>
+
+<div class="stage">
+
+  <p class="lead">Xây một chuỗi và đừng để đứt. Check-in mỗi ngày, hoặc đếm lên từ bất kỳ ngày nào —
+    mỗi chuỗi vẽ đường màu riêng trên lịch.</p>
+
+  <!-- Add / edit form -->
+  <form class="add-form" id="addForm" autocomplete="off">
+    <div class="add-row">
+      <button type="button" class="icon-pick-btn" id="iconPickBtn" aria-label="Chọn biểu tượng" aria-haspopup="true" aria-expanded="false" title="Chọn biểu tượng"></button>
+      <div class="dot-row" id="dotRow" role="radiogroup" aria-label="Chọn màu"></div>
+    </div>
+    <div class="icon-panel" id="iconPanel" style="display:none;">
+      <div class="icon-sec-label">Linh vật</div>
+      <div class="icon-grid" id="mascotGrid" role="radiogroup" aria-label="Biểu tượng linh vật"></div>
+      <div class="icon-sec-label">Emoji</div>
+      <div class="icon-grid" id="emojiGrid" role="radiogroup" aria-label="Biểu tượng emoji"></div>
+    </div>
+    <div class="add-row">
+      <div class="grow">
+        <label class="sr-only" for="stName">Tên chuỗi</label>
+        <input type="text" id="stName" maxlength="60" placeholder="Đặt tên chuỗi của bạn (vd. Chạy bộ buổi sáng)" required>
+      </div>
+    </div>
+    <div class="add-row">
+      <div class="mode-row" id="modeRow">
+        <button type="button" class="mode-pill sel" data-mode="checkin">✓ Check-in hàng ngày</button>
+        <button type="button" class="mode-pill" data-mode="countup">⏱ Đếm lên từ một ngày</button>
+      </div>
+      <label for="stStart" class="start-lbl" id="startLbl">Bắt đầu</label>
+      <input type="date" id="stStart" aria-label="Ngày bắt đầu">
+      <button type="submit" class="add-btn" id="addBtn">Thêm chuỗi</button>
+      <button type="button" class="cancel-edit-btn" id="cancelEdit">Hủy chỉnh sửa</button>
+    </div>
+    <div class="add-err" id="addErr" role="alert"></div>
+  </form>
+
+  <!-- streak filter chips -->
+  <div class="chips" id="chips"></div>
+
+  <!-- the big calendar -->
+  <div class="cal-wrap" id="calWrap" style="display:none;">
+    <div class="cal-head">
+      <div class="cal-title" id="calTitle"></div>
+      <div class="cal-nav">
+        <button type="button" id="calPrev" aria-label="Tháng trước">‹ Trước</button>
+        <button type="button" id="calToday">Hôm Nay</button>
+        <button type="button" id="calNext" aria-label="Tháng sau">Sau ›</button>
+      </div>
+    </div>
+    <div class="cal-dows" id="calDows"></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-hint" id="calHint"></div>
+  </div>
+
+  <!-- stats band -->
+  <div class="stats" id="stats" style="display:none;"></div>
+
+  <!-- manage list -->
+  <div class="manage" id="manage" style="display:none;"></div>
+
+  <!-- export / import -->
+  <div class="data-row" id="dataRow" style="display:none;">
+    <button type="button" class="data-btn" id="exportBtn">⬇ Xuất tất cả (JSON)</button>
+    <button type="button" class="data-btn" id="importBtn">⬆ Nhập</button>
+    <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+    <span class="data-note">Được lưu trong trình duyệt này — xuất bản sao lưu để chuyển thiết bị.</span>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty" id="emptyState" style="display:none;">
+    <p>Chưa có chuỗi nào — bắt đầu chuỗi đầu tiên, hoặc chọn một gợi ý:</p>
+    <div class="preset-row" id="presetRow"></div>
+  </div>
+
+</div>
+
+<div class="explainer" id="explainer">
+  <h2>Cách Hoạt Động</h2>
+  <p><strong>Streak Counter</strong> là một tờ lịch cho những chuỗi bạn đang xây. Hai cách chơi: <strong>chuỗi check-in</strong> yêu cầu bạn chạm một lần mỗi ngày — mỗi lần check-in nối dài chuỗi, và lịch vẽ nó thành một đường màu. <strong>Chuỗi đếm lên</strong> chỉ cần ngày bắt đầu rồi tự tăng mãi mãi, hoàn hảo cho kiểu theo dõi "số ngày kể từ khi bỏ". Cả hai cùng nằm trên một lịch lớn, mỗi chuỗi có màu và biểu tượng riêng, nên một tháng đẹp thực sự tự vẽ nên mình. Theo dõi nhiều thứ? Bấm <strong>ẩn</strong> ở một chuỗi để gỡ đường của nó khỏi chế độ xem Tất cả — chuỗi vẫn tiếp tục đếm, lịch của bạn vẫn gọn. Chế độ xem Tất cả vẽ tối đa năm đường một lúc; nhiều hơn nữa, các chuỗi phụ gom vào một huy hiệu "+N" nhỏ vào những ngày chúng hoạt động, và ẩn một chuỗi sẽ đẩy chuỗi kế tiếp lên làn của nó.</p>
+
+  <h2>Bộ đếm chuỗi hoạt động thế nào?</h2>
+  <p>Hai cách. Chuỗi check-in yêu cầu bạn chạm một lần mỗi ngày — mỗi lần check-in nối dài chuỗi của bạn, và lịch vẽ nó thành một đường màu. Chuỗi đếm lên chỉ cần ngày bắt đầu rồi tự tăng mãi mãi, hoàn hảo cho kiểu theo dõi "số ngày kể từ khi bỏ". Cả hai cùng nằm trên một lịch lớn, mỗi chuỗi có màu và biểu tượng riêng.</p>
+
+  <h2>Nếu lỡ một ngày thì sao?</h2>
+  <p>Với chuỗi check-in, chuỗi hiện tại sẽ đứt — nhưng <strong>chuỗi dài nhất</strong> của bạn được giữ mãi mãi, nên một lần lỡ không bao giờ xóa thành tích đáng tự hào nhất. Quên check-in hôm qua? Không phạt đâu: chạm vào bất kỳ ngày nào trong quá khứ trên lịch để điền lại. Hoạt động theo hệ thống danh dự, giống lịch giấy.</p>
+
+  <h2>Chuỗi check-in và chuỗi đếm lên khác nhau thế nào?</h2>
+  <p>Chuỗi check-in là một nghi thức hàng ngày — bạn đánh dấu mỗi ngày mình xuất hiện, và bỏ lỡ một ngày sẽ reset số đếm hiện tại. Đếm lên thì tự động: đặt ngày bạn bắt đầu (hoặc bỏ) một việc và nó cứ tăng mãi không cần chăm sóc. Dùng check-in cho thói quen bạn đang xây, đếm lên cho những thứ bạn đã bỏ lại phía sau.</p>
+
+  <h2>Dữ liệu của tôi có được lưu không? Chuyển sang thiết bị khác được không?</h2>
+  <p>Không cần tài khoản, bao giờ hết. Chuỗi của bạn được lưu trong bộ nhớ cục bộ của trình duyệt này, nên vẫn còn đây khi bạn quay lại — nhưng chúng chỉ sống trên thiết bị này và không có gì được tải lên cả. Để di chuyển hoặc sao lưu dữ liệu, dùng <strong>Xuất</strong> để tải file JSON và <strong>Nhập</strong> để khôi phục ở bất cứ đâu; mỗi chuỗi cũng có thể tải xuống dạng CSV gồm các ngày.</p>
+
+  <h2>Ghim một chuỗi có tác dụng gì?</h2>
+  <p>Ghim đánh dấu một chuỗi là tâm điểm hiện tại của bạn. Chuỗi đã ghim có thể hiện trên các trang hẹn giờ TomatoTimers của bạn, nên chuỗi bạn đang xây luôn hiển thị trong khi làm việc — và những ngày bạn chưa check-in, nó ở đó để nhắc bạn.</p>
+</div>
+
+<section id="other-rhythm" class="tt-cards" aria-label="Hẹn Giờ">
+  <h2 class="tt-cards-title">Hẹn Giờ</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/">
+      <img src="/assets/images/tomato-cartoon.svg" alt="Linh vật cà chua của hẹn giờ Pomodoro" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Hẹn Giờ Pomodoro</h3>
+        <p>Nhịp tập trung 25 phút kinh điển với giờ nghỉ ngắn và dài — hẹn giờ chính của chúng tôi cho làm việc sâu và học tập.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/52-17/">
+      <img src="/assets/images/52-17-card.png" alt="Linh vật gà con với hẹn giờ sprint và nghỉ 52/17" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Hẹn Giờ 52/17</h3>
+        <p>Làm việc tập trung 52 phút, sau đó nghỉ 17 phút để thật sự thư giãn — nhịp làm việc sâu được đo từ những người hiệu quả nhất.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/20-20-20-rule/">
+      <img src="/assets/images/1.svg" alt="Linh vật gà con cà chua của hẹn giờ nghỉ mắt 20-20-20" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Hẹn Giờ Mắt 20-20-20</h3>
+        <p>Mỗi 20 phút, nhìn ra xa 6 mét trong 20 giây — nhịp nghỉ mắt nhẹ nhàng chống mỏi mắt do màn hình.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/flowtime/">
+      <img src="/assets/images/flowtime-card.png" alt="Linh vật gà con làm việc với laptop cho hẹn giờ flowtime" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Hẹn Giờ Kỹ Thuật Flowtime</h3>
+        <p>Làm việc miễn còn hưng phấn trong khi phần nghỉ nạp dần theo thời gian thực — nhận thời gian nghỉ tương xứng với công việc bạn thật sự làm.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/custom-timer/">
+      <img src="/assets/images/custom-timer-card.png" alt="Linh vật gà con đang tạo hẹn giờ tùy chỉnh" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Tự Tạo Hẹn Giờ</h3>
+        <p>Xếp chồng, đặt tên và lặp các giai đoạn của riêng bạn — hẹn giờ tự lắp từ đầu cho học tập, tập luyện hoặc interval, lưu ngay trong trình duyệt này.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section id="tools" class="tt-cards" aria-label="Công Cụ">
+  <h2 class="tt-cards-title">Công Cụ</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/vi/days-until/">
+      <img src="/assets/images/days-until-card.png" alt="Linh vật gà con của công cụ đếm ngược Days Until" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Days Until</h3>
+        <p>Đếm ngược trực tiếp tới những deadline quan trọng — thi cử, ra mắt, kỳ nghỉ — với biểu tượng, màu sắc và một ghim đồng hành trên các trang hẹn giờ của bạn.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-links">
+    <a class="foot-brand" href="https://www.tomatotimers.com/" target="_self">Tomato Timer</a>
+    <span>&bull;</span>
+    <a class="foot-ad" href="https://optimize-tomatotimers.bsa-whitelabel.com/checkout/new" target="_blank" rel="noopener noreferrer">Quảng Cáo Ở Đây &#127919;</a>
+  </div>
+  <div>
+    Phát hiện lỗi? <a href="/cdn-cgi/l/email-protection#35545b514c525c5a43545b5b4c535057475c545b415a755258545c591b565a58" style="color: #DE4B3A; text-decoration: none; font-weight: 700;">Gửi email cho tôi</a>
+  </div>
+  <div class="foot-note">Miễn phí &amp; không cần đăng ký — các chuỗi của bạn ở lại trong trình duyệt này.</div>
+</footer>
+
+<script>
+(function () {
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+var LS = {
+  get: function (k, d) { try { var v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* ── choices: streak emoji + mascot image icons (assets/images/icons/) ── */
+var EMOJIS = ['🔥', '💪', '🏃', '📚', '🧘', '💧', '🚭', '🍎', '😴', '✍️', '🎸', '🌱'];
+var MASCOTS = ['duck-plain', 'duck-tomato', 'duck-sunglasses', 'cat-maestro',
+  'duck-explorer', 'duck-santa', 'duck-safari', 'duck-sport',
+  'duck-strawhat', 'duck-sprout', 'duck-astronaut', 'duck-crying',
+  'duck-monocle', 'duck-angry', 'duck-school', 'duck-headphones'];
+var DEFAULT_ICON = 'img:duck-monocle';
+var COLORS = ['#DE4B3A', '#E0A458', '#7FA653', '#4A90D9', '#9B59B6', '#E8739C'];
+var STORE_KEY = 'tt_streaks_v1';
+var MONTHS = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7',
+  'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+var MON_SHORT = ['Th1', 'Th2', 'Th3', 'Th4', 'Th5', 'Th6', 'Th7', 'Th8', 'Th9', 'Th10', 'Th11', 'Th12'];
+var DOWS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+
+/* icon value = emoji char, or "img:<mascot-name>" for a mascot image */
+function isImgIcon(v) { return typeof v === 'string' && v.indexOf('img:') === 0; }
+function validIcon(v) {
+  if (typeof v !== 'string' || !v) return DEFAULT_ICON;
+  if (isImgIcon(v)) return MASCOTS.indexOf(v.slice(4)) >= 0 ? v : DEFAULT_ICON;
+  return v.length <= 8 ? v : DEFAULT_ICON;
+}
+function setIconEl(el, v) {
+  el.innerHTML = '';
+  if (isImgIcon(v)) {
+    var img = document.createElement('img');
+    img.src = '/assets/images/icons/' + v.slice(4) + '.png';
+    img.alt = '';
+    el.appendChild(img);
+  } else { el.textContent = v; }
+}
+
+/* ── dates: all local, "YYYY-MM-DD" keys so lexicographic compare works ── */
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+function toKey(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function parseKey(k) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(k));
+  if (!m) return null;
+  var d = new Date(+m[1], +m[2] - 1, +m[3]);
+  if (d.getFullYear() !== +m[1] || d.getMonth() !== +m[2] - 1 || d.getDate() !== +m[3]) return null;
+  return d;
+}
+function addKey(k, n) { var d = parseKey(k); d.setDate(d.getDate() + n); return toKey(d); }
+function todayKey() { return toKey(new Date()); }
+function diffDays(a, b) { return Math.round((parseKey(b) - parseKey(a)) / 86400000); }
+function humanDate(k) { var d = parseKey(k); return d ? MON_SHORT[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() : k; }
+
+/* ── store ── */
+function uid() { return 's_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function normStreak(x) {
+  if (!x || typeof x !== 'object' || typeof x.name !== 'string' || !x.name.trim()) return null;
+  var start = (typeof x.start === 'string' && parseKey(x.start)) ? x.start : todayKey();
+  var ck = {};
+  if (x.checkins && typeof x.checkins === 'object') {
+    var keys = Array.isArray(x.checkins) ? x.checkins : Object.keys(x.checkins);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      if (parseKey(k) && k >= start && (Array.isArray(x.checkins) || x.checkins[k])) ck[k] = true;
+    }
+  }
+  return {
+    id: typeof x.id === 'string' ? x.id : uid(),
+    name: x.name.slice(0, 60),
+    mode: x.mode === 'countup' ? 'countup' : 'checkin',
+    color: COLORS.indexOf(x.color) >= 0 ? x.color : COLORS[0],
+    icon: validIcon(x.icon),
+    start: start,
+    checkins: ck,
+    pinned: !!x.pinned,
+    hideAll: !!x.hideAll,
+    created: Number(x.created) || Date.now()
+  };
+}
+var store = LS.get(STORE_KEY, null);
+if (store == null) {
+  /* First visit ever: seed a pinned Pomodoro streak (starts today, today
+     pre-checked) so new users discover streaks + the pin-to-timer chip.
+     Deleting or unpinning it is permanent — it never comes back. */
+  var seedDay = todayKey();
+  var seedCk = {}; seedCk[seedDay] = true;
+  store = { streaks: [normStreak({ id: 'seed_pomodoro', name: 'Chuỗi Pomodoro',
+    mode: 'checkin', color: COLORS[0], icon: 'img:duck-tomato', start: seedDay,
+    checkins: seedCk, pinned: true, created: Date.now() })] };
+  save();
+}
+if (!store || !Array.isArray(store.streaks)) store = { streaks: [] };
+store.streaks = store.streaks.map(normStreak).filter(Boolean);
+function save() { LS.set(STORE_KEY, store); }
+function byId(id) {
+  for (var i = 0; i < store.streaks.length; i++) if (store.streaks[i].id === id) return store.streaks[i];
+  return null;
+}
+
+/* ── streak math ── */
+function isActive(s, k) {
+  var t = todayKey();
+  if (k > t) return false;
+  if (s.mode === 'countup') return k >= s.start;
+  return !!s.checkins[k];
+}
+function runEndingAt(s, k) {
+  var n = 0, d = k;
+  while (isActive(s, d) && n < 4000) { n++; d = addKey(d, -1); }
+  return n;
+}
+function currentStreak(s) {
+  var t = todayKey();
+  if (s.mode === 'countup') return t < s.start ? 0 : diffDays(s.start, t) + 1;
+  var end = t;
+  if (!s.checkins[end]) end = addKey(t, -1);
+  return s.checkins[end] ? runEndingAt(s, end) : 0;
+}
+function bestStreak(s) {
+  if (s.mode === 'countup') return currentStreak(s);
+  var keys = Object.keys(s.checkins).sort(), best = 0, run = 0, prev = null;
+  for (var i = 0; i < keys.length; i++) {
+    run = (prev && addKey(prev, 1) === keys[i]) ? run + 1 : 1;
+    if (run > best) best = run;
+    prev = keys[i];
+  }
+  return best;
+}
+function totalCount(s) { return s.mode === 'countup' ? currentStreak(s) : Object.keys(s.checkins).length; }
+function monthCount(s, y, m) {
+  var first = toKey(new Date(y, m, 1));
+  var last = toKey(new Date(y, m + 1, 0));
+  var t = todayKey();
+  if (last > t) last = t;
+  if (last < first) return 0;
+  var n = 0, d = first;
+  while (d <= last) { if (isActive(s, d)) n++; d = addKey(d, 1); }
+  return n;
+}
+function monthDenom(y, m) {
+  var now = new Date();
+  if (y === now.getFullYear() && m === now.getMonth()) return now.getDate();
+  if (new Date(y, m, 1) > now) return 0;
+  return new Date(y, m + 1, 0).getDate();
+}
+
+/* ── ui state ── */
+var now0 = new Date();
+var view = { y: now0.getFullYear(), m: now0.getMonth() };
+var focusId = 'all';
+var selColor = COLORS[0], selIcon = DEFAULT_ICON, selMode = 'checkin', editId = null;
+
+/* ── toast ── */
+var toastTimer = null;
+function hideToast() { $('toast').classList.remove('show'); }
+function toast(msg, undoFn) {
+  var t = $('toast');
+  t.innerHTML = '';
+  t.appendChild(document.createTextNode(msg));
+  if (undoFn) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = 'Hoàn tác';
+    b.addEventListener('click', function () { hideToast(); undoFn(); });
+    t.appendChild(b);
+  }
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, undoFn ? 6000 : 2600);
+}
+
+/* ── icon + color pickers ── */
+var iconPanelOpen = false;
+function openIconPanel() { iconPanelOpen = true; $('iconPanel').style.display = 'block'; $('iconPickBtn').setAttribute('aria-expanded', 'true'); }
+function closeIconPanel() { iconPanelOpen = false; $('iconPanel').style.display = 'none'; $('iconPickBtn').setAttribute('aria-expanded', 'false'); }
+function renderPickers() {
+  var dr = $('dotRow');
+  dr.innerHTML = '';
+  COLORS.forEach(function (c) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dot' + (c === selColor ? ' sel' : '');
+    b.style.background = c;
+    b.setAttribute('aria-label', 'Color ' + c);
+    b.addEventListener('click', function () { selColor = c; renderPickers(); });
+    dr.appendChild(b);
+  });
+  var mg = $('mascotGrid');
+  mg.innerHTML = '';
+  MASCOTS.forEach(function (mn) {
+    var v = 'img:' + mn;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'icon-cell' + (v === selIcon ? ' sel' : '');
+    b.setAttribute('aria-label', mn);
+    setIconEl(b, v);
+    b.addEventListener('click', function () { selIcon = v; setIconEl($('iconPickBtn'), selIcon); renderPickers(); });
+    mg.appendChild(b);
+  });
+  var eg = $('emojiGrid');
+  eg.innerHTML = '';
+  EMOJIS.forEach(function (e) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'icon-cell' + (e === selIcon ? ' sel' : '');
+    b.textContent = e;
+    b.setAttribute('aria-label', 'Emoji ' + e);
+    b.addEventListener('click', function () { selIcon = e; setIconEl($('iconPickBtn'), selIcon); renderPickers(); });
+    eg.appendChild(b);
+  });
+  setIconEl($('iconPickBtn'), selIcon);
+}
+$('iconPickBtn').addEventListener('click', function (ev) {
+  ev.stopPropagation();
+  iconPanelOpen ? closeIconPanel() : openIconPanel();
+});
+document.addEventListener('click', function (ev) {
+  if (!iconPanelOpen) return;
+  if (!$('iconPanel').contains(ev.target) && ev.target !== $('iconPickBtn')) closeIconPanel();
+});
+document.addEventListener('keydown', function (ev) {
+  if (ev.key === 'Escape' && iconPanelOpen) closeIconPanel();
+});
+
+/* ── form: mode pills, start date, add / edit ── */
+function refreshModePills() {
+  var pills = $('modeRow').querySelectorAll('.mode-pill');
+  for (var i = 0; i < pills.length; i++) {
+    pills[i].classList.toggle('sel', pills[i].getAttribute('data-mode') === selMode);
+    pills[i].disabled = !!editId;
+  }
+  $('startLbl').textContent = selMode === 'countup' ? 'Đếm từ' : 'Bắt đầu';
+}
+$('modeRow').addEventListener('click', function (ev) {
+  var b = ev.target.closest('.mode-pill');
+  if (!b || b.disabled) return;
+  selMode = b.getAttribute('data-mode');
+  refreshModePills();
+});
+function resetForm() {
+  editId = null;
+  $('stName').value = '';
+  $('addErr').textContent = '';
+  $('addBtn').textContent = 'Thêm chuỗi';
+  $('cancelEdit').classList.remove('on');
+  $('stStart').disabled = false;
+  $('stStart').value = todayKey();
+  selColor = COLORS[0]; selIcon = DEFAULT_ICON; selMode = 'checkin';
+  refreshModePills();
+  renderPickers();
+}
+$('cancelEdit').addEventListener('click', resetForm);
+$('addForm').addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  var name = $('stName').value.trim();
+  var start = $('stStart').value;
+  if (!name) { $('addErr').textContent = 'Hãy đặt tên cho chuỗi của bạn.'; return; }
+  if (!parseKey(start)) { $('addErr').textContent = 'Chọn ngày bắt đầu hợp lệ.'; return; }
+  if (start > todayKey()) { $('addErr').textContent = 'Ngày bắt đầu không thể ở tương lai.'; return; }
+  $('addErr').textContent = '';
+  if (editId) {
+    var s = byId(editId);
+    if (s) { s.name = name.slice(0, 60); s.color = selColor; s.icon = selIcon; save(); }
+    toast('Đã cập nhật chuỗi.');
+  } else {
+    store.streaks.push({
+      id: uid(), name: name.slice(0, 60), mode: selMode,
+      color: selColor, icon: selIcon, start: start,
+      checkins: {}, pinned: false, created: Date.now()
+    });
+    save();
+    toast(selMode === 'countup' ? 'Đếm lên đã bắt đầu — nó tự tăng.' : 'Đã thêm chuỗi — chạm nút hoặc lịch để check-in.');
+  }
+  resetForm();
+  renderAll();
+});
+
+/* check-in toggle: click = check in today, click again = undo */
+function toggleToday(s) {
+  var k = todayKey();
+  if (s.checkins[k]) {
+    delete s.checkins[k];
+    save();
+    renderAll();
+    toast('Đã xóa check-in.');
+  } else {
+    s.checkins[k] = true;
+    save();
+    renderAll();
+    var n = currentStreak(s);
+    toast('Đã check-in — ' + n + ' ngày 🔥');
+  }
+}
+/* ── filter chips ── */
+function renderChips() {
+  var box = $('chips');
+  box.innerHTML = '';
+  var all = document.createElement('button');
+  all.type = 'button';
+  all.className = 'chip' + (focusId === 'all' ? ' sel' : '');
+  var allNm = document.createElement('span');
+  allNm.className = 'cname';
+  allNm.textContent = 'Tất cả chuỗi';
+  all.appendChild(allNm);
+  all.addEventListener('click', function () { focusId = 'all'; renderAll(); });
+  box.appendChild(all);
+  store.streaks.forEach(function (s) {
+    var c = document.createElement('button');
+    c.type = 'button';
+    c.className = 'chip' + (focusId === s.id ? ' sel' : '');
+    var dot = document.createElement('span');
+    dot.className = 'cdot';
+    dot.style.background = s.color;
+    var ic = document.createElement('span');
+    ic.className = 'cicon';
+    setIconEl(ic, s.icon);
+    var nm = document.createElement('span');
+    nm.className = 'cname';
+    nm.textContent = s.name;
+    var num = document.createElement('span');
+    num.className = 'cnum';
+    num.textContent = currentStreak(s) + ' 🔥';
+    c.appendChild(dot); c.appendChild(ic); c.appendChild(nm); c.appendChild(num);
+    c.addEventListener('click', function () { focusId = s.id; renderAll(); });
+    box.appendChild(c);
+  });
+}
+
+/* ── the big calendar ── */
+function renderDows() {
+  var box = $('calDows');
+  box.innerHTML = '';
+  DOWS.forEach(function (d) {
+    var el = document.createElement('div');
+    el.className = 'cal-dow';
+    el.textContent = d;
+    box.appendChild(el);
+  });
+}
+$('calPrev').addEventListener('click', function () { view.m--; if (view.m < 0) { view.m = 11; view.y--; } renderAll(); });
+$('calNext').addEventListener('click', function () { view.m++; if (view.m > 11) { view.m = 0; view.y++; } renderAll(); });
+$('calToday').addEventListener('click', function () {
+  var n = new Date();
+  view.y = n.getFullYear(); view.m = n.getMonth();
+  renderAll();
+});
+function toggleDay(s, key) {
+  if (s.mode !== 'checkin') return;
+  var t = todayKey();
+  if (key > t) return;
+  if (key < s.start) { toast('Chuỗi này bắt đầu ' + humanDate(s.start) + '.'); return; }
+  if (s.checkins[key]) delete s.checkins[key];
+  else s.checkins[key] = true;
+  save();
+  renderAll();
+}
+function renderCal() {
+  var t = todayKey();
+  var focusS = focusId === 'all' ? null : byId(focusId);
+  var MAX_LANES = 5; /* All-view: each visible streak owns one fixed lane; beyond that → "+N" pill */
+  $('calTitle').textContent = MONTHS[view.m] + ' ' + view.y;
+  var grid = $('calGrid');
+  grid.innerHTML = '';
+  var off = new Date(view.y, view.m, 1).getDay();
+  for (var i = 0; i < 42; i++) {
+    var d = new Date(view.y, view.m, 1 - off + i);
+    var key = toKey(d);
+    var cell = document.createElement('div');
+    cell.className = 'cal-day';
+    if (d.getMonth() !== view.m) cell.className += ' other';
+    if (key === t) cell.className += ' today';
+    if (key > t) cell.className += ' future';
+    var dn = document.createElement('div');
+    dn.className = 'dnum';
+    dn.textContent = d.getDate();
+    cell.appendChild(dn);
+    if (focusS && focusS.mode === 'checkin' && key <= t && key >= focusS.start) {
+      cell.className += ' clickable';
+      (function (s, k) {
+        cell.addEventListener('click', function () { toggleDay(s, k); });
+      })(focusS, key);
+    }
+    var list = focusS ? [focusS] : store.streaks.filter(function (s) { return !s.hideAll; });
+    var bars = document.createElement('div');
+    bars.className = 'cal-bars';
+    var extraNames = [];
+    list.forEach(function (s, lane) {
+      if (!isActive(s, key)) return;
+      if (!focusS && lane >= MAX_LANES) { extraNames.push(s.name); return; }
+      var bar = document.createElement('div');
+      bar.className = 'bar' + (focusS ? ' big' : '');
+      bar.style.background = s.color;
+      bar.style.top = (focusS ? 13 : lane * 7) + 'px';
+      if (isActive(s, addKey(key, -1))) bar.className += ' cl';
+      if (isActive(s, addKey(key, 1))) bar.className += ' cr';
+      bars.appendChild(bar);
+    });
+    if (extraNames.length) {
+      var more = document.createElement('div');
+      more.className = 'cal-more';
+      more.textContent = '+' + extraNames.length;
+      more.title = 'Cũng hoạt động: ' + extraNames.join(', ');
+      cell.appendChild(more);
+    }
+    cell.appendChild(bars);
+    if (focusS && isActive(focusS, key)) {
+      var run = runEndingAt(focusS, key);
+      if (run === 100 || run === 365) {
+        var ms = document.createElement('span');
+        ms.className = 'cal-ms';
+        ms.textContent = '⭐';
+        cell.appendChild(ms);
+      } else if (run > 0 && run % 7 === 0) {
+        var ms2 = document.createElement('span');
+        ms2.className = 'cal-ms';
+        ms2.textContent = '🔥';
+        cell.appendChild(ms2);
+      }
+    }
+    grid.appendChild(cell);
+  }
+  var allHidden = !focusS && store.streaks.length > 0 &&
+    store.streaks.every(function (s) { return s.hideAll; });
+  $('calHint').textContent = !store.streaks.length
+    ? 'Thêm chuỗi đầu tiên của bạn ở trên — nó sẽ vẽ đường ngay tại đây.'
+    : allHidden
+      ? 'Tất cả chuỗi đang bị ẩn khỏi chế độ xem này — bấm hiện ở một chuỗi để đưa nó trở lại.'
+      : !focusS
+        ? 'Chọn một chuỗi ở trên để check-in hoặc chạm-sửa các ngày của nó.'
+        : focusS.mode === 'checkin'
+          ? 'Chạm vào bất kỳ ngày nào từ ' + humanDate(focusS.start) + ' trở đi để thêm hoặc xóa check-in — kể cả ngày trong quá khứ.'
+          : 'Chuỗi này tự động đếm lên từ ' + humanDate(focusS.start) + ' — không cần check-in.';
+}
+
+/* ── stats band ── */
+function statCard(numHtml, lbl) {
+  var el = document.createElement('div');
+  el.className = 'stat';
+  var n = document.createElement('div');
+  n.className = 'num';
+  n.innerHTML = numHtml;
+  var l = document.createElement('div');
+  l.className = 'lbl';
+  l.textContent = lbl;
+  el.appendChild(n); el.appendChild(l);
+  return el;
+}
+function renderStats() {
+  var box = $('stats');
+  box.innerHTML = '';
+  var focusS = focusId === 'all' ? null : byId(focusId);
+  var denom = monthDenom(view.y, view.m);
+  var monLbl = 'Tiến độ ' + MON_SHORT[view.m];
+  if (focusS) {
+    var cur = currentStreak(focusS);
+    box.appendChild(statCard(cur + ' <small>ngày</small>',
+      focusS.mode === 'checkin' ? 'Chuỗi hiện tại 🔥' : 'Số ngày, vẫn đang đếm 🔥'));
+    box.appendChild(statCard(String(bestStreak(focusS)), 'Chuỗi dài nhất'));
+    box.appendChild(statCard(String(totalCount(focusS)), focusS.mode === 'checkin' ? 'Tổng check-in' : 'Tổng số ngày'));
+    box.appendChild(statCard(denom ? monthCount(focusS, view.y, view.m) + '<small>/' + denom + '</small>' : '–', monLbl));
+    var cc = document.createElement('div');
+    cc.className = 'stat checkin-card';
+    if (focusS.mode === 'checkin') {
+      var done = !!focusS.checkins[todayKey()];
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'checkin-btn' + (done ? ' done' : '');
+      b.textContent = done ? '✓ Đã check-in hôm nay' : '✓ Check-in hôm nay';
+      b.title = done ? 'Chạm lại để hoàn tác check-in hôm nay' : '';
+      b.addEventListener('click', function () { toggleToday(focusS); });
+      cc.appendChild(b);
+    } else {
+      var note = document.createElement('div');
+      note.className = 'stat-note';
+      note.textContent = 'Tự động đếm lên từ ' + humanDate(focusS.start) + '.';
+      cc.appendChild(note);
+    }
+    box.appendChild(cc);
+  } else {
+    var active = 0, monthSum = 0;
+    store.streaks.forEach(function (s) {
+      if (currentStreak(s) > 0) active++;
+      if (s.mode === 'checkin') monthSum += monthCount(s, view.y, view.m);
+    });
+    box.appendChild(statCard(String(store.streaks.length), 'Chuỗi'));
+    box.appendChild(statCard(String(active), 'Đang sống ngay lúc này 🔥'));
+    box.appendChild(statCard(String(monthSum), 'Check-in ' + MON_SHORT[view.m]));
+    var nc = document.createElement('div');
+    nc.className = 'stat checkin-card';
+    var nn = document.createElement('div');
+    nn.className = 'stat-note';
+    nn.textContent = 'Chọn một chuỗi ở trên để check-in, điền bù ngày, ghim, sửa hoặc xuất.';
+    nc.appendChild(nn);
+    box.appendChild(nc);
+  }
+}
+
+/* ── manage list: pin / edit / csv / delete ── */
+function togglePin(s) {
+  var np = !s.pinned;
+  store.streaks.forEach(function (x) { x.pinned = false; });
+  s.pinned = np;
+  save();
+  renderAll();
+  toast(np ? 'Đã ghim — chuỗi này có thể hiện trên các trang hẹn giờ của bạn.' : 'Đã bỏ ghim.');
+}
+function startEdit(s) {
+  editId = s.id;
+  $('stName').value = s.name;
+  $('stStart').value = s.start;
+  $('stStart').disabled = true;
+  selColor = s.color; selIcon = s.icon; selMode = s.mode;
+  $('addBtn').textContent = 'Lưu';
+  $('cancelEdit').classList.add('on');
+  refreshModePills();
+  renderPickers();
+  $('stName').focus();
+  $('addForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function downloadBlob(content, mime, fname) {
+  var blob = new Blob([content], { type: mime });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+}
+function csvFor(s) {
+  if (s.mode === 'countup') return 'start,days_since\n' + s.start + ',' + currentStreak(s) + '\n';
+  return 'date\n' + Object.keys(s.checkins).sort().join('\n') + '\n';
+}
+function slug(n) { return n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'streak'; }
+function renderManage() {
+  var box = $('manage');
+  box.innerHTML = '';
+  store.streaks.forEach(function (s) {
+    var row = document.createElement('div');
+    row.className = 'mrow';
+    var ic = document.createElement('span');
+    ic.className = 'micon';
+    setIconEl(ic, s.icon);
+    var nm = document.createElement('span');
+    nm.className = 'mname';
+    nm.textContent = s.name;
+    var cur = document.createElement('span');
+    cur.className = 'mcur';
+    cur.textContent = currentStreak(s) + ' 🔥';
+    var act = document.createElement('span');
+    act.className = 'mactions';
+    var hb = document.createElement('button');
+    hb.type = 'button';
+    hb.textContent = s.hideAll ? 'hiện' : 'ẩn';
+    hb.title = s.hideAll ? 'Hiện đường của chuỗi này ở chế độ xem Tất cả' : 'Ẩn đường của chuỗi này khỏi chế độ xem Tất cả';
+    hb.addEventListener('click', function () { s.hideAll = !s.hideAll; save(); renderAll(); });
+    var pin = document.createElement('button');
+    pin.type = 'button';
+    pin.className = s.pinned ? 'pinned' : '';
+    pin.textContent = s.pinned ? '📌 đã ghim' : '📌 ghim';
+    pin.setAttribute('aria-label', (s.pinned ? 'Bỏ ghim ' : 'Ghim ') + s.name);
+    pin.addEventListener('click', function () { togglePin(s); });
+    var ed = document.createElement('button');
+    ed.type = 'button';
+    ed.textContent = 'sửa';
+    ed.addEventListener('click', function () { startEdit(s); });
+    var csv = document.createElement('button');
+    csv.type = 'button';
+    csv.textContent = 'csv';
+    csv.setAttribute('aria-label', 'Tải ' + s.name + ' dạng CSV');
+    csv.addEventListener('click', function () { downloadBlob(csvFor(s), 'text/csv', slug(s.name) + '.csv'); });
+    var del = document.createElement('button');
+    del.type = 'button';
+    del.textContent = 'xóa';
+    var delArmed = false, delArmTimer = null;
+    del.addEventListener('click', function () {
+      if (!delArmed) {
+        delArmed = true;
+        del.textContent = 'chắc?';
+        del.className = 'arm';
+        delArmTimer = setTimeout(function () {
+          delArmed = false;
+          del.textContent = 'xóa';
+          del.className = '';
+        }, 3000);
+        return;
+      }
+      clearTimeout(delArmTimer);
+      var idx = store.streaks.indexOf(s);
+      store.streaks.splice(idx, 1);
+      save();
+      renderAll();
+      toast('Đã xóa "' + s.name + '".', function () {
+        store.streaks.splice(Math.min(idx, store.streaks.length), 0, s);
+        save();
+        renderAll();
+      });
+    });
+    act.appendChild(pin); act.appendChild(hb); act.appendChild(ed); act.appendChild(csv); act.appendChild(del);
+    row.appendChild(ic); row.appendChild(nm); row.appendChild(cur);
+    if (s.mode === 'checkin') {
+      var mc = document.createElement('button');
+      mc.type = 'button';
+      var doneToday = !!s.checkins[todayKey()];
+      mc.className = 'mcheck' + (doneToday ? ' done' : '');
+      mc.textContent = doneToday ? '✓ xong hôm nay' : '✓ check-in';
+      mc.title = doneToday ? 'Chạm lại để hoàn tác check-in hôm nay' : 'Check-in cho hôm nay';
+      mc.setAttribute('aria-label', 'Check in ' + s.name + ' cho hôm nay');
+      mc.addEventListener('click', function () { toggleToday(s); });
+      row.appendChild(mc);
+    } else {
+      var md = document.createElement('span');
+      md.className = 'mmode-plain';
+      md.textContent = 'count-up';
+      row.appendChild(md);
+    }
+    row.appendChild(act);
+    if (s.hideAll) row.className += ' off';
+    box.appendChild(row);
+  });
+}
+
+/* ── export / import ── */
+$('exportBtn').addEventListener('click', function () {
+  var payload = {
+    app: 'tomatotimers-streaks',
+    version: 1,
+    exported: new Date().toISOString(),
+    streaks: store.streaks
+  };
+  downloadBlob(JSON.stringify(payload, null, 2), 'application/json', 'tomatotimers-streaks-' + todayKey() + '.json');
+  toast('Đã tải bản sao lưu.');
+});
+$('importBtn').addEventListener('click', function () { $('importFile').click(); });
+$('importFile').addEventListener('change', function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (!f) return;
+  var r = new FileReader();
+  r.onload = function () {
+    try {
+      var data = JSON.parse(String(r.result));
+      if (!data || !Array.isArray(data.streaks)) throw new Error('bad shape');
+      var added = 0, updated = 0;
+      data.streaks.forEach(function (x) {
+        var s = normStreak(x);
+        if (!s) return;
+        var old = byId(s.id);
+        if (old) {
+          var i = store.streaks.indexOf(old);
+          store.streaks.splice(i, 1, s);
+          updated++;
+        } else { store.streaks.push(s); added++; }
+      });
+      if (!added && !updated) throw new Error('nothing valid');
+      save();
+      renderAll();
+      toast('Đã nhập ' + (added + updated) + ' chuỗi' +
+        (updated ? ' (' + updated + ' đã cập nhật)' : '') + '.');
+    } catch (e) {
+      toast('File đó có vẻ không phải bản sao lưu chuỗi.');
+    }
+  };
+  r.readAsText(f);
+});
+
+/* ── presets (empty state) ── */
+var PRESETS = [
+  { name: 'Tập buổi sáng', icon: '🏃', color: '#DE4B3A', mode: 'checkin' },
+  { name: 'Học mỗi ngày', icon: '📚', color: '#4A90D9', mode: 'checkin' },
+  { name: 'Không đường', icon: '🍎', color: '#7FA653', mode: 'checkin' },
+  { name: 'Số ngày bỏ thuốc', icon: '🚭', color: '#E0A458', mode: 'countup' }
+];
+function initPresets() {
+  var box = $('presetRow');
+  PRESETS.forEach(function (p) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'preset-pill';
+    b.textContent = p.icon + ' ' + p.name;
+    b.addEventListener('click', function () {
+      $('stName').value = p.name;
+      selIcon = p.icon; selColor = p.color; selMode = p.mode;
+      refreshModePills();
+      renderPickers();
+      $('stName').focus();
+      $('addForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    box.appendChild(b);
+  });
+  /* demo data: 3 realistic streaks so first-time visitors (and Andy) can see
+     a painted calendar — deletable like any other streak */
+  var demo = document.createElement('button');
+  demo.type = 'button';
+  demo.className = 'preset-pill';
+  demo.textContent = '✨ Tải 3 chuỗi mẫu';
+  demo.addEventListener('click', loadExamples);
+  box.appendChild(demo);
+}
+function loadExamples() {
+  var t = todayKey();
+  function daysAgoList(ns) {
+    var o = {};
+    ns.forEach(function (n) { o[addKey(t, -n)] = true; });
+    return o;
+  }
+  store.streaks.push(
+    { id: uid(), name: 'Chạy bộ buổi sáng', mode: 'checkin', color: '#DE4B3A', icon: '🏃',
+      start: addKey(t, -12), checkins: daysAgoList([12, 11, 10, 9, 7, 6, 5, 4, 3, 2, 1]),
+      pinned: false, created: Date.now() },
+    { id: uid(), name: 'Đọc 20 trang', mode: 'checkin', color: '#4A90D9', icon: '📚',
+      start: addKey(t, -20), checkins: daysAgoList([19, 18, 17, 3, 2, 1, 0]),
+      pinned: false, created: Date.now() },
+    { id: uid(), name: 'Số ngày không cà phê', mode: 'countup', color: '#7FA653', icon: '☕',
+      start: addKey(t, -45), checkins: {}, pinned: false, created: Date.now() }
+  );
+  save();
+  renderAll();
+  toast('Đã thêm 3 chuỗi mẫu — xóa bất cứ lúc nào từ danh sách bên dưới.');
+}
+
+/* ── render everything ── */
+function renderAll() {
+  var has = store.streaks.length > 0;
+  $('emptyState').style.display = has ? 'none' : 'block';
+  $('chips').style.display = has ? 'flex' : 'none';
+  $('calWrap').style.display = 'block'; /* calendar is the hero — always visible */
+  $('stats').style.display = has ? 'flex' : 'none';
+  $('manage').style.display = has ? 'block' : 'none';
+  $('dataRow').style.display = has ? 'flex' : 'none';
+  if (focusId !== 'all' && !byId(focusId)) focusId = 'all';
+  renderCal();
+  if (!has) return;
+  renderChips();
+  renderStats();
+  renderManage();
+}
+
+/* ── boot ── */
+$('stStart').value = todayKey();
+renderDows();
+renderPickers();
+refreshModePills();
+initPresets();
+renderAll();
+})();
+</script>
+
+<!-- BuySellAds loader — same as every page -->
+<script>
+(function () {
+  var bsa_optimize = document.createElement('script');
+  bsa_optimize.type = 'text/javascript';
+  bsa_optimize.async = true;
+  bsa_optimize.src = 'https://cdn4.buysellads.net/pub/tomatotimers.js?' + (new Date() - new Date() % 600000);
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+})();
+</script>
+
+<style>
+    /* Sidebar ad wrappers — pinned to the screen edges at ≥992px,
+       same as the other timer pages */
+    .ads-lg-only { display: none; }
+    @media (min-width: 992px) { .ads-lg-only { display: block; } }
+    .bsa-left-sidebar-wrapper {
+        position: absolute; left: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
+    .bsa-right-sidebar-wrapper {
+        position: absolute; right: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
+</style>
+
+<!-- Tomatotimers_S2S_Leftsidebar_ROS -->
+<div class="bsa-left-sidebar-wrapper ads-lg-only">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785230759691-0_123456"></div>
+</div>
+<!-- Tomatotimers_S2S_Rightsidebar_ROS -->
+<div class="bsa-right-sidebar-wrapper ads-lg-only">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785233220314-9_123456"></div>
+</div>
+
+</body>
+</html>
