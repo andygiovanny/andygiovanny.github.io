@@ -87,6 +87,8 @@
   on-page text exactly.
 - Mascot art is handled by the user — pages use a `<!-- MASCOT PLACEHOLDER -->`
   comment where art goes.
+- New video cards go ON TOP of the video grid (first card), never appended
+  at the bottom — newest content leads the stack.
 
 ## Current state
 
@@ -121,7 +123,13 @@ belong in the work log below.
   (`top: 300px`) — English moved to `top: 80px` on 2026-10-29; waiting for
   Andy's live review before porting. Hreflang: VERIFIED COMPLETE
   2026-10-27. Custom-timer feature set: COMPLETE (2026-10-27).
-- **days-until (NEW TOOL, English prototype):** built 2026-10-30 —
+- **days-until + streaks (tools, ALL 5 languages): SHIPPED 2026-11-04** —
+  both tools live at `days-until/` and `streaks/` in en/id/es/pt/vi with full
+  SEO sets; welcome seeds (pinned +30d countdown, pinned Pomodoro Streak)
+  teach the pin feature on first visit; pin chips on all 25 timer pages.
+  sitemap.xml = 40 URLs. Next: Andy reviews id wording, commits on
+  `development`, then a Streak Counter card for the Tools sections.
+- **days-until (first tool) history:** built 2026-10-30 —
   multi-countdown board at `days-until/index.html`, prototype living on the
   `development` branch until Andy approves. Multi-countdown board with emoji
   icons, color coding, pin flag, share links, undo delete.
@@ -134,6 +142,182 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-04 (Kimi Work, pt 32):** BRANCH RESCUE — master and development
+  had diverged: master held the late-Oct fixes (translated pages' ads at
+  top:300px + 1400px gate, 1090px column cap, 400px todo-gap removal) while
+  development (branched earlier) held all of Nov 3–4 (streaks, chips, Tools
+  sections, blueprint card). Andy switched to master, saw the new files
+  "disappear" (they were only on development) — nothing was ever deleted.
+  Kimi ran `git merge development` on master locally (Andy's go, he commits
+  + pushes himself): all 20 translated pages auto-merged clean; only
+  AGENTS.md conflicted (HEAD side empty — kept development's pt 21–31 log
+  entries). Also untracked `_work/` + `_backups/` from the index (Andy's
+  stray "a" commit had pushed them; .gitignore now covers them). Verified
+  post-merge: zero conflict markers repo-wide, every translated page has
+  BOTH the Oct fixes AND the Nov work, days-until intact on all 5
+  languages, 271 inline scripts node --check, JSON-LD parses. LESSON:
+  development must be created fresh from master (or merged back) after
+  every publish — never let it sit behind master.
+- **2026-11-04 (Kimi Work, pt 31):** Tools section ported to all 24
+  translated pages (id/es/pt/vi × index, 52-17, 20-20-20-rule, flowtime,
+  custom-timer, ambience) — closes the pt 30 gap. Section wording reused
+  verbatim from each language's streaks page Tools section (heading Alat /
+  Herramientas / Ferramentas / Công Cụ + the approved Days Until card),
+  with a NEW translated Streak Counter card appended (heading stays English,
+  text + alt translated, links to /<lang>/streaks/). Inserted right after
+  the other-rhythm section (timers-section on ambience). ALSO: the EN
+  ambience tt-cards width fix (pt 17, width:100% max-width:1200px) finally
+  ported to the 4 translated ambience pages — they still had the old 900px
+  shrink-wrap bug. Pure HTML/CSS, verified: 1 tools section + both cards +
+  language-prefixed links on all 24.
+
+- **2026-11-04 (Kimi Work, pt 30):** Streak Counter card added to the Tools
+  section of all 6 ENGLISH pages (index, 52-17, 20-20-20-rule, flowtime,
+  ambience, custom-timer), right after the Days Until card — same tt-card
+  format. Card art `assets/images/streaks-card.png` = monocle duck
+  (128px icon upscaled to 480² transparent, 141 KB; original hi-res zip is
+  gone from the Desktop, so the icon was the best source). English only per
+  the rule — translations pending Andy's OK. NOTE: translated timer pages
+  still have NO Tools section at all (needs the Days Until card too when
+  that port happens).
+
+- **2026-11-04 (Kimi Work, pt 29):** new video card on the EN main page grid
+  — "Blueprint for success!" (https://youtu.be/zKWmAhtYq-o) with preview
+  `assets/gifs/blueprint.mp4` (Andy's "2 sec.mp4" 685 KB → 480p H.264, no
+  audio, faststart → 55 KB, frame-checked). Card sits ON TOP of the grid
+  (first position) — Andy's new standing rule, now in Site conventions.
+  English only per the English-first rule — PORTED same day on Andy's OK:
+  blueprint card added to the top of id/es/pt/vi index grids with translated
+  aria-labels. Also: added `.gitignore` (`_work/`, `_backups/` — local-only
+  per the rules, no longer noise in GitHub Desktop) and resolved a stale
+  unmerged index entry on AGENTS.md (leftover from the Nov 1 stash pop;
+  file content was already correct, `git add` marked it resolved).
+
+- **2026-11-04 (Kimi Work, pt 28):** STREAKS FULL ROLLOUT — all 3 jobs from
+  Andy's go. (a) **Translations shipped**: `id|es|pt|vi/streaks/index.html`
+  built from the EN master via `_work/streaks_translations.py` (122
+  exact-match rows per language, count-asserted, aborts on miss) — full SEO
+  set, JSON-LD ×3, calendar/month strings, seed name translated (Streak
+  Pomodoro / Racha Pomodoro / Sequência Pomodoro / Chuỗi Pomodoro); product
+  name "Streak Counter" stays English. EN streaks page gained the tt_lang
+  redirect, 6-link hreflang, 5-option lang dropdown. sitemap.xml 35 → 40
+  URLs. (b) **Welcome seed everywhere**: on a true first visit
+  (`tt_streaks_v1 == null`) the streaks page AND every timer page's streak
+  chip seed one pinned "Pomodoro Streak" (checkin mode, today pre-checked,
+  red, duck-tomato icon) — never re-seeds once removed. (c) **Streak pin
+  chip on all 25 timer pages**: EN index hand-built (pt 27), the other 24
+  via `_work/streak_chip_port.py` — chip markup + IIFE (translated title/
+  count format/link per language) + `#streakChip { margin-top: 8px }` CSS.
+  FIX CAUGHT: the port script anchored on the CSS comment mentioning
+  `tt_countdowns_v1`, so the chip `<div>`+script landed inside `<head>` on
+  all 24 pages — moved them into the body right after the countdown-chip
+  IIFE via a fixer script (backups `_backups/2026-11-04-streakchip-fix/`).
+  Verified: 235 inline JS blocks node --check, JSON-LD parses everywhere,
+  id chip spot-checked (translated strings, `/id/streaks/` link, translated
+  seed). Streak chip CSS tweak same day: `#streakChip` got `max-width: 260px;
+  padding-right: 18px` (pt translation "Sequência de N dias" was touching the
+  chip's right edge at the old 215px cap). Uncommitted. KNOWN GAP to flag: the Tools card section (Days Until
+  card) exists only on the 6 English pages — translated timer pages never
+  got it; Streak Counter card not added anywhere yet. Next: Andy reviews id
+  wording first, then commits on `development`.
+- **2026-11-04 (Kimi Work, pt 27):** STREAK PIN CHIP on the English main
+  page (`index.html` only, per English-first). Second `.pin-chip`
+  (`#streakChip`) stacks below the days-until chip in the same col under the
+  mode tabs — identical format/size/theme (reuses all `.pin-chip` CSS incl.
+  dark/classic; only new rule `#streakChip { margin-top: 8px }`). Its own
+  IIFE reads `tt_streaks_v1`, takes the first pinned streak, and shows icon
+  (emoji or `img:` mascot) + name + "🔥 N-day streak" (N in the accent
+  `.pc-days` color; dead runs / not-yet-started streaks just show
+  "🔥 0-day streak" — longer fallback texts overflowed the chip). Streak math copied verbatim from
+  the streaks page (count-up = days since start; check-in = run ending
+  today, falling back to yesterday while today is unchecked). Click/Enter/
+  Space → `/streaks/`; updates on `storage` events, no pin → display:none,
+  no 1s ticker needed (daily granularity). Verified: 12 JS blocks node
+  --check, 3 JSON-LD parse, 8-assertion math test (countup boundaries,
+  alive-through-yesterday, dead runs, gaps). Uncommitted. Next: Andy
+  pin-tests in Phoenix (pin a streak → reload main page), then ports to
+  52-17 / 20-20-20-rule / flowtime / custom-timer on his OK.
+- **2026-11-04 (Kimi Work, pt 26):** streaks rev 5 — CALENDAR LANES (fixes
+  the "calendar explodes with many streaks" problem). All view now assigns
+  every visible streak a FIXED lane (index in the hideAll-filtered list), so
+  each streak's line runs in its own row straight across the month instead
+  of bars re-stacking per cell. Cap = 5 lanes (MAX_LANES); active streaks
+  beyond lane 5 roll up into a "+N" pill at the cell's top-right (hover
+  tooltip lists their names). Bars are now absolutely positioned per lane
+  (`.cal-bars` fixed 35px, lane step 7px; cl/cr connection overhangs moved
+  from margins to left/right offsets); focus view's single big bar centered
+  in the lane area (top 13px). Mobile cells 48→56px so 5 lanes fit under
+  the day number. Explainer paragraph documents the 5-line cap (FAQ/JSON-LD
+  didn't claim otherwise — untouched). ALSO: filter chips vertical centering
+  fixed — chip is now a fixed 30px-high flex row, all spans line-height 1
+  (dot/emoji/name/count sit on one optical center); rev 5b: Baloo glyphs
+  ride high in the em box, so chip text spans (`.cname`/`.cnum`, incl. the
+  All chip, now span-wrapped) get `transform: translateY(1.5px)` — dot and
+  icon stay geometrically centered, text drops to optical center. All 4 JS blocks node
+  --check, 3 JSON-LD parse. Uncommitted.
+- **2026-11-04 (Kimi Work, pt 25):** streaks rev 4 — CHECK-INS NOW TOGGLE:
+  clicking ✓ again (big stats-band button AND per-row mini button) undoes
+  today's check-in via shared `toggleToday()` (toast confirms either way);
+  done state is a green `.done` style instead of a disabled button. Manage
+  row action order is now pin → hide → edit → csv → delete (pin leftmost).
+  Filter chips row centered (`.chips { justify-content: center }`). New
+  streaks default to the monocle duck mascot (`DEFAULT_ICON =
+  'img:duck-monocle'`, was 🔥). Also resolved leftover git stash-conflict
+  markers in this file (kept the stashed pt 20–24 entries, deleted only the
+  3 marker lines; full-repo scan = zero markers). Main script node --check
+  passes. Uncommitted, `streaks/` still untracked — Andy must be on
+  `development` before committing. Next: wire the streak pin chip into the
+  5 English timer pages on Andy's go.
+- **2026-11-04 (Kimi Work, pt 24):** streaks rev 3 — tiny chip eye toggle
+  REMOVED (too small to hit); hide/show is now a text button in the manage
+  list before pin (hidden rows dim: icon/name/count at 45%). The fake
+  "check-in" mode badge Andy tried to click is now a REAL per-row action:
+  "✓ check in" mini-button on check-in streaks (green "✓ done today" when
+  used — quick check-in without focusing); count-up rows show a plain
+  borderless "count-up" label so nothing looks clickable that isn't.
+  Explainer + all-hidden hint reworded to match. node --check passes.
+- **2026-11-03 (Kimi Work, pt 23):** streaks rev 2 — ALL-VIEW FILTERING:
+  every streak chip gets a 👁/🚫 toggle (persisted as `hideAll` on the
+  streak object) that hides its line from the All view; hidden chips dim,
+  streak keeps counting, hint covers the all-hidden case; explainer How
+  It Works paragraph documents it (FAQ/JSON-LD untouched). DELETE
+  CONFIRMATION: delete is now two-step — first click turns the button red
+  "sure?" for 3s, second click deletes (undo toast still there as backup).
+  Main script node --check passes.
+- **2026-11-03 (Kimi Work, pt 22):** streaks rev 1 after Andy's first look —
+  lang dropdown globe padding restored (was overlapping "English"); stats
+  band cards now flex-centered vertically (numbers looked top-glued next
+  to the taller note card); CALENDAR IS NOW ALWAYS VISIBLE even with zero
+  streaks (differentiates from days-until's hidden board — empty calendar
+  shows "Add your first streak above — it will draw its line right here.",
+  empty-state presets move below it); new "✨ Load 3 example streaks" pill
+  in the empty state creates deletable demo data relative to today
+  (Morning run 🏃 7-day run after a gap, Read 20 pages 📚 checked in
+  today, Days without coffee ☕ count-up 45 days). Main script node --check
+  passes.
+- **2026-11-03 (Kimi Work, pt 21):** STREAKS PROTOTYPE (English only,
+  uncommitted, untracked `streaks/index.html` — Andy to switch to
+  `development` BEFORE committing). General streak counter, deliberately
+  NOT card-styled like days-until: hero = one big month calendar where
+  every streak draws a colored line (bars connect across consecutive day
+  cells, Google-Calendar style); filter chips (All + per-streak) above,
+  stats band + manage list + export/import below. Two modes: check-in
+  (daily tap, miss = current run breaks, best streak kept forever,
+  BACKFILL allowed by tapping any past day ≥ start — Andy's call: "no
+  reason to punish user") and count-up (days-since, zero maintenance).
+  Per streak: name/icon (12 emoji + 16 mascots)/color (same 6) / start
+  date; milestones 🔥 every 7 days, ⭐ at 100/365 in focus view. Storage
+  `tt_streaks_v1` (checkins as date-key map). Export all → JSON, import
+  merges by id, per-streak CSV. Pin flag stored per streak (📌 in manage
+  list) — timer-page chip NOT wired yet (comes after Andy approves the
+  page). No share links, no welcome seed, no translations/hreflang/
+  tt_lang redirect yet (lang dropdown = English only). Full SEO set
+  (title/description/canonical/og/JSON-LD WebApp+Breadcrumb+FAQ matching
+  visible text, FAQ answers verbatim). Verified: 4 JS blocks node --check,
+  3 JSON-LD parse, 21-assertion math test (alive/dead streaks, backfill
+  healing, best-streak survival, month counts, countup boundaries).
+  Next: Andy reviews in Phoenix → pin chip wiring on timer pages →
+  share links? → welcome seed? → translations.
 - **2026-11-01 (Kimi Work, pt 20):** HOTFIX — live pin chip rendered
   "transparent" (text only, no card). Cause: the development→master merge
   committed UNRESOLVED conflict markers (`<<<<<<< HEAD` / `=======` /
