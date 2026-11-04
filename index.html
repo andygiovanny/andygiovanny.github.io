@@ -389,7 +389,7 @@
     /* Pinned countdown chip (days-until) — floats left of the mascot on wide
        screens, tucks under it centered on narrow ones. Hidden unless a pin
        exists in localStorage 'tt_countdowns_v1'. */
-    .pin-chip { display: flex; align-items: center; gap: 10px; width: max-content;
+    .pin-chip { display: inline-flex; vertical-align: top; align-items: center; gap: 10px; width: max-content;
         max-width: 215px; background: #fffdf7; border: 1px solid #E2D0AF;
         border-left: 5px solid #DE4B3A; border-radius: 14px; padding: 8px 12px 8px 10px;
         cursor: pointer; box-shadow: 0 3px 10px rgba(88, 36, 14, .08); text-align: left; }
@@ -404,7 +404,7 @@
         font-variant-numeric: tabular-nums; white-space: nowrap; margin-top: 1px; }
     .pin-chip .pc-time .pc-days { color: #DE4B3A; }
     .pin-chip { margin: 14px 0 2px; }
-    #streakChip { margin-top: 8px; max-width: 260px; padding-right: 18px; }
+    #streakChip { margin-left: 8px; max-width: 260px; padding-right: 18px; }
     body.theme-dark .pin-chip { background: #2a2018; border-color: #3a2d20;
         box-shadow: 0 3px 10px rgba(0,0,0,.3); }
     body.theme-dark .pin-chip:hover { border-color: #E0A458; }
@@ -1402,7 +1402,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         document.getElementById('pcName').textContent = pinned.name;
         setIcon(document.getElementById('pcIcon'), pinned.icon);
         if (pinned.color) chip.style.borderLeftColor = pinned.color;
-        chip.style.display = 'flex';
+        chip.style.display = 'inline-flex';
         render();
         if (timer) clearInterval(timer);
         timer = setInterval(render, 1000);
@@ -1513,7 +1513,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         timeEl.appendChild(dEl);
         timeEl.appendChild(document.createTextNode(' streak'));
         if (s.color) chip.style.borderLeftColor = s.color;
-        chip.style.display = 'flex';
+        chip.style.display = 'inline-flex';
     }
     chip.addEventListener('click', function () { window.location.href = '/streaks/'; });
     chip.addEventListener('keydown', function (ev) {

@@ -157,7 +157,13 @@ what changed (file names), what's next.
   BOTH the Oct fixes AND the Nov work, days-until intact on all 5
   languages, 271 inline scripts node --check, JSON-LD parses. LESSON:
   development must be created fresh from master (or merged back) after
-  every publish — never let it sit behind master.
+  every publish — never let it sit behind master. LATE ADD to the merge:
+  pin chips on the 5 main index pages now sit SIDE BY SIDE (Andy's catch
+  during merge review) — `.pin-chip` display:inline-flex + vertical-align:top,
+  `#streakChip` margin-top:8px → margin-left:8px, and both chip IIFEs restore
+  'inline-flex' instead of 'flex'; they wrap to stacked on narrow screens.
+  Sub-pages keep stacking (their header-left column is only 350px — two
+  chips can't fit side by side).
 - **2026-11-04 (Kimi Work, pt 31):** Tools section ported to all 24
   translated pages (id/es/pt/vi × index, 52-17, 20-20-20-rule, flowtime,
   custom-timer, ambience) — closes the pt 30 gap. Section wording reused
