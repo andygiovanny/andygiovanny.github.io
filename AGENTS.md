@@ -73,8 +73,22 @@
 - **Indonesian (`id/`) is the pilot language** — wording is always reviewed
   and approved there first, before the other translations.
 
-## Site conventions
+## Model-efficiency policy (Andy's standing rule, 2026-11-06)
 
+- **Flow for EVERY task:** (1) discuss what to build → (2) Kimi states the
+  recommended model + plan → (3) Andy gives the go → (4) Kimi builds. No
+  building without Andy's confirmation, and the model recommendation always
+  comes BEFORE the go, not at execution time.
+- Default mode: LIGHT (K2.8). Adequate for ~70% of the work — CSS tweaks,
+  translation ports, link swaps, work-log upkeep.
+- Medium: new feature builds, multi-file refactors, visible UI bug fixes.
+- Heavy ONLY for: git/branch/repo mysteries (files "vanishing", diverged
+  branches, GitHub Desktop state), bugs that survive two fix attempts, or
+  brand-new tool architecture.
+- The human switches models via the model picker in the same conversation;
+  Kimi names the right mode during the plan step of any non-trivial request.
+
+## Site conventions
 - Static site, no build step. Vanilla JS, one IIFE per page, no frameworks.
 - The user views pages at ~140% browser zoom — verify layouts hold up there.
 - Timer bar controls are locked to 34px height with inline SVG icons
@@ -142,6 +156,23 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-06 (Kimi Work):** pin-chip height fix — measured live in the
+  browser (WebBridge): main-page chip was already the slimmer one (58.8px);
+  sub-page chips were bloated to 78.3px because Baloo Tammudu's default
+  line box is ~2.2em (a 14px line in a 31px box). Fix: explicit
+  `line-height: 1.5` on `.pin-chip .pc-name` + `.pc-time` on the 4 ENGLISH
+  sub-pages → both now icon-height driven (~57px), matching the main page.
+  Pure CSS, no markup/JS. Diagnosis method worth remembering: don't trust
+  screenshots with unknown zoom — measure getBoundingClientRect on both
+  pages and normalize by logo width. Backups `_backups/2026-11-06-chip-lh/`.
+  PORTED same day on Andy's OK to all 16 translated sub-pages (id/es/pt/vi ×
+  the 4 timers) — 16/16 applied, all chips now uniform ~57px site-wide.
+- **2026-11-06 (Kimi Work):** model-efficiency policy added to AGENTS.md —
+  standing rule per Andy: default LIGHT (K2.8), and the flow for EVERY task
+  is discuss → Kimi states recommended model + plan → Andy's go → build.
+  Light for CSS tweaks/ports, medium for new builds/refactors, heavy
+  reserved for git mysteries and unsolved bugs. No page files touched;
+  AGENTS.md change for Andy to commit with the next push.
 - **2026-11-05 (Kimi Work, pt 35):** pin-row PORTED to all 16 translated
   sub-pages (id/es/pt/vi × 52-17, 20-20-20-rule, flowtime, custom-timer) on
   Andy's OK — identical move as pt 34 via `_work/pinrow_port_translations.py`
