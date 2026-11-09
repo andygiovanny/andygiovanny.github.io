@@ -101,6 +101,16 @@
   on-page text exactly.
 - Mascot art is handled by the user — pages use a `<!-- MASCOT PLACEHOLDER -->`
   comment where art goes.
+- **New ambience sounds are NEVER Studio-only.** Every new sound added to the
+  Ambience Studio must ALSO be registered in the `SOUNDS` list of every timer
+  page (main index + 52-17 + 20-20-20-rule + flowtime, all 5 languages),
+  otherwise user-made presets containing it play that layer as SILENCE on
+  the timers. Path convention: main page uses relative `ambience/audio/<id>.ogg`,
+  sub-pages use root-absolute `/ambience/audio/<id>.ogg`. EXCEPTION:
+  custom-timer builds audio URLs straight from the sound id
+  (`buildSoundUrl`) — no SOUNDS list to update (its `ambienceSounds` var is
+  dead code). The Studio page itself needs the preset entry (id/name/file/
+  icon — keep icon filename lowercase, the live host is case-sensitive).
 - New video cards go ON TOP of the video grid (first card), never appended
   at the bottom — newest content leads the stack.
 
@@ -156,6 +166,26 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-09 (Kimi Work):** Classroom sound made usable in timer presets —
+  added `{ id:'classroom', ... }` to the SOUNDS list of all 20 timer pages
+  (main index + 52-17 + 20-20-20-rule + flowtime × en/id/es/pt/vi). Why:
+  dropdowns show user combos synced from shared storage, but each page can
+  only PLAY sounds listed in its own SOUNDS array — unlisted = silent layer.
+  custom-timer exempt (builds URLs by id; its ambienceSounds var is dead
+  code). Main pages: relative path; sub-pages: `/ambience/` absolute. 204
+  inline JS blocks node --check. Standing rule added to Site conventions:
+  new sounds must always be registered on every timer page, never
+  Studio-only. Backups `_backups/2026-11-09-classroom-sounds/`.
+- **2026-11-09 (Kimi Work):** new "Classroom" ambience preset ported to all 4
+  translated ambience pages (id "Ruang Kelas" / es "Aula" / pt "Sala de Aula"
+  / vi "Lớp học" — Andy to review id wording). Andy added the sound + EN
+  preset himself (`audio/classroom.ogg`, `icons/classroom.svg`). Translations
+  reference `/ambience/...` root-absolute paths so no asset copies needed.
+  BUGFIX: EN preset pointed at `icons/Classroom.svg` (capital C) but the file
+  is lowercase — would 404 on the live Linux host; path corrected.
+  5 pages verified: preset present, 36 inline JS blocks node --check.
+  Backups `_backups/2026-11-09-classroom/`. New audio+icon files are untracked
+  — Andy commits them with the pages.
 - **2026-11-06 (Kimi Work):** pin-chip height fix — measured live in the
   browser (WebBridge): main-page chip was already the slimmer one (58.8px);
   sub-page chips were bloated to 78.3px because Baloo Tammudu's default
