@@ -2439,7 +2439,37 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 </div>
 
 
+<script src="assets/js/ttstats.js?v=1.0"></script>
 <script src="assets/js/tomato.js?v=1.0"></script>
+<script>
+/* Stats wiring v1 — wraps tomato.js start/stop so real focus/break sessions
+   flow into ttStats. Partial sessions count (you focused that long); junk
+   under 10s is dropped by the recorder itself. */
+(function () {
+    if (!window.ttStats) return;
+    if (typeof window.startTimer !== 'function' || typeof window.stopTimer !== 'function') return;
+    var TM = 'pomodoro';
+    var armed = null;
+    function phaseKind() {
+        return (window.isShortCliked === true || window.isLongClicked === true) ? 'break' : 'focus';
+    }
+    function flush(now) {
+        if (!armed) return;
+        window.ttStats.recordSession(TM, armed.k, armed.s, now - armed.s);
+        armed = null;
+    }
+    var _start = window.startTimer, _stop = window.stopTimer;
+    window.startTimer = function () {
+        if (!armed) armed = { k: phaseKind(), s: Date.now() };
+        _start();
+    };
+    window.stopTimer = function () {
+        flush(Date.now());
+        _stop();
+    };
+    window.addEventListener('pagehide', function () { flush(Date.now()); });
+})();
+</script>
 <script src="assets/js/jquery-confirm/dist/jquery-confirm.min.js"></script>
 <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59bf5fb7954a0abb"></script>
     
@@ -3665,6 +3695,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         var t = getTask(id);
         if (!t) return;
         t.done = !t.done;
+        if (t.done && window.ttStats) window.ttStats.recordTask('pomodoro', Date.now());
         if (t.done && state.activeId === id) {
             state.activeId = null;   // drain stops; timer itself keeps running
         }
@@ -3740,6 +3771,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         document.getElementById('tm_zero_done').addEventListener('click', function () {
             var task = zeroPromptFor ? getTask(zeroPromptFor) : null;
             if (task) task.done = true;
+            if (window.ttStats) window.ttStats.recordTask('pomodoro', Date.now());
             state.activeId = null;
             zeroPromptFor = null;
             hideZeroOverlay();

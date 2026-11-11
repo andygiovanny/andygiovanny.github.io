@@ -78,7 +78,10 @@
 - **Flow for EVERY task:** (1) discuss what to build → (2) Kimi states the
   recommended model + plan → (3) Andy gives the go → (4) Kimi builds. No
   building without Andy's confirmation, and the model recommendation always
-  comes BEFORE the go, not at execution time.
+  comes BEFORE the go, not at execution time. Read-only investigation is fine
+  before the go; writing files is not. When Andy asks "are you ready?", Kimi
+  answers and STOPS — the human may need time to switch models, and only an
+  explicit "go / ok / do it" starts the build.
 - Default mode: LIGHT (K2.8). Adequate for ~70% of the work — CSS tweaks,
   translation ports, link swaps, work-log upkeep.
 - Medium: new feature builds, multi-file refactors, visible UI bug fixes.
@@ -153,6 +156,11 @@ belong in the work log below.
   teach the pin feature on first visit; pin chips on all 25 timer pages.
   sitemap.xml = 40 URLs. Next: Andy reviews id wording, commits on
   `development`, then a Streak Counter card for the Tools sections.
+- **stats (Phase 1 of 3, EN only, 2026-11-10):** shared recorder
+  `assets/js/ttstats.js` + wired main pomodoro + EN page at `stats/`
+  (segments, 14-day chart, per-technique shares, demo loader). Later:
+  recorder on other 24 timer pages, pin chips (medium), translations
+  (light).
 - **days-until (first tool) history:** built 2026-10-30 —
   multi-countdown board at `days-until/index.html`, prototype living on the
   `development` branch until Andy approves. Multi-countdown board with emoji
@@ -166,6 +174,51 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-11 (Kimi Work):** stats page load animation (light model, Andy's
+  go) — the 14-day chart bars now grow up on every page load (scaleY from the
+  baseline, 55ms stagger per day left→right, day labels fade in after),
+  empty-day ticks and the per-technique share bars animate too (width 0→%,
+  120ms stagger per row). Re-renders (segment tabs, demo load, cross-tab
+  storage sync) replay the animation — it reads as feedback, not noise.
+  `prefers-reduced-motion` disables all of it. CSS + inline delays in
+  `stats/index.html` only; 3 inline scripts node --check. Uncommitted.
+- **2026-11-10 (Kimi Work):** STATS PHASE 1 (Andy's go, K3.1 Pro High) —
+  four agreed tasks, all verified. (1) Shared recorder `assets/js/ttstats.js`
+  (new file): `ttStats.recordSession(timerId,'focus'|'break',startMs,durMs)`
+  + `recordTask(timerId,ts)` → localStorage `tt_stats_v1` {v:1,s:[],t:[]};
+  caps 8000 sessions / 4000 tasks (drop oldest), <10s sessions dropped, quota
+  overflow drops oldest half and retries once, then fails silently — stats
+  must never break a timer. Pure helpers `report(from,to?)` (4 standard vars
+  per Andy: Focus / Breaks / Tasks / Sessions, plus perTimer breakdown) and
+  `dailySeries(days)` (oldest→today, sessions bucketed by start day). Timer
+  ids: pomodoro, 52-17, 202020, flowtime, custom. (2) Main page wired: script
+  include + wrapper IIFE after tomato.js that intercepts window.startTimer/
+  stopTimer (verified: play/pause via onPlayClick→onStartTimer, reset,
+  mode switches and loop advances all funnel through them) + 2 recordTask
+  hooks in toggleDone and the zero-estimate done handler. (3) EN stats page
+  `stats/index.html` (new, untracked): 4 segment tabs (Today/Week/Month/All),
+  4 hero cards, 14-day stacked focus+break bar chart, per-technique share
+  bars, "✨ Load example data" pill (seeded RNG, 42 days, written through the
+  recorder so caps apply), two-step Clear all, storage-event cross-tab sync;
+  full SEO set + JSON-LD ×3 (FAQ matches visible text), gtag, BSA loader +
+  both side zones, Timers + Tools card rows. NOTE: `recordSession` duration
+  is MILLISECONDS (converted to seconds on store) — a first-stats-page draft
+  passed seconds and every demo session silently failed the 10s guard; caught
+  by the unit test, fixed in the loader. (4) Verification: 27-assertion node
+  test `_work/test_ttstats.js` (guards, boundary buckets, perTimer, daily
+  cells, clear, caps) all pass; 14 inline scripts node --check (incl. the
+  rewired index.html), 5 JSON-LD parse. NOT done yet (later phases, per the
+  model split): recorder wiring on the other 24 timer pages, stats pin chips
+  (medium model), translations (light), sitemap/hreflang (stats has en-only
+  hreflang until translations exist), Tools-section card for stats. Next:
+  Andy reviews `stats/` in Phoenix (load example data to see it populated),
+  runs a real pomodoro session and checks it lands on the stats page.
+- **2026-11-09 (Kimi Work):** workflow rule clarified after Andy interrupted a
+  too-eager start on the stats build — the flow is discuss → Kimi states model
+  + plan → ANDY SAYS GO (explicit) → build. "Are you ready?" = Kimi answers
+  and stops (Andy may be switching models). Read-only investigation before
+  the go is fine; writing files is not. Added to the model-efficiency policy
+  in AGENTS.md. No page files touched.
 - **2026-11-09 (Kimi Work):** Classroom sound made usable in timer presets —
   added `{ id:'classroom', ... }` to the SOUNDS list of all 20 timer pages
   (main index + 52-17 + 20-20-20-rule + flowtime × en/id/es/pt/vi). Why:
