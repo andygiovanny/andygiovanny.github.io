@@ -174,6 +174,32 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-11 (Kimi Work, pt 3, on master):** LOFI FULL PORT (Andy's go,
+  "do the rest, ready to push live") — lofi1/2/3 now registered EVERYWHERE.
+  (a) All 20 timer pages (en/id/es/pt/vi × index, 52-17, 20-20-20-rule,
+  flowtime): 3 entries added after classroom in each SOUNDS list (main pages
+  relative `ambience/audio/`, sub-pages `/ambience/` absolute — per
+  convention) AND excluded from the ensureAudio() bulk preload
+  (`indexOf('lofi') !== 0` skip) so ~2.8 MB of music doesn't download on the
+  first ambience click; playSound()'s existing lazy fetch+replay path covers
+  the first tap. custom-timer exempt (buildSoundUrl by id). (b) All 4
+  translated Studio pages: same 3 entries (name stays "Lofi 1/2/3", absolute
+  paths) + same LAZY skip as EN Studio. Verified: 3 lofi entries + lazy skip
+  on all 25 changed pages, 194 inline JS blocks node --check, 0 JSON-LD
+  issues. Backups `_backups/2026-11-11-lofi-port/` (24 files). Pushed to
+  master 2026-11-11; merged into development same day.
+- **2026-11-11 (Kimi Work, on master):** 3 lofi music tracks added to the
+  Ambience Studio library (EN page): Andy's own files `lofi1/2/3.ogg`
+  (0.85–1.05 MB each, OGG headers verified) + `lofi1/2/3.svg` icons, wired as
+  3 new entries at the end of the SOUNDS array in `ambience/index.html` —
+  grid tiles, preset editor and preset preview all render from SOUNDS, so one
+  array addition covers everything. 4 inline scripts node --check. LAZY-LOAD
+  (Andy's go, same session): the 3 music tracks were excluded from the
+  upfront preload loop (DOMContentLoaded now skips lofi1/2/3) — ambience
+  sounds still preload (~4.8 MB), saving ~2.8 MB + ~25 MB decoded RAM per
+  visit; startSound() already fetches + auto-starts a buffered-missing sound
+  on first click, so the only cost is a fraction of a second on the first
+  music tap. STANDING-RULE GAP — CLOSED same day in pt 3 above.
 - **2026-11-11 (Kimi Work):** stats page load animation (light model, Andy's
   go) — the 14-day chart bars now grow up on every page load (scaleY from the
   baseline, 55ms stagger per day left→right, day labels fade in after),

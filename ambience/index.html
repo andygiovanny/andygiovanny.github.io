@@ -1620,7 +1620,10 @@
 { id: 'barn', name: 'Barn', file: 'audio/barn.ogg', icon: 'icons/barn.svg' },
  { id: 'restaurant', name: 'Restaurant', file: 'audio/restaurant.ogg', icon: 'icons/restaurant.svg' },
  { id: 'classroom', name: 'Classroom', file: 'audio/classroom.ogg', icon: 'icons/classroom.svg' },
- { id: 'bird', name: 'Bird Chirping', file: 'audio/bird.ogg', icon: 'icons/bird.svg' }
+ { id: 'bird', name: 'Bird Chirping', file: 'audio/bird.ogg', icon: 'icons/bird.svg' },
+ { id: 'lofi1', name: 'Lofi 1', file: 'audio/lofi1.ogg', icon: 'icons/lofi1.svg' },
+ { id: 'lofi2', name: 'Lofi 2', file: 'audio/lofi2.ogg', icon: 'icons/lofi2.svg' },
+ { id: 'lofi3', name: 'Lofi 3', file: 'audio/lofi3.ogg', icon: 'icons/lofi3.svg' }
     ];
 
     /* ─── Web Audio API Setup ─── */
@@ -2093,7 +2096,11 @@
     window.addEventListener('DOMContentLoaded', () => {
         renderGrid();
         updatePresetButtonLabels();
-        SOUNDS.forEach(s => preloadSound(s));
+        // Music tracks (~1 MB each) lazy-load on first click instead of
+        // joining the upfront preload — startSound() fetches + starts them
+        // automatically when a not-yet-buffered sound is toggled on.
+        const LAZY = ['lofi1', 'lofi2', 'lofi3'];
+        SOUNDS.forEach(s => { if (!LAZY.includes(s.id)) preloadSound(s); });
     });
 </script>
     
