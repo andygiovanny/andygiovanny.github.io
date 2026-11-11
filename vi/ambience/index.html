@@ -1596,7 +1596,10 @@
 { id: 'barn', name: 'Chuồng trại', file: '/ambience/audio/barn.ogg', icon: '/ambience/icons/barn.svg' },
  { id: 'restaurant', name: 'Nhà hàng', file: '/ambience/audio/restaurant.ogg', icon: '/ambience/icons/restaurant.svg' },
 { id: 'classroom', name: 'Lớp học', file: '/ambience/audio/classroom.ogg', icon: '/ambience/icons/classroom.svg' },
- { id: 'bird', name: 'Tiếng chim hót', file: '/ambience/audio/bird.ogg', icon: '/ambience/icons/bird.svg' }
+ { id: 'bird', name: 'Tiếng chim hót', file: '/ambience/audio/bird.ogg', icon: '/ambience/icons/bird.svg' },
+ { id: 'lofi1', name: 'Lofi 1', file: '/ambience/audio/lofi1.ogg', icon: '/ambience/icons/lofi1.svg' },
+ { id: 'lofi2', name: 'Lofi 2', file: '/ambience/audio/lofi2.ogg', icon: '/ambience/icons/lofi2.svg' },
+ { id: 'lofi3', name: 'Lofi 3', file: '/ambience/audio/lofi3.ogg', icon: '/ambience/icons/lofi3.svg' }
     ];
 
     /* ─── Web Audio API Setup ─── */
@@ -2069,7 +2072,8 @@
     window.addEventListener('DOMContentLoaded', () => {
         renderGrid();
         updatePresetButtonLabels();
-        SOUNDS.forEach(s => preloadSound(s));
+        const LAZY = ['lofi1', 'lofi2', 'lofi3'];
+        SOUNDS.forEach(s => { if (!LAZY.includes(s.id)) preloadSound(s); });
     });
 </script>
     

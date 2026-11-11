@@ -2260,7 +2260,10 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
         { id:'bird',     file:'/ambience/audio/bird.ogg' },
         { id:'chalkboard', file:'/ambience/audio/chalkboard.ogg' },
         { id:'restaurant', file:'/ambience/audio/restaurant.ogg' },
-        { id:'classroom', file:'/ambience/audio/classroom.ogg' }
+        { id:'classroom', file:'/ambience/audio/classroom.ogg' },
+        { id:'lofi1', file:'/ambience/audio/lofi1.ogg' },
+        { id:'lofi2', file:'/ambience/audio/lofi2.ogg' },
+        { id:'lofi3', file:'/ambience/audio/lofi3.ogg' }
     ];
 
     // ---- Audio Engine ----
@@ -2275,7 +2278,7 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
             masterGain = audioCtx.createGain();
             masterGain.gain.value = getVolume() / 100;
             masterGain.connect(audioCtx.destination);
-            SOUNDS.forEach(function(s){ preload(s); });
+            SOUNDS.forEach(function(s){ if (s.id.indexOf('lofi') !== 0) preload(s); });
         } catch(e){ console.error('[Ambience] Audio init failed', e); }
     }
     async function preload(sound) {
