@@ -156,11 +156,12 @@ belong in the work log below.
   teach the pin feature on first visit; pin chips on all 25 timer pages.
   sitemap.xml = 40 URLs. Next: Andy reviews id wording, commits on
   `development`, then a Streak Counter card for the Tools sections.
-- **stats (Phase 1 of 3, EN only, 2026-11-10):** shared recorder
+- **stats (translations SHIPPED 2026-11-12, EN+id/es/pt/vi):** shared recorder
   `assets/js/ttstats.js` + wired main pomodoro + EN page at `stats/`
-  (segments, 14-day chart, per-technique shares, demo loader). Later:
-  recorder on other 24 timer pages, pin chips (medium), translations
-  (light).
+  (segments, 14-day chart, donut, rhythm charts, heatmap, records, deltas,
+  export/import, mascot hero, dark mode) + full 4-language translations with
+  6-link hreflang everywhere and sitemap at 45 URLs. Later: recorder on other
+  24 timer pages, pin chips (medium), Tools-section card for stats.
 - **days-until (first tool) history:** built 2026-10-30 —
   multi-countdown board at `days-until/index.html`, prototype living on the
   `development` branch until Andy approves. Multi-countdown board with emoji
@@ -174,6 +175,135 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-12 (Kimi Work):** STATS TRANSLATIONS SHIPPED (light, Andy's go) —
+  `id|es|pt|vi/stats/index.html` built from the EN master via
+  `_work/stats_translations.py` (103 count-asserted pairs + 7 cards per
+  language): full SEO set (canonical/og:locale per language), JSON-LD ×3,
+  How-It-Works paragraph, FAQ ×5 (visible + JSON-LD), all UI labels (segment
+  tabs, hero cards, panel titles/subs, buttons, data note, footer), JS strings
+  (toasts, empty states, records rows, DOW/month arrays, Custom Timer legend
+  name), cards row reusing the approved per-language card table
+  (`_work/card_table.json`) with language-prefixed hrefs. "Focus Stats" +
+  select aria-labels stay English per convention. EN stats gained the 6-link
+  hreflang cluster + tt_lang redirect; sitemap.xml 40→45 URLs (+5 stats).
+  GOTCHAS: (1) ALL repo pages are CRLF — normalize to LF for pairing, convert
+  back on write; (2) empty-state strings sit inside HTML, not JS literals —
+  pairs must not wrap them in fake JS quotes; (3) the "All-time total" records
+  pair starts at `focused <small>' +` — the translated new must NOT re-include
+  the leading `' ` the page already has (quote duplication = syntax error).
+  Verified: 21/21 inline JS node --check, 15/15 JSON-LD parse, class sweep
+  clean, zero EN leftovers, dropdown selects correct language, redirect EN-
+  only. New files untracked — Andy reviews id wording first (pilot rule), then
+  commits on `development`. Next: stats pin chips (medium) + recorder wiring
+  on the other 24 timer pages.
+- **2026-11-12 (Kimi Work):** stats heatmap DARK-MODE fix (CSS only, Andy's
+  bug report) — the dark base rule `html.theme-dark .hm-cell` (0-2-1) was
+  out-specifying every tier rule `.hm-cell.hm-N` (0-2-0), so in dark mode all
+  cells rendered as the empty #2a2018 and no red ever showed. Added per-tier
+  dark overrides (`.32/.50/.66/.83/solid #DE4B3A`) with higher specificity on
+  all 5 stats pages (en/id/es/pt/vi). LESSON: when a component has tier/state
+  variants, the dark-theme base override must be re-declared per variant, not
+  just for the base class. No JS touched; 6/6 dark rules verified per page.
+
+- **2026-11-12 (Kimi Work):** STATS PAGE MASCOT (Andy's go, medium) — Andy's "Final focus.mp4"
+  (3840², 24fps, ~1s loop, duck presenting while the tomato paints a BAR CHART — perfect stats
+  mascot). Recolored the flat salmon bg (#CE6E6D) via ffmpeg colorkey → composited over the
+  page's exact theme bgs: `assets/gifs/stats-mascot-light.mp4` (#fbf2e9, 36 KB) +
+  `stats-mascot-dark.mp4` (#14100c, 34 KB), 720² H.264, audio stripped, faststart. GOTCHA: first
+  pass with colorkey similarity 0.14 ATE the tomato's pale-pink body (invisible on the light
+  variant, black silhouette on dark) — fixed at similarity 0.06/blend 0.02, frame-verified.
+  Placement = Andy's pick: new `.hero-top` flex row at the top of `.stage` — mascot (136px,
+  rounded 20px card, 1px border) left, title+lead stacked right, seg tabs/cards untouched;
+  stacks vertically under 680px; two stacked `<video autoplay muted loop playsinline>` elements
+  flipped by `html.theme-dark` (custom-timer pattern, zero JS). Rev 2 same session (Andy's "not
+  visible, bigger, no border, align left"): mascot 136→210px, border+radius removed (bg matches
+  the page so it blends), `.hero-top` full-width left-aligned, title/lead left-aligned via
+  `.hero-copy` scoping, and the segment TABS moved INSIDE `.hero-copy` — the whole hero is now
+  one left-aligned composition beside the mascot (stacks under 680px). 4 scripts node --check, JSON-LD
+  parses, class sweep clean, 60/60 tests. New video files untracked — Andy commits with the page.
+- **2026-11-12 (Kimi Work):** stats page BUGFIX — dark mode did nothing. The page had the
+  `#theme-select` dropdown + all `html.theme-dark` CSS but was MISSING the theme apply/save
+  IIFE every other page carries (lost when the shell was copied). Added the canonical head
+  script (`site-theme` key, applies saved theme pre-render + on change) — identical to
+  custom-timer's. 4 inline scripts node --check. `stats/index.html`.
+- **2026-11-12 (Kimi Work):** stats page optical centering nudge (light, Andy's screenshots) —
+  donut-hole text ("115h 26m / focus") and the Sessions-card ▶ glyph both sat HIGH: Baloo's
+  glyphs ride high in the em box, so the existing flex centering was only geometric. Fix =
+  `translateY(4px)` on `.donut-total`/`.donut-sub` (pixel-measured from Andy's screenshot:
+  text block sat 6 device px high of the hole center) + `#cSessions .s-ico` translateY(2px).
+  CSS only, `stats/index.html`.
+- **2026-11-12 (Kimi Work, batch 3 of 3):** STATS DEEP-DIVE batch 3 (Andy's "ok medium, go") —
+  period deltas + export/import, EN stats page. (a) Hero cards now compare against the previous
+  matching window via new `renderDeltas` — `report(prevFrom, from)` per segment tab; `↑ N%` green
+  pill / `↓ N%` muted / `–` flat / `↑ new` when the previous window was empty; hidden entirely on
+  All Time and when both windows are zero. New `.s-delta` pill CSS (+ dark override). (b) Export →
+  JSON download `{v:1, app:'tomatotimers-stats', exportedAt, s, t}` named by day key; Import →
+  file picker, JSON.parse guarded, feeds the new recorder function `ttStats.mergeImport` —
+  merge-NOT-replace: version/shape validation, exact-dupe skip (tm|k|s|d / tm|ts keys), junk
+  entries skipped (bad kind, <10s, missing tm/ts), floats rounded, caps 8000/4000 keep newest.
+  16 new mergeImport assertions (null/garbage shapes, dupe skip, junk skip, rounding, 9000→8000
+  cap, near-full merge keeps newest) — 60/60 pass; 3 inline scripts node --check; 3 JSON-LD parse;
+  class sweep clean (only JS-concat artifacts + pre-existing inline-styled `.logo` anchor).
+  (c) FAQ "Can I move it to another device?" reworded in BOTH visible explainer and JSON-LD to
+  describe Export/Import merge. `stats/index.html` + `assets/js/ttstats.js` only. Stats page
+  feature-complete pending Andy's review; roadmap after review: recorder wiring on the other
+  24 timer pages + pin chips (medium) + translations (light) + sitemap/hreflang/Tools-card.
+- **2026-11-11 (Kimi Work, batch 2 of 3):** STATS DEEP-DIVE batch 2 (Andy's
+  "ok next, go") — rhythm charts + donut swap, EN stats page. (a) "Your
+  rhythm" panel: day-of-week (7 bars, Su-first to match the page) and
+  hour-of-day (24 thin bars, labels every 6h, per-bar tooltips) mini charts,
+  both driven by the segment tabs; focus sessions only (breaks have no
+  "when"); grid 5fr/12fr, stacks under 640px; bars reuse the barGrow
+  animation with per-bar stagger. (b) Per-technique share BARS replaced with
+  a proper donut — `conic-gradient` built from cumulative share stops (last
+  stop pinned to 100%), hole shows total focus for the period, legend rows
+  show swatch/name/%·time·sessions, scale-in animation. New pure recorder
+  helper `ttStats.distribution(from,to?)` → {byHour[24], byDow[7]} in focus
+  seconds. FAQ wording synced to the new UI in BOTH the visible explainer
+  and JSON-LD ("colored share bars" → "colored donut chart"); How It Works
+  paragraph now names the rhythm/heatmap/records panels. Dead share-* CSS
+  removed; reduced-motion list updated. 8 new distribution assertions
+  (weekday/hour buckets, breaks excluded, window filter, 400-day-old session
+  correctly counted in open-end vs excluded in windowed) — 44/44 pass; 3
+  inline scripts node --check; 3 JSON-LD parse; class sweep clean.
+  `stats/index.html` + `assets/js/ttstats.js` only. NEXT: batch 3 = period
+  comparisons + export/import (merge-not-replace).
+- **2026-11-11 (Kimi Work, batch 1 of 3):** STATS DEEP-DIVE batch 1 (K3 High,
+  Andy's go — heatmap + streaks + records, EN stats page). (a) Activity
+  heatmap: GitHub-style 16-week grid (13px cells, 5 opacity tiers of tomato
+  by focus minutes, Sunday-start with leading pad cells, today outlined,
+  per-day tooltips, auto-scrolled to the newest week, Less→More legend).
+  (b) Records & streaks panel: 🔥 current focus-day streak + longest
+  (same alive-through-yesterday convention as the Streak tool) beside
+  personal bests — longest session (with timer + date), biggest focus day,
+  most tasks in a day, all-time totals. New pure helper in the recorder:
+  `ttStats.focusStreaks()` → {current, longest} (set of focus-day keys,
+  walk-back for current, sorted run scan for longest) — built for reuse by
+  the future stats pin chip. Records aggregate client-side from `data()`
+  (longest session, per-day focus max, per-day task max, totals).
+  Empty states for both panels. Both panels re-render with the segment tabs
+  / storage sync like the rest. Test suite extended: 9 new streak assertions
+  (empty, through-yesterday, today-counts, break-days ignored, far-run
+  longest) — 36/36 pass; 3 inline scripts node --check; class sweep clean.
+  `stats/index.html` + `assets/js/ttstats.js` only. NEXT batches (on Andy's
+  go): batch 2 = day-of-week + hour-of-day + donut swap; batch 3 = period
+  comparisons + export/import (merge-not-replace).
+- **2026-11-11 (Kimi Work, on development post-merge):** stats page card-row
+  CSS fix (light model, Andy's "card UI need cleaning up" + screenshot) — the
+  stats page's chunk-1 CSS had an invented card scheme (`.tt-cards-row`,
+  `.tt-card-title`, `object-fit: cover`, hardcoded colors) that never matched
+  the canonical markup (`.tt-card-row`, `.tt-card-text`), so the Timers/Tools
+  cards stacked full-width with unstyled text. Replaced with the exact
+  canonical tt-card block from `streaks/` — horizontal snap-scroll row,
+  240px cards, 170px contained images on #FBF3E4, full dark-theme overrides.
+  Swept all 70 classes used in the page against the CSS: zero missing.
+  FOLLOW-UP same session: the 4 hero stat cards were top-aligned (inline
+  spans flowed onto ONE line + grid stretch left dead space below) — first
+  fix made them a stacked flex column (icon over number over label), Andy
+  wanted the original ONE-LINE layout just vertically centered: final =
+  `.stat-card` is a centered flex ROW (icon + number + label side by side,
+  8px gap, align/justify center, wraps on narrow), leftover `margin-top`s on
+  `.s-num`/`.s-lbl` removed (gap handles spacing). `stats/index.html` only.
 - **2026-11-11 (Kimi Work, pt 3, on master):** LOFI FULL PORT (Andy's go,
   "do the rest, ready to push live") — lofi1/2/3 now registered EVERYWHERE.
   (a) All 20 timer pages (en/id/es/pt/vi × index, 52-17, 20-20-20-rule,

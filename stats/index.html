@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){try{var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
+</script>
 <title>Focus Stats — Track Pomodoro Sessions, Focus Time &amp; Tasks | TomatoTimers</title>
 <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
 <link rel="icon" type="image/png" href="/assets/images/favicon.png"/>
@@ -12,6 +15,10 @@
 <meta name="author" content="TomatoTimers">
 <link rel="canonical" href="https://www.tomatotimers.com/stats/">
 <link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/stats/">
+<link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/stats/">
+<link rel="alternate" hreflang="es" href="https://www.tomatotimers.com/es/stats/">
+<link rel="alternate" hreflang="pt" href="https://www.tomatotimers.com/pt/stats/">
+<link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/stats/">
 <link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/stats/">
 <meta property="og:title" content="Focus Stats — Track Pomodoro Sessions, Focus Time &amp; Tasks | TomatoTimers">
 <meta property="og:description" content="Free focus stats for your timers: total focus and break time, sessions and tasks completed, per-technique breakdowns and a 14-day chart. No sign-up.">
@@ -86,7 +93,7 @@
       "name": "Can I see stats per timer technique?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The per-technique breakdown shows how much of your focus time, sessions and tasks each timer contributed in the selected period, as colored share bars — so you can see at a glance whether you are mostly a Pomodoro person or a Flowtime person."
+        "text": "Yes. The per-technique breakdown shows how much of your focus time, sessions and tasks each timer contributed in the selected period, as a colored donut chart — so you can see at a glance whether you are mostly a Pomodoro person or a Flowtime person."
       }
     },
     {
@@ -102,7 +109,7 @@
       "name": "Is my data saved? Can I move it to another device?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No account, ever. Your stats live in this browser's local storage and stay on this device only. Sessions and tasks recorded on your computer will not appear on your laptop — each device keeps its own log."
+        "text": "No account, ever. Your stats live in this browser's local storage and stay on this device only. To move or back them up, use Export to download a JSON file and Import to restore it anywhere — importing merges with what is already here, nothing gets overwritten."
       }
     }
   ]
@@ -202,6 +209,20 @@
   .stage { max-width: 980px; margin: 0 auto; padding: 18px 20px 24px; }
   .page-title { text-align: center; font-size: 30px; line-height: 1.15; margin: 6px 0 2px; }
   .lead { text-align: center; color: var(--muted); font-size: 15.5px; margin: 2px auto 14px; max-width: 640px; }
+  .hero-top { display: flex; align-items: center; gap: 24px; margin: 2px 0 4px; }
+  .hero-mascot { flex: 0 0 auto; width: 210px; }
+  .mascot-vid { width: 100%; height: auto; display: block; }
+  .mascot-dark { display: none; }
+  html.theme-dark .mascot-light { display: none; }
+  html.theme-dark .mascot-dark { display: block; }
+  .hero-copy { flex: 1 1 auto; min-width: 0; }
+  .hero-copy .page-title { text-align: left; }
+  .hero-copy .lead { text-align: left; margin-left: 0; margin-bottom: 10px; max-width: 560px; }
+  .hero-copy .seg-tabs { justify-content: flex-start; margin: 6px 0 14px; }
+  @media (max-width: 680px) {
+    .hero-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .hero-mascot { width: 150px; }
+  }
 
   /* ── segment tabs ── */
   .seg-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin: 4px 0 16px; }
@@ -214,11 +235,19 @@
   .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
   @media (max-width: 720px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
   .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
-    padding: 16px 14px 12px; text-align: center; box-shadow: 0 3px 10px rgba(88,36,14,.06); }
+    padding: 16px 14px 12px; box-shadow: 0 3px 10px rgba(88,36,14,.06);
+    display: flex; flex-direction: row; align-items: center; justify-content: center;
+    gap: 8px; flex-wrap: wrap; }
   .stat-card .s-ico { font-size: 26px; line-height: 1; }
-  .stat-card .s-num { font-size: 26px; font-weight: 700; line-height: 1.1; margin-top: 6px;
+  #cSessions .s-ico { transform: translateY(2px); }
+  .stat-card .s-num { font-size: 26px; font-weight: 700; line-height: 1.1;
     font-variant-numeric: tabular-nums; }
-  .stat-card .s-lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .stat-card .s-lbl { font-size: 12.5px; color: var(--muted); }
+  .s-delta { font-size: 12px; font-weight: 700; line-height: 1; padding: 3px 8px 2px;
+    border-radius: 50px; background: var(--panel2); border: 1px solid var(--border);
+    color: var(--muted); white-space: nowrap; }
+  .s-delta.up { color: #55803C; border-color: #55803C; }
+  html.theme-dark .s-delta.up { color: #8FB573; border-color: #8FB573; }
   html.theme-dark .stat-card { box-shadow: 0 3px 10px rgba(0,0,0,.3); }
 
   /* ── panels ── */
@@ -251,21 +280,81 @@
   .legend .sw-f { background: var(--tomato); }
   .legend .sw-b { background: #E0A458; opacity: .75; }
 
-  /* per-timer share */
-  .share-row { margin-bottom: 12px; }
-  .share-row:last-child { margin-bottom: 0; }
-  .share-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
-    font-size: 14px; margin-bottom: 4px; }
-  .share-name { font-weight: 700; }
-  .share-pct { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
-  .share-track { height: 14px; background: var(--panel2); border: 1px solid var(--border);
-    border-radius: 50px; overflow: hidden; }
-  .share-fill { height: 100%; border-radius: 50px; min-width: 0; transition: width .25s ease;
-    animation: shareGrow .7s cubic-bezier(.2,.7,.3,1) backwards; }
-  @keyframes shareGrow { from { width: 0; } }
+  /* per-technique donut */
+  .donut-wrap { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .donut { width: 150px; height: 150px; border-radius: 50%; position: relative; flex: 0 0 auto;
+    animation: donutIn .5s cubic-bezier(.2,.7,.3,1) backwards; }
+  @keyframes donutIn { from { transform: scale(.7); opacity: 0; } }
+  .donut-hole { position: absolute; inset: 26px; background: var(--panel); border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .donut-total { font-size: 19px; font-weight: 700; line-height: 1.1;
+    font-variant-numeric: tabular-nums; transform: translateY(4px); }
+  .donut-sub { font-size: 10.5px; color: var(--muted); transform: translateY(4px); }
+  .dlegend { flex: 1; min-width: 190px; display: flex; flex-direction: column; gap: 6px; }
+  .dleg-row { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+  .dleg-sw { width: 11px; height: 11px; border-radius: 3px; flex: 0 0 auto; }
+  .dleg-name { font-weight: 700; }
+  .dleg-val { margin-left: auto; color: var(--muted); font-size: 12.5px;
+    font-variant-numeric: tabular-nums; }
+
+  /* your rhythm: day-of-week + hour-of-day mini charts */
+  .rhythm-grid { display: grid; grid-template-columns: 5fr 12fr; gap: 18px; }
+  @media (max-width: 640px) { .rhythm-grid { grid-template-columns: 1fr; } }
+  .rhythm-lbl { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .mini { display: flex; align-items: flex-end; gap: 4px; height: 110px; }
+  .mini-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+    align-items: center; height: 100%; min-width: 0; }
+  .mini-bar { width: 70%; max-width: 26px; background: var(--tomato); border-radius: 4px 4px 2px 2px;
+    transform-origin: bottom; animation: barGrow .5s cubic-bezier(.2,.7,.3,1) backwards; }
+  .mini-none { width: 70%; max-width: 26px; height: 2px; background: var(--border);
+    border-radius: 2px; opacity: .5; }
+  .mini-lbl { font-size: 9.5px; color: var(--muted); margin-top: 4px; white-space: nowrap;
+    font-variant-numeric: tabular-nums; }
+  .mini-24 .mini-bar, .mini-24 .mini-none { max-width: 14px; }
   @media (prefers-reduced-motion: reduce) {
-    .bar-stack, .bar-none, .bar-lbl, .share-fill { animation: none; }
+    .bar-stack, .bar-none, .bar-lbl, .mini-bar, .donut { animation: none; }
   }
+
+  /* ── activity heatmap ── */
+  .heatmap { display: grid; grid-template-rows: repeat(7, 13px); grid-auto-flow: column;
+    gap: 3px; overflow-x: auto; padding: 2px 2px 6px; }
+  .hm-cell { width: 13px; height: 13px; border-radius: 3px; background: #EFE3CF; }
+  html.theme-dark .hm-cell { background: #2a2018; }
+  html.theme-dark .hm-cell.hm-1 { background: rgba(222,75,58,.32); }
+  html.theme-dark .hm-cell.hm-2 { background: rgba(222,75,58,.50); }
+  html.theme-dark .hm-cell.hm-3 { background: rgba(222,75,58,.66); }
+  html.theme-dark .hm-cell.hm-4 { background: rgba(222,75,58,.83); }
+  html.theme-dark .hm-cell.hm-5 { background: #DE4B3A; }
+  .hm-cell.hm-1 { background: rgba(222,75,58,.28); }
+  .hm-cell.hm-2 { background: rgba(222,75,58,.45); }
+  .hm-cell.hm-3 { background: rgba(222,75,58,.62); }
+  .hm-cell.hm-4 { background: rgba(222,75,58,.80); }
+  .hm-cell.hm-5 { background: #DE4B3A; }
+  .hm-cell.today { outline: 2px solid var(--text); outline-offset: 1px; }
+  .hm-cell.hm-pad { background: transparent; }
+  .hm-legend { display: flex; align-items: center; gap: 4px; justify-content: flex-end;
+    margin-top: 8px; font-size: 11.5px; color: var(--muted); }
+  .hm-legend .hm-cell { width: 11px; height: 11px; }
+
+  /* ── records & streaks ── */
+  .rec-grid { display: grid; grid-template-columns: 200px 1fr; gap: 14px; }
+  @media (max-width: 640px) { .rec-grid { grid-template-columns: 1fr; } }
+  .rec-streak { background: var(--panel2); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 12px 12px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .rec-flame { font-size: 30px; line-height: 1; }
+  .rec-streak-num { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--accent);
+    font-variant-numeric: tabular-nums; }
+  .rec-streak-lbl { font-size: 13px; color: var(--muted); }
+  .rec-streak-sub { display: block; margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+  .rec-list { display: flex; flex-direction: column; gap: 8px; }
+  .rec-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+    background: var(--panel2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 14px 8px; }
+  .rec-row .rec-name { font-size: 13.5px; color: var(--muted); }
+  .rec-row .rec-val { font-size: 14.5px; font-weight: 700; text-align: right;
+    font-variant-numeric: tabular-nums; }
+  .rec-row .rec-val small { display: block; font-weight: 400; font-size: 11.5px; color: var(--muted); }
 
   /* data row */
   .data-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center;
@@ -300,19 +389,28 @@
     z-index: 3000; max-width: 90vw; text-align: center; }
   #toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* cards row (same tt-card style as the other pages) */
-  .tt-cards { width: 100%; max-width: 1200px; margin: 26px auto 0; padding: 0 20px; }
-  .tt-cards .section-heading { font-size: 26px; margin-bottom: 14px; text-align: left; }
-  .tt-cards-row { display: flex; flex-wrap: wrap; gap: 14px; }
-  .tt-card { flex: 1 1 160px; max-width: 220px; background: #FFF; border: 1px solid #E2D0AF;
-    border-radius: 12px; overflow: hidden; text-decoration: none; color: #58240E;
-    transition: transform .15s ease, box-shadow .15s ease; display: block; }
-  .tt-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(88,36,14,.12); }
-  .tt-card img { width: 100%; height: 120px; object-fit: cover; display: block; }
-  .tt-card .tt-card-title { font-size: 15px; font-weight: 700; padding: 10px 12px 2px; }
-  .tt-card .tt-card-desc { font-size: 12.5px; color: #8C5A3E; padding: 0 12px 12px; line-height: 1.4; }
-  html.theme-dark .tt-card { background: #1f1813; border-color: #3a2d20; color: #E8D9B8; }
-  html.theme-dark .tt-card .tt-card-desc { color: #A98F6F; }
+  /* cards row — canonical tt-card style, same as every other page */
+  .tt-cards { max-width: 1200px; margin: 48px auto 0; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; }
+  .tt-cards-title { font-size: 1.5rem; color: var(--text); margin: 0 0 14px; }
+  .tt-card-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+                 padding: 6px 4px 18px; -webkit-overflow-scrolling: touch; }
+  .tt-card-row::-webkit-scrollbar { height: 8px; }
+  .tt-card-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+  .tt-card { flex: 0 0 240px; scroll-snap-align: start; background: var(--panel); border-radius: 18px;
+             overflow: hidden; text-decoration: none; border: 1px solid var(--border);
+             box-shadow: 0 3px 10px rgba(88, 36, 14, .08);
+             transition: transform .18s ease, box-shadow .18s ease; }
+  .tt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(88, 36, 14, .14); }
+  .tt-card img { width: 100%; height: 170px; object-fit: contain; padding: 18px;
+                 background: #FBF3E4; box-sizing: border-box; }
+  .tt-card-text { padding: 12px 16px 16px; }
+  .tt-card h3 { font-size: 1.05rem; color: var(--text); margin: 0 0 4px; }
+  .tt-card p { font-size: .85rem; color: var(--muted); margin: 0; line-height: 1.45; }
+  html.theme-dark .tt-cards-title { color: var(--accent); }
+  html.theme-dark .tt-card { background: var(--panel2); box-shadow: 0 3px 10px rgba(0, 0, 0, .3); }
+  html.theme-dark .tt-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+  html.theme-dark .tt-card img { background: #1c1410; }
+  html.theme-dark .tt-card h3 { color: var(--accent); }
 
   .site-footer { text-align: center; padding: 28px 20px 34px; color: var(--muted); font-size: 14px; }
   .site-footer a { color: var(--text); text-decoration: none; }
@@ -322,6 +420,28 @@
   .site-footer .foot-ad { color: var(--accent); font-weight: 700; transition: opacity .2s ease; }
   .site-footer .foot-note { margin-top: 8px; font-size: 12.5px; }
 </style>
+<script>
+(function () {
+  var THEME_KEY = 'site-theme';
+  function apply(t) {
+    document.documentElement.classList.remove('theme-dark', 'theme-classic');
+    if (t === 'dark') document.documentElement.classList.add('theme-dark');
+    else if (t === 'classic') document.documentElement.classList.add('theme-classic');
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.value = t;
+  }
+  function saved() { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch (e) { return 'light'; } }
+  apply(saved());
+  document.addEventListener('DOMContentLoaded', function () {
+    apply(saved());
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.addEventListener('change', function () {
+      try { localStorage.setItem(THEME_KEY, this.value); } catch (e) {}
+      apply(this.value);
+    });
+  });
+})();
+</script>
 </head>
 <body>
 
@@ -381,36 +501,49 @@
 
 <div class="stage">
 
-  <h2 class="page-title">Focus Stats</h2>
-  <p class="lead">Every timer you run quietly fills this page: focus time, breaks, finished sessions
-    and checked-off tasks — same four numbers everywhere, broken down per technique.</p>
-
-  <div class="seg-tabs" role="tablist" aria-label="Stats period">
-    <button type="button" class="seg-tab sel" data-seg="today">Today</button>
-    <button type="button" class="seg-tab" data-seg="week">This Week</button>
-    <button type="button" class="seg-tab" data-seg="month">This Month</button>
-    <button type="button" class="seg-tab" data-seg="all">All Time</button>
+  <div class="hero-top">
+    <div class="hero-mascot" aria-hidden="true">
+      <video class="mascot-vid mascot-light" autoplay muted loop playsinline preload="metadata"
+             src="/assets/gifs/stats-mascot-light.mp4"></video>
+      <video class="mascot-vid mascot-dark" autoplay muted loop playsinline preload="metadata"
+             src="/assets/gifs/stats-mascot-dark.mp4"></video>
+    </div>
+    <div class="hero-copy">
+      <h2 class="page-title">Focus Stats</h2>
+      <p class="lead">Every timer you run quietly fills this page: focus time, breaks, finished
+        sessions and checked-off tasks — same four numbers everywhere, broken down per technique.</p>
+      <div class="seg-tabs" role="tablist" aria-label="Stats period">
+        <button type="button" class="seg-tab sel" data-seg="today">Today</button>
+        <button type="button" class="seg-tab" data-seg="week">This Week</button>
+        <button type="button" class="seg-tab" data-seg="month">This Month</button>
+        <button type="button" class="seg-tab" data-seg="all">All Time</button>
+      </div>
+    </div>
   </div>
 
   <div class="stat-grid">
     <div class="stat-card" id="cFocus">
       <span class="s-ico" aria-hidden="true">⏱</span>
       <span class="s-num" id="nFocus">0s</span>
+      <span class="s-delta" id="dFocus"></span>
       <span class="s-lbl">Focus</span>
     </div>
     <div class="stat-card" id="cBreak">
       <span class="s-ico" aria-hidden="true">☕</span>
       <span class="s-num" id="nBreak">0s</span>
+      <span class="s-delta" id="dBreak"></span>
       <span class="s-lbl">Breaks</span>
     </div>
     <div class="stat-card" id="cTasks">
       <span class="s-ico" aria-hidden="true">✅</span>
       <span class="s-num" id="nTasks">0</span>
+      <span class="s-delta" id="dTasks"></span>
       <span class="s-lbl">Tasks Completed</span>
     </div>
     <div class="stat-card" id="cSessions">
       <span class="s-ico" aria-hidden="true">▶</span>
       <span class="s-num" id="nSessions">0</span>
+      <span class="s-delta" id="dSessions"></span>
       <span class="s-lbl">Sessions</span>
     </div>
   </div>
@@ -428,11 +561,66 @@
   <div class="panel">
     <h3 class="panel-title">Per technique</h3>
     <p class="panel-sub">Share of your focus time in the selected period.</p>
-    <div id="share"></div>
+    <div class="donut-wrap" id="donutWrap">
+      <div class="donut" id="donut">
+        <div class="donut-hole">
+          <span class="donut-total" id="donutTotal">0s</span>
+          <span class="donut-sub">focus</span>
+        </div>
+      </div>
+      <div class="dlegend" id="donutLegend"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Your rhythm</h3>
+    <p class="panel-sub">When your focus happens in the selected period.</p>
+    <div class="rhythm-grid">
+      <div>
+        <div class="rhythm-lbl">By day of week</div>
+        <div class="mini" id="dowBars"></div>
+      </div>
+      <div>
+        <div class="rhythm-lbl">By hour of day</div>
+        <div class="mini mini-24" id="hourBars"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Activity</h3>
+    <p class="panel-sub">Every square is a day — darker red means more focus time.</p>
+    <div class="heatmap" id="heatmap"></div>
+    <div class="hm-legend">
+      <span>Less</span>
+      <span class="hm-cell hm-1"></span>
+      <span class="hm-cell hm-2"></span>
+      <span class="hm-cell hm-3"></span>
+      <span class="hm-cell hm-4"></span>
+      <span class="hm-cell hm-5"></span>
+      <span>More</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Records &amp; streaks</h3>
+    <p class="panel-sub">Personal bests, counted automatically from every session you have logged.</p>
+    <div class="rec-grid">
+      <div class="rec-streak">
+        <span class="rec-flame" aria-hidden="true">🔥</span>
+        <span class="rec-streak-num" id="recStreak">0</span>
+        <span class="rec-streak-lbl">day streak</span>
+        <span class="rec-streak-sub" id="recStreakLongest">Longest: 0 days</span>
+      </div>
+      <div class="rec-list" id="recList"></div>
+    </div>
   </div>
 
   <div class="data-row">
     <button type="button" class="pill-btn" id="loadDemo">✨ Load example data</button>
+    <button type="button" class="ghost-btn" id="exportBtn">⬇ Export</button>
+    <button type="button" class="ghost-btn" id="importBtn">⬆ Import</button>
+    <input type="file" id="importFile" accept="application/json,.json" style="display:none">
     <button type="button" class="ghost-btn" id="clearAll">Clear all stats</button>
   </div>
   <p class="data-note">Free &amp; no sign-up — your stats stay in this browser, on this device.</p>
@@ -447,7 +635,9 @@
     browser. No account, no upload, no setup: run any timer and this page fills itself in. The same
     four variables are measured for every technique (Focus, Breaks, Tasks Completed, Sessions), so the
     Pomodoro timer, 52/17, 20-20-20, Flowtime and the Custom Timer can be compared fairly on the
-    per-technique breakdown. Switch between Today, This Week, This Month and All Time with the tabs
+    per-technique donut. The rhythm charts show which days of the week and which hours of the day
+    your focus usually happens, and the activity heatmap and records keep score of your streaks and
+    personal bests. Switch between Today, This Week, This Month and All Time with the tabs
     above; the 14-day chart always shows the last two weeks regardless of the tab.</p>
 
   <h2>Where does the stats data come from?</h2>
@@ -457,13 +647,13 @@
   <p>Focus is your total focused work time in the selected period, Breaks is total break time, Tasks Completed counts to-dos you checked off, and Sessions counts finished focus sessions. The same four variables are measured for every timer technique, so Pomodoro, 52/17, 20-20-20, Flowtime and Custom Timer can be compared fairly.</p>
 
   <h2>Can I see stats per timer technique?</h2>
-  <p>Yes. The per-technique breakdown shows how much of your focus time, sessions and tasks each timer contributed in the selected period, as colored share bars — so you can see at a glance whether you are mostly a Pomodoro person or a Flowtime person.</p>
+  <p>Yes. The per-technique breakdown shows how much of your focus time, sessions and tasks each timer contributed in the selected period, as a colored donut chart — so you can see at a glance whether you are mostly a Pomodoro person or a Flowtime person.</p>
 
   <h2>Why is my history empty? Can I import old data?</h2>
   <p>Stats start counting from the moment you use a timer that records them — timers did not keep a history before this page existed, so there is nothing to backfill. To preview what the charts look like with a busy history, use the Load example data button; it fills six weeks of realistic demo sessions that you can wipe anytime with Clear all stats.</p>
 
   <h2>Is my data saved? Can I move it to another device?</h2>
-  <p>No account, ever. Your stats live in this browser's local storage and stay on this device only. Sessions and tasks recorded on your computer will not appear on your laptop — each device keeps its own log.</p>
+  <p>No account, ever. Your stats live in this browser's local storage and stay on this device only. To move or back them up, use Export to download a JSON file and Import to restore it anywhere — importing merges with what is already here, nothing gets overwritten.</p>
 </div>
 
 <section id="other-rhythm" class="tt-cards" aria-label="Timers">
@@ -591,9 +781,40 @@ function render() {
   $('nBreak').textContent    = fmtDur(r.breakSec);
   $('nTasks').textContent    = String(r.tasks);
   $('nSessions').textContent = String(r.focusN + r.breakN);
+  renderDeltas(r, from);
 
   renderBars();
   renderShare(r, from);
+  renderRhythm(from);
+  renderHeatmap();
+  renderRecords();
+}
+
+/* ── hero deltas: compare each card with the previous matching window ── */
+function renderDeltas(r, from) {
+  var cards = [
+    ['dFocus',    r.focusSec],
+    ['dBreak',    r.breakSec],
+    ['dTasks',    r.tasks],
+    ['dSessions', r.focusN + r.breakN]
+  ];
+  var prev = null;
+  if (curSeg !== 'all') {
+    var now = Date.now();
+    var p = window.ttStats.report(from - (now - from), from);
+    prev = [p.focusSec, p.breakSec, p.tasks, p.focusN + p.breakN];
+  }
+  cards.forEach(function (m, i) {
+    var el = $(m[0]);
+    var cur = m[1], was = prev ? prev[i] : 0;
+    if (prev === null || (cur === 0 && was === 0)) { el.style.display = 'none'; return; }
+    el.style.display = '';
+    if (was === 0) { el.textContent = '↑ new'; el.classList.add('up'); return; }
+    var pct = Math.round((cur - was) / was * 100);
+    if (pct > 0)      { el.textContent = '↑ ' + pct + '%';  el.classList.add('up'); }
+    else if (pct < 0) { el.textContent = '↓ ' + (-pct) + '%'; el.classList.remove('up'); }
+    else              { el.textContent = '–'; el.classList.remove('up'); }
+  });
 }
 
 function renderBars() {
@@ -633,7 +854,7 @@ function renderBars() {
 }
 
 function renderShare(r, from) {
-  var wrap = $('share');
+  var wrap = $('donutWrap');
   var rows = Object.keys(r.perTimer).map(function (id) {
     var p = r.perTimer[id];
     return { id: id, focusSec: p.focusSec, n: p.focusN + p.breakN, tasks: p.tasks };
@@ -646,22 +867,162 @@ function renderShare(r, from) {
     return;
   }
   var total = rows.reduce(function (a, x) { return a + x.focusSec; }, 0);
-  var html = '';
+  /* rebuild the donut + legend */
+  var stops = [], acc = 0;
   rows.forEach(function (x, idx) {
     var meta = timerMeta(x.id);
+    var pct = total > 0 ? (idx === rows.length - 1 ? 100 : acc + x.focusSec / total * 100) : 0;
+    stops.push(meta.color + ' ' + acc.toFixed(2) + '% ' + pct.toFixed(2) + '%');
+    acc = pct;
+  });
+  wrap.innerHTML = '<div class="donut" id="donut" style="background: conic-gradient(' + stops.join(',') + ')">' +
+    '<div class="donut-hole"><span class="donut-total">' + esc(fmtDur(total)) + '</span>' +
+    '<span class="donut-sub">focus</span></div></div>' +
+    '<div class="dlegend" id="donutLegend"></div>';
+  $('donutLegend').innerHTML = rows.map(function (x, idx) {
+    var meta = timerMeta(x.id);
     var pct = total > 0 ? Math.round(x.focusSec / total * 100) : 0;
-    html += '<div class="share-row">' +
-            '<div class="share-head">' +
-            '<span class="share-name" style="color:' + meta.color + '">' + esc(meta.name) + '</span>' +
-            '<span class="share-pct">' + esc(fmtDur(x.focusSec)) + ' · ' + x.n + (x.n === 1 ? ' session' : ' sessions') +
-            (x.tasks ? ' · ' + x.tasks + (x.tasks === 1 ? ' task' : ' tasks') : '') +
-            (total > 0 ? ' · ' + pct + '%' : '') + '</span>' +
-            '</div>' +
-            '<div class="share-track">' +
-            '<div class="share-fill" style="width:' + Math.max(pct, x.focusSec > 0 ? 2 : 0) + '%;background:' + meta.color + ';animation-delay:' + (idx * 120) + 'ms"></div>' +
-            '</div></div>';
+    return '<div class="dleg-row"><span class="dleg-sw" style="background:' + meta.color + '"></span>' +
+           '<span class="dleg-name" style="color:' + meta.color + '">' + esc(meta.name) + '</span>' +
+           '<span class="dleg-val">' + (total > 0 ? pct + '% · ' : '') + esc(fmtDur(x.focusSec)) +
+           (x.n ? ' · ' + x.n + (x.n === 1 ? ' session' : ' sessions') : '') + '</span></div>';
+  }).join('');
+}
+
+/* ── your rhythm: day-of-week + hour-of-day mini charts ── */
+function renderMini(el, values, labels, tipFn) {
+  var max = values.reduce(function (a, v) { return Math.max(a, v); }, 0);
+  var html = '';
+  values.forEach(function (v, i) {
+    var lbl = labels[i] || '';
+    if (v <= 0 || max <= 0) {
+      html += '<div class="mini-col"><div class="mini-none" title="' + esc(tipFn(i, v)) + '"></div>' +
+              '<div class="mini-lbl">' + esc(lbl) + '</div></div>';
+      return;
+    }
+    var h = Math.max(3, Math.round(v / max * 100));
+    html += '<div class="mini-col">' +
+            '<div class="mini-bar" style="height:' + h + '%;animation-delay:' + (i * 30) + 'ms" title="' + esc(tipFn(i, v)) + '"></div>' +
+            '<div class="mini-lbl">' + esc(lbl) + '</div></div>';
+  });
+  el.innerHTML = html;
+}
+function renderRhythm(from) {
+  var dist = window.ttStats.distribution(from);
+  var DOWS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  var DOW_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var hasAny = dist.byDow.some(function (v) { return v > 0; });
+  if (!hasAny) {
+    $('dowBars').innerHTML = '<p class="empty-note">No focus recorded in this period yet.</p>';
+    $('hourBars').innerHTML = '';
+    return;
+  }
+  renderMini($('dowBars'), dist.byDow, DOWS, function (i, v) {
+    return DOW_FULL[i] + ' — ' + fmtDur(v) + ' focused';
+  });
+  var hourLabels = [];
+  for (var i = 0; i < 24; i++) hourLabels.push(i % 6 === 0 ? String(i) : '');
+  renderMini($('hourBars'), dist.byHour, hourLabels, function (i, v) {
+    return i + ':00 — ' + fmtDur(v) + ' focused';
+  });
+}
+
+/* ── activity heatmap (last 16 weeks, GitHub-style) ── */
+var HM_WEEKS = 16;
+var MON_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function hmTier(focusSec) {
+  var m = focusSec / 60;
+  if (m <= 0) return 0;
+  if (m < 30) return 1;
+  if (m < 90) return 2;
+  if (m < 180) return 3;
+  if (m < 360) return 4;
+  return 5;
+}
+function renderHeatmap() {
+  var wrap = $('heatmap');
+  var days = window.ttStats.dailySeries(HM_WEEKS * 7);
+  var hasAny = days.some(function (d) { return d.focusSec > 0; });
+  if (!hasAny) {
+    wrap.innerHTML = '<p class="empty-note">No activity yet — your focus days will paint this grid.</p>';
+    return;
+  }
+  var todayKey = window.ttStats.dayKey(Date.now());
+  var lead = new Date(days[0].start).getDay(); // pad so the first column starts on Sunday
+  var html = '';
+  for (var p = 0; p < lead; p++) html += '<span class="hm-cell hm-pad"></span>';
+  days.forEach(function (d) {
+    var tier = hmTier(d.focusSec);
+    var dt = new Date(d.start);
+    var lbl = MON_SHORT[dt.getMonth()] + ' ' + dt.getDate();
+    var title = d.focusSec > 0 ? lbl + ' — ' + fmtDur(d.focusSec) + ' focused' : lbl + ' — no focus';
+    html += '<span class="hm-cell hm-' + tier + (d.day === todayKey ? ' today' : '') +
+            '" title="' + esc(title) + '"></span>';
   });
   wrap.innerHTML = html;
+  wrap.scrollLeft = wrap.scrollWidth; // newest week visible, like GitHub
+}
+
+/* ── records & streaks ── */
+function computeRecords() {
+  var d = window.ttStats.data();
+  var longest = null, byDay = {}, tasksByDay = {}, totFocus = 0;
+  for (var i = 0; i < d.s.length; i++) {
+    var s = d.s[i];
+    if (s.k !== 'focus') continue;
+    totFocus += s.d;
+    if (!longest || s.d >= longest.d) longest = s;
+    var k = window.ttStats.dayKey(s.s);
+    byDay[k] = (byDay[k] || 0) + s.d;
+  }
+  for (var j = 0; j < d.t.length; j++) {
+    var tk = window.ttStats.dayKey(d.t[j].ts);
+    tasksByDay[tk] = (tasksByDay[tk] || 0) + 1;
+  }
+  var bestDay = null, bestTasks = null;
+  Object.keys(byDay).forEach(function (k) {
+    if (!bestDay || byDay[k] >= byDay[bestDay]) bestDay = k;
+  });
+  Object.keys(tasksByDay).forEach(function (k) {
+    if (!bestTasks || tasksByDay[k] >= tasksByDay[bestTasks]) bestTasks = k;
+  });
+  return { longest: longest, bestDay: bestDay, bestDaySec: bestDay ? byDay[bestDay] : 0,
+           bestTasks: bestTasks, bestTasksN: bestTasks ? tasksByDay[bestTasks] : 0,
+           totFocus: totFocus, sessN: d.s.length, taskN: d.t.length };
+}
+function fmtDay(k) {
+  var dt = new Date(k + 'T00:00:00');
+  return MON_SHORT[dt.getMonth()] + ' ' + dt.getDate();
+}
+function renderRecords() {
+  var st = window.ttStats.focusStreaks();
+  $('recStreak').textContent = String(st.current);
+  $('recStreakLongest').textContent = 'Longest: ' + st.longest + (st.longest === 1 ? ' day' : ' days');
+  var rec = computeRecords();
+  var rows = [];
+  if (rec.longest) {
+    rows.push(['Longest session', fmtDur(rec.longest.d) +
+      ' <small>' + esc(timerMeta(rec.longest.tm).name) + ' · ' + fmtDay(window.ttStats.dayKey(rec.longest.s)) + '</small>']);
+  }
+  if (rec.bestDay) {
+    rows.push(['Biggest focus day', fmtDur(rec.bestDaySec) + ' <small>' + fmtDay(rec.bestDay) + '</small>']);
+  }
+  if (rec.bestTasks) {
+    rows.push(['Most tasks in a day', rec.bestTasksN + ' <small>' + fmtDay(rec.bestTasks) + '</small>']);
+  }
+  if (rec.totFocus > 0 || rec.taskN > 0) {
+    rows.push(['All-time total', fmtDur(rec.totFocus) + ' focused <small>' +
+      rec.sessN + (rec.sessN === 1 ? ' session' : ' sessions') + ' · ' +
+      rec.taskN + (rec.taskN === 1 ? ' task' : ' tasks') + '</small>']);
+  }
+  if (!rows.length) {
+    $('recList').innerHTML = '<p class="empty-note">Records appear after your first sessions.</p>';
+    return;
+  }
+  $('recList').innerHTML = rows.map(function (r) {
+    return '<div class="rec-row"><span class="rec-name">' + r[0] + '</span>' +
+           '<span class="rec-val">' + r[1] + '</span></div>';
+  }).join('');
 }
 
 /* ── segment tabs ── */
@@ -749,6 +1110,37 @@ $('clearAll').addEventListener('click', function () {
   window.ttStats.clear();
   render();
   toast('All stats cleared');
+});
+
+/* ── export / import (merge, never overwrite) ── */
+$('exportBtn').addEventListener('click', function () {
+  var d = window.ttStats.data();
+  var payload = { v: 1, app: 'tomatotimers-stats', exportedAt: new Date().toISOString(), s: d.s, t: d.t };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tomatotimers-stats-' + window.ttStats.dayKey(Date.now()) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  toast('Stats exported');
+});
+$('importBtn').addEventListener('click', function () { $('importFile').click(); });
+$('importFile').addEventListener('change', function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function () {
+    var obj = null;
+    try { obj = JSON.parse(rd.result); } catch (e) { obj = null; }
+    var res = obj ? window.ttStats.mergeImport(obj) : null;
+    if (!res) { toast("That doesn't look like a stats file"); return; }
+    render();
+    toast('Imported ' + res.addedS + ' sessions, ' + res.addedT + ' tasks');
+  };
+  rd.readAsText(f);
 });
 
 /* ── cross-tab sync ── */

@@ -119,11 +119,99 @@
         return out;
     }
 
+    /* Current + longest run of consecutive local days that contain at least
+       one focus session. Today counts if it already has focus; otherwise the
+       streak lives through yesterday (same convention as the Streak tool). */
+    function focusStreaks() {
+        var d = data(), set = {};
+        for (var i = 0; i < d.s.length; i++) {
+            var s = d.s[i];
+            if (s.k !== 'focus') continue;
+            var k = dayKey(s.s);
+            set[k] = true;
+        }
+        var cur = 0, t = dayStart(Date.now());
+        if (!set[dayKey(t)]) t -= 86400000;
+        while (set[dayKey(t)]) { cur++; t -= 86400000; }
+        var keys = Object.keys(set).sort();
+        var longest = 0, run = 0, prev = null;
+        for (var j = 0; j < keys.length; j++) {
+            var ts = new Date(keys[j] + 'T00:00:00').getTime();
+            run = (prev !== null && ts - prev === 86400000) ? run + 1 : 1;
+            if (run > longest) longest = run;
+            prev = ts;
+        }
+        return { current: cur, longest: longest };
+    }
+
+    /* Focus seconds split by weekday (0=Sun..6=Sat) and by hour of day
+       (0-23), for sessions started inside [fromTs, toTs). Open end if toTs
+       omitted. Focus sessions only — breaks have no "when". */
+    function distribution(fromTs, toTs) {
+        var d = data();
+        if (toTs == null) toTs = Infinity;
+        var byHour = [], byDow = [];
+        for (var h = 0; h < 24; h++) byHour.push(0);
+        for (var w = 0; w < 7; w++) byDow.push(0);
+        for (var i = 0; i < d.s.length; i++) {
+            var s = d.s[i];
+            if (s.s < fromTs || s.s >= toTs) continue;
+            if (s.k !== 'focus') continue;
+            var dt = new Date(s.s);
+            byHour[dt.getHours()] += s.d;
+            byDow[dt.getDay()] += s.d;
+        }
+        return { byHour: byHour, byDow: byDow };
+    }
+
+    /* Validate + merge an exported stats object into the live store.
+       Exact duplicates (same timer/kind/start/duration, same task ts) are
+       skipped, junk entries are dropped, caps applied afterwards.
+       Returns {addedS, addedT} or null if the file shape is invalid. */
+    function mergeImport(obj) {
+        if (!obj || typeof obj !== 'object') return null;
+        if (obj.v !== VER || !Array.isArray(obj.s) || !Array.isArray(obj.t)) return null;
+        var cur = ensure();
+        var beforeS = cur.s.length, beforeT = cur.t.length;
+        var seenS = {}, seenT = {};
+        for (var i = 0; i < cur.s.length; i++) {
+            var x = cur.s[i];
+            seenS[x.tm + '|' + x.k + '|' + x.s + '|' + x.d] = true;
+        }
+        for (var j = 0; j < cur.t.length; j++) {
+            seenT[cur.t[j].tm + '|' + cur.t[j].ts] = true;
+        }
+        for (var m = 0; m < obj.s.length; m++) {
+            var e = obj.s[m];
+            if (!e || typeof e !== 'object') continue;
+            if (!e.tm || (e.k !== 'focus' && e.k !== 'break')) continue;
+            if (!(e.s > 0) || !(e.d >= MIN_SESSION_MS / 1000)) continue;
+            var key = String(e.tm) + '|' + e.k + '|' + Math.round(e.s) + '|' + Math.round(e.d);
+            if (seenS[key]) continue;
+            seenS[key] = true;
+            cur.s.push({ tm: String(e.tm), k: e.k, s: Math.round(e.s), d: Math.round(e.d) });
+        }
+        for (var n = 0; n < obj.t.length; n++) {
+            var g = obj.t[n];
+            if (!g || typeof g !== 'object' || !g.tm || !(g.ts > 0)) continue;
+            var tkey = String(g.tm) + '|' + Math.round(g.ts);
+            if (seenT[tkey]) continue;
+            seenT[tkey] = true;
+            cur.t.push({ tm: String(g.tm), ts: Math.round(g.ts) });
+        }
+        if (cur.s.length > MAX_SESSIONS) cur.s = cur.s.slice(-MAX_SESSIONS);
+        if (cur.t.length > MAX_TASKS) cur.t = cur.t.slice(-MAX_TASKS);
+        write(cur);
+        return { addedS: cur.s.length - beforeS, addedT: cur.t.length - beforeT };
+    }
+
     window.ttStats = {
         KEY: KEY, VER: VER,
         recordSession: recordSession, recordTask: recordTask,
         clear: clear, data: data,
         dayStart: dayStart, dayKey: dayKey,
-        report: report, dailySeries: dailySeries
+        report: report, dailySeries: dailySeries,
+        focusStreaks: focusStreaks, distribution: distribution,
+        mergeImport: mergeImport
     };
 })();

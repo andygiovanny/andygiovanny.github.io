@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus Stats — Registra Sesiones Pomodoro, Tiempo de Enfoque y Tareas | TomatoTimers</title>
+<link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
+<link rel="icon" type="image/png" href="/assets/images/favicon.png"/>
+<meta name="description" content="Estadísticas de enfoque gratis para tus temporizadores: tiempo total de enfoque y descanso, sesiones y tareas completadas, desglose por técnica y un gráfico de 14 días. Sin registro — los datos se quedan en tu navegador.">
+<meta name="keywords" content="estadísticas pomodoro, rastreador de tiempo de enfoque, estadísticas de estudio, estadísticas de productividad, rastreador de sesiones, estadísticas de tareas">
+<meta name="robots" content="index, follow">
+<meta name="author" content="TomatoTimers">
+<link rel="canonical" href="https://www.tomatotimers.com/es/stats/">
+<link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/stats/">
+<link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/stats/">
+<link rel="alternate" hreflang="es" href="https://www.tomatotimers.com/es/stats/">
+<link rel="alternate" hreflang="pt" href="https://www.tomatotimers.com/pt/stats/">
+<link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/stats/">
+<link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/stats/">
+<meta property="og:title" content="Focus Stats — Registra Sesiones Pomodoro, Tiempo de Enfoque y Tareas | TomatoTimers">
+<meta property="og:description" content="Estadísticas de enfoque gratis: tiempo total de enfoque y descanso, sesiones y tareas completadas, desglose por técnica y un gráfico de 14 días. Sin registro.">
+<meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<meta property="og:url" content="https://www.tomatotimers.com/es/stats/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Focus Stats — Registra Sesiones Pomodoro, Tiempo de Enfoque y Tareas">
+<meta name="twitter:description" content="Estadísticas de enfoque gratis: tiempo de enfoque y descanso, sesiones y tareas completadas, desglose por técnica. Sin registro.">
+<meta name="twitter:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Focus Stats — Rastreador de Sesiones Pomodoro y Tiempo de Enfoque | TomatoTimers",
+  "url": "https://www.tomatotimers.com/es/stats/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Estadísticas de enfoque online gratis: cada técnica de temporizador de TomatoTimers registra tus sesiones de enfoque y descanso terminadas, sesiones completadas y tareas marcadas en un registro privado. Ve totales de hoy, esta semana, este mes o todo el tiempo, un gráfico de enfoque de 14 días y un desglose por técnica. Guardado solo en el navegador, sin registro."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Temporizador Pomodoro",
+      "item": "https://www.tomatotimers.com/es/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Focus Stats",
+      "item": "https://www.tomatotimers.com/es/stats/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿De dónde salen los datos de estadísticas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cada temporizador de TomatoTimers registra tus sesiones terminadas automáticamente: tiempo de enfoque, tiempo de descanso, sesiones completadas y tareas que marcas. Todo va a un registro privado en este navegador — no se sube nada y no hay cuenta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué significan los cuatro números?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enfoque es tu tiempo total de trabajo enfocado en el período seleccionado, Descansos es el tiempo total de descanso, Tareas Completadas cuenta los pendientes que marcaste, y Sesiones cuenta las sesiones de enfoque terminadas. Las mismas cuatro variables se miden para cada técnica de temporizador, así que Pomodoro, 52/17, 20-20-20, Flowtime y el Temporizador Personalizado se pueden comparar con justicia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo ver estadísticas por técnica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. El desglose por técnica muestra cuánto de tu tiempo de enfoque, sesiones y tareas aportó cada temporizador en el período seleccionado, como un gráfico de donut de colores — así ves de un vistazo si eres más de Pomodoro o de Flowtime."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi historial está vacío? ¿Puedo importar datos antiguos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las estadísticas empiezan a contar desde que usas un temporizador que las registra — los temporizadores no guardaban historial antes de que existiera esta página, así que no hay nada que rellenar. Para prever cómo se ven los gráficos con un historial lleno, usa el botón Cargar datos de ejemplo; llena seis semanas de sesiones de demostración realistas que puedes borrar en cualquier momento con Borrar todas las estadísticas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se guardan mis datos? ¿Puedo llevarlos a otro dispositivo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sin cuenta, nunca. Tus estadísticas viven en el almacenamiento local de este navegador y solo están en este dispositivo. Para moverlas o respaldarlas, usa Exportar para descargar un archivo JSON e Importar para restaurarlo en cualquier lugar — la importación se fusiona con lo que ya hay, nada se sobrescribe."
+      }
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXWPJH9V4X"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXWPJH9V4X', {
+        'page_path': window.location.pathname
+        });
+</script>
+<link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf2e9;
+    --panel: #FFFFFF;
+    --text: #58240E;
+    --muted: #8C5A3E;
+    --accent: #DE4B3A;
+    --tomato: #DE4B3A;
+    --border: #E2D0AF;
+    --panel2: #FFFFFF;
+    --input: #FFFFFF;
+  }
+  html.theme-dark {
+    --bg: #14100c;
+    --panel: #1f1813;
+    --text: #E8D9B8;
+    --muted: #A98F6F;
+    --accent: #E0A458;
+    --tomato: #DE4B3A;
+    --border: #3a2d20;
+    --panel2: #2a2018;
+    --input: #17110c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  body { font-family: 'Baloo Tammudu', cursive; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── YouTube promo banner ── */
+  #yt-promo { background-color: #752222; padding: 6px 20px; display: flex; align-items: center;
+    justify-content: space-between; gap: 15px; border-radius: 6px; flex-wrap: wrap; }
+  .yt-promo-left { display: flex; align-items: center; gap: 12px; }
+  #yt-promo span { font-size: 15px; color: #fff; }
+
+  /* ── header ── */
+  .header { max-width: 1140px; margin: 0 auto; padding: 16px 40px 8px;
+    display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: center; gap: 30px; }
+  .header-left { flex: 0 0 350px; max-width: none; box-sizing: border-box; display: flex; flex-direction: column;
+    align-items: flex-start; gap: 12px; padding-left: 10px; }
+  .header-logo { width: 240px; max-width: 240px; height: auto; display: block; margin-left: 20px; }
+  .header-nav { flex: 1 1 auto; max-width: none; box-sizing: border-box; display: grid;
+    grid-template-columns: repeat(2, minmax(0, 324px)); justify-content: center; gap: 8px; padding-top: 22px; }
+  .button-row { display: contents; }
+  .button-row .button-style { min-width: 0; text-align: center; width: 100%; }
+  .button-style {
+    font-family: inherit; background-color: #fff; color: #8e552b; text-transform: uppercase;
+    padding: 16px 20px 10px; font-size: 16px; white-space: nowrap; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50px; border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06); }
+  .button-style:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+  html.theme-dark .button-style { background-color: #2a2018; color: #E8D9B8; border: 1px solid #3a2d20; box-shadow: none; }
+  html.theme-dark .button-style:hover { color: #E0A458; border-color: #E0A458; }
+  @media (max-width: 991px) {
+    .header { padding-left: 15px; padding-right: 15px; }
+    .header-left { flex: 0 0 100%; max-width: 100%; padding-left: 0; align-items: center; }
+    .header-logo { margin-left: 0; }
+    .header-nav { flex: 0 0 100%; max-width: 100%; padding-top: 0; grid-template-columns: 1fr 1fr; }
+    .button-row:first-child .button-style,
+    .button-row:last-child .button-style { min-width: 0; white-space: normal; line-height: 1.25; }
+    .header-logo { width: 200px; }
+  }
+
+  /* ── Theme / language dropdown pills ── */
+  .theme-select {
+    font-family: inherit; font-size: 15px; padding: 7px 34px 4px 16px; border-radius: 50px;
+    border: 2px solid rgba(88, 36, 14, 0.18);
+    background: #FFFFFF url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%2358240E' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #58240E; cursor: pointer; outline: none; line-height: 1.2;
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06); }
+  .theme-select option { background: #FFFFFF; color: #58240E; }
+  html.theme-dark .theme-select {
+    background: #2a2018 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23A98F6F' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>") no-repeat right 13px center;
+    color: #E8D9B8; border-color: #3a2d20; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }
+  html.theme-dark .theme-select option { background: #2a2018; color: #E8D9B8; }
+  .lang-globe { color: #58240E; }
+  html.theme-dark .lang-globe { color: #E8D9B8; }
+
+  /* ── stage ── */
+  .stage { max-width: 980px; margin: 0 auto; padding: 18px 20px 24px; }
+  .page-title { text-align: center; font-size: 30px; line-height: 1.15; margin: 6px 0 2px; }
+  .lead { text-align: center; color: var(--muted); font-size: 15.5px; margin: 2px auto 14px; max-width: 640px; }
+  .hero-top { display: flex; align-items: center; gap: 24px; margin: 2px 0 4px; }
+  .hero-mascot { flex: 0 0 auto; width: 210px; }
+  .mascot-vid { width: 100%; height: auto; display: block; }
+  .mascot-dark { display: none; }
+  html.theme-dark .mascot-light { display: none; }
+  html.theme-dark .mascot-dark { display: block; }
+  .hero-copy { flex: 1 1 auto; min-width: 0; }
+  .hero-copy .page-title { text-align: left; }
+  .hero-copy .lead { text-align: left; margin-left: 0; margin-bottom: 10px; max-width: 560px; }
+  .hero-copy .seg-tabs { justify-content: flex-start; margin: 6px 0 14px; }
+  @media (max-width: 680px) {
+    .hero-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .hero-mascot { width: 150px; }
+  }
+
+  /* ── segment tabs ── */
+  .seg-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin: 4px 0 16px; }
+  .seg-tab { border: 1px solid var(--border); background: var(--input); border-radius: 50px;
+    padding: 8px 18px 6px; font-family: inherit; font-size: 14px; cursor: pointer; color: var(--muted); }
+  .seg-tab:hover { border-color: var(--accent); }
+  .seg-tab.sel { color: var(--text); border-color: var(--text); background: var(--panel2); font-weight: 700; }
+
+  /* ── stat cards ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+  @media (max-width: 720px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    padding: 16px 14px 12px; box-shadow: 0 3px 10px rgba(88,36,14,.06);
+    display: flex; flex-direction: row; align-items: center; justify-content: center;
+    gap: 8px; flex-wrap: wrap; }
+  .stat-card .s-ico { font-size: 26px; line-height: 1; }
+  #cSessions .s-ico { transform: translateY(2px); }
+  .stat-card .s-num { font-size: 26px; font-weight: 700; line-height: 1.1;
+    font-variant-numeric: tabular-nums; }
+  .stat-card .s-lbl { font-size: 12.5px; color: var(--muted); }
+  .s-delta { font-size: 12px; font-weight: 700; line-height: 1; padding: 3px 8px 2px;
+    border-radius: 50px; background: var(--panel2); border: 1px solid var(--border);
+    color: var(--muted); white-space: nowrap; }
+  .s-delta.up { color: #55803C; border-color: #55803C; }
+  html.theme-dark .s-delta.up { color: #8FB573; border-color: #8FB573; }
+  html.theme-dark .stat-card { box-shadow: 0 3px 10px rgba(0,0,0,.3); }
+
+  /* ── panels ── */
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    padding: 16px; margin-bottom: 14px; box-shadow: 0 3px 10px rgba(88,36,14,.06); }
+  html.theme-dark .panel { box-shadow: 0 3px 10px rgba(0,0,0,.3); }
+  .panel-title { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+  .panel-sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+
+  /* 14-day bar chart */
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 150px; padding-top: 8px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+    align-items: center; height: 100%; min-width: 0; }
+  .bar-stack { width: 70%; max-width: 34px; display: flex; flex-direction: column; justify-content: flex-end;
+    border-radius: 6px 6px 3px 3px; overflow: hidden;
+    transform-origin: bottom; animation: barGrow .55s cubic-bezier(.2,.7,.3,1) backwards; }
+  @keyframes barGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  .bar-f { background: var(--tomato); width: 100%; }
+  .bar-b { background: #E0A458; opacity: .75; width: 100%; }
+  .bar-none { width: 70%; max-width: 34px; height: 3px; background: var(--border); border-radius: 2px; opacity: .5;
+    animation: fadeIn .4s ease backwards; }
+  .bar-lbl { font-size: 10.5px; color: var(--muted); margin-top: 6px; white-space: nowrap;
+    font-variant-numeric: tabular-nums; animation: fadeIn .5s ease backwards; }
+  .bar-lbl.today { color: var(--accent); font-weight: 700; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .legend { display: flex; gap: 16px; justify-content: center; margin-top: 10px; font-size: 12.5px;
+    color: var(--muted); flex-wrap: wrap; }
+  .legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .legend .sw-f { background: var(--tomato); }
+  .legend .sw-b { background: #E0A458; opacity: .75; }
+
+  /* per-technique donut */
+  .donut-wrap { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .donut { width: 150px; height: 150px; border-radius: 50%; position: relative; flex: 0 0 auto;
+    animation: donutIn .5s cubic-bezier(.2,.7,.3,1) backwards; }
+  @keyframes donutIn { from { transform: scale(.7); opacity: 0; } }
+  .donut-hole { position: absolute; inset: 26px; background: var(--panel); border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .donut-total { font-size: 19px; font-weight: 700; line-height: 1.1;
+    font-variant-numeric: tabular-nums; transform: translateY(4px); }
+  .donut-sub { font-size: 10.5px; color: var(--muted); transform: translateY(4px); }
+  .dlegend { flex: 1; min-width: 190px; display: flex; flex-direction: column; gap: 6px; }
+  .dleg-row { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+  .dleg-sw { width: 11px; height: 11px; border-radius: 3px; flex: 0 0 auto; }
+  .dleg-name { font-weight: 700; }
+  .dleg-val { margin-left: auto; color: var(--muted); font-size: 12.5px;
+    font-variant-numeric: tabular-nums; }
+
+  /* your rhythm: day-of-week + hour-of-day mini charts */
+  .rhythm-grid { display: grid; grid-template-columns: 5fr 12fr; gap: 18px; }
+  @media (max-width: 640px) { .rhythm-grid { grid-template-columns: 1fr; } }
+  .rhythm-lbl { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .mini { display: flex; align-items: flex-end; gap: 4px; height: 110px; }
+  .mini-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+    align-items: center; height: 100%; min-width: 0; }
+  .mini-bar { width: 70%; max-width: 26px; background: var(--tomato); border-radius: 4px 4px 2px 2px;
+    transform-origin: bottom; animation: barGrow .5s cubic-bezier(.2,.7,.3,1) backwards; }
+  .mini-none { width: 70%; max-width: 26px; height: 2px; background: var(--border);
+    border-radius: 2px; opacity: .5; }
+  .mini-lbl { font-size: 9.5px; color: var(--muted); margin-top: 4px; white-space: nowrap;
+    font-variant-numeric: tabular-nums; }
+  .mini-24 .mini-bar, .mini-24 .mini-none { max-width: 14px; }
+  @media (prefers-reduced-motion: reduce) {
+    .bar-stack, .bar-none, .bar-lbl, .mini-bar, .donut { animation: none; }
+  }
+
+  /* ── activity heatmap ── */
+  .heatmap { display: grid; grid-template-rows: repeat(7, 13px); grid-auto-flow: column;
+    gap: 3px; overflow-x: auto; padding: 2px 2px 6px; }
+  .hm-cell { width: 13px; height: 13px; border-radius: 3px; background: #EFE3CF; }
+  html.theme-dark .hm-cell { background: #2a2018; }
+  html.theme-dark .hm-cell.hm-1 { background: rgba(222,75,58,.32); }
+  html.theme-dark .hm-cell.hm-2 { background: rgba(222,75,58,.50); }
+  html.theme-dark .hm-cell.hm-3 { background: rgba(222,75,58,.66); }
+  html.theme-dark .hm-cell.hm-4 { background: rgba(222,75,58,.83); }
+  html.theme-dark .hm-cell.hm-5 { background: #DE4B3A; }
+  .hm-cell.hm-1 { background: rgba(222,75,58,.28); }
+  .hm-cell.hm-2 { background: rgba(222,75,58,.45); }
+  .hm-cell.hm-3 { background: rgba(222,75,58,.62); }
+  .hm-cell.hm-4 { background: rgba(222,75,58,.80); }
+  .hm-cell.hm-5 { background: #DE4B3A; }
+  .hm-cell.today { outline: 2px solid var(--text); outline-offset: 1px; }
+  .hm-cell.hm-pad { background: transparent; }
+  .hm-legend { display: flex; align-items: center; gap: 4px; justify-content: flex-end;
+    margin-top: 8px; font-size: 11.5px; color: var(--muted); }
+  .hm-legend .hm-cell { width: 11px; height: 11px; }
+
+  /* ── records & streaks ── */
+  .rec-grid { display: grid; grid-template-columns: 200px 1fr; gap: 14px; }
+  @media (max-width: 640px) { .rec-grid { grid-template-columns: 1fr; } }
+  .rec-streak { background: var(--panel2); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 12px 12px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .rec-flame { font-size: 30px; line-height: 1; }
+  .rec-streak-num { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--accent);
+    font-variant-numeric: tabular-nums; }
+  .rec-streak-lbl { font-size: 13px; color: var(--muted); }
+  .rec-streak-sub { display: block; margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+  .rec-list { display: flex; flex-direction: column; gap: 8px; }
+  .rec-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+    background: var(--panel2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 14px 8px; }
+  .rec-row .rec-name { font-size: 13.5px; color: var(--muted); }
+  .rec-row .rec-val { font-size: 14.5px; font-weight: 700; text-align: right;
+    font-variant-numeric: tabular-nums; }
+  .rec-row .rec-val small { display: block; font-weight: 400; font-size: 11.5px; color: var(--muted); }
+
+  /* data row */
+  .data-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center;
+    margin: 4px 0 6px; }
+  .pill-btn { background: var(--tomato); color: #fff; border: none; border-radius: 50px; cursor: pointer;
+    font-family: inherit; font-size: 14px; padding: 9px 20px 7px; box-shadow: 0 3px 10px rgba(222,75,58,.3); }
+  .pill-btn:hover { transform: scale(1.04); }
+  .pill-btn:disabled { opacity: .6; cursor: default; transform: none; }
+  .ghost-btn { background: none; border: 1px solid var(--border); border-radius: 50px; cursor: pointer;
+    font-family: inherit; font-size: 13.5px; color: var(--muted); padding: 9px 16px 7px; }
+  .ghost-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .ghost-btn.arm { color: #fff; background: #C62F2F; border-color: #C62F2F; }
+  .data-note { text-align: center; font-size: 12.5px; color: var(--muted); margin-bottom: 14px; }
+  .empty-note { text-align: center; color: var(--muted); font-size: 14px; padding: 18px 8px; }
+
+  /* explainer + FAQ */
+  .explainer { max-width: 760px; margin: 22px auto 0; }
+  .explainer h2 { font-size: 22px; margin: 18px 0 6px; }
+  .explainer p { font-size: 15px; color: var(--text); line-height: 1.55; margin-bottom: 10px; }
+  .faq-item { background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: 8px; overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 12px 16px 9px; font-weight: 700; font-size: 15px; list-style: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '+'; margin-right: 10px; color: var(--accent); font-weight: 700; }
+  .faq-item[open] summary::before { content: '–'; }
+  .faq-item .faq-a { padding: 0 16px 12px; font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+
+  /* toast */
+  #toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(20px);
+    background: var(--text); color: var(--bg); padding: 10px 20px 7px; border-radius: 50px;
+    font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease;
+    z-index: 3000; max-width: 90vw; text-align: center; }
+  #toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* cards row — canonical tt-card style, same as every other page */
+  .tt-cards { max-width: 1200px; margin: 48px auto 0; padding: 0 20px; font-family: 'Baloo Tammudu', cursive, sans-serif; }
+  .tt-cards-title { font-size: 1.5rem; color: var(--text); margin: 0 0 14px; }
+  .tt-card-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+                 padding: 6px 4px 18px; -webkit-overflow-scrolling: touch; }
+  .tt-card-row::-webkit-scrollbar { height: 8px; }
+  .tt-card-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+  .tt-card { flex: 0 0 240px; scroll-snap-align: start; background: var(--panel); border-radius: 18px;
+             overflow: hidden; text-decoration: none; border: 1px solid var(--border);
+             box-shadow: 0 3px 10px rgba(88, 36, 14, .08);
+             transition: transform .18s ease, box-shadow .18s ease; }
+  .tt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(88, 36, 14, .14); }
+  .tt-card img { width: 100%; height: 170px; object-fit: contain; padding: 18px;
+                 background: #FBF3E4; box-sizing: border-box; }
+  .tt-card-text { padding: 12px 16px 16px; }
+  .tt-card h3 { font-size: 1.05rem; color: var(--text); margin: 0 0 4px; }
+  .tt-card p { font-size: .85rem; color: var(--muted); margin: 0; line-height: 1.45; }
+  html.theme-dark .tt-cards-title { color: var(--accent); }
+  html.theme-dark .tt-card { background: var(--panel2); box-shadow: 0 3px 10px rgba(0, 0, 0, .3); }
+  html.theme-dark .tt-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+  html.theme-dark .tt-card img { background: #1c1410; }
+  html.theme-dark .tt-card h3 { color: var(--accent); }
+
+  .site-footer { text-align: center; padding: 28px 20px 34px; color: var(--muted); font-size: 14px; }
+  .site-footer a { color: var(--text); text-decoration: none; }
+  .site-footer a:hover { color: var(--accent); }
+  .site-footer .foot-links { display: flex; justify-content: center; align-items: center; gap: 12px; }
+  .site-footer .foot-brand { font-weight: 700; }
+  .site-footer .foot-ad { color: var(--accent); font-weight: 700; transition: opacity .2s ease; }
+  .site-footer .foot-note { margin-top: 8px; font-size: 12.5px; }
+</style>
+<script>
+(function () {
+  var THEME_KEY = 'site-theme';
+  function apply(t) {
+    document.documentElement.classList.remove('theme-dark', 'theme-classic');
+    if (t === 'dark') document.documentElement.classList.add('theme-dark');
+    else if (t === 'classic') document.documentElement.classList.add('theme-classic');
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.value = t;
+  }
+  function saved() { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch (e) { return 'light'; } }
+  apply(saved());
+  document.addEventListener('DOMContentLoaded', function () {
+    apply(saved());
+    var sel = document.getElementById('theme-select');
+    if (sel) sel.addEventListener('change', function () {
+      try { localStorage.setItem(THEME_KEY, this.value); } catch (e) {}
+      apply(this.value);
+    });
+  });
+})();
+</script>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- YouTube Promo Banner -->
+<div id="yt-promo">
+  <div class="yt-promo-left">
+    <a href="https://www.youtube.com/channel/UC-u-z82nVkW81veR76iFx_w" target="_blank" rel="noopener noreferrer">
+      <img src="/assets/images/YT.png" alt="Subscribe" style="height: 28px;"
+           onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/YT.png';}">
+    </a>
+    <span>¡Apoya al canal y mira los videos!</span>
+  </div>
+  <div class="g-ytsubscribe"
+       data-channelid="UC-u-z82nVkW81veR76iFx_w"
+       data-layout="default"
+       data-count="default">
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <a class="logo" href="https://www.tomatotimers.com/" target="_self" style="text-decoration:none; display:flex; align-items:center;">
+      <img id="logo" src="/assets/images/logo.svg" alt="TomatoTimers" class="header-logo"
+           onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
+    </a>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="position:relative; display:inline-block;">
+    <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4A8.02 8.02 0 0 1 4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13z"/></svg>
+    <select id="lang-select" class="theme-select" aria-label="Choose language" onchange="if(this.value){try{localStorage.setItem('tt_lang',this.value.replace(/\//g,'')||'en')}catch(e){}window.location.href=this.value}" style="padding-left:38px;">
+      <option value="/es/stats/" selected>Español</option>
+      <option value="/id/stats/">Bahasa Indonesia</option>
+      <option value="/es/stats/">Español</option>
+      <option value="/pt/stats/">Português</option>
+      <option value="/vi/stats/">Tiếng Việt</option>
+    </select>
+    </span>
+    <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+      <option value="light">Tema Claro</option>
+      <option value="dark">Tema Oscuro</option>
+    </select>
+    </div>
+  </div>
+  <div class="header-nav">
+    <div class="button-row">
+      <button type="button" class="button-style" onclick="document.getElementById('explainer').scrollIntoView({behavior:'smooth'})">Cómo Funciona</button>
+      <button type="button" class="button-style" onclick="document.getElementById('other-rhythm').scrollIntoView({behavior:'smooth'})">Temporizadores</button>
+    </div>
+    <div class="button-row">
+      <a href="https://www.tomatotimers.com/" target="_self" class="button-style">Temporizador Pomodoro</a>
+      <a href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener noreferrer" class="button-style">Ambience Studio 🎵</a>
+    </div>
+  </div>
+</div>
+
+<h1 class="sr-only">Focus Stats — Estadísticas de Pomodoro, 52/17, 20-20-20, Flowtime y Temporizador Personalizado</h1>
+
+<div class="stage">
+
+  <div class="hero-top">
+    <div class="hero-mascot" aria-hidden="true">
+      <video class="mascot-vid mascot-light" autoplay muted loop playsinline preload="metadata"
+             src="/assets/gifs/stats-mascot-light.mp4"></video>
+      <video class="mascot-vid mascot-dark" autoplay muted loop playsinline preload="metadata"
+             src="/assets/gifs/stats-mascot-dark.mp4"></video>
+    </div>
+    <div class="hero-copy">
+      <h2 class="page-title">Focus Stats</h2>
+      <p class="lead">Cada temporizador que usas llena esta página en silencio: tiempo de enfoque, descansos, sesiones
+        terminadas y tareas marcadas — los mismos cuatro números en todas partes, desglosados por técnica.</p>
+      <div class="seg-tabs" role="tablist" aria-label="Período de estadísticas">
+        <button type="button" class="seg-tab sel" data-seg="today">Hoy</button>
+        <button type="button" class="seg-tab" data-seg="week">Esta Semana</button>
+        <button type="button" class="seg-tab" data-seg="month">Este Mes</button>
+        <button type="button" class="seg-tab" data-seg="all">Todo el Tiempo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card" id="cFocus">
+      <span class="s-ico" aria-hidden="true">⏱</span>
+      <span class="s-num" id="nFocus">0s</span>
+      <span class="s-delta" id="dFocus"></span>
+      <span class="s-lbl">Enfoque</span>
+    </div>
+    <div class="stat-card" id="cBreak">
+      <span class="s-ico" aria-hidden="true">☕</span>
+      <span class="s-num" id="nBreak">0s</span>
+      <span class="s-delta" id="dBreak"></span>
+      <span class="s-lbl">Descansos</span>
+    </div>
+    <div class="stat-card" id="cTasks">
+      <span class="s-ico" aria-hidden="true">✅</span>
+      <span class="s-num" id="nTasks">0</span>
+      <span class="s-delta" id="dTasks"></span>
+      <span class="s-lbl">Tareas Completadas</span>
+    </div>
+    <div class="stat-card" id="cSessions">
+      <span class="s-ico" aria-hidden="true">▶</span>
+      <span class="s-num" id="nSessions">0</span>
+      <span class="s-delta" id="dSessions"></span>
+      <span class="s-lbl">Sesiones</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Últimos 14 días</h3>
+    <p class="panel-sub">Enfoque (rojo) apilado sobre descansos (ámbar), por día.</p>
+    <div class="bars" id="bars"></div>
+    <div class="legend">
+      <span class="lg"><span class="sw sw-f"></span>Enfoque</span>
+      <span class="lg"><span class="sw sw-b"></span>Descansos</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Por técnica</h3>
+    <p class="panel-sub">Cuota de tu tiempo de enfoque en el período seleccionado.</p>
+    <div class="donut-wrap" id="donutWrap">
+      <div class="donut" id="donut">
+        <div class="donut-hole">
+          <span class="donut-total" id="donutTotal">0s</span>
+          <span class="donut-sub">enfoque</span>
+        </div>
+      </div>
+      <div class="dlegend" id="donutLegend"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Tu ritmo</h3>
+    <p class="panel-sub">Cuándo ocurre tu enfoque en el período seleccionado.</p>
+    <div class="rhythm-grid">
+      <div>
+        <div class="rhythm-lbl">Por día de la semana</div>
+        <div class="mini" id="dowBars"></div>
+      </div>
+      <div>
+        <div class="rhythm-lbl">Por hora del día</div>
+        <div class="mini mini-24" id="hourBars"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Actividad</h3>
+    <p class="panel-sub">Cada cuadrado es un día — rojo más oscuro significa más tiempo de enfoque.</p>
+    <div class="heatmap" id="heatmap"></div>
+    <div class="hm-legend">
+      <span>Menos</span>
+      <span class="hm-cell hm-1"></span>
+      <span class="hm-cell hm-2"></span>
+      <span class="hm-cell hm-3"></span>
+      <span class="hm-cell hm-4"></span>
+      <span class="hm-cell hm-5"></span>
+      <span>Más</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 class="panel-title">Récords y rachas</h3>
+    <p class="panel-sub">Récords personales, contados automáticamente desde cada sesión registrada.</p>
+    <div class="rec-grid">
+      <div class="rec-streak">
+        <span class="rec-flame" aria-hidden="true">🔥</span>
+        <span class="rec-streak-num" id="recStreak">0</span>
+        <span class="rec-streak-lbl">días de racha</span>
+        <span class="rec-streak-sub" id="recStreakLongest">La más larga: 0 días</span>
+      </div>
+      <div class="rec-list" id="recList"></div>
+    </div>
+  </div>
+
+  <div class="data-row">
+    <button type="button" class="pill-btn" id="loadDemo">✨ Cargar datos de ejemplo</button>
+    <button type="button" class="ghost-btn" id="exportBtn">⬇ Exportar</button>
+    <button type="button" class="ghost-btn" id="importBtn">⬆ Importar</button>
+    <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+    <button type="button" class="ghost-btn" id="clearAll">Borrar todas las estadísticas</button>
+  </div>
+  <p class="data-note">Gratis y sin registro — tus estadísticas se quedan en este navegador, en este dispositivo.</p>
+
+</div>
+
+<div class="explainer" id="explainer">
+  <h2>Cómo Funciona</h2>
+  <p><strong>Focus Stats</strong> es el marcador de cada temporizador TomatoTimers. Cada temporizador registra
+    tus sesiones terminadas automáticamente — cuánto tiempo te enfocaste, cuánto descansaste, cuántas sesiones
+    completaste y qué tareas marcaste — y todo va a un registro privado en este navegador. Sin cuenta, sin subidas,
+    sin configuración: inicia cualquier temporizador y esta página se llena sola. Las mismas cuatro variables se
+    miden para cada técnica (Enfoque, Descansos, Tareas Completadas, Sesiones), así que el temporizador Pomodoro,
+    52/17, 20-20-20, Flowtime y el Temporizador Personalizado se pueden comparar con justicia en el donut por
+    técnica. Los gráficos de ritmo muestran qué días de la semana y a qué horas suele ocurrir tu enfoque, y el mapa
+    de actividad y los récords llevan la cuenta de tus rachas y mejores marcas. Cambia entre Hoy, Esta Semana, Este
+    Mes y Todo el Tiempo con las pestañas de arriba; el gráfico de 14 días siempre muestra las últimas dos semanas
+    sin importar la pestaña.</p>
+
+  <h2>¿De dónde salen los datos de estadísticas?</h2>
+  <p>Cada temporizador de TomatoTimers registra tus sesiones terminadas automáticamente: tiempo de enfoque, tiempo de descanso, sesiones completadas y tareas que marcas. Todo va a un registro privado en este navegador — no se sube nada y no hay cuenta.</p>
+
+  <h2>¿Qué significan los cuatro números?</h2>
+  <p>Enfoque es tu tiempo total de trabajo enfocado en el período seleccionado, Descansos es el tiempo total de descanso, Tareas Completadas cuenta los pendientes que marcaste, y Sesiones cuenta las sesiones de enfoque terminadas. Las mismas cuatro variables se miden para cada técnica de temporizador, así que Pomodoro, 52/17, 20-20-20, Flowtime y el Temporizador Personalizado se pueden comparar con justicia.</p>
+
+  <h2>¿Puedo ver estadísticas por técnica?</h2>
+  <p>Sí. El desglose por técnica muestra cuánto de tu tiempo de enfoque, sesiones y tareas aportó cada temporizador en el período seleccionado, como un gráfico de donut de colores — así ves de un vistazo si eres más de Pomodoro o de Flowtime.</p>
+
+  <h2>¿Por qué mi historial está vacío? ¿Puedo importar datos antiguos?</h2>
+  <p>Las estadísticas empiezan a contar desde que usas un temporizador que las registra — los temporizadores no guardaban historial antes de que existiera esta página, así que no hay nada que rellenar. Para prever cómo se ven los gráficos con un historial lleno, usa el botón Cargar datos de ejemplo; llena seis semanas de sesiones de demostración realistas que puedes borrar en cualquier momento con Borrar todas las estadísticas.</p>
+
+  <h2>¿Se guardan mis datos? ¿Puedo llevarlos a otro dispositivo?</h2>
+  <p>Sin cuenta, nunca. Tus estadísticas viven en el almacenamiento local de este navegador y solo están en este dispositivo. Para moverlas o respaldarlas, usa Exportar para descargar un archivo JSON e Importar para restaurarlo en cualquier lugar — la importación se fusiona con lo que ya hay, nada se sobrescribe.</p>
+</div>
+
+<section id="other-rhythm" class="tt-cards" aria-label="Temporizadores">
+  <h2 class="tt-cards-title">Temporizadores</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/es/">
+      <img src="/assets/images/tomato-cartoon.svg" alt="Mascota Tomato del temporizador de enfoque Pomodoro" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Temporizador Pomodoro</h3>
+        <p>El clásico ritmo de enfoque de 25 minutos con descansos cortos y largos — nuestro temporizador principal para trabajo profundo y sesiones de estudio.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/es/52-17/">
+      <img src="/assets/images/52-17-card.png" alt="Mascota pollito con temporizador de sprint y descanso 52/17" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Temporizador 52/17</h3>
+        <p>Trabaja 52 minutos enfocado, luego tómate 17 para desconectar de verdad — el ritmo de trabajo profundo medido a partir de las personas más productivas.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/es/20-20-20-rule/">
+      <img src="/assets/images/1.svg" alt="Mascota pollito Tomato del temporizador de descanso visual 20-20-20" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Temporizador de la Regla 20-20-20</h3>
+        <p>Cada 20 minutos, mira a 20 pies de distancia durante 20 segundos — un ritmo de descanso visual suave que combate la fatiga visual digital.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/es/flowtime/">
+      <img src="/assets/images/flowtime-card.png" alt="Mascota pollito trabajando en una laptop para el temporizador de la técnica Flowtime" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Temporizador de la Técnica Flowtime</h3>
+        <p>Trabaja mientras dure tu estado de flujo mientras tu descanso se carga en tiempo real — gana descanso a la medida del trabajo que realmente hiciste.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/es/custom-timer/">
+      <img src="/assets/images/custom-timer-card.png" alt="Mascota pollito del creador Crea Tu Propio Temporizador" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Crea Tu Propio Temporizador</h3>
+        <p>Apila, nombra y repite tus propias fases — un temporizador que armas desde cero para estudiar, entrenar o hacer intervalos, guardado en este navegador.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section id="tools" class="tt-cards" aria-label="Herramientas">
+  <h2 class="tt-cards-title">Herramientas</h2>
+  <div class="tt-card-row">
+    <a class="tt-card" href="https://www.tomatotimers.com/es/days-until/">
+      <img src="/assets/images/days-until-card.png" alt="Mascota de pollito de la herramienta de cuenta regresiva Days Until" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Days Until</h3>
+        <p>Cuenta regresiva en vivo hacia los plazos que importan — exámenes, lanzamientos, vacaciones — con iconos, colores y un pin que te acompaña en tus páginas de temporizador.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/es/streaks/">
+      <img src="/assets/images/streaks-card.png" alt="Mascota de pollito con monóculo del Streak Counter, rastreador de hábitos diario" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Streak Counter</h3>
+        <p>Un rastreador de hábitos diario que dibuja tus rachas en un gran calendario — marca cada día, mantén viva la racha y fija tu racha favorita en cualquier página de temporizador.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-links">
+    <a class="foot-brand" href="https://www.tomatotimers.com/" target="_self">Tomato Timer</a>
+    <span>&bull;</span>
+    <a class="foot-ad" href="https://optimize-tomatotimers.bsa-whitelabel.com/checkout/new" target="_blank" rel="noopener noreferrer">Anuncia Aquí &#127919;</a>
+  </div>
+  <div>
+    ¿Encontraste un error? <a href="/cdn-cgi/l/email-protection#35545b514c525c5a43545b5b4c535057475c545b415a755258545c591b565a58" style="color: #DE4B3A; text-decoration: none; font-weight: 700;">Envíame un email</a>
+  </div>
+  <div class="foot-note">Gratis y sin registro — tus estadísticas se quedan en este navegador.</div>
+</footer>
+
+<script src="/assets/js/ttstats.js?v=1.0"></script>
+<script>
+(function () {
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+
+/* ── display metadata per timer id ── */
+var TIMERS = {
+  'pomodoro': { name: 'Pomodoro',     color: '#DE4B3A' },
+  '52-17':    { name: '52/17',        color: '#E0A458' },
+  '202020':   { name: '20-20-20',     color: '#5B8DEF' },
+  'flowtime': { name: 'Flowtime',     color: '#7BA05B' },
+  'custom':   { name: 'Temporizador Personalizado', color: '#B065C6' }
+};
+var UNKNOWN_COLOR = '#9C8B7A';
+
+/* ── helpers ── */
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function fmtDur(sec) {
+  sec = Math.max(0, Math.round(sec || 0));
+  var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  if (h >= 1) return h + 'h ' + m + 'm';
+  if (m >= 1) return m + 'm';
+  return s + 's';
+}
+function timerMeta(id) {
+  if (TIMERS[id]) return TIMERS[id];
+  return { name: id, color: UNKNOWN_COLOR };
+}
+
+/* ── segments: ms timestamp of the period start (open end) ── */
+var segFrom = {
+  today: function () { return window.ttStats.dayStart(Date.now()); },
+  week:  function () { return window.ttStats.dayStart(Date.now()) - 6 * 864e5; },
+  month: function () { return window.ttStats.dayStart(Date.now()) - 29 * 864e5; },
+  all:   function () { return 0; }
+};
+var curSeg = 'today';
+
+/* ── render ── */
+function render() {
+  var from = segFrom[curSeg]();
+  var r = window.ttStats.report(from);
+
+  $('nFocus').textContent    = fmtDur(r.focusSec);
+  $('nBreak').textContent    = fmtDur(r.breakSec);
+  $('nTasks').textContent    = String(r.tasks);
+  $('nSessions').textContent = String(r.focusN + r.breakN);
+  renderDeltas(r, from);
+
+  renderBars();
+  renderShare(r, from);
+  renderRhythm(from);
+  renderHeatmap();
+  renderRecords();
+}
+
+/* ── hero deltas: compare each card with the previous matching window ── */
+function renderDeltas(r, from) {
+  var cards = [
+    ['dFocus',    r.focusSec],
+    ['dBreak',    r.breakSec],
+    ['dTasks',    r.tasks],
+    ['dSessions', r.focusN + r.breakN]
+  ];
+  var prev = null;
+  if (curSeg !== 'all') {
+    var now = Date.now();
+    var p = window.ttStats.report(from - (now - from), from);
+    prev = [p.focusSec, p.breakSec, p.tasks, p.focusN + p.breakN];
+  }
+  cards.forEach(function (m, i) {
+    var el = $(m[0]);
+    var cur = m[1], was = prev ? prev[i] : 0;
+    if (prev === null || (cur === 0 && was === 0)) { el.style.display = 'none'; return; }
+    el.style.display = '';
+    if (was === 0) { el.textContent = '↑ new'; el.classList.add('up'); return; }
+    var pct = Math.round((cur - was) / was * 100);
+    if (pct > 0)      { el.textContent = '↑ ' + pct + '%';  el.classList.add('up'); }
+    else if (pct < 0) { el.textContent = '↓ ' + (-pct) + '%'; el.classList.remove('up'); }
+    else              { el.textContent = '–'; el.classList.remove('up'); }
+  });
+}
+
+function renderBars() {
+  var wrap = $('bars');
+  var days = window.ttStats.dailySeries(14);
+  var hasAny = days.some(function (d) { return d.focusSec > 0 || d.breakSec > 0; });
+  if (!hasAny) {
+    wrap.innerHTML = '<p class="empty-note">Aún no hay sesiones registradas — inicia cualquier temporizador y tus estadísticas aparecerán aquí.</p>';
+    return;
+  }
+  var maxFocus = days.reduce(function (a, d) { return Math.max(a, d.focusSec); }, 0);
+  var todayKey = window.ttStats.dayKey(Date.now());
+  var DOWS = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+  var html = '';
+  days.forEach(function (d, idx) {
+    var dt = new Date(d.start);
+    var lbl = DOWS[dt.getDay()] + ' ' + dt.getDate();
+    var isToday = d.day === todayKey;
+    var delay = idx * 35;
+    if (d.focusSec === 0 && d.breakSec === 0) {
+      html += '<div class="bar-col"><div class="bar-none" style="animation-delay:' + delay + 'ms"></div>' +
+              '<div class="bar-lbl' + (isToday ? ' today' : '') + '" style="animation-delay:' + (delay + 250) + 'ms">' + esc(lbl) + '</div></div>';
+      return;
+    }
+    var fh = maxFocus > 0 ? Math.max(3, Math.round(d.focusSec / maxFocus * 100)) : 3;
+    var bh = d.focusSec > 0
+      ? Math.max(2, Math.round(d.breakSec / d.focusSec * fh))
+      : Math.max(2, Math.round(d.breakSec / maxFocus * 100));
+    html += '<div class="bar-col">' +
+            '<div class="bar-stack" style="height:' + (fh + bh) + '%;animation-delay:' + (idx * 35) + 'ms">' +
+            '<div class="bar-b" style="height:' + Math.round(bh / (fh + bh) * 100) + '%" title="Breaks ' + esc(fmtDur(d.breakSec)) + '"></div>' +
+            '<div class="bar-f" style="height:' + Math.round(fh / (fh + bh) * 100) + '%" title="Focus ' + esc(fmtDur(d.focusSec)) + '"></div>' +
+            '</div>' +
+            '<div class="bar-lbl' + (isToday ? ' today' : '') + '" style="animation-delay:' + (delay + 250) + 'ms">' + esc(lbl) + '</div></div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function renderShare(r, from) {
+  var wrap = $('donutWrap');
+  var rows = Object.keys(r.perTimer).map(function (id) {
+    var p = r.perTimer[id];
+    return { id: id, focusSec: p.focusSec, n: p.focusN + p.breakN, tasks: p.tasks };
+  }).filter(function (x) {
+    return x.focusSec > 0 || x.n > 0 || x.tasks > 0;
+  }).sort(function (a, b) { return b.focusSec - a.focusSec; });
+
+  if (!rows.length) {
+    wrap.innerHTML = '<p class="empty-note">Nada registrado en este período todavía.</p>';
+    return;
+  }
+  var total = rows.reduce(function (a, x) { return a + x.focusSec; }, 0);
+  /* rebuild the donut + legend */
+  var stops = [], acc = 0;
+  rows.forEach(function (x, idx) {
+    var meta = timerMeta(x.id);
+    var pct = total > 0 ? (idx === rows.length - 1 ? 100 : acc + x.focusSec / total * 100) : 0;
+    stops.push(meta.color + ' ' + acc.toFixed(2) + '% ' + pct.toFixed(2) + '%');
+    acc = pct;
+  });
+  wrap.innerHTML = '<div class="donut" id="donut" style="background: conic-gradient(' + stops.join(',') + ')">' +
+    '<div class="donut-hole"><span class="donut-total">' + esc(fmtDur(total)) + '</span>' +
+    '<span class="donut-sub">enfoque</span></div></div>' +
+    '<div class="dlegend" id="donutLegend"></div>';
+  $('donutLegend').innerHTML = rows.map(function (x, idx) {
+    var meta = timerMeta(x.id);
+    var pct = total > 0 ? Math.round(x.focusSec / total * 100) : 0;
+    return '<div class="dleg-row"><span class="dleg-sw" style="background:' + meta.color + '"></span>' +
+           '<span class="dleg-name" style="color:' + meta.color + '">' + esc(meta.name) + '</span>' +
+           '<span class="dleg-val">' + (total > 0 ? pct + '% · ' : '') + esc(fmtDur(x.focusSec)) +
+           (x.n ? ' · ' + x.n + (x.n === 1 ? ' session' : ' sessions') : '') + '</span></div>';
+  }).join('');
+}
+
+/* ── your rhythm: day-of-week + hour-of-day mini charts ── */
+function renderMini(el, values, labels, tipFn) {
+  var max = values.reduce(function (a, v) { return Math.max(a, v); }, 0);
+  var html = '';
+  values.forEach(function (v, i) {
+    var lbl = labels[i] || '';
+    if (v <= 0 || max <= 0) {
+      html += '<div class="mini-col"><div class="mini-none" title="' + esc(tipFn(i, v)) + '"></div>' +
+              '<div class="mini-lbl">' + esc(lbl) + '</div></div>';
+      return;
+    }
+    var h = Math.max(3, Math.round(v / max * 100));
+    html += '<div class="mini-col">' +
+            '<div class="mini-bar" style="height:' + h + '%;animation-delay:' + (i * 30) + 'ms" title="' + esc(tipFn(i, v)) + '"></div>' +
+            '<div class="mini-lbl">' + esc(lbl) + '</div></div>';
+  });
+  el.innerHTML = html;
+}
+function renderRhythm(from) {
+  var dist = window.ttStats.distribution(from);
+  var DOWS = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+  var DOW_FULL = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  var hasAny = dist.byDow.some(function (v) { return v > 0; });
+  if (!hasAny) {
+    $('dowBars').innerHTML = '<p class="empty-note">Sin enfoque registrado en este período todavía.</p>';
+    $('hourBars').innerHTML = '';
+    return;
+  }
+  renderMini($('dowBars'), dist.byDow, DOWS, function (i, v) {
+    return DOW_FULL[i] + ' — ' + fmtDur(v) + ' de enfoque';
+  });
+  var hourLabels = [];
+  for (var i = 0; i < 24; i++) hourLabels.push(i % 6 === 0 ? String(i) : '');
+  renderMini($('hourBars'), dist.byHour, hourLabels, function (i, v) {
+    return i + ':00 — ' + fmtDur(v) + ' focused';
+  });
+}
+
+/* ── activity heatmap (last 16 weeks, GitHub-style) ── */
+var HM_WEEKS = 16;
+var MON_SHORT = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+function hmTier(focusSec) {
+  var m = focusSec / 60;
+  if (m <= 0) return 0;
+  if (m < 30) return 1;
+  if (m < 90) return 2;
+  if (m < 180) return 3;
+  if (m < 360) return 4;
+  return 5;
+}
+function renderHeatmap() {
+  var wrap = $('heatmap');
+  var days = window.ttStats.dailySeries(HM_WEEKS * 7);
+  var hasAny = days.some(function (d) { return d.focusSec > 0; });
+  if (!hasAny) {
+    wrap.innerHTML = '<p class="empty-note">Sin actividad todavía — tus días de enfoque pintarán esta cuadrícula.</p>';
+    return;
+  }
+  var todayKey = window.ttStats.dayKey(Date.now());
+  var lead = new Date(days[0].start).getDay(); // pad so the first column starts on Sunday
+  var html = '';
+  for (var p = 0; p < lead; p++) html += '<span class="hm-cell hm-pad"></span>';
+  days.forEach(function (d) {
+    var tier = hmTier(d.focusSec);
+    var dt = new Date(d.start);
+    var lbl = MON_SHORT[dt.getMonth()] + ' ' + dt.getDate();
+    var title = d.focusSec > 0 ? lbl + ' — ' + fmtDur(d.focusSec) + ' de enfoque' : lbl + ' sin enfoque';
+    html += '<span class="hm-cell hm-' + tier + (d.day === todayKey ? ' today' : '') +
+            '" title="' + esc(title) + '"></span>';
+  });
+  wrap.innerHTML = html;
+  wrap.scrollLeft = wrap.scrollWidth; // newest week visible, like GitHub
+}
+
+/* ── records & streaks ── */
+function computeRecords() {
+  var d = window.ttStats.data();
+  var longest = null, byDay = {}, tasksByDay = {}, totFocus = 0;
+  for (var i = 0; i < d.s.length; i++) {
+    var s = d.s[i];
+    if (s.k !== 'focus') continue;
+    totFocus += s.d;
+    if (!longest || s.d >= longest.d) longest = s;
+    var k = window.ttStats.dayKey(s.s);
+    byDay[k] = (byDay[k] || 0) + s.d;
+  }
+  for (var j = 0; j < d.t.length; j++) {
+    var tk = window.ttStats.dayKey(d.t[j].ts);
+    tasksByDay[tk] = (tasksByDay[tk] || 0) + 1;
+  }
+  var bestDay = null, bestTasks = null;
+  Object.keys(byDay).forEach(function (k) {
+    if (!bestDay || byDay[k] >= byDay[bestDay]) bestDay = k;
+  });
+  Object.keys(tasksByDay).forEach(function (k) {
+    if (!bestTasks || tasksByDay[k] >= tasksByDay[bestTasks]) bestTasks = k;
+  });
+  return { longest: longest, bestDay: bestDay, bestDaySec: bestDay ? byDay[bestDay] : 0,
+           bestTasks: bestTasks, bestTasksN: bestTasks ? tasksByDay[bestTasks] : 0,
+           totFocus: totFocus, sessN: d.s.length, taskN: d.t.length };
+}
+function fmtDay(k) {
+  var dt = new Date(k + 'T00:00:00');
+  return MON_SHORT[dt.getMonth()] + ' ' + dt.getDate();
+}
+function renderRecords() {
+  var st = window.ttStats.focusStreaks();
+  $('recStreak').textContent = String(st.current);
+  $('recStreakLongest').textContent = 'La más larga: ' + st.longest + (st.longest === 1 ? ' día' : ' días');
+  var rec = computeRecords();
+  var rows = [];
+  if (rec.longest) {
+    rows.push(['Sesión más larga', fmtDur(rec.longest.d) +
+      ' <small>' + esc(timerMeta(rec.longest.tm).name) + ' · ' + fmtDay(window.ttStats.dayKey(rec.longest.s)) + '</small>']);
+  }
+  if (rec.bestDay) {
+    rows.push(['Día de mayor enfoque', fmtDur(rec.bestDaySec) + ' <small>' + fmtDay(rec.bestDay) + '</small>']);
+  }
+  if (rec.bestTasks) {
+    rows.push(['Más tareas en un día', rec.bestTasksN + ' <small>' + fmtDay(rec.bestTasks) + '</small>']);
+  }
+  if (rec.totFocus > 0 || rec.taskN > 0) {
+    rows.push(['Total de todos los tiempos', fmtDur(rec.totFocus) + ' de enfoque <small>' +
+      rec.sessN + (rec.sessN === 1 ? ' sesión' : ' sesiones') + ' · ' +
+      rec.taskN + (rec.taskN === 1 ? ' tarea' : ' tareas') + '</small>']);
+  }
+  if (!rows.length) {
+    $('recList').innerHTML = '<p class="empty-note">Los récords aparecen tras tus primeras sesiones.</p>';
+    return;
+  }
+  $('recList').innerHTML = rows.map(function (r) {
+    return '<div class="rec-row"><span class="rec-name">' + r[0] + '</span>' +
+           '<span class="rec-val">' + r[1] + '</span></div>';
+  }).join('');
+}
+
+/* ── segment tabs ── */
+Array.prototype.forEach.call(document.querySelectorAll('.seg-tab'), function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.seg-tab').forEach(function (b) { b.classList.remove('sel'); });
+    btn.classList.add('sel');
+    curSeg = btn.getAttribute('data-seg');
+    render();
+  });
+});
+
+/* ── toast ── */
+var toastTimer = null;
+function toast(msg) {
+  var el = $('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { el.classList.remove('on'); }, 2600);
+}
+
+/* ── example data (42 days, written through ttStats so caps apply) ── */
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+var DEMO_DONE = false;
+function loadDemo() {
+  if (DEMO_DONE) return;
+  var rnd = mulberry32(20261110);
+  var today = window.ttStats.dayStart(Date.now());
+  var IDS = ['pomodoro', 'pomodoro', 'pomodoro', 'flowtime', '52-17', '202020']; // weighted
+  for (var off = 41; off >= 0; off--) {
+    var dayStart = today - off * 864e5;
+    var nFocus = Math.floor(rnd() * 7); // 0-6 sessions/day
+    for (var i = 0; i < nFocus; i++) {
+      var id = IDS[Math.floor(rnd() * IDS.length)];
+      var startH = 8 + Math.floor(rnd() * 12);
+      var startM = Math.floor(rnd() * 12) * 5;
+      var dur = (10 + Math.floor(rnd() * 36)) * 60; // 10-45 min (seconds)
+      var s = dayStart + (startH * 60 + startM) * 60000;
+      if (off === 0 && s > Date.now()) continue; // don't plant future sessions today
+      window.ttStats.recordSession(id, 'focus', s, dur * 1000);
+      if (rnd() < 0.34) { // ~1 break per 3 focus sessions
+        var bd = (3 + Math.floor(rnd() * 8)) * 60; // 3-10 min (seconds)
+        window.ttStats.recordSession(id, 'break', s + dur * 1000, bd * 1000);
+      }
+    }
+    var nTasks = Math.floor(rnd() * 9); // 0-8 tasks/day
+    for (var j = 0; j < nTasks; j++) {
+      var ts = dayStart + (9 + Math.floor(rnd() * 11)) * 3600000;
+      if (off === 0 && ts > Date.now()) continue;
+      window.ttStats.recordTask('pomodoro', ts);
+    }
+  }
+  DEMO_DONE = true;
+  var btn = $('loadDemo');
+  btn.disabled = true;
+  btn.textContent = 'Example data loaded ✓';
+  render();
+  toast('Se cargaron 6 semanas de sesiones de ejemplo');
+}
+
+/* ── clear all (two-step) ── */
+var armTimer = null;
+$('clearAll').addEventListener('click', function () {
+  var btn = $('clearAll');
+  if (!btn.classList.contains('arm')) {
+    btn.classList.add('arm');
+    btn.textContent = '¿Seguro? Esto borra TODAS las estadísticas';
+    armTimer = setTimeout(function () {
+      btn.classList.remove('arm');
+      btn.textContent = 'Borrar todas las estadísticas';
+    }, 3000);
+    return;
+  }
+  clearTimeout(armTimer);
+  btn.classList.remove('arm');
+  btn.textContent = 'Borrar todas las estadísticas';
+  window.ttStats.clear();
+  render();
+  toast('Todas las estadísticas borradas');
+});
+
+/* ── export / import (merge, never overwrite) ── */
+$('exportBtn').addEventListener('click', function () {
+  var d = window.ttStats.data();
+  var payload = { v: 1, app: 'tomatotimers-stats', exportedAt: new Date().toISOString(), s: d.s, t: d.t };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tomatotimers-stats-' + window.ttStats.dayKey(Date.now()) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  toast('Estadísticas exportadas');
+});
+$('importBtn').addEventListener('click', function () { $('importFile').click(); });
+$('importFile').addEventListener('change', function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function () {
+    var obj = null;
+    try { obj = JSON.parse(rd.result); } catch (e) { obj = null; }
+    var res = obj ? window.ttStats.mergeImport(obj) : null;
+    if (!res) { toast("Eso no parece un archivo de estadísticas"); return; }
+    render();
+    toast('Importadas ' + res.addedS + ' sesiones y ' + res.addedT + ' tareas');
+  };
+  rd.readAsText(f);
+});
+
+/* ── cross-tab sync ── */
+window.addEventListener('storage', function (e) {
+  if (e.key === window.ttStats.KEY) render();
+});
+
+$('loadDemo').addEventListener('click', loadDemo);
+if (!window.ttStats) {
+  document.querySelector('.data-row').innerHTML =
+    '<p class="empty-note">El motor de estadísticas no cargó — por favor recarga la página.</p>';
+} else {
+  render();
+}
+})();
+</script>
+
+<!-- BuySellAds loader — same as every page -->
+<script>
+(function () {
+  var bsa_optimize = document.createElement('script');
+  bsa_optimize.type = 'text/javascript';
+  bsa_optimize.async = true;
+  bsa_optimize.src = 'https://cdn4.buysellads.net/pub/tomatotimers.js?' + (new Date() - new Date() % 600000);
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+})();
+</script>
+
+<style>
+    /* Sidebar ad wrappers — pinned to the screen edges at ≥992px,
+       same as the other timer pages */
+    .ads-lg-only { display: none; }
+    @media (min-width: 992px) { .ads-lg-only { display: block; } }
+    .bsa-left-sidebar-wrapper {
+        position: absolute; left: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
+    .bsa-right-sidebar-wrapper {
+        position: absolute; right: 10px; top: 80px; z-index: 1000;
+        overflow: hidden; border-radius: 12px; background-color: transparent;
+    }
+</style>
+
+<!-- Tomatotimers_S2S_Leftsidebar_ROS -->
+<div class="bsa-left-sidebar-wrapper ads-lg-only">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785230759691-0_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785230759691-0_123456"></div>
+</div>
+<!-- Tomatotimers_S2S_Rightsidebar_ROS -->
+<div class="bsa-right-sidebar-wrapper ads-lg-only">
+    <style>
+        @media only screen and (min-width: 0px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 0px; }
+        }
+        @media only screen and (min-width: 990px) and (min-height: 0px) {
+            div[id^="bsa-zone_1785233220314-9_123456"] { min-height: 600px; }
+        }
+    </style>
+    <div id="bsa-zone_1785233220314-9_123456"></div>
+</div>
+
+</body>
+</html>
