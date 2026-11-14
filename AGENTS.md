@@ -61,6 +61,18 @@
    master pages only, then let the human review. NEVER touch the
    translations (`id/`, `es/`, `pt/`, `vi/`) until the human has seen the
    English version and explicitly given the go-ahead.
+7. **USER DATA IS UNTOUCHABLE.** Streaks, countdowns, stats, tasks, and
+   every other localStorage value belong to real users in their own
+   browsers. Rules: (a) NEVER rename a localStorage key — a rename orphans
+   everyone's data and looks exactly like a reset; if a format must change,
+   write a one-time migration that reads the old key and writes the new one.
+   (b) Default/demo seeding may only run when the key is completely absent
+   (`if (localStorage.getItem(KEY) == null)`), never overwrite existing
+   data, and once a user deletes a demo it never comes back. (c) Deploys
+   cannot clear localStorage — if data "disappears", suspect a renamed key,
+   a different origin (www vs apex — we 301 to `www.tomatotimers.com`), a
+   different browser/profile, or cleared site data — investigate before
+   assuming the push did it.
 
 ## Repo structure
 
@@ -175,6 +187,22 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-14 (Kimi Work, pt 11):** PIN CHIP ANTI-STACKING FIX (nowrap rows)
+  — despite pt 9/10, Spanish + other long-label pages still dropped the stats
+  chip to a second line (reproduced live: es/52-17 at 1254px CSS width, chip
+  top 315 vs pins 250 with Andy's real 5-pin data). Root cause: `flex-wrap:
+  wrap` line-breaking uses hypothetical (pre-shrink) sizes, so `min-width:0`
+  shrink alone can never prevent the wrap. Fix across all 25 timer pages:
+  `.pin-row` → `flex-wrap: nowrap` on 20 subpages (with the <992px media
+  query re-enabling `wrap` for narrow screens); the 5 index pages' pin
+  container became `.pin-host` (nowrap flex) instead of a plain col-lg-12;
+  `#statsPins .pin-chip` gained `min-width:0; flex:0 1 auto` everywhere so
+  the chip shrinks/wraps its blocks internally instead of dropping a line.
+  Verified via InAppBrowser at 1254px with 5-pin seeded data: all 25 pages
+  sameLine:true. Visual consequence: on the tightest pages (es/vi index) the
+  stats chip is slightly taller. Also: work-log entry for this fix was
+  accidentally written to the LEGACY clone's AGENTS.md (cwd trap) — reverted
+  there, recorded here instead. Next: Andy spot-checks on live site.
 - **2026-11-13 (Kimi Work, pt 8):** PIN CHIP ALIGNMENT FIX (EN subpages) —
   the pin chips on 52-17 / 20-20-20-rule / flowtime / custom-timer rendered
   uneven vs the main page: pins stretched to 78px in `.pin-row` (no
