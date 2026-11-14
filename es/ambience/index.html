@@ -1477,6 +1477,13 @@
         <p>Un rastreador de hábitos diario que dibuja tus rachas en un gran calendario — marca cada día, mantén viva la racha y fija tu racha favorita en cualquier página de temporizador.</p>
       </div>
     </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/es/stats/">
+      <img src="/assets/images/stats-card.png" alt="Mascota chick presentando un gráfico de barras, la herramienta Focus Stats" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Focus Stats</h3>
+        <p>Tu marcador privado — tiempo de enfoque, descansos, tareas y sesiones de cada técnica de temporizador, con gráficos, récords y pines para tus páginas de temporizador.</p>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -1599,7 +1606,13 @@
  { id: 'bird', name: 'Canto de Pájaro', file: '/ambience/audio/bird.ogg', icon: '/ambience/icons/bird.svg' },
  { id: 'lofi1', name: 'Lofi 1', file: '/ambience/audio/lofi1.ogg', icon: '/ambience/icons/lofi1.svg' },
  { id: 'lofi2', name: 'Lofi 2', file: '/ambience/audio/lofi2.ogg', icon: '/ambience/icons/lofi2.svg' },
- { id: 'lofi3', name: 'Lofi 3', file: '/ambience/audio/lofi3.ogg', icon: '/ambience/icons/lofi3.svg' }
+ { id: 'lofi3', name: 'Lofi 3', file: '/ambience/audio/lofi3.ogg', icon: '/ambience/icons/lofi3.svg' },
+ { id: 'jazz1', name: 'Jazz 1', file: '/ambience/audio/jazz1.ogg', icon: '/ambience/icons/jazz1.svg' },
+ { id: 'jazz2', name: 'Jazz 2', file: '/ambience/audio/jazz2.ogg', icon: '/ambience/icons/jazz2.svg' },
+ { id: 'jazz3', name: 'Jazz 3', file: '/ambience/audio/jazz3.ogg', icon: '/ambience/icons/jazz3.svg' },
+ { id: 'classical1', name: 'Classical 1', file: '/ambience/audio/classical1.ogg', icon: '/ambience/icons/classical1.svg' },
+ { id: 'classical2', name: 'Classical 2', file: '/ambience/audio/classical2.ogg', icon: '/ambience/icons/classical2.svg' },
+ { id: 'classical3', name: 'Classical 3', file: '/ambience/audio/classical3.ogg', icon: '/ambience/icons/classical3.svg' }
     ];
 
     /* ─── Web Audio API Setup ─── */
@@ -2072,7 +2085,7 @@
     window.addEventListener('DOMContentLoaded', () => {
         renderGrid();
         updatePresetButtonLabels();
-        const LAZY = ['lofi1', 'lofi2', 'lofi3'];
+        const LAZY = ['lofi1', 'lofi2', 'lofi3', 'jazz1', 'jazz2', 'jazz3', 'classical1', 'classical2', 'classical3'];
         SOUNDS.forEach(s => { if (!LAZY.includes(s.id)) preloadSound(s); });
     });
 </script>

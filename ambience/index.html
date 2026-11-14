@@ -1498,6 +1498,13 @@
         <p>A daily habit tracker that draws your streaks on one big calendar — check in every day, keep the run alive, and pin your favorite streak to any timer page.</p>
       </div>
     </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/stats/">
+      <img src="/assets/images/stats-card.png" alt="Chick mascot presenting a bar chart, the Focus Stats tool" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Focus Stats</h3>
+        <p>Your private scoreboard — focus time, breaks, tasks and sessions from every timer technique, with charts, records and pins for your timer pages.</p>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -1623,7 +1630,13 @@
  { id: 'bird', name: 'Bird Chirping', file: 'audio/bird.ogg', icon: 'icons/bird.svg' },
  { id: 'lofi1', name: 'Lofi 1', file: 'audio/lofi1.ogg', icon: 'icons/lofi1.svg' },
  { id: 'lofi2', name: 'Lofi 2', file: 'audio/lofi2.ogg', icon: 'icons/lofi2.svg' },
- { id: 'lofi3', name: 'Lofi 3', file: 'audio/lofi3.ogg', icon: 'icons/lofi3.svg' }
+ { id: 'lofi3', name: 'Lofi 3', file: 'audio/lofi3.ogg', icon: 'icons/lofi3.svg' },
+ { id: 'jazz1', name: 'Jazz 1', file: 'audio/jazz1.ogg', icon: 'icons/jazz1.svg' },
+ { id: 'jazz2', name: 'Jazz 2', file: 'audio/jazz2.ogg', icon: 'icons/jazz2.svg' },
+ { id: 'jazz3', name: 'Jazz 3', file: 'audio/jazz3.ogg', icon: 'icons/jazz3.svg' },
+ { id: 'classical1', name: 'Classical 1', file: 'audio/classical1.ogg', icon: 'icons/classical1.svg' },
+ { id: 'classical2', name: 'Classical 2', file: 'audio/classical2.ogg', icon: 'icons/classical2.svg' },
+ { id: 'classical3', name: 'Classical 3', file: 'audio/classical3.ogg', icon: 'icons/classical3.svg' }
     ];
 
     /* ─── Web Audio API Setup ─── */
@@ -2099,7 +2112,7 @@
         // Music tracks (~1 MB each) lazy-load on first click instead of
         // joining the upfront preload — startSound() fetches + starts them
         // automatically when a not-yet-buffered sound is toggled on.
-        const LAZY = ['lofi1', 'lofi2', 'lofi3'];
+        const LAZY = ['lofi1', 'lofi2', 'lofi3', 'jazz1', 'jazz2', 'jazz3', 'classical1', 'classical2', 'classical3'];
         SOUNDS.forEach(s => { if (!LAZY.includes(s.id)) preloadSound(s); });
     });
 </script>

@@ -405,6 +405,23 @@
     .pin-chip .pc-time .pc-days { color: #DE4B3A; }
     .pin-chip { margin: 14px 0 2px; }
     #streakChip { margin-left: 8px; max-width: 260px; padding-right: 18px; }
+    #statsPins { display: inline; }
+    #statsPins .pin-chip { margin: 14px 0 2px 8px; padding-right: 18px; max-width: 100%; min-width: 0; flex: 0 1 auto; }
+  .pin-host { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 8px; }
+    #statsPins .pin-chip { border-left-color: #F2C14E; }
+    html.theme-dark #statsPins .pc-block i, body.theme-dark #statsPins .pc-block i { color: #E8D9B8; }
+    html.theme-classic #statsPins .pc-block i, body.theme-classic #statsPins .pc-block i { color: #a34a4a; }
+    #statsPins .pc-body { display: flex; align-items: stretch; }
+    #statsPins .pc-time { min-width: 0; display: flex; flex-wrap: wrap; align-items: stretch;
+      column-gap: 18px; row-gap: 2px; }
+    #statsPins .pc-block { display: flex; flex-direction: column; justify-content: center;
+      white-space: nowrap; }
+    #statsPins .pc-block i { font-style: normal; font-size: 11.5px; line-height: 1.3;
+      color: #58240E; order: -1; }
+    #statsPins .pc-block b { font-weight: 700; font-size: 14px; line-height: 1.3; }
+    #statsPins .pc-block b { color: #DE4B3A; }
+    html.theme-dark #statsPins .pc-block b, body.theme-dark #statsPins .pc-block b { color: #E0A458; }
+    html.theme-classic #statsPins .pc-block b, body.theme-classic #statsPins .pc-block b { color: #c65e5e; }
     body.theme-dark .pin-chip { background: #2a2018; border-color: #3a2d20;
         box-shadow: 0 3px 10px rgba(0,0,0,.3); }
     body.theme-dark .pin-chip:hover { border-color: #E0A458; }
@@ -1309,7 +1326,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     <button type="button" class="btn button-style-1 rounded-pill" onclick="onLoopTimer()" id="loop_timer_button">Loop</button>
 </div>
 
-<div class="col-lg-12" style="text-align:left">
+<div class="col-lg-12 pin-host" style="text-align:left">
             <!-- Pinned countdown chip (days-until) — populated by the script below;
                  stays display:none when nothing is pinned -->
             <div class="pin-chip" id="pinChip" style="display:none" role="link" tabindex="0"
@@ -1526,6 +1543,11 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     show();
 })();
 </script>
+
+            <!-- Stats pins (today / week / breaks / tasks / sessions) — filled by
+                 the script right after the shared ttstats.js include below;
+                 stays hidden when nothing is pinned -->
+            <div id="statsPins"></div>
 </div>
 
           
@@ -2295,6 +2317,13 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         <p>A daily habit tracker that draws your streaks on one big calendar — check in every day, keep the run alive, and pin your favorite streak to any timer page.</p>
       </div>
     </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/stats/">
+      <img src="/assets/images/stats-card.png" alt="Chick mascot presenting a bar chart, the Focus Stats tool" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Focus Stats</h3>
+        <p>Your private scoreboard — focus time, breaks, tasks and sessions from every timer technique, with charts, records and pins for your timer pages.</p>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -2440,6 +2469,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 
 
 <script src="assets/js/ttstats.js?v=1.0"></script>
+<script src="assets/js/ttstatpins.js?v=1.0"></script>
 <script src="assets/js/tomato.js?v=1.0"></script>
 <script>
 /* Stats wiring v1 — wraps tomato.js start/stop so real focus/break sessions
@@ -2552,7 +2582,13 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         { id:'classroom', file:'ambience/audio/classroom.ogg' },
         { id:'lofi1', file:'ambience/audio/lofi1.ogg' },
         { id:'lofi2', file:'ambience/audio/lofi2.ogg' },
-        { id:'lofi3', file:'ambience/audio/lofi3.ogg' }
+        { id:'lofi3', file:'ambience/audio/lofi3.ogg' },
+        { id:'jazz1', file:'ambience/audio/jazz1.ogg' },
+        { id:'jazz2', file:'ambience/audio/jazz2.ogg' },
+        { id:'jazz3', file:'ambience/audio/jazz3.ogg' },
+        { id:'classical1', file:'ambience/audio/classical1.ogg' },
+        { id:'classical2', file:'ambience/audio/classical2.ogg' },
+        { id:'classical3', file:'ambience/audio/classical3.ogg' }
     ];
 
     // ---- Audio Engine ----
@@ -2567,7 +2603,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             masterGain = audioCtx.createGain();
             masterGain.gain.value = getVolume() / 100;
             masterGain.connect(audioCtx.destination);
-            SOUNDS.forEach(function(s){ if (s.id.indexOf('lofi') !== 0) preload(s); });
+            SOUNDS.forEach(function(s){ if (!/^(lofi|jazz|classical)/.test(s.id)) preload(s); });
         } catch(e){ console.error('[Ambience] Audio init failed', e); }
     }
     async function preload(sound) {

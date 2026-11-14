@@ -227,19 +227,37 @@
     padding: 8px 18px 6px; font-family: inherit; font-size: 14px; cursor: pointer; color: var(--muted); }
   .seg-tab:hover { border-color: var(--accent); }
   .seg-tab.sel { color: var(--text); border-color: var(--text); background: var(--panel2); font-weight: 700; }
+  .custom-range { display: flex; align-items: center; gap: 8px; margin: -6px 0 14px; }
+  .custom-range input { border: 1px solid var(--border); background: var(--input); color: var(--text);
+    border-radius: 8px; padding: 6px 10px; font-family: inherit; font-size: 13px; }
+  .custom-range input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 
   /* ── stat cards ── */
   .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
   @media (max-width: 720px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
   .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
     padding: 16px 14px 12px; box-shadow: 0 3px 10px rgba(88,36,14,.06);
-    display: flex; flex-direction: row; align-items: center; justify-content: center;
-    gap: 8px; flex-wrap: wrap; }
+    display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
+    gap: 10px; flex-wrap: nowrap; position: relative; }
+  .s-txt { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
+  .s-numrow { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  /* ── pin board ── */
+  #pinBoard { margin-top: 24px; }
+  .pinboard { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+  .pb-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .pb-name { flex: 0 0 130px; font-weight: 700; font-size: 14px; }
+  .pb-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pb-chip { border: 1px solid var(--border); background: var(--panel2); color: var(--muted);
+    border-radius: 50px; padding: 5px 14px 4px; font-family: inherit; font-size: 13px; cursor: pointer; }
+  .pb-chip:hover { border-color: var(--accent); color: var(--text); }
+  .pb-chip.on { background: #F2C14E; border-color: #F2C14E; color: #58240E; font-weight: 700; }
+  html.theme-dark .pb-chip.on { background: #DE4B3A; border-color: #DE4B3A; color: #FBF3E4; }
+  .pin-count { margin-top: 14px; font-size: 13px; color: var(--muted); }
   .stat-card .s-ico { font-size: 26px; line-height: 1; }
   #cSessions .s-ico { transform: translateY(2px); }
   .stat-card .s-num { font-size: 26px; font-weight: 700; line-height: 1.1;
     font-variant-numeric: tabular-nums; }
-  .stat-card .s-lbl { font-size: 12.5px; color: var(--muted); }
+  .stat-card .s-lbl { font-size: 12.5px; color: var(--muted); line-height: 1; }
   .s-delta { font-size: 12px; font-weight: 700; line-height: 1; padding: 3px 8px 2px;
     border-radius: 50px; background: var(--panel2); border: 1px solid var(--border);
     color: var(--muted); white-space: nowrap; }
@@ -255,7 +273,10 @@
   .panel-sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
 
   /* 14-day bar chart */
-  .bars { display: flex; align-items: flex-end; gap: 6px; height: 150px; padding-top: 8px; }
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 150px; padding-top: 8px;
+    position: relative; }
+  .avg-line { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--muted);
+    opacity: .75; pointer-events: none; }
   .bar-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
     align-items: center; height: 100%; min-width: 0; }
   .bar-stack { width: 70%; max-width: 34px; display: flex; flex-direction: column; justify-content: flex-end;
@@ -276,6 +297,8 @@
   .legend .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
   .legend .sw-f { background: var(--tomato); }
   .legend .sw-b { background: #E0A458; opacity: .75; }
+  .legend .sw-avg { width: 16px; height: 0; border-top: 2px dashed var(--muted); border-radius: 0;
+    opacity: .75; }
 
   /* per-technique donut */
   .donut-wrap { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
@@ -298,7 +321,8 @@
   .rhythm-grid { display: grid; grid-template-columns: 5fr 12fr; gap: 18px; }
   @media (max-width: 640px) { .rhythm-grid { grid-template-columns: 1fr; } }
   .rhythm-lbl { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-  .mini { display: flex; align-items: flex-end; gap: 4px; height: 110px; }
+  .mini { display: flex; align-items: flex-end; gap: 4px; height: 110px; position: relative; }
+  .mini-avg { font-size: 11px; opacity: .8; }
   .mini-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
     align-items: center; height: 100%; min-width: 0; }
   .mini-bar { width: 70%; max-width: 26px; background: var(--tomato); border-radius: 4px 4px 2px 2px;
@@ -308,13 +332,35 @@
   .mini-lbl { font-size: 9.5px; color: var(--muted); margin-top: 4px; white-space: nowrap;
     font-variant-numeric: tabular-nums; }
   .mini-24 .mini-bar, .mini-24 .mini-none { max-width: 14px; }
+  .mini-24 .mini-lbl { font-size: 8px; }
+  .rhythm-grid > div + div { border-left: 1px solid var(--border); padding-left: 18px; }
+  @media (max-width: 640px) {
+    .rhythm-grid > div + div { border-left: none; padding-left: 0;
+      border-top: 1px solid var(--border); padding-top: 14px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .bar-stack, .bar-none, .bar-lbl, .mini-bar, .donut { animation: none; }
   }
 
   /* ── activity heatmap ── */
-  .heatmap { display: grid; grid-template-rows: repeat(7, 13px); grid-auto-flow: column;
-    gap: 3px; overflow-x: auto; padding: 2px 2px 6px; }
+  .hm-flex { display: flex; align-items: stretch; }
+  .hm-ylabels { flex: none; width: 22px; display: grid; grid-template-rows: repeat(7, 1fr);
+    gap: 3px; margin: 15px 0 6px; }
+  .hm-ylabels span { display: flex; align-items: center; font-size: 8.5px; color: var(--muted); }
+  .hm-scroll { flex: 1; overflow-x: auto; }
+  .hm-months { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(9px, 16px);
+    gap: 3px; height: 12px; padding: 0 2px; }
+  .hm-months span { font-size: 9px; line-height: 12px; color: var(--muted); white-space: nowrap; }
+  .heatmap { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column;
+    grid-auto-columns: minmax(9px, 16px); gap: 3px; padding: 3px 2px 6px; }
+  .heatmap .hm-cell { width: 100%; height: auto; aspect-ratio: 1; }
+  .hm-cell.dim { opacity: .25; }
+  .hm-hours-wrap { display: none; }
+  .hm-hours { display: grid; grid-template-columns: repeat(24, 1fr); gap: 3px; }
+  .hm-hours .hm-cell { width: auto; height: 26px; border-radius: 4px; }
+  .hm-hour-lbls { display: grid; grid-template-columns: repeat(24, 1fr); gap: 3px; margin-top: 3px; }
+  .hm-hour-lbls span { font-size: 8.5px; color: var(--muted); text-align: center;
+    font-variant-numeric: tabular-nums; }
   .hm-cell { width: 13px; height: 13px; border-radius: 3px; background: #EFE3CF; }
   html.theme-dark .hm-cell { background: #2a2018; }
   html.theme-dark .hm-cell.hm-1 { background: rgba(222,75,58,.32); }
@@ -514,6 +560,12 @@
         <button type="button" class="seg-tab" data-seg="week">Minggu Ini</button>
         <button type="button" class="seg-tab" data-seg="month">Bulan Ini</button>
         <button type="button" class="seg-tab" data-seg="all">Sepanjang Waktu</button>
+        <button type="button" class="seg-tab" data-seg="custom">Kustom</button>
+      </div>
+      <div class="custom-range" id="customRange" style="display:none">
+        <input type="date" id="crFrom" aria-label="Awal rentang kustom">
+        <span aria-hidden="true">–</span>
+        <input type="date" id="crTo" aria-label="Akhir rentang kustom">
       </div>
     </div>
   </div>
@@ -521,28 +573,35 @@
   <div class="stat-grid">
     <div class="stat-card" id="cFocus">
       <span class="s-ico" aria-hidden="true">⏱</span>
-      <span class="s-num" id="nFocus">0s</span>
-      <span class="s-delta" id="dFocus"></span>
-      <span class="s-lbl">Fokus</span>
+      <span class="s-txt"><span class="s-numrow"><span class="s-num" id="nFocus">0s</span>
+      <span class="s-delta" id="dFocus"></span></span>
+      <span class="s-lbl">Fokus</span></span>
     </div>
     <div class="stat-card" id="cBreak">
       <span class="s-ico" aria-hidden="true">☕</span>
-      <span class="s-num" id="nBreak">0s</span>
-      <span class="s-delta" id="dBreak"></span>
-      <span class="s-lbl">Istirahat</span>
+      <span class="s-txt"><span class="s-numrow"><span class="s-num" id="nBreak">0s</span>
+      <span class="s-delta" id="dBreak"></span></span>
+      <span class="s-lbl">Istirahat</span></span>
     </div>
     <div class="stat-card" id="cTasks">
       <span class="s-ico" aria-hidden="true">✅</span>
-      <span class="s-num" id="nTasks">0</span>
-      <span class="s-delta" id="dTasks"></span>
-      <span class="s-lbl">Tugas Selesai</span>
+      <span class="s-txt"><span class="s-numrow"><span class="s-num" id="nTasks">0</span>
+      <span class="s-delta" id="dTasks"></span></span>
+      <span class="s-lbl">Tugas Selesai</span></span>
     </div>
     <div class="stat-card" id="cSessions">
       <span class="s-ico" aria-hidden="true">▶</span>
-      <span class="s-num" id="nSessions">0</span>
-      <span class="s-delta" id="dSessions"></span>
-      <span class="s-lbl">Sesi</span>
+      <span class="s-txt"><span class="s-numrow"><span class="s-num" id="nSessions">0</span>
+      <span class="s-delta" id="dSessions"></span></span>
+      <span class="s-lbl">Sesi</span></span>
     </div>
+  </div>
+
+  <div class="panel" id="pinBoard">
+    <h3 class="panel-title">Disematkan ke timer</h3>
+    <p class="panel-sub">Pilih maksimal 5 angka — tampil sebagai satu pin di setiap halaman timer.</p>
+    <div class="pinboard" id="pinboard"></div>
+    <p class="pin-count"><span id="pinCount">0</span> dari 5 pin dipakai</p>
   </div>
 
   <div class="panel">
@@ -552,6 +611,7 @@
     <div class="legend">
       <span class="lg"><span class="sw sw-f"></span>Fokus</span>
       <span class="lg"><span class="sw sw-b"></span>Istirahat</span>
+      <span class="lg" id="avgLegend" style="display:none"><span class="sw sw-avg"></span>Rata-rata 14 h: <span id="avgVal"></span></span>
     </div>
   </div>
 
@@ -574,20 +634,31 @@
     <p class="panel-sub">Kapan fokusmu terjadi di periode terpilih.</p>
     <div class="rhythm-grid">
       <div>
-        <div class="rhythm-lbl">Per hari dalam seminggu</div>
+        <div class="rhythm-lbl">Per hari dalam seminggu<span class="mini-avg" id="dowAvg"></span></div>
         <div class="mini" id="dowBars"></div>
       </div>
       <div>
-        <div class="rhythm-lbl">Per jam dalam sehari</div>
+        <div class="rhythm-lbl">Per jam dalam sehari<span class="mini-avg" id="hourAvg"></span></div>
         <div class="mini mini-24" id="hourBars"></div>
       </div>
     </div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="activityPanel">
     <h3 class="panel-title">Aktivitas</h3>
-    <p class="panel-sub">Setiap kotak adalah satu hari — merah lebih gelap berarti waktu fokus lebih banyak.</p>
-    <div class="heatmap" id="heatmap"></div>
+    <p class="panel-sub" id="hmSub">Setiap kotak adalah satu hari — merah lebih gelap berarti waktu fokus lebih banyak.</p>
+    <div class="hm-flex" id="hmFlex">
+      <div class="hm-ylabels" aria-hidden="true"><span>Mi</span><span>Sn</span><span>Sl</span><span>Rb</span><span>Km</span><span>Jm</span><span>Sb</span></div>
+      <div class="hm-scroll" id="hmScroll">
+        <div class="hm-months" id="hmMonths"></div>
+        <div class="heatmap" id="heatmap"></div>
+      </div>
+    </div>
+    <p class="empty-note" id="hmEmpty" style="display:none">Belum ada aktivitas — hari-hari fokusmu akan mengisi grid ini.</p>
+    <div class="hm-hours-wrap" id="hmHoursWrap">
+      <div class="hm-hours" id="hmHours"></div>
+      <div class="hm-hour-lbls" id="hmHourLbls"></div>
+    </div>
     <div class="hm-legend">
       <span>Sedikit</span>
       <span class="hm-cell hm-1"></span>
@@ -759,35 +830,48 @@ function timerMeta(id) {
   return { name: id, color: UNKNOWN_COLOR };
 }
 
-/* ── segments: ms timestamp of the period start (open end) ── */
-var segFrom = {
-  today: function () { return window.ttStats.dayStart(Date.now()); },
-  week:  function () { return window.ttStats.dayStart(Date.now()) - 6 * 864e5; },
-  month: function () { return window.ttStats.dayStart(Date.now()) - 29 * 864e5; },
-  all:   function () { return 0; }
+/* ── segments: period start + optional exclusive end (null = open) ── */
+var customRange = null;
+try { customRange = JSON.parse(localStorage.getItem('tt_stats_custom_range') || 'null'); } catch (e) {}
+function customBounds() {
+  if (customRange && customRange.f && customRange.t) {
+    return { from: new Date(customRange.f + 'T00:00:00').getTime(),
+             to: new Date(customRange.t + 'T00:00:00').getTime() + 864e5 };
+  }
+  var t = window.ttStats.dayStart(Date.now());
+  return { from: t - 29 * 864e5, to: t + 864e5 };
+}
+var segRange = {
+  today: function () { return { from: window.ttStats.dayStart(Date.now()), to: null }; },
+  week:  function () { var t = window.ttStats.dayStart(Date.now()); return { from: t - 6 * 864e5, to: null }; },
+  month: function () { var t = window.ttStats.dayStart(Date.now()); return { from: t - 29 * 864e5, to: null }; },
+  all:   function () { return { from: 0, to: null }; },
+  custom: customBounds
 };
 var curSeg = 'today';
+var hmCols = 0; // heatmap columns currently rendered (for resize re-fill)
 
 /* ── render ── */
 function render() {
-  var from = segFrom[curSeg]();
-  var r = window.ttStats.report(from);
+  var rg = segRange[curSeg]();
+  var from = rg.from, to = rg.to;
+  var r = window.ttStats.report(from, to);
 
   $('nFocus').textContent    = fmtDur(r.focusSec);
   $('nBreak').textContent    = fmtDur(r.breakSec);
   $('nTasks').textContent    = String(r.tasks);
   $('nSessions').textContent = String(r.focusN + r.breakN);
-  renderDeltas(r, from);
+  renderDeltas(r, from, to);
 
   renderBars();
   renderShare(r, from);
-  renderRhythm(from);
-  renderHeatmap();
+  renderRhythm(from, to);
+  renderHeatmap(from, to);
   renderRecords();
 }
 
 /* ── hero deltas: compare each card with the previous matching window ── */
-function renderDeltas(r, from) {
+function renderDeltas(r, from, to) {
   var cards = [
     ['dFocus',    r.focusSec],
     ['dBreak',    r.breakSec],
@@ -796,8 +880,8 @@ function renderDeltas(r, from) {
   ];
   var prev = null;
   if (curSeg !== 'all') {
-    var now = Date.now();
-    var p = window.ttStats.report(from - (now - from), from);
+    var len = (to == null ? Date.now() : to) - from;
+    var p = window.ttStats.report(from - len, from);
     prev = [p.focusSec, p.breakSec, p.tasks, p.focusN + p.breakN];
   }
   cards.forEach(function (m, i) {
@@ -819,9 +903,11 @@ function renderBars() {
   var hasAny = days.some(function (d) { return d.focusSec > 0 || d.breakSec > 0; });
   if (!hasAny) {
     wrap.innerHTML = '<p class="empty-note">Belum ada sesi tercatat — mulai timer apa pun dan statistikmu muncul di sini.</p>';
+    $('avgLegend').style.display = 'none';
     return;
   }
   var maxFocus = days.reduce(function (a, d) { return Math.max(a, d.focusSec); }, 0);
+  var avgFocus = days.reduce(function (a, d) { return a + d.focusSec; }, 0) / days.length;
   var todayKey = window.ttStats.dayKey(Date.now());
   var DOWS = ['Mi', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'];
   var html = '';
@@ -846,6 +932,15 @@ function renderBars() {
             '</div>' +
             '<div class="bar-lbl' + (isToday ? ' today' : '') + '" style="animation-delay:' + (delay + 250) + 'ms">' + esc(lbl) + '</div></div>';
   });
+  /* dashed average line: avg daily focus, anchored above the day labels like the bars */
+  if (avgFocus > 0 && maxFocus > 0) {
+    var pct = avgFocus / maxFocus * 100;
+    html += '<div class="avg-line" style="bottom:calc(19px + ' + pct.toFixed(1) + '%)"></div>';
+    $('avgLegend').style.display = '';
+    $('avgVal').textContent = fmtDur(avgFocus);
+  } else {
+    $('avgLegend').style.display = 'none';
+  }
   wrap.innerHTML = html;
 }
 
@@ -886,7 +981,7 @@ function renderShare(r, from) {
 }
 
 /* ── your rhythm: day-of-week + hour-of-day mini charts ── */
-function renderMini(el, values, labels, tipFn) {
+function renderMini(el, values, labels, tipFn, avgEl) {
   var max = values.reduce(function (a, v) { return Math.max(a, v); }, 0);
   var html = '';
   values.forEach(function (v, i) {
@@ -902,29 +997,40 @@ function renderMini(el, values, labels, tipFn) {
             '<div class="mini-lbl">' + esc(lbl) + '</div></div>';
   });
   el.innerHTML = html;
+  /* dashed average line + caption, same style as the 14-day chart */
+  var avg = values.length ? values.reduce(function (a, v) { return a + v; }, 0) / values.length : 0;
+  if (avg > 0 && max > 0) {
+    var lblEl = el.querySelector('.mini-lbl');
+    var off = lblEl ? lblEl.offsetHeight + 4 : 18; // bars sit above the day/hour labels
+    var line = document.createElement('div');
+    line.className = 'avg-line';
+    line.style.bottom = 'calc(' + off + 'px + ' + (avg / max * 100).toFixed(1) + '%)';
+    el.appendChild(line);
+    if (avgEl) avgEl.textContent = '· rata-rata ' + fmtDur(avg);
+  } else if (avgEl) avgEl.textContent = '';
 }
-function renderRhythm(from) {
-  var dist = window.ttStats.distribution(from);
+function renderRhythm(from, to) {
+  var dist = window.ttStats.distribution(from, to);
   var DOWS = ['Mi', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'];
   var DOW_FULL = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
   var hasAny = dist.byDow.some(function (v) { return v > 0; });
   if (!hasAny) {
     $('dowBars').innerHTML = '<p class="empty-note">Belum ada fokus tercatat di periode ini.</p>';
     $('hourBars').innerHTML = '';
+    $('dowAvg').textContent = ''; $('hourAvg').textContent = '';
     return;
   }
   renderMini($('dowBars'), dist.byDow, DOWS, function (i, v) {
     return DOW_FULL[i] + ' — ' + fmtDur(v) + ' fokus';
-  });
+  }, $('dowAvg'));
   var hourLabels = [];
-  for (var i = 0; i < 24; i++) hourLabels.push(i % 6 === 0 ? String(i) : '');
+  for (var i = 0; i < 24; i++) hourLabels.push(String(i));
   renderMini($('hourBars'), dist.byHour, hourLabels, function (i, v) {
     return i + ':00 — ' + fmtDur(v) + ' focused';
-  });
+  }, $('hourAvg'));
 }
 
-/* ── activity heatmap (last 16 weeks, GitHub-style) ── */
-var HM_WEEKS = 16;
+/* ── activity heatmap: full-history day grid (selected period highlighted), hour strip for today ── */
 var MON_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 function hmTier(focusSec) {
   var m = focusSec / 60;
@@ -935,28 +1041,99 @@ function hmTier(focusSec) {
   if (m < 360) return 4;
   return 5;
 }
-function renderHeatmap() {
-  var wrap = $('heatmap');
-  var days = window.ttStats.dailySeries(HM_WEEKS * 7);
-  var hasAny = days.some(function (d) { return d.focusSec > 0; });
-  if (!hasAny) {
-    wrap.innerHTML = '<p class="empty-note">Belum ada aktivitas — hari-hari fokusmu akan mengisi grid ini.</p>';
+function hmMonthsRow(days, lead) {
+  var cols = Math.ceil((lead + days.length) / 7);
+  var out = '', prevM = -1;
+  for (var c = 0; c < cols; c++) {
+    var di = c * 7 - lead; // days-index of this column's first (Sunday) cell
+    var ts = di <= 0 ? days[0].start - (lead - c * 7) * 864e5 : days[di].start;
+    var m = new Date(ts).getMonth();
+    out += '<span>' + (m !== prevM ? MON_SHORT[m] : '') + '</span>';
+    prevM = m;
+  }
+  return out;
+}
+function renderHeatmap(from, to) {
+  var panel = $('activityPanel'), sub = $('hmSub');
+  var flex = $('hmFlex'), hoursWrap = $('hmHoursWrap'), empty = $('hmEmpty');
+  panel.style.display = '';
+  if (curSeg === 'today') {
+    flex.style.display = 'none'; empty.style.display = 'none'; hoursWrap.style.display = 'block';
+    sub.textContent = 'Setiap kotak adalah satu jam hari ini — merah lebih gelap berarti waktu fokus lebih banyak.';
+    renderHourStrip(from);
     return;
   }
+  hoursWrap.style.display = 'none';
+  /* full-history grid: every day from the first session to today, filling the
+     card; the selected period stays lit, everything outside it dims */
+  var d = window.ttStats.data(), firstTs = null;
+  for (var i = 0; i < d.s.length; i++) { if (firstTs === null || d.s[i].s < firstTs) firstTs = d.s[i].s; }
+  if (firstTs === null) { flex.style.display = 'none'; empty.style.display = ''; return; }
+  flex.style.display = ''; empty.style.display = 'none';
+  /* fill the card: always show enough whole weeks to span its width — empty
+     squares before the first session double as an incentive to fill the map */
+  hmCols = Math.max(4, Math.floor(($('hmScroll').clientWidth - 5) / 16));
+  var histDays = Math.round((window.ttStats.dayStart(Date.now()) - window.ttStats.dayStart(firstTs)) / 864e5) + 1;
+  var nDays = Math.max(histDays, hmCols * 7);
+  var days = window.ttStats.dailySeries(nDays, Date.now());
   var todayKey = window.ttStats.dayKey(Date.now());
   var lead = new Date(days[0].start).getDay(); // pad so the first column starts on Sunday
+  var t0 = window.ttStats.dayStart(Date.now());
+  var hFrom = null, hTo = null;
+  if (curSeg === 'week') {
+    hFrom = t0 - 6 * 864e5; hTo = t0 + 864e5;
+    sub.textContent = 'Setiap kotak adalah satu hari — 7 hari terakhir disorot.';
+  } else if (curSeg === 'month') {
+    hFrom = t0 - 29 * 864e5; hTo = t0 + 864e5;
+    sub.textContent = 'Setiap kotak adalah satu hari — 30 hari terakhir disorot.';
+  } else if (curSeg === 'custom') {
+    hFrom = from; hTo = to;
+    sub.textContent = 'Setiap kotak adalah satu hari — ' + fmtDayRange(from, to - 864e5) + ' disorot.';
+  } else {
+    sub.textContent = 'Setiap kotak adalah satu hari — merah lebih gelap berarti waktu fokus lebih banyak.';
+  }
   var html = '';
   for (var p = 0; p < lead; p++) html += '<span class="hm-cell hm-pad"></span>';
-  days.forEach(function (d) {
-    var tier = hmTier(d.focusSec);
-    var dt = new Date(d.start);
+  days.forEach(function (dd) {
+    var tier = hmTier(dd.focusSec);
+    var dt = new Date(dd.start);
     var lbl = MON_SHORT[dt.getMonth()] + ' ' + dt.getDate();
-    var title = d.focusSec > 0 ? lbl + ' — ' + fmtDur(d.focusSec) + ' fokus' : lbl + ' — tidak fokus';
-    html += '<span class="hm-cell hm-' + tier + (d.day === todayKey ? ' today' : '') +
+    var title = dd.focusSec > 0 ? lbl + ' — ' + fmtDur(d.focusSec) + ' fokus' : lbl + ' — tidak fokus';
+    var dim = (hFrom !== null && (dd.start < hFrom || dd.start >= hTo)) ? ' dim' : '';
+    html += '<span class="hm-cell hm-' + tier + dim + (dd.day === todayKey ? ' today' : '') +
             '" title="' + esc(title) + '"></span>';
   });
+  $('hmMonths').innerHTML = hmMonthsRow(days, lead);
+  var wrap = $('heatmap');
   wrap.innerHTML = html;
-  wrap.scrollLeft = wrap.scrollWidth; // newest week visible, like GitHub
+  var sc = $('hmScroll');
+  if (hFrom !== null) { // scroll so the highlighted range's last day is visible
+    var lit = wrap.querySelectorAll('.hm-cell:not(.dim):not(.hm-pad)');
+    if (lit.length) {
+      var cellR = lit[lit.length - 1].getBoundingClientRect();
+      var scR = sc.getBoundingClientRect();
+      sc.scrollLeft += cellR.right - scR.right + 10;
+    }
+  } else {
+    sc.scrollLeft = sc.scrollWidth; // newest week visible, like GitHub
+  }
+}
+function fmtDayRange(fromTs, toTs) {
+  var a = new Date(fromTs), b = new Date(toTs);
+  return MON_SHORT[a.getMonth()] + ' ' + a.getDate() + ' – ' + MON_SHORT[b.getMonth()] + ' ' + b.getDate();
+}
+/* today mode: one cell per hour of the day, same color scale */
+function renderHourStrip(from) {
+  var dist = window.ttStats.distribution(from);
+  var h = '', l = '';
+  for (var i = 0; i < 24; i++) {
+    var v = dist.byHour[i] || 0;
+    var tip = i + ':00 — ' + (v > 0 ? fmtDur(v) + ' fokus' : 'tidak fokus');
+    h += '<span class="hm-cell hm-' + hmTier(v) + '" title="' + esc(tip) + '"></span>';
+    l += '<span>' + i + '</span>';
+  }
+  $('hmHours').innerHTML = h;
+  $('hmHourLbls').innerHTML = l;
 }
 
 /* ── records & streaks ── */
@@ -1027,8 +1204,42 @@ Array.prototype.forEach.call(document.querySelectorAll('.seg-tab'), function (bt
     document.querySelectorAll('.seg-tab').forEach(function (b) { b.classList.remove('sel'); });
     btn.classList.add('sel');
     curSeg = btn.getAttribute('data-seg');
+    $('customRange').style.display = curSeg === 'custom' ? 'flex' : 'none';
     render();
   });
+});
+
+/* ── custom range pickers (native date inputs, saved per browser) ── */
+(function () {
+  var f = $('crFrom'), t = $('crTo');
+  var todayK = window.ttStats.dayKey(Date.now());
+  f.max = todayK; t.max = todayK;
+  var b = customBounds();
+  f.value = window.ttStats.dayKey(b.from);
+  t.value = window.ttStats.dayKey(b.to - 864e5);
+  function onChange() {
+    if (!f.value || !t.value) return;
+    if (f.value > t.value) { var tmp = f.value; f.value = t.value; t.value = tmp; } // auto-swap
+    customRange = { f: f.value, t: t.value };
+    try { localStorage.setItem('tt_stats_custom_range', JSON.stringify(customRange)); } catch (e) {}
+    if (curSeg === 'custom') render();
+  }
+  f.addEventListener('change', onChange);
+  t.addEventListener('change', onChange);
+})();
+
+/* ── heatmap re-fill on resize (only when the column count would change) ── */
+var hmResizeT = null;
+window.addEventListener('resize', function () {
+  if (hmResizeT) clearTimeout(hmResizeT);
+  hmResizeT = setTimeout(function () {
+    if (curSeg === 'today') return;
+    var cols = Math.max(4, Math.floor(($('hmScroll').clientWidth - 5) / 16));
+    if (cols !== hmCols) {
+      var rg = segRange[curSeg]();
+      renderHeatmap(rg.from, rg.to);
+    }
+  }, 200);
 });
 
 /* ── toast ── */
@@ -1041,6 +1252,75 @@ function toast(msg) {
   toastTimer = setTimeout(function () { el.classList.remove('on'); }, 2600);
 }
 
+/* ── stats pins (pin board → chip on the timer pages) ── */
+(function () {
+  var KEY = 'tt_stat_pins_v1';
+  var MIGRATE = { today: 'focus:today', week: 'focus:week',
+                  breaks: 'breaks:today', tasks: 'tasks:today', sessions: 'sessions:today' };
+  var VALID = /^(focus|breaks|tasks|sessions):(today|week|month|custom|all)$/;
+  if (localStorage.getItem(KEY) == null) {
+    try { localStorage.setItem(KEY, JSON.stringify({ pins: ['focus:today', 'breaks:today', 'tasks:today', 'sessions:today'] })); } catch (e) {}
+  }
+  function pins() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (o && Array.isArray(o.pins)) {
+        return o.pins.map(function (p) { return MIGRATE[p] || p; })
+                     .filter(function (p) { return VALID.test(p); });
+      }
+    } catch (e) {}
+    return [];
+  }
+  function save(p) { try { localStorage.setItem(KEY, JSON.stringify({ pins: p })); } catch (e) {} }
+  var ROWS = [['focus', 'Fokus'], ['breaks', 'Istirahat'], ['tasks', 'Tugas'], ['sessions', 'Sesi']];
+  var SEGS = [['today', 'Hari ini'], ['week', 'Minggu ini'], ['month', 'Bulan ini'], ['custom', 'Kustom'], ['all', 'Sepanjang waktu']];
+  var board = document.getElementById('pinboard');
+  if (!board) return;
+  ROWS.forEach(function (row) {
+    var wrap = document.createElement('div');
+    wrap.className = 'pb-row';
+    var nm = document.createElement('span');
+    nm.className = 'pb-name';
+    nm.textContent = row[1];
+    wrap.appendChild(nm);
+    var chips = document.createElement('span');
+    chips.className = 'pb-chips';
+    SEGS.forEach(function (seg) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pb-chip';
+      b.setAttribute('data-pin', row[0] + ':' + seg[0]);
+      b.textContent = seg[1];
+      b.addEventListener('click', function () {
+        var id = b.getAttribute('data-pin');
+        var p = pins();
+        var i = p.indexOf(id);
+        if (i === -1) {
+          if (p.length >= 5) { toast('Maksimal 5 pin — lepas satu dulu.'); return; }
+          p.push(id);
+          toast('Disematkan — cek halaman timermu.');
+        } else {
+          p.splice(i, 1);
+          toast('Sematan dilepas.');
+        }
+        save(p);
+        paint();
+      });
+      chips.appendChild(b);
+    });
+    wrap.appendChild(chips);
+    board.appendChild(wrap);
+  });
+  function paint() {
+    var p = pins();
+    Array.prototype.forEach.call(board.querySelectorAll('.pb-chip'), function (b) {
+      b.classList.toggle('on', p.indexOf(b.getAttribute('data-pin')) !== -1);
+    });
+    var c = document.getElementById('pinCount');
+    if (c) c.textContent = String(Math.min(p.length, 5));
+  }
+  paint();
+})();
 /* ── example data (42 days, written through ttStats so caps apply) ── */
 function mulberry32(a) {
   return function () {

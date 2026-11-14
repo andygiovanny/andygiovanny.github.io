@@ -190,7 +190,7 @@
   @media (max-width: 991px) {
     .header { padding-left: 15px; padding-right: 15px; }
     .header-left { flex: 0 0 100%; max-width: 100%; padding-left: 0; align-items: center; }
-    .pin-row { padding-left: 15px; padding-right: 15px; justify-content: center; }
+    .pin-row { padding-left: 15px; padding-right: 15px; justify-content: center; flex-wrap: wrap; }
     .header-logo { margin-left: 0; }
     .header-nav { flex: 0 0 100%; max-width: 100%; padding-top: 0; grid-template-columns: 1fr 1fr; }
     .button-row:first-child .button-style,
@@ -220,14 +220,30 @@
   /* ── pinned chips (days-until + streaks) — own row under the header,
      side by side, aligned with the language/theme selects. Hidden unless
      a pin exists in localStorage ('tt_countdowns_v1' / 'tt_streaks_v1'). ── */
-  .pin-row { max-width: 1140px; margin: 0 auto; padding: 0 40px 0 50px;
-    display: flex; gap: 8px; flex-wrap: wrap; }
-  .pin-chip { display: flex; align-items: center; gap: 10px; width: max-content;
+  .pin-row { max-width: 1140px; margin: 0 auto; padding: 0 40px;
+    display: flex; gap: 6px; flex-wrap: nowrap; align-items: flex-start; }
+  .pin-chip { display: inline-flex; vertical-align: top; align-items: center; gap: 10px; width: max-content;
     max-width: 215px; background: var(--panel); border: 1px solid var(--border);
     border-left: 5px solid var(--tomato); border-radius: 14px; padding: 8px 12px 8px 10px;
     cursor: pointer; box-shadow: 0 3px 10px rgba(88, 36, 14, .08); text-align: left; }
   .pin-chip:hover { border-color: var(--accent); }
     #streakChip { max-width: 260px; padding-right: 18px; }
+    #statsPins { display: inline; }
+    #statsPins .pin-chip { margin: 0 0 0 6px; padding-right: 12px; max-width: 100%; min-width: 0; flex: 0 1 auto; }
+    #statsPins .pin-chip { border-left-color: #F2C14E; }
+    html.theme-dark #statsPins .pc-block i, body.theme-dark #statsPins .pc-block i { color: #E8D9B8; }
+    html.theme-classic #statsPins .pc-block i, body.theme-classic #statsPins .pc-block i { color: #a34a4a; }
+    #statsPins .pc-body { display: flex; align-items: stretch; }
+    #statsPins .pc-time { min-width: 0; display: flex; flex-wrap: wrap; align-items: stretch;
+      column-gap: 12px; row-gap: 2px; }
+    #statsPins .pc-block { display: flex; flex-direction: column; justify-content: center;
+      white-space: nowrap; }
+    #statsPins .pc-block i { font-style: normal; font-size: 11.5px; line-height: 1.3;
+      color: #58240E; }
+    #statsPins .pc-block b { font-weight: 700; font-size: 14px; line-height: 1.3; }
+    #statsPins .pc-block b { color: #DE4B3A; }
+    html.theme-dark #statsPins .pc-block b, body.theme-dark #statsPins .pc-block b { color: #E0A458; }
+    html.theme-classic #statsPins .pc-block b, body.theme-classic #statsPins .pc-block b { color: #c65e5e; }
   .pin-chip .pc-icon { flex: 0 0 auto; width: 40px; height: 40px; display: flex;
     align-items: center; justify-content: center; font-size: 30px; line-height: 1; }
   .pin-chip .pc-icon img { width: 40px; height: 40px; object-fit: contain; display: block; }
@@ -642,7 +658,7 @@
       document.getElementById('pcName').textContent = pinned.name;
       setIcon(document.getElementById('pcIcon'), pinned.icon);
       if (pinned.color) chip.style.borderLeftColor = pinned.color;
-      chip.style.display = 'flex';
+      chip.style.display = 'inline-flex';
       render();
       if (timer) clearInterval(timer);
       timer = setInterval(render, 1000);
@@ -753,7 +769,7 @@
         timeEl.appendChild(dEl);
         timeEl.appendChild(document.createTextNode(' streak'));
         if (s.color) chip.style.borderLeftColor = s.color;
-        chip.style.display = 'flex';
+        chip.style.display = 'inline-flex';
     }
     chip.addEventListener('click', function () { window.location.href = '/streaks/'; });
     chip.addEventListener('keydown', function (ev) {
@@ -766,6 +782,10 @@
     show();
 })();
 </script>
+
+            <!-- Stats pin (combined chip) — filled by assets/js/ttstatpins.js;
+                 stays hidden when nothing is pinned -->
+            <div id="statsPins"></div>
 </div>
 
 <h1 class="sr-only">Custom Timer — Build Your Own Interval, Workout, Study &amp; Pomodoro Timer</h1>
@@ -976,6 +996,13 @@
       <div class="tt-card-text">
         <h3>Streak Counter</h3>
         <p>A daily habit tracker that draws your streaks on one big calendar — check in every day, keep the run alive, and pin your favorite streak to any timer page.</p>
+      </div>
+    </a>
+    <a class="tt-card" href="https://www.tomatotimers.com/stats/">
+      <img src="/assets/images/stats-card.png" alt="Chick mascot presenting a bar chart, the Focus Stats tool" loading="lazy">
+      <div class="tt-card-text">
+        <h3>Focus Stats</h3>
+        <p>Your private scoreboard — focus time, breaks, tasks and sessions from every timer technique, with charts, records and pins for your timer pages.</p>
       </div>
     </a>
   </div>
@@ -1191,6 +1218,7 @@ function fmt(s) {
 }
 function render() {
   var sec = cfg.sections[idx];
+  window.byoState = { running: !!running, name: sec.name };
   $('secName').textContent = sec.name;
   $('secPos').textContent = 'Phase ' + (idx + 1) + ' of ' + cfg.sections.length;
   $('loopBadge').classList.toggle('on', !!cfg.loop);
@@ -1540,7 +1568,8 @@ function renderTasks() {
     var dot = document.createElement('span'); dot.className = 't-dot'; dot.style.background = COLORS[t.color] || COLORS[0];
     var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!t.done;
     cb.setAttribute('aria-label', 'Mark task done');
-    cb.addEventListener('change', function () { t.done = cb.checked; saveTasks(); renderTasks(); });
+    cb.addEventListener('change', function () { t.done = cb.checked; saveTasks(); renderTasks();
+      if (cb.checked && window.ttStats) window.ttStats.recordTask('custom', Date.now()); });
     var nm = document.createElement('span'); nm.className = 't-name'; nm.textContent = t.name;
     li.appendChild(cb); li.appendChild(dot); li.appendChild(nm);
     if (t.est) { var est = document.createElement('span'); est.className = 't-est'; est.textContent = t.est + 'm'; li.appendChild(est); }
@@ -1833,5 +1862,36 @@ document.addEventListener('DOMContentLoaded', function () {
         overflow: hidden; border-radius: 12px; background-color: transparent;
     }
 </style>
+<script src="/assets/js/ttstats.js?v=1.0"></script>
+<script src="/assets/js/ttstatpins.js?v=1.0"></script>
+<script>
+/* Stats wiring v1 — 1s poll over the page-published state snapshot
+   (window.byoState set by the timer engine each paint). */
+(function () {
+    if (!window.ttStats) return;
+    var TM = 'custom';
+    var snap = null;
+    setInterval(function () {
+        try {
+            var st = window.byoState;
+            var running = !!st && !!st.running;
+            var k = st && (st.k === 'break' || /break|rest|pause|breather|cool|istirahat|descans|pausa|paus|ngh/i.test(String(st.name || ''))) ? 'break' : 'focus';
+            var now = Date.now();
+            if (running && (!snap || snap.k !== k)) {
+                if (snap) window.ttStats.recordSession(TM, snap.k, snap.s, now - snap.s);
+                snap = { k: k, s: now };
+            } else if (!running && snap) {
+                window.ttStats.recordSession(TM, snap.k, snap.s, now - snap.s);
+                snap = null;
+            }
+        } catch (e) {}
+    }, 1000);
+    window.addEventListener('pagehide', function () {
+        if (!snap) return;
+        try { window.ttStats.recordSession(TM, snap.k, snap.s, Date.now() - snap.s); } catch (e) {}
+        snap = null;
+    });
+})();
+</script>
 </body>
 </html> 

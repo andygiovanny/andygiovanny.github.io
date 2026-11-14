@@ -175,6 +175,253 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-13 (Kimi Work, pt 8):** PIN CHIP ALIGNMENT FIX (EN subpages) —
+  the pin chips on 52-17 / 20-20-20-rule / flowtime / custom-timer rendered
+  uneven vs the main page: pins stretched to 78px in `.pin-row` (no
+  align-items), stats chip sat 14px lower (its `margin: 14px 0 2px 8px` has no
+  counterpart on subpage pins), and chip text used the Baloo default line-height
+  (~2.2) because subpage body sets none. Fixes per subpage: `.pin-row` +
+  `align-items: flex-start`; `.pin-chip` → `inline-flex`; JS shows set
+  `inline-flex` (was `flex`); `.pc-name`/`.pc-time` explicit `line-height: 1.5`;
+  `#statsPins .pin-chip` margin → `0 0 0 8px`. Now 59/59/57 with all tops
+  aligned, pixel-matching the main page (live-verified 52-17 + custom-timer at
+  1680px). Rolled out to all 16 translated subpages the same evening — two
+  batch-script misses caught by strict re-checks: `pc-name` line-height
+  missing in 16 files, then `pc-time` line-height in the same 16 (each pass
+  only re-added one of the two). Final state: all 20 subpages file-verified
+  (6 patterns each), all inline scripts pass node --check, id/52-17 +
+  pt/flowtime + vi/custom-timer live-measured 59/59/57 with tops aligned.
+  Scripts `_work/pinchip_align.py` + `_work/pinchip_align_translations.py`.
+- **2026-11-14 (Kimi Work, pt 9):** PIN ROW WRAP FIX — at Andy's 140% zoom
+  the three pin chips on translated subpages wrapped to a stack (stats chip
+  on its own line): the row needed ~1120px but `.pin-row` allowed only
+  1050px content. Squeezed ~80px on all 20 subpages: row max-width 1140 →
+  1200, padding 40/50 → 24, gap 8 → 6, stats chip margin-left 8 → 6 and
+  padding-right 18 → 12, stats block column-gap 18 → 12. Chips now stay side
+  by side down to ~950px viewport (live-verified id/52-17 at 1140/1050/1000,
+  EN 52-17 + vi/20-20-20 at 1200; heights unchanged 59/59/57 tops aligned).
+  Script `_work/pinrow_fit.py`.
+- **2026-11-14 (Kimi Work, pt 10):** PIN ROW COLUMN ALIGNMENT — subpage pin
+  chips hung left of the content column (row was max-width 1200/padding 24
+  while the header column is 1140/padding 40). `.pin-row` on all 20 subpages
+  now mirrors `.header` exactly (max-width 1140, margin auto, padding 0 40px)
+  so chips align with the header/nav column like the main page. Verified:
+  pin-row box === header box (left 64/w 1140 at 1284px), first chip at
+  header-content left, all three chips same line (EN 20-20-20 + id/52-17).
+  Script: inline python replace recorded in `_work/`. Next: Andy re-checks,
+  then push.
+- **2026-11-13 (Kimi Work, pt 7):** TOOLS CROSS-LINKS + UI CONSISTENCY SWEEP —
+  every tool page now cross-links the other two in a Tools card row, no
+  self-links, all 5 languages: days-until pages got a full Tools section
+  (streaks + stats cards, translated titles Alat/Herramientas/Ferramentas/Công
+  Cụ), streaks pages got the stats card. Templates taken from each language's
+  own main timer page (first attempt reused the EN card → wrong hrefs in
+  translations, caught on live verify and rebuilt). Full EN↔translation diff
+  of all 6 page types: CSS rule sets and JS function sets are now verified
+  identical (only real gap: stats-pin label `order: -1` missing in the 4
+  translated main pages — added, live-verified). Scripts
+  `_work/tools_crosslinks_fix.py`. Next: Andy pushes with the stats batch.
+- **2026-11-13 (Kimi Work, pt 6):** STATS PAGE POLISH — removed the Focus
+  Stats self-link card from the Tools row of all 5 stats pages (now 2 cards
+  there, same as days-until/streaks pages); picked pin-board chips go RED
+  (#DE4B3A, cream text) in dark mode on all 5 stats pages (light stays
+  yellow #F2C14E). Script `_work/stats_selflink_darkchip.py`. Next: Andy
+  pushes the stats batch.
+- **2026-11-13 (Kimi Work, pt 5):** STATS TOOLS CARD — new
+  `assets/images/stats-card.png` (480² RGBA, 120 KB, made from a frame of
+  `assets/gifs/stats-mascot-light.mp4`, cream bg chroma-keyed to alpha) added
+  as the third card in the Tools section of all 35 pages (7 EN + id/es/pt/vi),
+  language-prefixed hrefs to `/stats/`, h3 "Focus Stats" kept as brand name in
+  every language; script `_work/stats_tools_card.py`. Live-verified markup +
+  image serve. Next: Andy pushes the stats feature batch (development →
+  master).
+- **2026-11-13 (Kimi Work, pt 4):** NEW AMBIENCE SOUNDS — Jazz 1-3 +
+  Classical 1-3 (music, ~0.9-1.35 MB each). Files renamed to lowercase
+  convention (`ambience/audio/jazz1-3.ogg`, `classical1-3.ogg`; icons
+  `ambience/icons/jazz1-3.svg`, `classical1-3.svg` — Andy's originals had
+  spaces/capitals, one was `Jazz1.ogg` w/o space). Display names keep
+  spacing: "Jazz 1"…"Classical 3" (same as "Lofi 1" pattern). Registered in:
+  Studio SOUNDS list (EN + id/es/pt/vi, name/file/icon entries) and all 20
+  classic timer pages' SOUNDS (custom-timer builds URLs from id — no list).
+  LAZY loading: added the 6 ids to the Studio's LAZY array and the timer
+  pages' preload exclusion now skips `/^(lofi|jazz|classical)/` — verified
+  0 music oggs fetch on load, jazz1.ogg fetches only on toggle, tile shows
+  active. Script: `_work/add_jazz_classical.py`. NOTE: a Bash-tool escape
+  mangling (`\1`/`\2` in a heredoc regex replacement became 0x01/0x02
+  control bytes) corrupted the 20 timer-page SOUNDS lines mid-task; repaired
+  via `_work/repair_sounds_lines.py` and re-verified — all 20 timer pages +
+  5 studio pages node --check OK, 52-17 live-checked. LESSON: avoid
+  backslash-digit escapes in Bash heredocs; write .py files with the Write
+  tool instead. Next: Andy listens to the new tracks on the live site,
+  then the Tools-card for stats.
+
+- **2026-11-13 (Kimi Work, pt 3):** STATS PINS REWORKED to the combo model
+  (Andy's 13:06 spec, medium, go given). A pin is now metric × timeframe —
+  4 metrics (Focus/Breaks/Tasks/Sessions) × 5 segments (Today/This week/
+  This month/Custom/All time) = 20 options, max 5 pinned, one combined chip
+  on the timer pages. Default for first-time users: all 4 metrics × Today.
+  Old pins auto-migrate (`today`→Focus today, `week`→Focus this week, …).
+  `assets/js/ttstatpins.js` rewritten to v2 (combo IDs, `custom` reads
+  `tt_stats_custom_range`, localized `Metric · Timeframe` labels en/id/es/pt/
+  vi). The 📌 toggles on the 5 stats pages (EN + id/es/pt/vi) are replaced by
+  a labeled pin board ("Pinned to your timers", 4 rows × 5 chips, 5-pin cap
+  toast, pin counter) sitting in its own panel above the data row; script:
+  `_work/stats_pinboard_translations.py` (replaces the now-obsolete
+  `stats_toggles_translations.py`). EN How It Works got a definitions list
+  (`.defs`) explaining Focus / Breaks / Tasks Completed / Sessions (session =
+  one timer run play → pause or phase end; pausing splits a stint). Verified:
+  EN live-tested (20 chips, migration, cap-5, persistence, fresh defaults,
+  chip labels on index), 36 scripts node --check OK, id + vi boards render
+  localized. Follow-up same day: pin board panel MOVED up to sit directly
+  under the four stat cards on all 5 stats pages (was buried page-bottom
+  before the data row). Stat-card interiors RESTRUCTURED on all 5 stats pages
+  for tidy alignment: strict two-line layout via `.s-txt` (column) +
+  `.s-numrow` (number + delta pill, nowrap) with the label always on its own
+  line — long values like "1h 10m" no longer squeeze the label into "F" or
+  wrap differently per card. Icon bumped 40→44px on EN. Verified: uniform
+  card heights + aligned num/label rows EN + id (DOM geometry, 36 scripts
+  node --check OK). NOTE: translated stats
+  pages still have pre-duck emoji icons in the cards (duck-icon port still
+  pending Andy's go — card LAYOUT is now identical everywhere, only the icons
+  differ); translated explainers don't have the `.defs` list yet — add with
+  the duck-card port. BUGFIX same day (Andy's "UI is a mess" report): the
+  card-restructure regex on the 4 translated pages had mangled the markup
+  (named-group numbering off-by-one — visible `id="nFocus"` text, labels
+  lost); rebuilt all 4 grids from `git show HEAD:` originals with the correct
+  two-line wrap. That damage had crashed each page's render() mid-pass, which
+  is ALSO why the activity heatmap and records were blank — and the id diff
+  then revealed the translations were missing 3 ids EN uses in JS
+  (`hmSub`, `dowAvg`, `hourAvg` — all 4 languages), now restored. LESSON:
+  after markup regex edits, verify DOM textContent/ids, not just geometry.
+  Verified vi + id live: zero JS errors, heatmap 48 cells + 24-cell hour
+  strip, records + streak render, labels correct. Next: Andy reviews, then id
+  wording as pilot. Dark-mode polish: picked pin-board chips are tomato red
+  (#DE4B3A, white text) instead of amber, on all 5 stats pages — then made
+  YELLOW the stats signature color (no color picker on the stats tool):
+  picked pin-board chips #F2C14E w/ #58240E text (light + dark) on all 5
+  stats pages, and on all 25 timer pages the stats pin chip carries a YELLOW
+  LEFT EDGE (#F2C14E, like the days-until/streaks chips' color-coded edges —
+  stats has no color picker so yellow is its signature). The yellow TEXT
+  experiment was reverted: chip values are back to first-value red #DE4B3A
+  (dark: #E0A458), rest brand brown. Stats chip TITLES (`#statsPins .pc-block
+  i`) now match the other pins' title color: #58240E light, #E8D9B8 dark,
+  #a34a4a classic (were var(--muted) gray — visually off). ALL chip values
+  are red like the first: #DE4B3A light, #E0A458 dark, #c65e5e classic. Picked pin-board chips on the stats
+  pages stay yellow #F2C14E w/ #58240E text.
+
+- **2026-11-13 (Kimi Work, pt 2):** STATS PINS — built + rolled out
+  everywhere (medium, Andy's go). New shared `assets/js/ttstatpins.js`
+  (single combined chip, ≤5 metric columns, localized via <html lang>
+  en/id/es/pt/vi, seeds today+week on first visit); EN `index.html` now uses
+  it (inline copy removed). New `tt_stat_pins_v1` localStorage key.
+  Pin toggles (📌 pin/pinned, cap 5) on the EN stats page + all 4 translated
+  stats pages (localized toasts). Session recording wired into every timer
+  page (EN + id/es/pt/vi): 52-17 & 20-20-20 & flowtime via a 1s poll over
+  page state (flowtime publishes `window.ftState` in paint(); custom-timer
+  publishes `window.byoState` in render() — kind guessed from phase name
+  keywords), main pomodoro (incl. translations) wraps tomato.js
+  start/stopTimer; custom-timer + translated index pages also recordTask.
+  Rollout scripts: `_work/stats_pins_rollout.py`,
+  `_work/stats_toggles_translations.py`. Verified: 240 inline scripts node
+  --check OK, recording live-tested on 52-17/202020/flowtime/custom-timer,
+  state machine unit-tested, chip row/labels verified EN + id. NOTE:
+  translated stats pages still carry the OLD pre-duck stat-card CSS/emoji —
+  the duck-icon overhaul is EN-only so far, port pending Andy's go.
+
+- **2026-11-13 (Kimi Work):** STATS TRANSLATIONS REBUILT from the current EN
+  stats master. `_work/stats_translations_v2.py` (new) reuses the approved
+  pair tables from `stats_translations.py`, patches the 3 pairs whose EN side
+  changed in the v2 rework (rhythm labels gained `#dowAvg`/`#hourAvg` caption
+  spans, Activity `panel-sub` gained `id="hmSub"`, tooltip var `d`→`dd`), and
+  adds ~13 new pairs per language: Custom tab label, 2 date-input aria-labels,
+  localized `.hm-ylabels` day letters (Mi/Sn/Sl…, Do/Lu/Ma…, Do/Se/Te…,
+  CN/T2/T3…), "14 d avg" legend + `· avg` captions, the 5 `hmSub` segment
+  texts, hour-strip tooltip. Rebuilt `id|es|pt|vi/stats/index.html` (115
+  pairs + 7 cards each, CRLF, no `tt_lang` redirect). EN untouched. Verified:
+  extraction sweep ALL OK (36 scripts), node --check ALL JS OK, spot-grep for
+  customRange / avg legend / day letters per language. Next: Andy reviews id
+  wording (pilot), then commits on `development` via GitHub Desktop.
+
+- **2026-11-12 (Kimi Work, pt 5):** STATS FILL-THE-MAP + RHYTHM AVG LINES
+  (light, Andy's go) — (1) heatmap window is now `max(real history, enough
+  whole weeks to fill the card)`: cols from `hmScroll.clientWidth` at 16px
+  pitch, so short histories render a year of mostly-empty squares as the
+  "fill me" incentive (Andy's design); `flex` is shown BEFORE measuring
+  (hidden flex = clientWidth 0 = 4-col bug) and a debounced resize listener
+  re-renders only when the column count changes. (2) `renderMini` draws the
+  same dashed `.avg-line` on both rhythm charts at the per-bucket average,
+  with captions in the chart labels ("By day of week · avg 6h 15m",
+  `#dowAvg`/`#hourAvg`, cleared on empty state) — reuses `.avg-line` +
+  `position:relative` on `.mini`, offset measured from the first `.mini-lbl`.
+  Verified live: grid 885px = card width exactly, 390 cells (347 empty),
+  Month 30 lit/355 dim, Week 7 lit + today scrolled into view, today↔month
+  re-render keeps the fill, month labels pixel-aligned, both rhythm lines +
+  captions present. 21/21 node --check, sweep ALL OK. New translation
+  strings: "· avg" (rhythm captions; reuse "14 d avg:" pattern).
+  Next: Andy eyeballs EN, then light port of the whole stats arc to
+  id/es/pt/vi.
+- **2026-11-12 (Kimi Work, pt 4):** STATS POLISH (light, Andy's go) —
+  heatmap cell cap: `grid-auto-columns: minmax(9px, 16px)` on `.heatmap` +
+  `.hm-months` (was `minmax(9px,1fr)` = giant squares filling the card; Andy:
+  "way too big, like before"). Grid is compact + left-packed again, full
+  history + highlight unchanged. Bar chart average line (Polar-style):
+  dashed `.avg-line` across `.bars` at avg daily focus (`bottom:calc(19px +
+  N%)` — 19px = day-label offset, matches bar anchoring), legend item
+  "14 d avg: X" (`#avgLegend`/`#avgVal`, hidden when no data). Verified
+  live: cells 16×16, months pixel-aligned, line at 49.7% avg/max, legend
+  "1h 22m" matches engine avg. 21/21 node --check, sweep ALL OK. New
+  translation string: "14 d avg:". Next: Andy eyeballs, then light port of
+  heatmap v2 + Custom tab + avg line to id/es/pt/vi.
+- **2026-11-12 (Kimi Work, pt 3):** STATS HEATMAP v2 + CUSTOM TIMEFRAME on
+  EN `stats/index.html` (medium, Andy's go, native date pickers his pick) —
+  heatmap no longer redraws per tab: it always shows FULL HISTORY (first
+  session → today) as squares that stretch to fill the card
+  (`grid-auto-columns: minmax(9px,1fr)` + `aspect-ratio:1` cells; min 9px then
+  horizontal scroll for long histories). Tabs now HIGHLIGHT: This Week = last
+  7 days lit / rest `.dim` (opacity .25); This Month = last 30; All Time =
+  whole map lit, panel visible again (no longer hidden); Today keeps the
+  24-hour strip. New 5th tab "Custom": two native `<input type="date">`
+  (`.custom-range` row under the tabs, visible only on that tab), auto-swap
+  when from>to, saved to `tt_stats_custom_range`, max = today. The custom
+  range scopes the WHOLE page (hero/deltas/share/rhythm via `report(from,to)`
+  + `distribution(from,to)` — `segFrom` refactored to `segRange` returning
+  `{from,to}`); heatmap scrolls the highlighted range's last day into view.
+  Verified live via CDP 1400px override: cells 123×123 filling an 884px card,
+  month labels + Su–Sa letters pixel-aligned (0px off), Week 7 lit/35 dim,
+  Month 30 lit/12 dim, All 0 dim, Custom Oct 5–20 → 16 lit + sub "Oct 5 –
+  Oct 20 highlighted." + localStorage saved, swap guard works, hero focus
+  matches engine report to the minute. 21/21 node --check, sweep ALL OK.
+  Strings to translate at port time: "Custom" tab, both date-input
+  aria-labels, subs "the last 7/30 days are highlighted" / custom
+  "X – Y highlighted." (uses translated MON_SHORT), generic all-time sub.
+  Next: Andy eyeballs EN (cells get BIG with short history — his call if a
+  max cell size is wanted), then light port to id/es/pt/vi.
+- **2026-11-12 (Kimi Work, pt 2):** STATS HEATMAP REWORK on EN
+  `stats/index.html` (medium, Andy's go) — 4 items: (1) hour-of-day mini
+  chart now labels all 24 hours (was 0/6/12/18); (2) vertical divider only
+  between the day-of-week and hour-of-day charts inside `.rhythm-grid`
+  (stacks to a top border ≤640px); (3) heatmap glanceability — Su–Sa letter
+  column (`.hm-ylabels`), month labels along the top (`.hm-months`, labels a
+  column when its Sunday's month flips), sub reworded; (4) period-aware
+  heatmap: Today → 24-cell hour strip (`.hm-hours`, same red tiers, 0–23
+  labels); Week → last 7 days as Sunday-aligned grid column(s); Month → last
+  30 days; All Time → Activity panel hidden entirely (`#activityPanel`).
+  Fixed during browser verification: hour strip stayed hidden on Today
+  (`style.display=''` fell back to the CSS `display:none` — now 'block');
+  `.hm-ylabels` 2px row misalignment (padding-top removed); heatmap columns
+  stretched across the full panel width (CSS Grid default `justify-content:
+  normal` stretches auto tracks — fixed with `grid-auto-columns: 13px`,
+  giving a 16px pitch that matches the months row exactly; caught by Andy's
+  screenshot, verified by DOM-measuring column x-positions on Week+Month). Verified live in
+  InAppBrowser via temp localhost server (DOM-measured: 24 cells/labels on
+  Today, 5 pad+7 cells on Week with correct "Nov" label, 3 pad+30 cells on
+  Month with "Oct→Nov" flip, panel hides on All Time, divider rule confirmed
+  applying). 21/21 inline JS node --check, class sweep clean, JSON-LD parse
+  OK. id/es/pt/vi stats pages still have the OLD heatmap — port AFTER Andy
+  approves EN (English-first); new strings to translate then: the two
+  `#hmSub` variants + Today/Week/Month subs reuse existing patterns.
+  Next: Andy clicks through the 4 tabs at 140% zoom; custom date range is
+  queued as its own medium pass (not approved yet).
 - **2026-11-12 (Kimi Work):** STATS TRANSLATIONS SHIPPED (light, Andy's go) —
   `id|es|pt|vi/stats/index.html` built from the EN master via
   `_work/stats_translations.py` (103 count-asserted pairs + 7 cards per
