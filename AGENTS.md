@@ -187,6 +187,36 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-15 (Kimi Work):** GA4 CUSTOM EVENTS wired on all 9 English pages
+  (Andy's go, medium). New shared `assets/js/tt-events.js`: `TTEvent(name,
+  params)` no-ops silently without gtag + autowires `task_completed` (wraps
+  the shared `ttStats.recordTask`), `theme_toggle`, `lang_switch`,
+  `card_click` on every page that includes it (script placed right after the
+  gtag config block + `window.TT_TECHNIQUE`). Per-page: index wraps
+  `startTimer`/`stopTimer` (timer_start / timer_complete at
+  remainingTime<1000) + capture-phase `timer_skip` (skipBtn's own listener
+  holds the pre-wrap function ref — bubble-phase reads post-click state,
+  must be capture); 52-17 + 202020 wrap `openBreak`/`completeBreak`/
+  `skipBreak` with a skipWork flag so skips are not counted as completes;
+  flowtime wraps `takeBreak`/`endBreak` (takeBreak emits only when phase
+  actually became 'break' — it no-ops with no earned break); custom-timer
+  gets 5 source-level inserts (engine is IIFE-scoped: timer_start /
+  timer_complete phase+sequence / timer_skip / task_added) + ambience-pill
+  hook wrap; ambience = tile/master activation listeners; days-until =
+  countdown_created/_updated inserts + capture-phase pin delegation by
+  ARIA-LABEL (the 📌 emoji is also an icon choice — text match false-
+  positives; pinCd is IIFE-scoped); streaks = streak_created insert +
+  delegation on `.checkin-btn`/`.mcheck` ('done' class = undo) + pin by
+  aria-label (togglePin/toggleToday IIFE-scoped); stats = tool_open +
+  stats_export. All 9 pages live-verified in InAppBrowser against dataLayer
+  (localhost:8130, server stopped after). LESSONS: (1) function-wrap only
+  works for page globals — days-until/streaks/custom-timer engines are
+  IIFE-scoped → source inserts or DOM delegation; (2) state-reading
+  listeners must be capture-phase on document (page handlers mutate state
+  first in bubble); (3) emoji text-matching false-positives on icon pickers
+  → match aria-label. Scripts: `_work/ga_events_*.py`. NOT done: translations
+  (id/es/pt/vi) — await Andy's go per English-first rule. Next: Andy reviews
+  EN on the live site, then port to translations (light).
 - **2026-11-14 (Kimi Work, pt 11):** PIN CHIP ANTI-STACKING FIX (nowrap rows)
   — despite pt 9/10, Spanish + other long-label pages still dropped the stats
   chip to a second line (reproduced live: es/52-17 at 1254px CSS width, chip

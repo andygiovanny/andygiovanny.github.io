@@ -151,6 +151,8 @@
         'page_path': window.location.pathname
     });
 </script>
+    <script>window.TT_TECHNIQUE = 'ambience';</script>
+    <script src="/assets/js/tt-events.js?v=1.0"></script>
     
     
     
@@ -2119,5 +2121,34 @@
     
     
     
+
+<script>
+/* GA4 events — ambience studio. Fires when sound actually STARTS playing
+   (master play, or a sound tile toggled on). */
+window.addEventListener('load', function () {
+    var master = document.getElementById('masterPlayBtn');
+    if (master) {
+        master.addEventListener('click', function () {
+            var pauseIcon = document.getElementById('pauseIcon');
+            if (pauseIcon && pauseIcon.style.display === 'block') {
+                window.TTEvent('ambience_opened', { source: 'master' });
+            }
+        });
+    }
+    var grid = document.getElementById('soundGrid');
+    if (grid) {
+        grid.addEventListener('click', function (e) {
+            var img = e.target && e.target.closest ? e.target.closest('.sound-icon-img') : null;
+            if (!img) return;
+            var item = img.closest('.sound-item');
+            /* the page handler re-renders the grid, but this captured element
+               still carries its PRE-toggle classes: not active → now turning on */
+            if (item && !item.classList.contains('active')) {
+                window.TTEvent('ambience_opened', { source: 'tile', sound: item.id || '' });
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>
