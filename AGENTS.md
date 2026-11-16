@@ -81,6 +81,18 @@
    Discussion, questions, and planning are fine before the go; execution is
    not. The same applies to multi-batch work — confirm model + estimate for
    each batch.
+9. **GA4 analytics is MANDATORY on every new page.** A page is not
+   finished until: (a) the `window.TT_TECHNIQUE` + `/assets/js/tt-events.js`
+   script tags sit right after the gtag config block (see Current State);
+   (b) its key actions fire `window.TTEvent(...)` — at minimum `tool_open`
+   for tools and the timer lifecycle (start/complete/skip) for timers, plus
+   pin/create/export events where applicable, same patterns as existing
+   pages; (c) events only use the 12 registered parameters (technique,
+   phase, from_phase, profile, tool, href, theme, lang, source, sound,
+   preset, mode) — a genuinely new parameter must be registered as a GA4
+   custom dimension BEFORE launch, because data only flows from registration
+   onward. Translations inherit the wiring automatically when built from a
+   wired EN master — never ship a translated page without it.
 
 ## Repo structure
 
@@ -201,7 +213,10 @@ knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
 - **2026-11-16 (Kimi Work, pt 2):** GA4 events PORTED to all 36 translated
-  pages (id/es/pt/vi × 9 pages, light model, Andy's go). Each page got the
+  pages (id/es/pt/vi × 9 pages, light model, Andy's go). Also added Golden
+  Rule #9: GA4 analytics mandatory on every new page (include tags +
+  TTEvent wiring + registered params only; register new params in GA4 before
+  launch). Andy pushed development → master same day. Each page got the
   `TT_TECHNIQUE` + `/assets/js/tt-events.js` includes (placed right after the
   gtag config `</script>`, same as EN) plus the exact EN event blocks:
   timer_start/complete/skip wraps on the 5 timer pages, task_added +
