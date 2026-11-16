@@ -73,6 +73,14 @@
    a different origin (www vs apex — we 301 to `www.tomatotimers.com`), a
    different browser/profile, or cleared site data — investigate before
    assuming the push did it.
+8. **Model + time estimate BEFORE any build.** When a task is agreed in
+   principle, Kimi Work must state (a) the recommended model/tier for the job
+   and (b) an estimated wall-clock time to complete, THEN STOP and wait for
+   the human to say "go" (usually after they switch the model). Never start
+   building, editing, or researching implementation until the go-ahead.
+   Discussion, questions, and planning are fine before the go; execution is
+   not. The same applies to multi-batch work — confirm model + estimate for
+   each batch.
 
 ## Repo structure
 
@@ -136,6 +144,11 @@ belong in the work log below.
 
 - **Setup (2026-10-27):** working folder is now local-only on the Windows PC
   (Google Drive removed from the workflow). GitHub is the machine bridge.
+- **GA4 (2026-11-16):** custom events wired via `assets/js/tt-events.js` on
+  ALL pages (EN + id/es/pt/vi), 12 event parameters registered as GA4 custom
+  dimensions (technique, phase, from_phase, profile, tool, href, theme, lang,
+  source, sound, preset, mode). Any NEW page must include the two script tags
+  (TT_TECHNIQUE + tt-events.js) after the gtag config block.
 - **custom-timer (English + all 4 translations): DONE** — multi-timer
   profiles with named settings, share links (`#share=`), builder with
   drag-reorder/duplicate/per-phase everything, editable extend length,
@@ -187,6 +200,30 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-16 (Kimi Work, pt 2):** GA4 events PORTED to all 36 translated
+  pages (id/es/pt/vi × 9 pages, light model, Andy's go). Each page got the
+  `TT_TECHNIQUE` + `/assets/js/tt-events.js` includes (placed right after the
+  gtag config `</script>`, same as EN) plus the exact EN event blocks:
+  timer_start/complete/skip wraps on the 5 timer pages, task_added +
+  ambience-pill on custom-timer, ambience_opened on ambience,
+  countdown_created/updated + pin toggles + tool_open on days-until,
+  streak_created + checkin/undo + pin toggles + tool_open on streaks,
+  tool_open + stats_export on stats. Ported by exact-match script
+  (`_work/port_events_translations.py`, blocks extracted verbatim from EN
+  masters); all 36 files pass node --check on every inline script and
+  TTEvent counts match EN per page. GA4 now captures behavior across the
+  whole site in all languages. Next: Andy spot-checks a translated page,
+  then push development → master when ready.
+- **2026-11-16 (Kimi Work):** GA4 custom dimensions REGISTERED (via
+  WebBridge driving Andy's Chrome, light model, Andy watching live). All 12
+  event parameters from 2026-11-15 now registered as GA4 custom dimensions
+  (Event scope, property tomatotimers.com): technique, phase, from_phase,
+  profile, tool, href, theme, lang, source, sound, preset, mode. Verified
+  on-screen (text probe + screenshot, all 12 rows, "Nov 16, 2026"). GA4
+  only sorts/breaks down by a dimension from registration onward — data
+  before today stays unattributed. Next (optional, Andy's call): mark key
+  events in Admin → Events; port the tt-events.js wiring to id/es/pt/vi
+  translations (light job, waiting for Andy's go).
 - **2026-11-15 (Kimi Work):** GA4 CUSTOM EVENTS wired on all 9 English pages
   (Andy's go, medium). New shared `assets/js/tt-events.js`: `TTEvent(name,
   params)` no-ops silently without gtag + autowires `task_completed` (wraps

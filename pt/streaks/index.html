@@ -122,6 +122,8 @@
         'page_path': window.location.pathname
         });
 </script>
+    <script>window.TT_TECHNIQUE = 'streaks';</script>
+    <script src="/assets/js/tt-events.js?v=1.0"></script>
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -931,6 +933,7 @@ $('addForm').addEventListener('submit', function (ev) {
       color: selColor, icon: selIcon, start: start,
       checkins: {}, pinned: false, created: Date.now()
     });
+      window.TTEvent('streak_created', { mode: selMode });
     save();
     toast(selMode === 'countup' ? 'Contagem iniciada — ela sobe sozinha.' : 'Sequência adicionada — toque no botão ou no calendário para fazer check-in.');
   }
@@ -1459,5 +1462,32 @@ renderAll();
     <div id="bsa-zone_1785233220314-9_123456"></div>
 </div>
 
+<script>
+/* GA4 events — streaks: tool view, pin toggles, check-ins/undos.
+   togglePin / toggleToday / todayKey are page globals. */
+window.addEventListener('load', function () {
+    window.TTEvent('tool_open', { tool: 'streaks' });
+    /* togglePin/toggleToday are IIFE-scoped → delegate by class/aria-label.
+       Capture phase reads PRE-click state: 'done'/pinned class = undo/unpin. */
+    document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        var ck = t.closest('.checkin-btn, .mcheck');
+        if (ck) {
+            window.TTEvent(ck.classList.contains('done') ? 'checkin_undo' : 'checkin',
+                           { tool: 'streaks' });
+            return;
+        }
+        var pin = t.closest('button');
+        if (pin) {
+            var al = pin.getAttribute('aria-label') || '';
+            if (al.indexOf('Pin ') === 0 || al.indexOf('Unpin ') === 0) {
+                window.TTEvent(pin.classList.contains('pinned') ? 'pin_removed' : 'pin_added',
+                               { tool: 'streaks' });
+            }
+        }
+    }, true);
+});
+</script>
 </body>
 </html>

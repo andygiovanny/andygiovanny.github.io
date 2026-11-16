@@ -122,6 +122,8 @@
         'page_path': window.location.pathname
         });
 </script>
+    <script>window.TT_TECHNIQUE = 'stats';</script>
+    <script src="/assets/js/tt-events.js?v=1.0"></script>
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1485,5 +1487,17 @@ if (!window.ttStats) {
     <div id="bsa-zone_1785233220314-9_123456"></div>
 </div>
 
+<script>
+/* GA4 events — stats page: view + data export. */
+window.addEventListener('load', function () {
+    window.TTEvent('tool_open', { tool: 'stats' });
+    var ex = document.getElementById('exportBtn');
+    if (ex) {
+        ex.addEventListener('click', function () {
+            window.TTEvent('stats_export', {});
+        });
+    }
+});
+</script>
 </body>
 </html>

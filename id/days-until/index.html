@@ -125,6 +125,8 @@
         'page_path': window.location.pathname
         });
 </script>
+    <script>window.TT_TECHNIQUE = 'days-until';</script>
+    <script src="/assets/js/tt-events.js?v=1.0"></script>
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -856,6 +858,7 @@ $('addForm').addEventListener('submit', function (ev) {
       cd.icon = selIcon;
       cd.color = selColor;
       save();
+      window.TTEvent('countdown_updated', {});
       toast('Hitung mundur diperbarui.');
     }
   } else {
@@ -863,6 +866,7 @@ $('addForm').addEventListener('submit', function (ev) {
       id: uid(), name: name, target: toTargetStr(dateStr, timeStr),
       color: selColor, icon: selIcon, pinned: false, created: Date.now()
     });
+      window.TTEvent('countdown_created', {});
     save();
     toast('Hitung mundur ditambahkan.');
   }
@@ -1217,5 +1221,22 @@ runTicker();
         overflow: hidden; border-radius: 12px; background-color: transparent;
     }
 </style>
+<script>
+/* GA4 events — days-until: tool view + pin toggles (pinCd is a page global). */
+window.addEventListener('load', function () {
+    window.TTEvent('tool_open', { tool: 'days-until' });
+    /* pinCd is IIFE-scoped, so wrap via delegation. Match by aria-label —
+       the \uD83D\uDCCC emoji is ALSO an icon-picker choice, text alone false-positives.
+       Capture phase reads the PRE-click class, which tells the direction. */
+    document.addEventListener('click', function (e) {
+        var b = (e.target && e.target.closest) ? e.target.closest('button') : null;
+        if (!b) return;
+        var al = b.getAttribute('aria-label') || '';
+        if (al.indexOf('Pin ') !== 0 && al.indexOf('Unpin ') !== 0) return;
+        window.TTEvent(b.classList.contains('pinned') ? 'pin_removed' : 'pin_added',
+                       { tool: 'days-until' });
+    }, true);
+});
+</script>
 </body>
 </html>

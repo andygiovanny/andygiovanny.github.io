@@ -130,6 +130,8 @@
         'page_path': window.location.pathname
         });
 </script>
+    <script>window.TT_TECHNIQUE = 'custom';</script>
+    <script src="/assets/js/tt-events.js?v=1.0"></script>
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1243,6 +1245,7 @@ function tick() {
 function start() {
   if (running || !cfg) return;
   running = true; lastTick = Date.now();
+      window.TTEvent('timer_start', { technique: 'custom', profile: (currentTimer() || {}).name || '' });
   timerId = setInterval(tick, 250);
   render(); renderPlayIcon();
   if (window.byoAmbience) window.byoAmbience.onPlay();
@@ -1253,6 +1256,7 @@ function pause() {
   if (window.byoAmbience) window.byoAmbience.onPause();
 }
 function onSectionEnd() {
+      window.TTEvent('timer_complete', { technique: 'custom', phase: (cfg.sections[idx] || {}).name || '' });
   playSound();
   addPhaseStat(secOf(cfg.sections[idx]) / 60);
   var next = idx + 1;
@@ -1266,6 +1270,7 @@ function onSectionEnd() {
   lastTick = Date.now();
 }
 function finish() {
+      window.TTEvent('timer_complete', { technique: 'custom', phase: 'sequence' });
   pause();
   $('digits').textContent = '¡Listo!';
   $('digits').classList.add('done');
@@ -1278,6 +1283,7 @@ $('resetBtn').addEventListener('click', function () {
 });
 $('skipBtn').addEventListener('click', function () {
   if (!cfg) return;
+      window.TTEvent('timer_skip', { technique: 'custom', phase: (cfg.sections[idx] || {}).name || '' });
   var next = idx + 1;
   if (next >= cfg.sections.length) { cfg.loop ? (next = 0) : (finish(), 0); }
   if (next < cfg.sections.length) { loadSection(next); if (running) lastTick = Date.now(); }
@@ -1581,6 +1587,7 @@ function addTask() {
   if (!name) { $('taskName').focus(); return; }
   var est = Math.max(1, Math.min(999, Number($('taskEst').value) || 0));
   tasks.push({ name: name, est: est || null, color: selColor, done: false });
+      window.TTEvent('task_added', { technique: 'custom' });
   $('taskName').value = ''; $('taskEst').value = '';
   saveTasks(); renderTasks(); $('taskName').focus();
 }
@@ -1888,6 +1895,18 @@ document.addEventListener('DOMContentLoaded', function () {
         snap = null;
     });
 })();
+</script>
+<script>
+/* GA4 events — custom-timer ambience pill (the engine exposes this hook). */
+window.addEventListener('load', function () {
+    if (typeof window.byoOnPillChange === 'function') {
+        var _pill = window.byoOnPillChange;
+        window.byoOnPillChange = function (id) {
+            window.TTEvent('ambience_opened', { technique: 'custom', preset: id });
+            return _pill.apply(this, arguments);
+        };
+    }
+});
 </script>
 </body>
 </html> 

@@ -1122,6 +1122,8 @@ html.theme-dark .ft-log-band { background: #1f1813; }
         'page_path': window.location.pathname
         });
 </script>
+    <script>window.TT_TECHNIQUE = 'flowtime';</script>
+    <script src="/assets/js/tt-events.js?v=1.0"></script>
     <script src="https://apis.google.com/js/platform.js"></script> <!-- YT Subs button --><base target="_blank">
 <link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/flowtime/">
 <link rel="alternate" hreflang="id" href="https://www.tomatotimers.com/id/flowtime/">
@@ -2291,7 +2293,8 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
         { id:'classroom', file:'/ambience/audio/classroom.ogg' },
         { id:'lofi1', file:'/ambience/audio/lofi1.ogg' },
         { id:'lofi2', file:'/ambience/audio/lofi2.ogg' },
-        { id:'lofi3', file:'/ambience/audio/lofi3.ogg' },
+        { id:'lofi3', file:'/ambience/audio/lofi3.ogg' },
+
         { id:'jazz1', file:'/ambience/audio/jazz1.ogg' },
         { id:'jazz2', file:'/ambience/audio/jazz2.ogg' },
         { id:'jazz3', file:'/ambience/audio/jazz3.ogg' },
@@ -3397,6 +3400,41 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
         snap = null;
     });
 })();
+</script>
+<script>
+/* GA4 events — flowtime. Work ends when the user cashes out (takeBreak);
+   a break ending early (bank-the-rest resume) counts as a skip. */
+window.addEventListener('load', function () {
+    var TM = 'flowtime';
+    if (typeof window.takeBreak === 'function') {
+        var _tb = window.takeBreak;
+        window.takeBreak = function () {
+            var wasWork = (window.ftState || {}).k === 'work';
+            var out = _tb.apply(this, arguments);
+            /* the original silently no-ops when no break is earned yet —
+               only a real work→break transition counts */
+            if (wasWork && (window.ftState || {}).k === 'break') {
+                window.TTEvent('timer_complete', { technique: TM, phase: 'work' });
+            }
+            return out;
+        };
+    }
+    if (typeof window.endBreak === 'function') {
+        var _eb = window.endBreak;
+        window.endBreak = function (natural) {
+            window.TTEvent(natural === true
+                ? 'timer_complete'
+                : 'timer_skip', { technique: TM, phase: 'break' });
+            return _eb.apply(this, arguments);
+        };
+    }
+    document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t || !t.closest || !t.closest('#playBtn')) return;
+        var st = window.ftState || {};
+        if (st.k === 'idle') window.TTEvent('timer_start', { technique: TM });
+    }, true);
+});
 </script>
 </body>
 </html>
