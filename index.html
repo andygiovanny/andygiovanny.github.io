@@ -473,6 +473,203 @@
     </script>
     <script>window.TT_TECHNIQUE = 'pomodoro';</script>
     <script src="assets/js/tt-events.js?v=1.0"></script>
+    <script>
+    /* Workbench embed mode: ?embed=1&size=s|m|l — flags <html> so the CSS
+       below can strip page chrome; the page then lives as a block on the
+       workbench board. Spec: AGENTS.md "Workbench". */
+    (function () {
+        try {
+            var p = new URLSearchParams(location.search);
+            if (p.get('embed') !== '1') return;
+            var r = document.documentElement;
+            r.classList.add('tt-embed');
+            var s = p.get('size');
+            if (s === 's' || s === 'm' || s === 'l') r.classList.add('tt-embed-' + s);
+        } catch (e) {}
+    })();
+    </script>
+    <script>
+    /* SMALL widget chrome (embed-s only): a "Now playing" dropdown that
+       mirrors the mode pills (both directions — dropdown→pill on change,
+       pill→dropdown live), and the ambience pill collapsed to an icon
+       button at the end of the control row. DOM must exist, so wait. */
+    window.addEventListener('DOMContentLoaded', function () {
+        if (!document.documentElement.classList.contains('tt-embed-s')) return;
+        var MODES = [
+            ['focus', 'pomodoro_timer_button', 'Pomodoro'],
+            ['short', 'short_break_timer_button', 'Short Break'],
+            ['long',  'long_break_timer_button',  'Long Break'],
+            ['loop',  'loop_timer_button',        'Loop']
+        ];
+        function currentMode() {
+            if (window.isShortCliked === true) return 'short';
+            if (window.isLongClicked === true) return 'long';
+            if (typeof isLoopClicked !== 'undefined' && isLoopClicked === true) return 'loop';
+            return 'focus';
+        }
+        var core = document.getElementById('tt-widget-core');
+        if (!core) return;
+        var col = core.querySelector('.row > .col-12');
+        var digitsWrap = col && col.querySelector('.w-100.p-1');
+        if (!col || !digitsWrap) return;
+
+        /* 4 compact mode buttons above the countdown (mirror the real pills:
+           click → real pill click; active state follows the live mode) */
+        var LABELS = { focus: 'Pomodoro', short: 'Short', long: 'Long', loop: 'Loop' };
+        var np = document.createElement('div');
+        np.id = 'tt-nowplaying';
+        var btns = {};
+        MODES.forEach(function (m) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'tt-mode-btn';
+            b.textContent = LABELS[m[0]] || m[2];
+            b.setAttribute('aria-label', m[2]);
+            b.addEventListener('click', function () {
+                var real = document.getElementById(m[1]);
+                if (real) real.click();
+                setTimeout(sync, 60);
+            });
+            btns[m[0]] = b;
+            np.appendChild(b);
+        });
+        digitsWrap.insertBefore(np, digitsWrap.firstChild);
+
+        function sync() {
+            var cur = currentMode();
+            MODES.forEach(function (m) {
+                if (btns[m[0]]) btns[m[0]].classList.toggle('active', m[0] === cur);
+            });
+        }
+        setInterval(sync, 1000);   /* cheap mirror of the mode pills */
+
+        /* control row (reset/play/skip + ambience icon) stacks UNDER the
+           countdown inside the right-hand column */
+        var ctrl = col.querySelector('.ctrl-row');
+        var pill = document.getElementById('ambienceMasterPill');
+        if (ctrl && pill) ctrl.appendChild(pill);
+        if (ctrl) digitsWrap.appendChild(ctrl);
+        sync();
+    });
+    </script>
+    <style>
+    /* ===== Workbench embed mode =====
+       Size classes only SHOW/HIDE sections — the timer engine keeps running
+       at every size (AGENTS.md: "nothing is destroyed, only hidden"). */
+    html.tt-embed #yt-promo,
+    html.tt-embed .header-background > .container > .row.p-2 > .col-lg-4,
+    html.tt-embed .header-background > .container > .row.p-2 > .col-lg-8,
+    html.tt-embed .header-background .theme-toggle-wrapper,
+    html.tt-embed .bsa-side-ad { display: none !important; }
+    /* everything after the header-background block (tasks, videos, SEO text,
+       cards, modals, footer). display:none does NOT stop the scripts below
+       from running — the timer engine keeps working. */
+    html.tt-embed .header-background ~ * { display: none !important; }
+
+    /* Pins NEVER appear inside widgets — on the workbench they are their own
+       separate unlimited blocks (Andy's call), not part of the timer. */
+    html.tt-embed .pin-host { display: none !important; }
+
+    /* SMALL + MEDIUM: phase buttons become a compact 2×2 grid */
+    html.tt-embed-s .mode-tabs,
+    html.tt-embed-m .mode-tabs {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        max-width: 420px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    html.tt-embed-s .mode-tabs .btn,
+    html.tt-embed-m .mode-tabs .btn { margin-right: 0 !important; }
+
+    /* SMALL — Spotify-mini-player bar (560 × 160):
+       mascot art | "Now playing" dropdown + countdown | play/skip + ambience
+       icon. The mode pills are replaced by the dropdown (built by the head
+       script below); the ambience pill collapses to a mute/unmute icon. */
+    html.tt-embed-s .mode-tabs { display: none !important; }
+    html.tt-embed-s .header-background { display: flex; flex-direction: column; justify-content: center; }
+    html.tt-embed-s #tt-widget-core .row > .col-12 {
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        justify-content: center !important;
+        align-items: center;
+        gap: 8px 10px;
+        padding-top: 0 !important;
+        /* the mascot SVG carries ~33px of transparent space on its left —
+           shift the group left so the ARTWORK's gaps match both sides */
+        padding-right: 54px;
+    }
+    html.tt-embed-s #tt-mascot-wrap {
+        order: 1; min-height: 0 !important; margin: 0;
+        width: 168px !important; flex: 0 0 168px;
+    }
+    html.tt-embed-s .tomato-cartoon { max-height: 166px !important; }
+    html.tt-embed-s #tt-widget-core .row > .col-12 > .w-100.p-1 {
+        order: 2; width: auto !important; flex: 0 0 auto; justify-content: center;
+        min-width: 290px; align-items: flex-start !important; text-align: left;
+    }
+    html.tt-embed-s #tt-nowplaying {
+        display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap;
+        gap: 8px; width: 100%; margin-bottom: 12px;
+    }
+    html.tt-embed-s .tt-mode-btn {
+        font-size: 12px; font-weight: 600; line-height: 1.4; white-space: nowrap;
+        padding: 4px 14px; border-radius: 20px; cursor: pointer;
+        border: 1.5px solid rgba(93,64,55,.35); background: transparent; color: #5D4037;
+    }
+    html.tt-embed-s .tt-mode-btn.active { background: #DE4B3A; border-color: #DE4B3A; color: #fff; }
+    html.tt-embed-s body.theme-dark .tt-mode-btn { color: #E8D9B8; border-color: rgba(232,217,184,.35); }
+    html.tt-embed-s body.theme-dark .tt-mode-btn.active { background: #DE4B3A; border-color: #DE4B3A; color: #fff; }
+    /* the display font's ink sits high in its line box (≈29px above the
+       baseline, 1px below) — shift it down so the visual gaps above and
+       below the countdown match (measured live: 14px vs 39px before) */
+    html.tt-embed-s .timer-time { font-size: 280%; margin: 0; line-height: 1.05; transform: translateY(9px); }
+    html.tt-embed-s .timer-time-set { display: none !important; }
+    /* control row sits under the countdown inside the same column */
+    html.tt-embed-s .ctrl-row { gap: 12px; margin-top: 8px; justify-content: flex-start; }
+    html.tt-embed-s .cbtn { width: 46px; height: 46px; }
+    html.tt-embed-s .cbtn svg { width: 20px; height: 20px; }
+    /* ambience pill → round icon button matching the other controls */
+    html.tt-embed-s .ambience-master-pill {
+        width: 46px; height: 46px; flex: 0 0 46px;
+        border-radius: 50%; border: 2px solid rgba(93,64,55,.28);
+        background: transparent; padding: 0; gap: 0; margin: 0;
+        display: flex; align-items: center; justify-content: center;
+    }
+    html.tt-embed-s body.theme-dark .ambience-master-pill { border-color: rgba(232,217,184,.3); }
+    html.tt-embed-s .ambience-master-pill input,
+    html.tt-embed-s .ambience-master-pill select { display: none !important; }
+    html.tt-embed-s .ambience-master-pill svg { width: 21px; height: 21px; cursor: pointer; }
+    html.tt-embed-s .tm-active-line { display: none !important; }
+
+    /* MEDIUM — two grid columns wide (560px), roomier widget layout */
+    html.tt-embed-m .mode-tabs {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        max-width: 460px;
+        margin: 18px auto 0 !important;
+    }
+    html.tt-embed-m .mode-tabs .btn { margin-right: 0 !important; padding: 7px 0; font-size: 14px; }
+    html.tt-embed-m #tt-mascot-wrap { min-height: 0 !important; margin: 10px 0; }
+    html.tt-embed-m .tomato-cartoon { max-height: 150px !important; }
+    html.tt-embed-m .timer-time { font-size: 350%; }
+    html.tt-embed-m .ctrl-row { gap: 14px; margin-top: 10px; }
+    html.tt-embed-m .cbtn { width: 48px; height: 48px; }
+    html.tt-embed-m .cbtn svg { width: 20px; height: 20px; }
+    html.tt-embed-m .ambience-master-pill { margin-top: 14px; padding: 8px 14px; gap: 10px; }
+    html.tt-embed-m .ambience-master-pill svg { width: 20px; height: 20px; }
+    html.tt-embed-m #ambienceVolSlider { width: 120px; }
+
+    /* never show scrollbars inside the widget frame */
+    html.tt-embed-s, html.tt-embed-m, html.tt-embed-l { overflow: hidden; }
+    /* fill the whole iframe with the theme background — .header-background
+       wraps all widget content and already carries the theme-aware color,
+       so stretching it kills the white band under short content */
+    html.tt-embed, html.tt-embed body { height: 100%; }
+    html.tt-embed .header-background { min-height: 100vh; }
+    </style>
     
    
     <meta name="p:domain_verify" content="053c080ea19a4c94a9952e38b15615e3"/>
@@ -1574,7 +1771,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 
           
           
-<div class="container mt-1" style="position: relative;">
+<div class="container mt-1" id="tt-widget-core" style="position: relative;">
     <div class="tm-zero-overlay d-none" id="tm_zero_overlay" role="alertdialog" aria-live="assertive">
         <div class="tm-zero-box">
             <div class="tm-zero-text" id="tm_zero_text"></div>
@@ -1588,7 +1785,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     <div class="row justify-content-center">
         <div class="col-12 col-lg-7 text-center d-flex flex-column align-items-center justify-content-start pt-1">
             
-            <div style="min-height: 250px;" class="w-100 d-flex align-items-center justify-content-center">
+            <div style="min-height: 250px;" class="w-100 d-flex align-items-center justify-content-center" id="tt-mascot-wrap">
                 <img src="assets/images/tomato-cartoon.svg" class="tomato-cartoon" id="tomato-cartoon" style="max-height: 300px; width: auto; margin: 0 auto;">
             </div>
 

@@ -149,6 +149,59 @@
 - New video cards go ON TOP of the video grid (first card), never appended
   at the bottom — newest content leads the stack.
 
+## Workbench (DESIGNED 2026-11-16, not built yet — tools updates come first)
+
+Andy's concept: a blank page where users stack timers + tools like
+Lego/Notion ("for customer loyalty — a page purely theirs"). Design
+decisions agreed with Andy, do NOT re-litigate without him:
+
+- **Embedding: Option A — iframes with stripped embed mode.** Each timer
+  page supports `?embed=1` which removes nav, ads (ads MUST NOT appear in
+  embeds), footer, and page chrome. Option B (refactoring timers into
+  reusable components) was rejected for now — iframes are isolated (two
+  timers can't break each other) and GA4 events still flow from inside them
+  with the correct `technique` param.
+- **Why it's feasible:** all 5 timers are self-contained pages; all tools
+  already share data via localStorage (`tt_*` keys) so a streaks block shows
+  the SAME streaks as the streaks page — no sync layer, no server, no login.
+  The pinned widgets (days-until / streaks / stats) are already proto-blocks.
+- **Resizing: SNAP-TO-GRID with 3 size classes per block — NEVER freeform.**
+  Agreed for stability: finite tested states (no infinite edge-case sizes),
+  iframes clip/scrollbar at arbitrary sizes, clean persistence
+  `{block, column, row, size}` that survives zoom (user is at 140%),
+  viewport changes, and collisions are impossible. iOS widgets use the same
+  model.
+- **Size classes (revised 2026-11-16 after Andy reviewed the live preview,
+  SUPERSEDES the earlier Large/Medium/Small hide-parts spec):**
+  - Grid: **4 columns × 160px row units, 1140px content** (same centered
+    container as the rest of the site; side-ad zones untouched).
+  - **SMALL = 2×1 (560×160) — horizontal Spotify-mini-player bar**: phase
+    buttons 4-across on top; one row: mascot | digits | reset/play/skip.
+    Ambience NOT included (gets its own standalone widget on the board).
+  - **MEDIUM = 2×4 (560×640) — vertical workspace**: 2×2 phase buttons,
+    mascot ~150px, digits 56px, 48px controls, ambience pill, volume slider.
+  - **PIN WIDGETS = 1×1 (270×160)**: countdowns, streaks, stats pins —
+    unlimited count on the board (unlike the 1-per-timer pin limit on
+    normal pages).
+  - **LARGE: CUT.** Two Mediums side-by-side = the dual workspace; a Large
+    would always hog a full row alone (iOS has the same property). Revisit
+    only if real usage asks for it.
+  - Widths: 2 Small = 1 Medium = 4 pin slots = 1140px — everything pairs in
+    2s, heights snap to the 160px unit, holes fill with pins (iOS model).
+  - Widget UI is its OWN design per size (real font sizes/element sizes) —
+    NEVER zoom/squeeze the page. The widget frame = neutral title bar
+    (no fake OS window chrome — Andy is on Windows).
+- **Embed URL params:** `?embed=1&size=s|m` per block.
+- **Persistence:** layout saved to localStorage (per layout), same
+  user-data rules as everything else (Golden Rule 7 — never rename keys,
+  demo seed only when key absent).
+- **Planned batches (re-estimate with Andy before starting):**
+  1. Embed mode + size classes on main pomodoro (pattern prototype) — DONE
+     2026-11-16 (size=s horizontal bar, size=m vertical workspace)
+  2. Roll pattern to the other 4 timers
+  3. Workbench canvas: 4×160px grid + block picker + drag/resize + save/load
+  4. Tool blocks (days-until, streaks, stats, ambience widgets at pin size)
+
 ## Current state
 
 Short summary of where the project stands. Keep it under ~10 lines; details
@@ -212,11 +265,39 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-16 (Kimi Work, pt 3):** WORKBENCH BATCH 1 DONE — embed mode +
+  size classes on the main pomodoro only (medium model, Andy's go, token-
+  lean execution). `index.html` got: (a) a head script flagging
+  `<html>` with `tt-embed` + `tt-embed-s|m|l` from `?embed=1&size=s|m|l`;
+  (b) an embed CSS block — ALL sizes hide header/yt-promo/side-ads and
+  everything after `#tt-widget-core` (sibling `~ *` rule: tasks, videos,
+  SEO, modals, footer); MEDIUM additionally hides `.mode-tabs` + `.pin-host`;
+  SMALL keeps only digits + play (hides pills, pins, `#tt-mascot-wrap`,
+  reset/skip, `#nextTime`, ambience pill, active-task line); (c) ids
+  `tt-widget-core` (timer container) + `tt-mascot-wrap`. Timer engine
+  untouched — size classes only show/hide. GA4/tt-events unaffected; pages
+  without the param render exactly as before. Pattern verified: node --check
+  OK. **REDESIGN (same session, after Andy rejected zoom-squeeze):** widget
+  UIs are bespoke per size with REAL element sizes — no scaling tricks.
+  SMALL = horizontal Spotify-style bar (560×160, 2×1 grid): 4-across mode
+  tabs + mascot 56px + digits 220% + play button 38px, ambience pill and
+  pins hidden. MEDIUM = vertical workspace (560×640, 2×4 grid): 2×2 mode
+  tabs, mascot 150px, digits 350%, buttons 48px, slider 120px. Pins are
+  NEVER inside timer widgets (separate unlimited 1×1 pin widgets on the
+  board). LARGE size class CUT — it always hogs a full row. Board grid
+  locked: 4 columns × 160px row units, 1140px centered content (same as
+  site container, side ads ≥1400px). All written into the "Workbench" spec
+  section. Next (after refill): roll pattern to 52-17 / 20-20-20 / flowtime /
+  custom-timer / ambience, then the grid board. Andy reviews via
+  `_work/embed-preview.html`.
 - **2026-11-16 (Kimi Work, pt 2):** GA4 events PORTED to all 36 translated
   pages (id/es/pt/vi × 9 pages, light model, Andy's go). Also added Golden
   Rule #9: GA4 analytics mandatory on every new page (include tags +
   TTEvent wiring + registered params only; register new params in GA4 before
-  launch). Andy pushed development → master same day. Each page got the
+  launch). Andy pushed development → master same day. WORKBENCH DESIGNED
+  (not built): see the "Workbench" section — iframe embed mode + snap-to-
+  grid 3 size classes, decisions locked with Andy. Tools updates come first.
+  Each page got the
   `TT_TECHNIQUE` + `/assets/js/tt-events.js` includes (placed right after the
   gtag config `</script>`, same as EN) plus the exact EN event blocks:
   timer_start/complete/skip wraps on the 5 timer pages, task_added +
