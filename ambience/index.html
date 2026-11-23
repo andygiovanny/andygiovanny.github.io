@@ -1060,6 +1060,182 @@
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<script>
+/* ===== Workbench embed mode — Ambience Tile & Preset Mixer =====
+   ?embed=1&app=tile&sound=<id> turns this page into ONE soundscape tile
+   (3×1 workbench block, 276×160): icon + name + play/pause.
+   ?embed=1&app=mixer turns it into the Preset Mixer (6×4 block, 564×640) —
+   the studio's own "Customize Presets" editor, reusing the modal DOM and
+   all its logic. In both modes the full studio (hero, grid, modals,
+   footer) is hidden — its engine keeps running, nothing is destroyed. */
+(function () {
+    var q = new URLSearchParams(location.search);
+    if (q.get('embed') !== '1') return;
+    if (q.get('app') === 'tile') {
+        window.__ttTileMode = true;
+        window.__ttTileSound = q.get('sound') || 'rain';
+        document.documentElement.classList.add('tt-embed', 'tt-embed-amb-tile');
+    } else if (q.get('app') === 'mixer') {
+        window.__ttMixerMode = true;
+        document.documentElement.classList.add('tt-embed', 'tt-embed-amb-mixer');
+    } else if (q.get('app') === 'deck') {
+        window.__ttDeckMode = q.get('size') || 'm';
+        document.documentElement.classList.add('tt-embed', 'tt-embed-amb-deck', 'tt-embed-amb-deck-' + window.__ttDeckMode);
+    }
+})();
+</script>
+<style>
+/* Ambience Tile — 3×1 (276×160) workbench block */
+html.tt-embed-amb-tile, html.tt-embed-amb-tile body {
+    height: 100%; margin: 0; padding: 0; background: transparent;
+}
+html.tt-embed-amb-tile { overflow: hidden; }
+html.tt-embed-amb-tile body > *:not(.tt-amb-tile) { display: none !important; }
+html.tt-embed-amb-tile .tt-amb-tile {
+    box-sizing: border-box; width: 100%; height: 100vh; padding: 14px 14px;
+    display: flex; align-items: center; gap: 10px;
+    background: #FAF5EB; border-radius: 16px;
+}
+html.tt-embed-amb-tile .tt-amb-tile img.tt-amb-icon {
+    width: 52px; height: 52px; object-fit: contain; flex: 0 0 52px;
+    transition: filter .2s ease;
+}
+html.tt-embed-amb-tile .tt-amb-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+html.tt-embed-amb-tile .tt-amb-name {
+    font-size: 14px; font-weight: 600; color: var(--text-brown, #58240E);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;
+}
+html.tt-embed-amb-tile .tt-amb-state { font-size: 11px; color: var(--text-muted, #8e7a63); line-height: 1; }
+html.tt-embed-amb-tile input.tt-amb-vol {
+    width: 100%; min-width: 0; height: 14px; margin: 0;
+    accent-color: var(--accent-tomato, #DE4B3A); cursor: pointer;
+}
+html.tt-embed-amb-tile .tt-amb-play {
+    width: 38px; height: 38px; flex: 0 0 38px; border: none; border-radius: 50%;
+    background: var(--accent-tomato, #DE4B3A); color: #fff; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s ease;
+}
+html.tt-embed-amb-tile .tt-amb-play:hover { transform: scale(1.06); }
+html.tt-embed-amb-tile .tt-amb-tile.on img.tt-amb-icon {
+    filter: drop-shadow(0 0 8px rgba(222, 75, 58, 0.55));
+}
+html.tt-embed-amb-tile .tt-amb-tile.on .tt-amb-state {
+    color: var(--accent-tomato, #DE4B3A); font-weight: 600;
+}
+/* Preset Mixer — 6×4 (564×640) workbench block */
+html.tt-embed-amb-mixer, html.tt-embed-amb-mixer body {
+    height: 100%; margin: 0; padding: 0; background: transparent;
+}
+html.tt-embed-amb-mixer { overflow: hidden; }
+html.tt-embed-amb-mixer body > *:not(#presetsModal) { display: none !important; }
+/* the modal overlay becomes a static 6×4 card */
+html.tt-embed-amb-mixer #presetsModal {
+    position: static; inset: auto; z-index: auto;
+    display: flex; align-items: stretch; justify-content: stretch;
+    width: 100%; height: 100vh; padding: 14px;
+    box-sizing: border-box;
+    background: transparent; opacity: 1 !important; visibility: visible !important;
+}
+html.tt-embed-amb-mixer #presetsModal .modal-card {
+    transform: none; transition: none;
+    width: 100%; max-width: none; max-height: none;
+    padding: 14px 16px; border-radius: 16px; box-shadow: none;
+    display: flex; flex-direction: column; overflow: hidden;
+}
+html.tt-embed-amb-mixer #presetsModal .modal-close { display: none; }
+html.tt-embed-amb-mixer #presetsModal .modal-title { font-size: 18px !important; margin: 0 0 2px !important; }
+html.tt-embed-amb-mixer #presetsModal .modal-card > p {
+    font-size: 12px !important; margin-bottom: 10px !important;
+}
+html.tt-embed-amb-mixer .preset-tabs { margin-bottom: 10px; }
+html.tt-embed-amb-mixer .preset-tab { padding: 8px 14px 4px 14px; font-size: 13px; }
+html.tt-embed-amb-mixer .preset-rename-row { margin-bottom: 10px; }
+/* the sound list flex-fills between the rename row and the actions */
+html.tt-embed-amb-mixer .preset-sounds-list {
+    flex: 1; min-height: 0; max-height: none;
+    overflow-y: auto; margin-bottom: 10px; padding-right: 4px;
+}
+html.tt-embed-amb-mixer .preset-sound-row { padding: 5px 0; gap: 8px; }
+html.tt-embed-amb-mixer .preset-sound-name { width: 96px; font-size: 14px; }
+html.tt-embed-amb-mixer .preset-sound-row input[type=range] {
+    accent-color: var(--accent-tomato, #DE4B3A); cursor: pointer;
+}
+html.tt-embed-amb-mixer .preset-vol-val { width: 38px; font-size: 12px; text-align: right; flex-shrink: 0; }
+html.tt-embed-amb-mixer .preset-actions { margin-top: 0; }
+html.tt-embed-amb-mixer .preset-actions .pill-btn { flex: 1; }
+html.tt-embed-amb-deck, html.tt-embed-amb-deck body {
+    height: 100%; margin: 0; padding: 0; background: transparent;
+}
+html.tt-embed-amb-deck { overflow: hidden; }
+html.tt-embed-amb-deck body > *:not(.tt-amb-deck) { display: none !important; }
+/* deck card = the hero cream, like the studio's own control deck */
+.tt-amb-deck {
+    box-sizing: border-box; width: 100%; height: 100vh; overflow: hidden;
+    background: var(--bg-hero, #F0E0BF); border-radius: 16px;
+    display: flex;
+}
+/* ── SMALL = 5×1 (468×160): hero | column(2×2 pills, controls+vol) ── */
+.tt-amb-deck-s { flex-direction: row; align-items: stretch; gap: 12px; padding: 12px 14px; }
+.tt-amb-deck-s .mascot-img-box {
+    width: auto; height: 100%; aspect-ratio: 600 / 380; margin: 0;
+    border-radius: 12px; overflow: hidden; flex: 0 0 auto;
+}
+.tt-amb-deck-s .tt-amb-col { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.tt-amb-deck-s .mode-pills-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0; }
+.tt-amb-deck-s .mode-pill { padding: 8px 6px 4px 6px; font-size: 11px; max-width: none; min-width: 0; letter-spacing: 0.3px; }
+.tt-amb-deck-s .tt-amb-ctrl { display: flex; align-items: center; gap: 10px; }
+.tt-amb-deck-s .hero-controls { margin: 0; gap: 10px; }
+/* deck buttons follow the pomodoro-widget style: red play, white circular reset */
+.tt-amb-deck .btn-play-master { background-color: var(--accent-tomato, #DE4B3A); }
+.tt-amb-deck .btn-play-master:hover { background-color: #C93D2C; }
+.tt-amb-deck .icon-btn-circle {
+    width: 40px; height: 40px; padding: 0;
+    background: #FFFFFF; border-radius: 50%; color: var(--text-brown, #58240E);
+    box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
+}
+.tt-amb-deck .icon-btn-circle:hover { color: var(--accent-tomato, #DE4B3A); }
+body.theme-dark .tt-amb-deck .icon-btn-circle { background: #2a2018; color: #E8D9BE; }
+.tt-amb-deck-s .icon-btn-circle { width: 30px; height: 30px; }
+.tt-amb-deck-s .icon-btn-circle svg { width: 16px; height: 16px; }
+.tt-amb-deck-s .btn-play-master { width: 38px; height: 38px; flex: 0 0 38px; }
+.tt-amb-deck-s .btn-play-master svg { width: 18px; height: 18px; }
+.tt-amb-deck-s .master-vol-group { flex: 1; min-width: 0; width: auto; margin: 0; padding: 6px 12px; }
+.tt-amb-deck-s .master-vol-group svg { width: 14px; height: 14px; }
+/* the artwork's own frame is bottom-heavy: slight zoom + upshift centers the subject */
+.tt-amb-deck-s .mascot-video { transform: scale(1.16) translateY(-4%); }
+/* ── MEDIUM = 6×4 (564×640): pills | hero | controls | sleep+vol bar ── */
+.tt-amb-deck-m { flex-direction: column; padding: 16px 18px; gap: 12px; }
+.tt-amb-deck-m .mode-pills-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; }
+.tt-amb-deck-m .mode-pill {
+    padding: 12px 10px 7px 10px; font-size: 13px; max-width: none; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tt-amb-deck-m .mascot-img-box { flex: 1; min-height: 0; width: 100%; height: auto; margin: 0; }
+.tt-amb-deck-m .mascot-video { width: auto; height: auto; max-width: 430px; max-height: 290px; }
+.tt-amb-deck-m .hero-controls { margin: 0; justify-content: center; gap: 20px; }
+.tt-amb-deck-m .btn-play-master { width: 58px; height: 58px; }
+.tt-amb-deck-m .icon-btn-circle { width: 50px; height: 50px; }
+.tt-amb-deck-m .icon-btn-circle svg { width: 22px; height: 22px; }
+.tt-amb-deck-m .tt-amb-bar { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.tt-amb-deck-m .sleep-timer-pill { margin: 0; padding: 6px 14px; font-size: 13px; }
+.tt-amb-deck-m .sleep-input { width: 48px; font-size: 13px; }
+.tt-amb-deck-m .master-vol-group { width: 180px; margin: 0; padding: 6px 14px; }
+/* ── LARGE = 9×4 (828×640): pills | hero | bottom(controls | sleep+vol) ── */
+.tt-amb-deck-l { flex-direction: column; padding: 18px 24px; gap: 14px; }
+.tt-amb-deck-l .mode-pills-row { margin: 0; gap: 12px; flex-wrap: nowrap; }
+.tt-amb-deck-l .mode-pill { padding: 14px 16px 9px 16px; font-size: 14px; max-width: none; }
+.tt-amb-deck-l .mascot-img-box { flex: 1; min-height: 0; width: 100%; height: auto; margin: 0; }
+.tt-amb-deck-l .mascot-video { width: auto; height: auto; max-width: 540px; max-height: 360px; }
+.tt-amb-deck-l .hero-controls { margin: 0; gap: 22px; align-self: center; }
+.tt-amb-deck-l .btn-play-master { width: 60px; height: 60px; }
+.tt-amb-deck-l .icon-btn-circle { width: 52px; height: 52px; }
+/* studio-page arrangement: auto-off left, volume right, full-width row */
+.tt-amb-deck-l .tt-amb-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
+.tt-amb-deck-l .tt-amb-bar .master-vol-group { margin: 0; }
+.tt-amb-deck-l .sleep-timer-pill { margin: 0; }
+.tt-amb-deck-l .master-vol-group { width: 240px; margin: 0; }
+</style>
 </head>
 <body>
 <script>
@@ -1909,6 +2085,12 @@
 
         presets[slot] = { name, sounds };
         savePresetsToStorage(presets);
+        if (typeof window.TTEvent === 'function') {
+            window.TTEvent('ambience_preset_saved', {
+                source: window.__ttMixerMode ? 'workbench_mixer' : 'studio',
+                preset: name
+            });
+        }
 
         const btn = document.querySelector(`.mode-pill[data-preset="${slot}"]`);
         if (btn) btn.textContent = name;
@@ -1938,6 +2120,7 @@
         presetsModal.classList.remove('open');
     });
     presetsModal.addEventListener('click', (e) => {
+        if (window.__ttMixerMode) return;   /* mixer embed: the modal IS the block, never close */
         if (e.target === presetsModal) {
             stopAllSounds();
             previewSlot = null;
@@ -2037,6 +2220,7 @@
 
     /* ── keyboard shortcut (same as the timer pages): Space = play/pause all ── */
     document.addEventListener('keydown', (e) => {
+        if (window.__ttTileMode) return;   /* tile embed: tile script owns Space */
         if (document.querySelector('.modal-overlay.open')) return;
         const tag = (e.target && e.target.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
@@ -2099,7 +2283,7 @@
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             howItWorksModal.classList.remove('open');
-            if (presetsModal.classList.contains('open')) {
+            if (!window.__ttMixerMode && presetsModal.classList.contains('open')) {
                 stopAllSounds();
                 previewSlot = null;
                 presetsModal.classList.remove('open');
@@ -2111,11 +2295,27 @@
     window.addEventListener('DOMContentLoaded', () => {
         renderGrid();
         updatePresetButtonLabels();
+        if (window.__ttMixerMode) {
+            presetsModal.classList.add('open');
+            renderPresetEditor(1);
+            previewSlot = null;   /* no auto-preview: DOMContentLoaded has no user gesture */
+        }
         // Music tracks (~1 MB each) lazy-load on first click instead of
         // joining the upfront preload — startSound() fetches + starts them
         // automatically when a not-yet-buffered sound is toggled on.
         const LAZY = ['lofi1', 'lofi2', 'lofi3', 'jazz1', 'jazz2', 'jazz3', 'classical1', 'classical2', 'classical3'];
-        SOUNDS.forEach(s => { if (!LAZY.includes(s.id)) preloadSound(s); });
+        SOUNDS.forEach(s => {
+            /* tile embed: buffer ONLY this tile's sound (even music — a
+               single tile has one slot and startSound lazy-paths it) */
+            if (window.__ttTileMode) {
+                if (s.id.toLowerCase() === String(window.__ttTileSound).toLowerCase()) preloadSound(s);
+                return;
+            }
+            /* mixer embed: buffer NOTHING — editor previews lazy-fetch
+               through startSound on first drag / slot switch */
+            if (window.__ttMixerMode) return;
+            if (!LAZY.includes(s.id)) preloadSound(s);
+        });
     });
 </script>
     
@@ -2131,7 +2331,7 @@ window.addEventListener('load', function () {
         master.addEventListener('click', function () {
             var pauseIcon = document.getElementById('pauseIcon');
             if (pauseIcon && pauseIcon.style.display === 'block') {
-                window.TTEvent('ambience_opened', { source: 'master' });
+                window.TTEvent('ambience_opened', { source: window.__ttDeckMode ? 'workbench_deck' : 'master' });
             }
         });
     }
@@ -2150,5 +2350,137 @@ window.addEventListener('load', function () {
     }
 });
 </script>
+<script>
+/* Ambience Tile builder — runs after the studio engine script so SOUNDS /
+   startSound / stopSound are in scope. Builds the single-tile UI that the
+   embed CSS shows; the studio grid renders hidden and keeps the engine
+   warm. Audio starts only on click (browser autoplay rules). */
+window.addEventListener('DOMContentLoaded', function () {
+    if (!window.__ttTileMode) return;
+    var want = String(window.__ttTileSound || 'rain').toLowerCase();
+    var sound = null;
+    for (var i = 0; i < SOUNDS.length; i++) {
+        if (SOUNDS[i].id.toLowerCase() === want) { sound = SOUNDS[i]; break; }
+    }
+    if (!sound) sound = SOUNDS[0];
+    /* tiles start louder than the studio's 50% default: ambience files are
+       quiet by nature (soft RMS) and a widget should give instant feedback.
+       Forced (not "if undefined") because the studio's own renderGrid()
+       runs first and initializes every sound to 50. */
+    sound.volume = 80;
+
+    var root = document.createElement('div');
+    root.className = 'tt-amb-tile';
+    root.innerHTML =
+        '<img class="tt-amb-icon" src="' + sound.icon + '" alt="' + sound.name + ' icon">' +
+        '<div class="tt-amb-meta">' +
+            '<span class="tt-amb-name">' + sound.name + '</span>' +
+            '<span class="tt-amb-state">Off</span>' +
+            '<input type="range" class="tt-amb-vol" min="0" max="100" value="' + sound.volume + '" aria-label="' + sound.name + ' volume">' +
+        '</div>' +
+        '<button class="tt-amb-play" aria-label="Play ' + sound.name + '">' +
+            '<svg class="tt-amb-ico-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>' +
+            '<svg class="tt-amb-ico-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>' +
+        '</button>';
+    document.body.appendChild(root);
+
+    var stateEl = root.querySelector('.tt-amb-state');
+    var playIco = root.querySelector('.tt-amb-ico-play');
+    var pauseIco = root.querySelector('.tt-amb-ico-pause');
+
+    function refresh() {
+        root.classList.toggle('on', !!sound.active);
+        stateEl.textContent = sound.active ? sound.volume + '%' : 'Off';
+        playIco.style.display = sound.active ? 'none' : 'block';
+        pauseIco.style.display = sound.active ? 'block' : 'none';
+    }
+
+    root.querySelector('.tt-amb-play').addEventListener('click', function () {
+        sound.active = !sound.active;
+        if (sound.active) {
+            startSound(sound);
+            if (window.TTEvent) TTEvent('ambience_opened', { source: 'workbench_tile', sound: sound.id });
+        } else {
+            stopSound(sound.id);
+        }
+        refresh();
+    });
+
+    /* volume slider — live-updates the running loop + the % readout */
+    root.querySelector('.tt-amb-vol').addEventListener('input', function (e) {
+        sound.volume = parseInt(e.target.value, 10);
+        if (sound.active) updateSoundVolume(sound);
+        refresh();
+    });
+
+    /* Space toggles THIS tile when the iframe has focus (the studio's
+       own Space handler is disabled in tile mode). */
+    document.addEventListener('keydown', function (e) {
+        if (e.code !== 'Space') return;
+        var tag = (e.target && e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+        e.preventDefault();
+        root.querySelector('.tt-amb-play').click();
+    });
+
+    refresh();
+});
+</script>
+<script>
+/* Ambience Deck builder — ?embed=1&app=deck&size=s|m|l (2026-11-23).
+   Moves the studio's REAL control-deck elements (preset pills, mascot
+   video, play/reset, auto-off, master volume) into a per-size widget
+   container. Moving — not cloning — keeps every bound listener, inline
+   onclick, theme styling and the GA4 autowire working untouched; the
+   rest of the page is hidden but the engine stays alive (same pattern
+   as the tile/mixer embeds). Space toggles master play via the studio's
+   own handler (no modal is open in deck mode). */
+window.addEventListener('DOMContentLoaded', function () {
+    if (!window.__ttDeckMode) return;
+    var size = window.__ttDeckMode;
+    var pills     = document.querySelector('.mode-pills-row');
+    var mascot    = document.querySelector('.mascot-img-box');
+    var controls  = document.querySelector('.hero-controls');
+    var sleepPill = document.querySelector('.sleep-timer-pill');
+    var volGroup  = document.querySelector('.master-vol-group');
+    if (!pills || !mascot || !controls || !volGroup) return;
+
+    var deck = document.createElement('div');
+    deck.className = 'tt-amb-deck tt-amb-deck-' + size;
+
+    function bar() {
+        var b = document.createElement('div');
+        b.className = 'tt-amb-bar';
+        if (sleepPill) b.appendChild(sleepPill);   /* S leaves it behind, hidden with the page */
+        b.appendChild(volGroup);
+        return b;
+    }
+
+    if (size === 's') {
+        var col = document.createElement('div');
+        col.className = 'tt-amb-col';
+        var ctrl = document.createElement('div');
+        ctrl.className = 'tt-amb-ctrl';
+        ctrl.appendChild(controls);
+        ctrl.appendChild(volGroup);
+        col.appendChild(pills);
+        col.appendChild(ctrl);
+        deck.appendChild(mascot);
+        deck.appendChild(col);
+    } else if (size === 'm') {
+        deck.appendChild(pills);
+        deck.appendChild(mascot);
+        deck.appendChild(controls);
+        deck.appendChild(bar());
+    } else { /* l — studio-page arrangement: pills | hero | controls (centered) | sleep+vol spread */
+        deck.appendChild(pills);
+        deck.appendChild(mascot);
+        deck.appendChild(controls);
+        deck.appendChild(bar());
+    }
+    document.body.appendChild(deck);
+});
+</script>
+
 </body>
 </html>

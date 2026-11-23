@@ -93,6 +93,14 @@
    custom dimension BEFORE launch, because data only flows from registration
    onward. Translations inherit the wiring automatically when built from a
    wired EN master — never ship a translated page without it.
+10. **Free-forever is a standing product rule (Andy's call, 2026-11-19).** All
+    features stay free for everyone — no freemium, no paywall, no locked
+    features. Loyalty/retention is the monetization strategy; revenue comes
+    from ads (current: BuySellAds Optimize MA — managed Prebid+AdX stack in
+    our own GAM account, no lock-in; do NOT re-propose migrating to
+    Mediavine/Journey/Raptive/Ezoic without a concrete performance complaint)
+    and later free ad-supported apps. Tip-jar/sponsor slots are acceptable
+    someday; feature tiers are not. Never suggest gating functionality.
 
 ## Repo structure
 
@@ -149,7 +157,7 @@
 - New video cards go ON TOP of the video grid (first card), never appended
   at the bottom — newest content leads the stack.
 
-## Workbench (DESIGNED 2026-11-16, not built yet — tools updates come first)
+## Workbench (IN PROGRESS — batches 1–3 built: embed S/M/L + tasks widgets + ambience tiles)
 
 Andy's concept: a blank page where users stack timers + tools like
 Lego/Notion ("for customer loyalty — a page purely theirs"). Design
@@ -171,27 +179,196 @@ decisions agreed with Andy, do NOT re-litigate without him:
   `{block, column, row, size}` that survives zoom (user is at 140%),
   viewport changes, and collisions are impossible. iOS widgets use the same
   model.
-- **Size classes (revised 2026-11-16 after Andy reviewed the live preview,
-  SUPERSEDES the earlier Large/Medium/Small hide-parts spec):**
-  - Grid: **4 columns × 160px row units, 1140px content** (same centered
-    container as the rest of the site; side-ad zones untouched).
-  - **SMALL = 2×1 (560×160) — horizontal Spotify-mini-player bar**: phase
-    buttons 4-across on top; one row: mascot | digits | reset/play/skip.
-    Ambience NOT included (gets its own standalone widget on the board).
-  - **MEDIUM = 2×4 (560×640) — vertical workspace**: 2×2 phase buttons,
-    mascot ~150px, digits 56px, 48px controls, ambience pill, volume slider.
-  - **PIN WIDGETS = 1×1 (270×160)**: countdowns, streaks, stats pins —
-    unlimited count on the board (unlike the 1-per-timer pin limit on
-    normal pages).
-  - **LARGE: CUT.** Two Mediums side-by-side = the dual workspace; a Large
-    would always hog a full row alone (iOS has the same property). Revisit
-    only if real usage asks for it.
-  - Widths: 2 Small = 1 Medium = 4 pin slots = 1140px — everything pairs in
-    2s, heights snap to the 160px unit, holes fill with pins (iOS model).
+- **Size classes (revised 2026-11-18: finer grid — Andy wanted smaller
+  blocks, SUPERSEDES the 4-column spec):**
+  - Grid: **12 columns × 160px row units, 1140px content — FIXED, never
+    fluid/viewport-stretched** (locked with Andy 2026-11-18; do not re-propose
+    stretching). Columns stay 84px for everyone; wider windows just center the
+    board with empty margins. Fills exactly the middle zone between the pinned
+    side ads — zero grid under the ads. Rows unlimited downward (page scrolls).
+  - **COMPACT = 4×1 (360×160) — NEW smaller timer bar** (not built yet):
+    tighter everything — ~90px duck, digits ~150%, mode pills 2×2 or trimmed.
+  - **SMALL = 5×1 (468×160) — horizontal Spotify-style bar** (DESIGN LOCKED
+    with Andy 2026-11-17, WIDTH CUT to 468 on 2026-11-18): left duck art |
+    right column = 4 compact mode pills (Pomodoro/Short/Long/Loop, styled
+    exactly like the main page's .button-style-1 pills — Baloo uppercase,
+    white, #E2D0AF border, red hover; active = red TEXT + border, no fill,
+    mirrored live both ways) → countdown → reset/play/skip +
+    ambience as a round icon button (the pill collapsed to icon-only). All
+    bespoke real sizes, NO zoom/squeeze. Rounded corners (16px) + transparent
+    page bg at the corners so the board shows through (card look). ~23px
+    visual side margins (was 62px at 560). Gotchas learned:
+    (1) the column carries Bootstrap `justify-content-start !important` —
+    embed CSS needs `justify-content: center !important`; (2) the mascot SVG
+    has ~33px transparent space on its left — center by ARTWORK ink, not the
+    img box (padding-right: 50px compensates at 468px frame); (3) Baloo
+    Tammudu ink sits ~29px above / 1px below the baseline — the countdown
+    needs `transform: translateY(8px)` for symmetric visual gaps (verified
+    live); (4) the 160px frame is exact — any margin added below the controls
+    must be paid for by shrinking something above or the column overflows and
+    silently clips (verified: digits 250%, not 280%).
+  - **MEDIUM = 6×4 (564×640) — vertical workspace** (RESIZED to fill the
+    frame 2026-11-18; padding standard applied 2026-11-18, verified live:
+    edges 20px top / 24px bottom, zero overflow): 2×2 phase buttons (15px),
+    mascot 220px, digits 420%, 60px controls, full ambience pill + 170px
+    slider. `.tm-active-line` (active-task text) MUST be hidden at this size
+    — it reserves ~50px of invisible height and skews the centering (same
+    rule as small). Padding mechanics (learned live): the frame is flex-
+    centered, so edge gaps are set by the CONTENT HEIGHT, not margins —
+    shrinking content grows edges automatically (any margin cancels out);
+    growing content past the frame silently overflows downward instead of
+    re-centering. Tune the mascot/digits until scrollHeight == clientHeight,
+    then verify edges ≥ the standard below.
+  - **PADDING STANDARD (all widgets, Andy's rule 2026-11-18):** every widget
+    must have AT LEAST the Small widget's edge padding on all four sides —
+    minimum ~14px (Small = reference: 16px top / 14.5px bottom / ~23px
+    visual sides). Implemented on Medium via mode-tabs margin-top 10px +
+    ambience pill margin-bottom 14px, with content shrunk to fit
+    (mascot 220, digits 420%).
+  - **PIN WIDGETS = 2×1 (180×160)** (or 3×1 = 276×160 for wider pins):
+    countdowns, streaks, stats pins — unlimited count on the board (unlike
+    the 1-per-timer pin limit on normal pages).
+  - **TASKS widgets** (BUILT 2026-11-18): `?embed=1&app=tasks&size=l|m|s` —
+    the to-do list as a workbench block. Same `tt_tasks_v1` localStorage as
+    the main page (board and timer page stay in sync for free). The timer
+    header is hidden but keeps running; nothing destroyed, only hidden.
+    - L = 9×4 (828×640): the FULL list at full size — colors, estimates,
+      notes/subtasks, done section, toolbar. Same footprint as the timer
+      Large. List scrolls internally past 430px.
+    - M = 6×4 (564×640): "slightly shorter large" (Andy's call 2026-11-18 —
+      the first 564-wide "Large" was really a Medium; M was cut, then BROUGHT
+      BACK same day): the FULL feature set in a 564-wide column, sharing the
+      S rule set (one grouped S+M selector block): same flex chain, same
+      2-line cards, same done section + toolbar; only padding (20px) and
+      title (22px) scale up. The S builder script must also run for M (guard
+      = tasks + s|m). Verified live: 640/640 no overflow, order
+      title→form→cards→done→toolbar, 20px symmetric edges, every feature
+      present (colors/est/start/notes/done/toolbar).
+    - S = 4×4 (360×640): FULL-FEATURE port of L in a narrow tall column
+      (Andy's call 2026-11-18: "don't cut features, add vertical height,
+      align top"). Colors, estimates, start, delete, notes/subtasks, done
+      section, toolbar — everything. Form wraps to 2 rows (picker row +
+      input row). Top-aligned, list scrolls internally past 300px.
+      NOTE the S builder wraps form+cards in .tt-tasks-col and must
+      insertBefore(firstChild) — appendChild would land the list BELOW the
+      done section and toolbar. S cards are 2-line rows (Andy's call
+      2026-11-18): `.tm-card-top {flex-wrap:wrap}` + `.tm-title
+      {flex:1 1 100%}` — line 1 title, line 2 controls. The list area
+      flex-grows to fill the frame's bottom band ("use the space below it,
+      extend" — Andy): `.todo-background` needs `height:100vh` (min-height
+      does NOT constrain flex shrink), and the Bootstrap `.row`/`.col-12`
+      wrappers must be `display:contents` — a stretched flex item refuses
+      to shrink below its content and silently overflows the frame.
+    Gotchas: (1) `#tm_add_form` wraps at narrow widths via a media query —
+    force `flex-wrap: nowrap` in embed mode or the form eats 2 rows; (2) hide
+    the S card's delete button via `.tm-card-top .tm-icon-btn:last-child`
+    (it stays last even with Start hidden); (3) give S titles
+    `nowrap + ellipsis` or two-line titles blow the 160px frame.
+  - **TASK CLOCK (multi-timer ownership) — BUILT 2026-11-23, EN `index.html`
+    only.** On the workbench several timer widgets can run pomodoros at once,
+    but the active task's estimate (`tt_tasks_v1`) must drain exactly once.
+    Rule Andy locked: the EARLIEST-STARTED running pomodoro widget owns the
+    drain; non-owners keep ticking visually and count nothing (no UI signal —
+    "logically this is probably not common"). Mechanism: each drain-eligible
+    widget heartbeats a claim `{startedAt, nonce, ts}` into shared
+    `tt_task_clock_v1` on every tomato.js tick; fresh claims (<3.5 s) compete,
+    oldest `startedAt` wins (nonce breaks same-ms ties), stale entries (>10 s)
+    get pruned, `pagehide` drops the widget's claim. NO sticky locks — pausing
+    the owner hands ownership to the next-oldest running widget automatically
+    (claim stales within ~3.5 s). Same-page single-timer behavior unchanged
+    (sole widget always owns). Verified live with `_work/test-taskclock.html`:
+    exactly 1 s/s drain across two widgets + clean handover after pause
+    (ground truth = per-tick drain counters; localStorage saves only land on
+    exact 15000-multiples, so point samples are save-aliased — a double drain
+    NEVER hits a 15000 multiple, a single drain always does).
+  - **AMBIENCE TILE = 3×1 (276×160) — ONE size only** (BUILT 2026-11-23,
+    Batch A; Andy's call: tiles don't need S/M/L — "does S not fit?" — the
+    tile's only job is on/off, volume belongs to the Preset Mixer block).
+    `ambience/index.html?embed=1&app=tile&sound=<id>` — one soundscape per
+    block: icon + name + play/pause (Space works when iframe focused).
+    Implementation: head flag script sets `__ttTileMode`/`__ttTileSound` +
+    `tt-embed-amb-tile` class; embed CSS hides all body children except
+    `.tt-amb-tile` (bespoke UI built by a DOMContentLoaded script at end of
+    body, reusing the studio engine's `SOUNDS`/`startSound`/`stopSound` in
+    scope). Gotchas: (1) the studio's Space handler must early-return in
+    tile mode or it toggles all hidden sounds — the tile script owns Space;
+    (2) the upfront preload loop must buffer ONLY the tile's sound
+    (`__ttTileMode` branch) or every tile iframe downloads all ~5 MB of
+    audio; (3) case-insensitive sound-id match (ids are mixed-case:
+    'Train', 'Airplane', 'Metro'…). Verified live: 160/160 no overflow,
+    page chrome fully hidden, play→state/flip + only rain.ogg fetched,
+    normal studio untouched (28 tiles, 19 non-lazy oggs preloaded).
+    Fires `ambience_opened` with source 'workbench_tile'.
+  - **PRESET MIXER = 6×4 (564×640) — ONE size only** (BUILT 2026-11-23,
+    Batch B): `ambience/index.html?embed=1&app=mixer` — the studio's own
+    "Customize Presets" modal IS the block. Zero editor-logic duplication:
+    the mixer CSS shows `#presetsModal` as a static flex card (body children
+    rule hides everything else; modal is a DIRECT body child — verified),
+    and the engine's DOMContentLoaded adds 'open' + `renderPresetEditor(1)`.
+    Gotchas: (1) EVERY close path must be guarded with `__ttMixerMode` —
+    overlay-click, Escape, and the × button (hidden by CSS but still
+    wired) would otherwise blank the block; (2) NO auto-preview on load —
+    DOMContentLoaded has no user gesture, the first slider drag / slot switch
+    starts the AudioContext; (3) preload loop must skip ALL buffering in
+    mixer mode (previews lazy-fetch through startSound) or the board would
+    download ~5 MB per mixer; (4) save fires `ambience_preset_saved` with
+    source 'workbench_mixer'|'studio' + preset name (registered params
+    only). Verified live (`_work/test-mixer.html`): 536×612 card in a real
+    640 frame, 28 scrollable rows, save/reset round-trip on
+    `tt_ambience_presets_v1`, Esc/overlay cannot close, tile + normal studio
+    regressions clean. NOTE: gtag queues dataLayer entries arguments-style
+    (`{0:'event',1:name,2:params}`) — filter `e[1]`, not `e.event`, in probes.
+  - **STUDIO DECK = S 5×1 (468×160) / M 6×4 (564×640) / L 9×4 (828×640)**
+    (BUILT 2026-11-23, Batch C): `ambience/index.html?embed=1&app=deck&size=s|m|l`
+    — the studio's whole control deck (4 preset pills, mascot video, play/
+    reset, auto-off, master volume) as a workbench block in the pomodoro
+    widget format. KEY IMPLEMENTATION: the builder MOVES the studio's REAL
+    elements into a per-size container (appendChild keeps every bound
+    listener + inline onclick + theme styling + GA4 autowire) — zero
+    re-wiring, engine stays alive hidden. Layouts: S = hero | column(2×2
+    pills, controls+vol) — pills are 2×2 because ambience preset names are
+    long AND user-renamable (nowrap+ellipsis, flex/grid shrink); auto-off
+    stays behind (hidden) at S. M = pills | hero(flex-fill) | controls |
+    sleep+vol bar. L = pills | hero(max 660) | bottom row(controls |
+    sleep+vol). Gotchas: (1) top-level `const SOUNDS` is global-LEXICAL,
+    NOT window.SOUNDS — probe via `iframe.contentWindow.eval('SOUNDS')`;
+    (2) applyPreset already STARTS playback, so a play click right after a
+    preset is a PAUSE — don't misread the icon swap as a bug; (3) deck
+    follows the user's saved theme like the studio (card uses
+    var(--bg-hero); dark verified incl. the night-graded video cut); (4)
+    GA4 `ambience_opened` source = 'workbench_deck' in deck mode.
+    Verified live (`_work/test-deck.html` + `test-deck-regression.html`):
+    all 3 sizes exact grid, engine control (play auto-activates rain,
+    presets apply), GA4 source correct, tile + mixer + studio + dark-theme
+    regressions clean.
+  - **LARGE = 9×4 (828×640) — horizontal workspace** (BUILT 2026-11-18 after
+    Andy asked to bring Large back — was previously cut; duck-ABOVE-digits
+    layout, Andy's call — it's the site's identity and lets the digits go
+    bigger; frame RAISED 480→640 same session because a 220px duck didn't
+    read as "Large" — the half-row alternative 560 breaks the 160px row
+    snap, one full extra row keeps the board math clean): 4 mode pills in one
+    row stretched across the top, duck (260px — bigger than Medium's 220, it
+    must read as "Large") centered above the big digits (640%, full-width
+    rows), controls row + full ambience pill along the bottom. All internal
+    gaps an even 16px; verified live: 34px symmetric top/bottom edges, zero
+    overflow.
+    Gotchas: (1) flex `order` only works on items that HAVE an order —
+    anything left at default order 0 jumps AHEAD of ordered items, so every
+    reordered child needs an explicit order; (2) the ambience wrapper is
+    `div:nth-of-type(4)` of the column — the zero-overlay lives OUTSIDE
+    `.col-12` (direct child of #tt-widget-core), don't count it; (3) the
+    ambience wrapper needs `display:flex` (a bare whitespace text node was
+    strutting the pill 14px down via an anonymous line box) AND the pill
+    itself carries a base `margin-top` that must be zeroed at this size —
+    mystery gaps in this layout are usually one of those two.
+  - Widths combine in many ways: 2 small (936+gut) ≈ wide+small, 3 compact =
+    1 small+pin, 1 medium = small+compact+pin = 1140px; heights snap to the
+    160px unit, holes fill with pins (iOS model).
   - Widget UI is its OWN design per size (real font sizes/element sizes) —
     NEVER zoom/squeeze the page. The widget frame = neutral title bar
     (no fake OS window chrome — Andy is on Windows).
-- **Embed URL params:** `?embed=1&size=s|m` per block.
+- **Embed URL params:** `?embed=1&size=s|m` per block (`size=c` reserved for
+  the Compact class once built).
 - **Persistence:** layout saved to localStorage (per layout), same
   user-data rules as everything else (Golden Rule 7 — never rename keys,
   demo seed only when key absent).
@@ -199,7 +376,7 @@ decisions agreed with Andy, do NOT re-litigate without him:
   1. Embed mode + size classes on main pomodoro (pattern prototype) — DONE
      2026-11-16 (size=s horizontal bar, size=m vertical workspace)
   2. Roll pattern to the other 4 timers
-  3. Workbench canvas: 4×160px grid + block picker + drag/resize + save/load
+  3. Workbench canvas: 12-col × 160px grid + block picker + drag/resize + save/load
   4. Tool blocks (days-until, streaks, stats, ambience widgets at pin size)
 
 ## Current state
@@ -246,6 +423,11 @@ belong in the work log below.
   teach the pin feature on first visit; pin chips on all 25 timer pages.
   sitemap.xml = 40 URLs. Next: Andy reviews id wording, commits on
   `development`, then a Streak Counter card for the Tools sections.
+- **Workbench (IN PROGRESS, EN-only so far):** embed-mode timer widgets
+  (S/M/L built 2026-11-16/18), tasks widgets S/M/L (2026-11-18), ambience
+  tiles x28 (2026-11-23), task-clock ownership so only the earliest-started
+  pomodoro drains the active task (2026-11-23). Preview: `_work/embed-preview.html`.
+  Next: Batch B Preset Mixer block, then port the pattern to the other timers.
 - **stats (translations SHIPPED 2026-11-12, EN+id/es/pt/vi):** shared recorder
   `assets/js/ttstats.js` + wired main pomodoro + EN page at `stats/`
   (segments, 14-day chart, donut, rhythm charts, heatmap, records, deltas,
@@ -261,9 +443,79 @@ belong in the work log below.
 
 ## Work log (newest on top)
 
+
+- **2026-11-23 (Kimi Work, pt 4 — medium):** WORKBENCH BATCH C SHIPPED —
+  STUDIO DECK widgets S/M/L on EN `ambience/index.html`
+  (`?embed=1&app=deck&size=s|m|l`): preset pills + mascot video + play/reset +
+  auto-off + master volume in the pomodoro widget format. Real elements
+  MOVED into per-size containers (listeners/theme/GA4 untouched). S drops
+  auto-off and uses 2×2 pills; deck follows saved light/dark theme incl.
+  night-graded video. GA4 `ambience_opened` source 'workbench_deck'. Preview
+  page has the three deck windows; live tests `_work/test-deck.html` +
+  `test-deck-regression.html` (tile/mixer/studio regressions clean).
+  Ambience workbench set now COMPLETE: 28 tiles + Preset Mixer + Deck S/M/L.
+  Same-day polish from Andy's review: S art zoomed 1.16 + upshifted 4% (the
+  mp4 frame is bottom-heavy), M video capped 430×290, L video capped
+  540×360 + bottom rearranged to the studio layout (controls centered row,
+  auto-off left / volume right full-width bar).
+  Next: port the embed pattern to the other timers (52-17, 20-20-20,
+  flowtime, custom-timer), then the workbench canvas itself.
+
+
+- **2026-11-23 (Kimi Work, pt 3 — medium):** WORKBENCH BATCH B SHIPPED —
+  PRESET MIXER block on EN `ambience/index.html` (`?embed=1&app=mixer`,
+  6×4 = 564×640). The studio's "Customize Presets" modal reused as the
+  block (slot pills, name input, 28 lazy-preview sliders, save/reset) — zero
+  editor-logic duplication; close paths guarded, no auto-preview without a
+  gesture, zero preload, GA4 `ambience_preset_saved` (source
+  'workbench_mixer'|'studio', preset name). Preview page
+  `_work/embed-preview.html` gained the mixer window; live verification in
+  `_work/test-mixer.html` (card geometry, save/reset round-trip on
+  `tt_ambience_presets_v1`, Esc/overlay close-proof, tile + studio
+  regressions). Next: port the embed pattern to the other timers (52-17,
+  20-20-20, flowtime, custom-timer), then the workbench canvas itself.
+
+- **2026-11-23 (Kimi Work, pt 2 — medium):** WORKBENCH — AMBIENCE
+  TILES SHIPPED + TASK CLOCK built. (a) One-soundscape tile embed on EN
+  `ambience/index.html`: `?embed=1&app=tile&sound=<id>` at 3×1 (276×160),
+  bespoke card UI (icon + name + slider + play), studio Space handler yields in
+  tile mode, upfront preload buffers ONLY the tile's own .ogg, case-insensitive
+  sound ids, forced default vol 80 (files are quiet — ~−46 dB at the studio's
+  50%), fires `ambience_opened` source 'workbench_tile'. Preview page
+  `_work/embed-preview.html` shows all 28 tiles (via `_work/fill_ambience_tiles.py`).
+  (b) TASK CLOCK on EN `index.html`: with multiple timer widgets running, only
+  the earliest-started pomodoro drains the active task's estimate — claims in
+  `tt_task_clock_v1`, freshness-based handover, pagehide cleanup; plus a storage
+  listener so tasks widgets live-reload on another widget's save (skips while a
+  field is focused). Verified live (single drain + handover,
+  `_work/test-taskclock.html`). No translations touched (EN-first). Next:
+  Batch B Preset Mixer block (6×4), then port the pattern to the other timers.
+
 The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
+
+- **2026-11-18/19 (Kimi Work):** TASKS MEDIUM widget + monetization strategy
+  session. (a) Tasks M = 6×4 (564×640) built on EN `index.html` — full-feature
+  column sharing the S rule set (grouped S+M CSS selectors; builder script
+  guard extended to `tt-embed-s` OR `tt-embed-m`). Live-verified: 640/640 no
+  overflow, order title→form→cards→done→toolbar, 20px edges, all features
+  present. `_work/embed-preview.html` now shows Tasks L/M/S side by side.
+  Spec updated in the Workbench section. (b) STRATEGY (no code, Andy's data):
+  ads ≈ $700/mo (BSA Optimize MA $397 @ $0.48 + AdSense $307 @ $0.31,
+  ~1.8M impressions, GA4 31K users/75K views, US-led 42% Tier-1). Effective
+  page RPM ≈ $9.30 (30s refresh multiplies impressions — the model works).
+  DECISIONS LOCKED: free-forever — NO freemium/paywall, loyalty-first (Andy);
+  stay on Optimize MA (managed Prebid+AdX stack in own GAM, no lock-in,
+  Net 25) — Mediavine/Journey declined for now (same stack, exclusive,
+  Net 65), Ezoic closed to small sites (250K MAU gate); apps when built =
+  free + ad-supported, no paywall. PARKED ad-hygiene track for when Andy
+  wants it: fold separate AdSense into the one GAM auction, add Optimize
+  sticky/interscroller formats, geo-split RPM report, chase AdSense -28% MoM
+  dip. Path to $3k/mo = traffic (tools/translations) × frequency (workbench)
+  × hygiene. Next: workbench board build (12-col × 160px grid, block picker,
+  drag/snap, `tt_workbench_layout_v1`) — Andy resumes in ~2 days; preview
+  server stopped (restart via `python -m http.server 8791` when resuming).
 
 - **2026-11-16 (Kimi Work, pt 3):** WORKBENCH BATCH 1 DONE — embed mode +
   size classes on the main pomodoro only (medium model, Andy's go, token-

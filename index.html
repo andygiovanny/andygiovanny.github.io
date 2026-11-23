@@ -476,7 +476,9 @@
     <script>
     /* Workbench embed mode: ?embed=1&size=s|m|l — flags <html> so the CSS
        below can strip page chrome; the page then lives as a block on the
-       workbench board. Spec: AGENTS.md "Workbench". */
+       workbench board. Optional &app=tasks swaps the timer for the to-do
+       list (same localStorage — board and page stay in sync).
+       Spec: AGENTS.md "Workbench". */
     (function () {
         try {
             var p = new URLSearchParams(location.search);
@@ -485,16 +487,19 @@
             r.classList.add('tt-embed');
             var s = p.get('size');
             if (s === 's' || s === 'm' || s === 'l') r.classList.add('tt-embed-' + s);
+            if (p.get('app') === 'tasks') r.classList.add('tt-embed-tasks');
         } catch (e) {}
     })();
     </script>
     <script>
-    /* SMALL widget chrome (embed-s only): a "Now playing" dropdown that
-       mirrors the mode pills (both directions — dropdown→pill on change,
-       pill→dropdown live), and the ambience pill collapsed to an icon
-       button at the end of the control row. DOM must exist, so wait. */
+    /* SMALL widget chrome (embed-s TIMER only — tasks mode skips this): a
+       "Now playing" dropdown that mirrors the mode pills (both directions —
+       dropdown→pill on change, pill→dropdown live), and the ambience pill
+       collapsed to an icon button at the end of the control row. DOM must
+       exist, so wait. */
     window.addEventListener('DOMContentLoaded', function () {
         if (!document.documentElement.classList.contains('tt-embed-s')) return;
+        if (document.documentElement.classList.contains('tt-embed-tasks')) return;
         var MODES = [
             ['focus', 'pomodoro_timer_button', 'Pomodoro'],
             ['short', 'short_break_timer_button', 'Short Break'],
@@ -552,6 +557,23 @@
         sync();
     });
     </script>
+    <script>
+    /* TASKS SMALL + MEDIUM widget chrome (embed-s|m + tasks only): wraps
+       the add form and the cards in a single full-width column (the CSS
+       stacks them — add box top, task rows below, list flex-grows). */
+    window.addEventListener('DOMContentLoaded', function () {
+        var root = document.documentElement;
+        if (!root.classList.contains('tt-embed-tasks')) return;
+        if (!root.classList.contains('tt-embed-s') && !root.classList.contains('tt-embed-m')) return;
+        var mgr = document.getElementById('task_manager');
+        if (!mgr) return;
+        var col = document.createElement('div');
+        col.className = 'tt-tasks-col';
+        col.appendChild(document.getElementById('tm_add_form'));
+        col.appendChild(document.getElementById('tm_cards'));
+        mgr.insertBefore(col, mgr.firstChild);
+    });
+    </script>
     <style>
     /* ===== Workbench embed mode =====
        Size classes only SHOW/HIDE sections — the timer engine keeps running
@@ -597,37 +619,56 @@
         gap: 8px 10px;
         padding-top: 0 !important;
         /* the mascot SVG carries ~33px of transparent space on its left —
-           shift the group left so the ARTWORK's gaps match both sides */
-        padding-right: 54px;
+           shift the group left so the ARTWORK's gaps match both sides
+           (tuned for the 468px frame: 23px visual margins each side) */
+        padding-right: 50px;
     }
     html.tt-embed-s #tt-mascot-wrap {
         order: 1; min-height: 0 !important; margin: 0;
-        width: 168px !important; flex: 0 0 168px;
+        width: 150px !important; flex: 0 0 150px;
     }
-    html.tt-embed-s .tomato-cartoon { max-height: 166px !important; }
+    html.tt-embed-s .tomato-cartoon { max-height: 150px !important; }
     html.tt-embed-s #tt-widget-core .row > .col-12 > .w-100.p-1 {
         order: 2; width: auto !important; flex: 0 0 auto; justify-content: center;
-        min-width: 290px; align-items: flex-start !important; text-align: left;
+        min-width: 264px; align-items: flex-start !important; text-align: left;
     }
     html.tt-embed-s #tt-nowplaying {
         display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap;
-        gap: 8px; width: 100%; margin-bottom: 12px;
+        gap: 8px; width: 100%; margin-bottom: 10px;
     }
     html.tt-embed-s .tt-mode-btn {
-        font-size: 12px; font-weight: 600; line-height: 1.4; white-space: nowrap;
-        padding: 4px 14px; border-radius: 20px; cursor: pointer;
-        border: 1.5px solid rgba(93,64,55,.35); background: transparent; color: #5D4037;
+        font-family: 'Baloo Tammudu', cursive; text-transform: uppercase;
+        font-size: 10px; line-height: 1; white-space: nowrap;
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: 5px 11px 2px; border-radius: 50rem; cursor: pointer;
+        background: #fff; color: #8e552b;
+        border: 1px solid #E2D0AF;
+        box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06);
+        transition: color 0.2s ease, border-color 0.2s ease;
+        outline: none;   /* plain button (no Bootstrap .btn) — kill the UA focus ring */
     }
-    html.tt-embed-s .tt-mode-btn.active { background: #DE4B3A; border-color: #DE4B3A; color: #fff; }
-    html.tt-embed-s body.theme-dark .tt-mode-btn { color: #E8D9B8; border-color: rgba(232,217,184,.35); }
-    html.tt-embed-s body.theme-dark .tt-mode-btn.active { background: #DE4B3A; border-color: #DE4B3A; color: #fff; }
+    html.tt-embed-s .tt-mode-btn:focus { outline: none; box-shadow: 0 2px 6px rgba(88, 36, 14, 0.06); }
+    /* same red hover as the real mode pills; active keeps the red
+       text/border (no fill) so the current mode is still readable */
+    html.tt-embed-s .tt-mode-btn:hover,
+    html.tt-embed-s .tt-mode-btn.active { color: #DE4B3A; border-color: #DE4B3A; }
+    html.tt-embed-s body.theme-dark .tt-mode-btn { background: #2a2018; color: #E8D9B8; border: 1px solid #3a2d20; box-shadow: none; }
+    html.tt-embed-s body.theme-dark .tt-mode-btn:hover,
+    html.tt-embed-s body.theme-dark .tt-mode-btn.active { color: #E0A458; border-color: #E0A458; }
+    html.tt-embed-s body.duck-theme .tt-mode-btn,
+    html.tt-embed-s body.theme-classic .tt-mode-btn { background: #feece5; color: #c65e5e; }
+    html.tt-embed-s body.duck-theme .tt-mode-btn:hover { background: #fbc8b6; color: #c65e5e; }
     /* the display font's ink sits high in its line box (≈29px above the
        baseline, 1px below) — shift it down so the visual gaps above and
        below the countdown match (measured live: 14px vs 39px before) */
-    html.tt-embed-s .timer-time { font-size: 280%; margin: 0; line-height: 1.05; transform: translateY(9px); }
+    html.tt-embed-s .timer-time { font-size: 250%; margin: 0; line-height: 1.05; transform: translateY(8px); }
     html.tt-embed-s .timer-time-set { display: none !important; }
     /* control row sits under the countdown inside the same column */
-    html.tt-embed-s .ctrl-row { gap: 12px; margin-top: 8px; justify-content: flex-start; }
+    html.tt-embed-s .ctrl-row { gap: 12px; margin-top: 6px; margin-bottom: 10px; justify-content: flex-start; }
+    /* card look — rounded corners, page background transparent behind them
+       so the workbench board shows through at the corners */
+    html.tt-embed-s .header-background { border-radius: 16px; }
+    html.tt-embed-s, html.tt-embed-s body { background: transparent; }
     html.tt-embed-s .cbtn { width: 46px; height: 46px; }
     html.tt-embed-s .cbtn svg { width: 20px; height: 20px; }
     /* ambience pill → round icon button matching the other controls */
@@ -643,24 +684,131 @@
     html.tt-embed-s .ambience-master-pill svg { width: 21px; height: 21px; cursor: pointer; }
     html.tt-embed-s .tm-active-line { display: none !important; }
 
-    /* MEDIUM — two grid columns wide (560px), roomier widget layout */
+    /* MEDIUM — vertical workspace (564px), content fills the frame */
+    html.tt-embed-m .header-background { display: flex; flex-direction: column; justify-content: center; border-radius: 16px; }
+    html.tt-embed-m, html.tt-embed-m body { background: transparent; }
     html.tt-embed-m .mode-tabs {
         display: grid !important;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        max-width: 460px;
-        margin: 18px auto 0 !important;
+        gap: 12px;
+        max-width: 480px;
+        margin: 10px auto 0 !important;
     }
-    html.tt-embed-m .mode-tabs .btn { margin-right: 0 !important; padding: 7px 0; font-size: 14px; }
-    html.tt-embed-m #tt-mascot-wrap { min-height: 0 !important; margin: 10px 0; }
-    html.tt-embed-m .tomato-cartoon { max-height: 150px !important; }
-    html.tt-embed-m .timer-time { font-size: 350%; }
-    html.tt-embed-m .ctrl-row { gap: 14px; margin-top: 10px; }
-    html.tt-embed-m .cbtn { width: 48px; height: 48px; }
-    html.tt-embed-m .cbtn svg { width: 20px; height: 20px; }
-    html.tt-embed-m .ambience-master-pill { margin-top: 14px; padding: 8px 14px; gap: 10px; }
-    html.tt-embed-m .ambience-master-pill svg { width: 20px; height: 20px; }
-    html.tt-embed-m #ambienceVolSlider { width: 120px; }
+    html.tt-embed-m .mode-tabs .btn { margin-right: 0 !important; padding: 10px 0; font-size: 15px; }
+    html.tt-embed-m #tt-mascot-wrap { min-height: 0 !important; margin: 14px 0 4px; }
+    html.tt-embed-m .tomato-cartoon { max-height: 220px !important; }
+    html.tt-embed-m .timer-time { font-size: 420%; margin: 12px 0 0; }
+    html.tt-embed-m .ctrl-row { gap: 16px; margin-top: 14px; }
+    html.tt-embed-m .cbtn { width: 60px; height: 60px; }
+    html.tt-embed-m .cbtn svg { width: 26px; height: 26px; }
+    html.tt-embed-m .ambience-master-pill { margin-top: 22px; margin-bottom: 14px; padding: 14px 22px; gap: 14px; }
+    html.tt-embed-m .ambience-master-pill svg { width: 24px; height: 24px; }
+    html.tt-embed-m #ambienceVolSlider { width: 170px; }
+    html.tt-embed-m .tm-active-line { display: none !important; }
+
+    /* LARGE = 9×3 (828×480) — horizontal workspace: 4 pills across the top,
+       mascot beside the big digits, controls + ambience along the bottom */
+    html.tt-embed-l .header-background { display: flex; flex-direction: column; justify-content: center; border-radius: 16px; }
+    html.tt-embed-l, html.tt-embed-l body { background: transparent; }
+    html.tt-embed-l .mode-tabs { width: 100%; max-width: none; gap: 10px; margin: 0 !important; }
+    html.tt-embed-l .mode-tabs .button-style-1 { padding: 10px 0 6px; font-size: 15px; margin-right: 0 !important; }
+    /* middle band: duck centered above the big digits, full-width rows */
+    html.tt-embed-l #tt-widget-core .row > .col-12 {
+        flex-direction: row !important; flex-wrap: wrap;
+        align-items: center; justify-content: center !important; gap: 16px 24px;
+    }
+    html.tt-embed-l #tt-mascot-wrap { order: 1; flex: 1 1 100%; min-height: 0 !important; margin: 0; }
+    html.tt-embed-l .tomato-cartoon { max-height: 260px !important; }
+    html.tt-embed-l #tt-widget-core .row > .col-12 > .w-100.p-1 {
+        order: 2; flex: 1 1 100%; width: auto !important;
+        display: flex; align-items: center; justify-content: center; padding: 0 !important;
+    }
+    html.tt-embed-l .timer-time { font-size: 640%; margin: 0; }
+    html.tt-embed-l .timer-time-set { display: none !important; }
+    html.tt-embed-l .ctrl-row { order: 3; flex: 1 1 100%; justify-content: center; gap: 18px; margin-top: 0; }
+    html.tt-embed-l .cbtn { width: 56px; height: 56px; }
+    html.tt-embed-l .cbtn svg { width: 24px; height: 24px; }
+    /* ambience wrapper is the 4th div child of the column (mascot wrap,
+       digits wrap, ctrl-row, then the centred ambience wrapper) */
+    html.tt-embed-l #tt-widget-core .row > .col-12 > div:nth-of-type(4) {
+        order: 4; flex: 1 1 100%; margin-top: 0;
+        display: flex; justify-content: center;   /* kills the anonymous
+            whitespace line box that was strutting the pill 14px down */
+    }
+    html.tt-embed-l .ambience-master-pill { margin: 0; padding: 12px 22px; gap: 14px; }
+    html.tt-embed-l #ambienceVolSlider { width: 220px; }
+    html.tt-embed-l .tm-active-line { display: none !important; }
+
+    /* TASKS app (?embed=1&app=tasks&size=l|m|s) — the to-do list as a
+       workbench block. Same tt_tasks_v1 localStorage as the main page:
+       add here, see it on the timer page instantly, and vice versa.
+       The header (timer) is hidden but keeps running; nothing is
+       destroyed, only hidden. */
+    html.tt-embed-tasks .header-background { display: none !important; }
+    html.tt-embed-tasks .todo-background {
+        display: flex !important; flex-direction: column; justify-content: center;
+        min-height: 100vh; background: transparent !important; padding: 0 !important;
+    }
+    html.tt-embed-tasks .todo-background > .container { max-width: none !important; }
+    html.tt-embed-tasks .todo-list-min-height { min-height: 0 !important; }
+    html.tt-embed-tasks #tm_add_form { display: flex; gap: 8px; align-items: center; margin-bottom: 0; flex-wrap: nowrap !important; }
+    html.tt-embed-tasks #tm_done_cards { max-height: 76px; overflow-y: auto; }
+    html.tt-embed-tasks .tm-section-title { margin: 0 0 10px; }
+    html.tt-embed-tasks .tm-cards { margin-top: 10px; }
+
+    /* TASKS — L = 9×4 (828×640): the full list at full size, all features.
+       Same footprint as the timer Large. */
+    html.tt-embed-tasks.tt-embed-l .todo-background { padding: 24px !important; }
+    html.tt-embed-tasks.tt-embed-l .tm-section-title { font-size: 25px; margin-bottom: 14px; }
+    html.tt-embed-tasks.tt-embed-l #tm_add_form { margin-bottom: 6px; }
+    html.tt-embed-tasks.tt-embed-l .tm-cards { max-height: 430px; overflow-y: auto; }
+
+    /* TASKS — S = 4×4 (360×640) + M = 6×4 (564×640): FULL-FEATURE ports of
+       L in tall columns (Andy's calls 2026-11-18: "don't cut features, add
+       vertical height, align top" / M = "slightly shorter large"). Both
+       share one rule set — same flex chain, same 2-line cards; only the
+       padding/title scale differs (M overrides below). */
+    html.tt-embed-tasks.tt-embed-s .todo-background,
+    html.tt-embed-tasks.tt-embed-m .todo-background { padding: 16px !important; justify-content: flex-start !important; height: 100vh; min-height: 0 !important; box-sizing: border-box; }
+    html.tt-embed-tasks.tt-embed-m .todo-background { padding: 20px !important; }
+    html.tt-embed-tasks.tt-embed-s .tm-section-title,
+    html.tt-embed-tasks.tt-embed-m .tm-section-title { font-size: 19px; margin: 0 0 10px; }
+    html.tt-embed-tasks.tt-embed-m .tm-section-title { font-size: 22px; }
+    html.tt-embed-tasks.tt-embed-s .tt-tasks-col,
+    html.tt-embed-tasks.tt-embed-m .tt-tasks-col { display: block; min-width: 0; }
+    html.tt-embed-tasks.tt-embed-s .tt-tasks-col #tm_add_form,
+    html.tt-embed-tasks.tt-embed-m .tt-tasks-col #tm_add_form { margin: 0 0 10px; flex-wrap: wrap !important; }
+    html.tt-embed-tasks.tt-embed-s .tm-input,
+    html.tt-embed-tasks.tt-embed-m .tm-input { padding: 7px 12px; font-size: 13px; }
+    html.tt-embed-tasks.tt-embed-s .tm-add-btn,
+    html.tt-embed-tasks.tt-embed-m .tm-add-btn { padding: 6px 14px !important; font-size: 12.5px !important; }
+    html.tt-embed-tasks.tt-embed-s .tt-tasks-col #tm_cards,
+    html.tt-embed-tasks.tt-embed-m .tt-tasks-col #tm_cards { margin: 0; flex: 1; min-height: 0; }
+    /* stretch the list into the frame's empty bottom band (Andy's call
+       2026-11-18 "use the space below it, extend"): cards grow to fill,
+       toolbar sits at the bottom, scroll only when genuinely full */
+    html.tt-embed-tasks.tt-embed-s .todo-background > .container,
+    html.tt-embed-tasks.tt-embed-m .todo-background > .container { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    html.tt-embed-tasks.tt-embed-s .todo-background .row,
+    html.tt-embed-tasks.tt-embed-s .todo-background .col-12,
+    html.tt-embed-tasks.tt-embed-m .todo-background .row,
+    html.tt-embed-tasks.tt-embed-m .todo-background .col-12 { display: contents; }
+    html.tt-embed-tasks.tt-embed-s #task_manager,
+    html.tt-embed-tasks.tt-embed-m #task_manager { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    html.tt-embed-tasks.tt-embed-s .tt-tasks-col,
+    html.tt-embed-tasks.tt-embed-m .tt-tasks-col { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    html.tt-embed-tasks.tt-embed-s .tm-cards,
+    html.tt-embed-tasks.tt-embed-m .tm-cards { overflow-y: auto; }
+    html.tt-embed-tasks.tt-embed-s #tm_done_cards,
+    html.tt-embed-tasks.tt-embed-m #tm_done_cards { max-height: 90px; overflow-y: auto; }
+    html.tt-embed-tasks.tt-embed-s .tm-card,
+    html.tt-embed-tasks.tt-embed-m .tm-card { padding: 8px 10px 8px 12px; }
+    /* 2-line card rows (Andy's call 2026-11-18): line 1 = title only,
+       line 2 = estimate / start / done / delete, then notes-subtasks */
+    html.tt-embed-tasks.tt-embed-s .tm-card-top,
+    html.tt-embed-tasks.tt-embed-m .tm-card-top { flex-wrap: wrap; row-gap: 4px; }
+    html.tt-embed-tasks.tt-embed-s .tm-title,
+    html.tt-embed-tasks.tt-embed-m .tm-title { flex: 1 1 100%; }
 
     /* never show scrollbars inside the widget frame */
     html.tt-embed-s, html.tt-embed-m, html.tt-embed-l { overflow: hidden; }
@@ -4042,13 +4190,69 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         activeLineEl.innerHTML = html;
     }
 
+    // ---------- task-clock ownership: earliest running timer counts ----------
+    // On the workbench several timer widgets can run pomodoros at once, but
+    // the active task's estimate must drain exactly once. Every drain-eligible
+    // widget heartbeats a claim into this shared key; the FRESH claim with the
+    // oldest start time owns the drain. Claims go stale ~1s after a widget
+    // pauses/closes, so ownership passes automatically with no sticky locks.
+    // Standalone pages have a single widget, so it always owns and behavior
+    // is unchanged.
+    var CLOCK_KEY = 'tt_task_clock_v1';
+    var myClockId = 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+    function readClaims() {
+        try {
+            var m = JSON.parse(localStorage.getItem(CLOCK_KEY) || '{}');
+            return (m && typeof m === 'object') ? m : {};
+        } catch (e) { return {}; }
+    }
+    function writeClaims(m) {
+        try { localStorage.setItem(CLOCK_KEY, JSON.stringify(m)); } catch (e) {}
+    }
+    function syncClaim() {
+        var now = Date.now();
+        var claims = readClaims();
+        Object.keys(claims).forEach(function (k) {
+            var c = claims[k];
+            if (!c || typeof c.ts !== 'number' || now - c.ts > 10000) delete claims[k]; // dead widget
+        });
+        var mine = claims[myClockId];
+        if (!mine) mine = { startedAt: now, nonce: Math.random() };
+        mine.ts = now;
+        claims[myClockId] = mine;
+        writeClaims(claims);
+    }
+    function dropClaim() {
+        var claims = readClaims();
+        if (claims[myClockId]) { delete claims[myClockId]; writeClaims(claims); }
+    }
+    function ownsTaskClock() {
+        var now = Date.now();
+        var claims = readClaims();
+        var bestId = null, bestStart = Infinity, bestNonce = Infinity;
+        Object.keys(claims).forEach(function (k) {
+            var c = claims[k];
+            if (!c || typeof c.ts !== 'number' || typeof c.startedAt !== 'number') return;
+            if (now - c.ts > 3500) return;   // stale: paused / closed / throttled
+            if (c.startedAt < bestStart ||
+                (c.startedAt === bestStart && (c.nonce || 0) < bestNonce)) {
+                bestId = k; bestStart = c.startedAt; bestNonce = c.nonce || 0;
+            }
+        });
+        return bestId === myClockId;
+    }
+    window.addEventListener('pagehide', dropClaim);
+
     // ---------- drain: rides tomato.js's own 1-second ticks ----------
     // decrementTimer only fires while the countdown interval is alive,
     // so pause automatically stops the drain and play resumes it.
     function tick() {
+        if (!window.isPomClicked) return;   // breaks never drain; claim stales out on pause
         var t = state.activeId ? getTask(state.activeId) : null;
         if (!t || t.done || !t.estMs) return;
-        if (!window.isPomClicked) return;   // breaks never drain
+        syncClaim();
+        if (!ownsTaskClock()) return;   // another timer widget started first -> it counts
 
         t.estMs = Math.max(0, t.estMs - 1000);
 
@@ -4203,6 +4407,16 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
             showToast('List cleared', null, null);
         });
     }
+
+    // Live-sync across widgets/pages sharing the task list (workbench):
+    // when another widget saves, reload here. Skipped while a field has
+    // focus so an in-progress edit isn't ripped out from under the user.
+    // (Storage events never fire in the tab that wrote, so no self-clobber.)
+    window.addEventListener('storage', function (e) {
+        if (e.key !== STORE_KEY) return;
+        if (cardsEl.querySelector('input:focus, textarea:focus')) return;
+        load(); render();
+    });
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
