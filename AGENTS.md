@@ -444,6 +444,21 @@ belong in the work log below.
 ## Work log (newest on top)
 
 
+- **2026-11-23 (Kimi Work, pt 5 — medium):** LIVE-STATS HOTFIX PORTED to
+  development (Andy's branch convention: development = sandbox, master =
+  live service; the hotfix was built, verified and COMMITTED ON MASTER
+  first — see master's log for the full entry). Port = byte-identical
+  `assets/js/ttstats.js` + `ttstatpins.js` (verified via `git diff master`
+  = empty), same `index.html` wiring + `?v=1.1` bump on all 30 pages
+  (development's copies were still v=1.0). Keeps development a superset of
+  master so the future development → master merge is conflict-free in
+  these files — the earlier "merge watch-point" note is RESOLVED by this
+  port. Verified on development: shared js identical to master, 68/68 unit
+  tests, 18+7 inline scripts node --check OK, live browser smoke on
+  `index.html` (live segment written on start / cleared on stop, no
+  double-count) + embed mode intact (`tt-embed tt-embed-s`).
+
+
 - **2026-11-23 (Kimi Work, pt 4 — medium):** WORKBENCH BATCH C SHIPPED —
   STUDIO DECK widgets S/M/L on EN `ambience/index.html`
   (`?embed=1&app=deck&size=s|m|l`): preset pills + mascot video + play/reset +

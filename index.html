@@ -2815,8 +2815,8 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
 </div>
 
 
-<script src="assets/js/ttstats.js?v=1.0"></script>
-<script src="assets/js/ttstatpins.js?v=1.0"></script>
+<script src="assets/js/ttstats.js?v=1.1"></script>
+<script src="assets/js/ttstatpins.js?v=1.1"></script>
 <script src="assets/js/tomato.js?v=1.0"></script>
 <script>
 /* Stats wiring v1 — wraps tomato.js start/stop so real focus/break sessions
@@ -2835,16 +2835,26 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         window.ttStats.recordSession(TM, armed.k, armed.s, now - armed.s);
         armed = null;
     }
+    function announce() {
+        document.dispatchEvent(new CustomEvent('ttstats-live-change'));
+    }
     var _start = window.startTimer, _stop = window.stopTimer;
     window.startTimer = function () {
         if (!armed) armed = { k: phaseKind(), s: Date.now() };
+        window.ttStats.liveStart(TM, armed.k, 'main');
+        announce();
         _start();
     };
     window.stopTimer = function () {
         flush(Date.now());
+        window.ttStats.liveStop('main');
+        announce();
         _stop();
     };
-    window.addEventListener('pagehide', function () { flush(Date.now()); });
+    window.addEventListener('pagehide', function () {
+        flush(Date.now());
+        window.ttStats.liveStop('main');
+    });
 })();
 </script>
 <script src="assets/js/jquery-confirm/dist/jquery-confirm.min.js"></script>

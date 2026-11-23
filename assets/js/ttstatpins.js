@@ -142,12 +142,22 @@
         wrap.appendChild(chip);
     }
     window.addEventListener('storage', function (ev) {
-        if (ev.key === KEY || ev.key === 'tt_stats_v1' || ev.key === 'tt_stats_custom_range') render();
+        if (ev.key === KEY || ev.key === 'tt_stats_v1' || ev.key === 'tt_stats_live_v1' || ev.key === 'tt_stats_custom_range') render();
     });
+    /* Same-tab instant refresh: the timer page announces live segment
+       start/stop so the chip reacts immediately instead of waiting for the
+       next scheduled tick. */
+    document.addEventListener('ttstats-live-change', render);
+    /* Adaptive tick: every second while any timer is running (report() counts
+       live partials, so values move), every 30 s when idle. */
+    function schedule() {
+        var live = window.ttStats && window.ttStats.liveActive ? window.ttStats.liveActive() : false;
+        setTimeout(function () { render(); schedule(); }, live ? 1000 : 30000);
+    }
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () { render(); setInterval(render, 30000); });
+        document.addEventListener('DOMContentLoaded', function () { render(); schedule(); });
     } else {
         render();
-        setInterval(render, 30000);
+        schedule();
     }
 })();

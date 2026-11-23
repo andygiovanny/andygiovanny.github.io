@@ -811,7 +811,7 @@
   <div class="foot-note">Free &amp; no sign-up — your stats stay in this browser.</div>
 </footer>
 
-<script src="/assets/js/ttstats.js?v=1.0"></script>
+<script src="/assets/js/ttstats.js?v=1.1"></script>
 <script>
 (function () {
 'use strict';
@@ -1437,8 +1437,16 @@ $('importFile').addEventListener('change', function () {
 });
 
 /* ── cross-tab sync ── */
+/* Live heartbeats (tt_stats_live_v1, every 3s while a timer runs) also
+   trigger a re-render so the numbers move in real time — throttled so the
+   charts don't rebuild more than once per 5s. */
+var lastLiveRender = 0;
 window.addEventListener('storage', function (e) {
-  if (e.key === window.ttStats.KEY) render();
+  if (e.key === window.ttStats.KEY) { render(); return; }
+  if (e.key === window.ttStats.LIVE_KEY) {
+    var now = Date.now();
+    if (now - lastLiveRender > 5000) { lastLiveRender = now; render(); }
+  }
 });
 
 $('loadDemo').addEventListener('click', loadDemo);
