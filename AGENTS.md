@@ -217,6 +217,23 @@ The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
 
+- **2026-11-23 (Kimi Work, pt 6 — light, ON MASTER):** STATS-CARD ART
+  REBUILT (Andy's dark-mode report: cream halo box around the mascot on the
+  Focus Stats card). Root cause: 2026-11-13's ffmpeg colorkey left a
+  semi-transparent fringe, and the duck's cream body (≈#fff8e6, distance
+  ~10-13 from the #faefe8 bg) sat INSIDE the key range, so on dark cards the
+  duck went dark and the fringe glowed. Rebuilt from
+  `assets/gifs/stats-mascot-light.mp4` with a distance-based alpha +
+  color decontamination (`_work/rekey_stats_card.py`): the bg is dead flat
+  (p60 distance 3.3) so a tight 4→12 ramp keys bg fully while the lightest
+  content (duck ~10.5) stays opaque; pure-white objects (chart whiteboard)
+  are protected by a closer-to-white-than-cream rule. Same filename
+  `assets/images/stats-card.png` (480² RGBA, 142 KB) — all 35 card rows
+  pick it up automatically, no markup touched. Frame-verified composited on
+  dark (#1a140f) and cream (#FBF3E4): no halo, duck + whiteboard + tomato
+  correct on both. PORT NEEDED: development still has the old PNG — copy
+  over on the next development session.
+
 - **2026-11-23 (Kimi Work, pt 5 — medium, ON MASTER):** LIVE STATS hotfix
   for the live site. The pin chip and the stats page now count a RUNNING
   timer in real time instead of only at pause (Andy: "stats feels janky, ran
