@@ -154,6 +154,11 @@
 Short summary of where the project stands. Keep it under ~10 lines; details
 belong in the work log below.
 
+- **Branch convention (Andy, 2026-11-23):** `development` = sandbox —
+  in-progress features (workbench batches) live there ONLY and are not
+  merged until Andy explicitly approves publish; `master` = the live
+  service. Live-site fixes (e.g. the 2026-11-23 live-stats hotfix) go
+  straight onto `master`.
 - **Setup (2026-10-27):** working folder is now local-only on the Windows PC
   (Google Drive removed from the workflow). GitHub is the machine bridge.
 - **GA4 (2026-11-16):** custom events wired via `assets/js/tt-events.js` on
@@ -211,6 +216,41 @@ belong in the work log below.
 The running record of progress — this is how a fresh session on ANY machine
 knows what happened without asking the human. Entries must be short: date,
 what changed (file names), what's next.
+
+- **2026-11-23 (Kimi Work, pt 5 — medium, ON MASTER):** LIVE STATS hotfix
+  for the live site. The pin chip and the stats page now count a RUNNING
+  timer in real time instead of only at pause (Andy: "stats feels janky, ran
+  2 minutes and the pin doesn't move"). New live-segment mechanism in shared
+  `assets/js/ttstats.js`: a running timer publishes {timer,kind,startedAt,
+  nonce} to a NEW key `tt_stats_live_v1` (zero existing keys touched),
+  heartbeats every 3 s, entries stale >10 s are ignored, ghosts >30 s pruned
+  — a crashed tab can't pollute the numbers. `report()` + `dailySeries()`
+  add the live elapsed DURATION ONLY; session/task counts still land at
+  finalization — pausing never double-counts (verified: focus total identical
+  across stop, Sessions +1 exactly). `ttstatpins.js`: adaptive re-render
+  (1 s while any timer runs, 30 s idle) + instant refresh on a
+  `ttstats-live-change` CustomEvent; stats page re-renders on live heartbeats
+  throttled to 1/5 s. EN `index.html` wiring publishes liveStart/liveStop on
+  start/pause/pagehide. Cache-buster `?v=1.0` → `?v=1.1` on BOTH shared scripts
+  across ALL 30 pages including them (stale cache silently lacks the live
+  API — caught live when the stats page loaded the old file). Verified live:
+  pin moved 5m → 7m WHILE running, no pause; post-stop total unchanged (final
+  session replaced the partial seamlessly); unit suite 68/68 (7 new live
+  assertions); 15+7 inline scripts node --check OK. Backups
+  `_backups/2026-11-23-live-stats/`. MERGE WATCH-POINT: this v=1.1 bump + live
+  wiring exists only on MASTER's copies; `development` still carries
+  v=1.0 refs — when the workbench branch merges to master, ttstats/ttstatpins
+  refs must end at v=1.1+ or the old cached recorder ships (live wiring would
+  throw on play). Kimi reconciles at merge time — Andy must NOT merge
+  development → master without that pass. NOTE: pt 2–4 of 2026-11-23
+  (workbench: ambience tiles/mixer/deck, task clock) live on DEVELOPMENT
+  only — intentionally unpublished; this entry is master's newest.
+  LESSON: `index.html` has MIXED line endings (stats-wiring block CRLF, rest
+  LF) — Edit can't match multi-line blocks there; use byte-exact python
+  (`_work/wire_live_stats.py`). English-first: live wiring on 52-17/20-20-20/
+  flowtime/custom-timer + translations ports AFTER Andy reviews the EN fix
+  on the live site. Review note: <10 s runs still drop at pause (junk guard)
+  but show live while running.
 
 - **2026-11-16 (Kimi Work, pt 2):** GA4 events PORTED to all 36 translated
   pages (id/es/pt/vi × 9 pages, light model, Andy's go). Also added Golden

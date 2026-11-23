@@ -9,7 +9,16 @@
 (function () {
     'use strict';
     var KEY = 'tt_stats_v1', VER = 1;
+    var LIVE_KEY = 'tt_stats_live_v1';
     var MAX_SESSIONS = 8000, MAX_TASKS = 4000, MIN_SESSION_MS = 10000;
+    /* A live segment is a currently-running timer published to LIVE_KEY so
+       report() can count its elapsed time BEFORE it is finalized. Entries
+       are {tm,k,s,n,ts}: timer, kind, start ms, nonce (one per widget/page),
+       ts = last heartbeat. An entry is "fresh" for LIVE_STALE_MS after its
+       last heartbeat — a crashed/closed page goes stale and is ignored, and
+       other live pages prune ghosts. Live segments add DURATION ONLY (no
+       session/task counts) — those land when the run finalizes. */
+    var LIVE_STALE_MS = 10000, LIVE_GHOST_MS = 30000, HEARTBEAT_MS = 3000;
 
     function empty() { return { v: VER, s: [], t: [] }; }
 
@@ -58,6 +67,74 @@
 
     function data() { return load() || empty(); }
 
+    /* ── live segments (currently-running timers) ── */
+
+    var liveOwn = {};      /* nonce -> true, entries THIS page is heartbeating */
+    var hbTimer = null;
+
+    function liveLoad() {
+        try {
+            var a = JSON.parse(localStorage.getItem(LIVE_KEY) || '[]');
+            return Array.isArray(a) ? a : [];
+        } catch (e) { return []; }
+    }
+
+    function liveSave(list) {
+        try { localStorage.setItem(LIVE_KEY, JSON.stringify(list)); } catch (e) {}
+    }
+
+    function liveHeartbeat() {
+        var now = Date.now();
+        var list = liveLoad();
+        var dirty = false, anyOwn = false;
+        /* prune ghosts: entries no one has heartbeated for a while */
+        list = list.filter(function (e) {
+            if (now - (e.ts || 0) > LIVE_GHOST_MS && !liveOwn[e.n]) return false;
+            return true;
+        });
+        list.forEach(function (e) {
+            if (liveOwn[e.n]) { e.ts = now; dirty = true; anyOwn = true; }
+        });
+        if (dirty) liveSave(list);
+        if (!anyOwn) { clearInterval(hbTimer); hbTimer = null; }
+    }
+
+    function liveEnsureTimer() {
+        if (hbTimer) return;
+        hbTimer = setInterval(liveHeartbeat, HEARTBEAT_MS);
+        if (hbTimer.unref) hbTimer.unref();
+    }
+
+    function liveStart(timerId, kind, nonce) {
+        if (!timerId || (kind !== 'focus' && kind !== 'break') || !nonce) return;
+        var now = Date.now();
+        var list = liveLoad().filter(function (e) { return e.n !== nonce; });
+        list.push({ tm: timerId, k: kind, s: now, n: nonce, ts: now });
+        liveSave(list);
+        liveOwn[nonce] = true;
+        liveEnsureTimer();
+    }
+
+    function liveStop(nonce) {
+        if (!nonce) return;
+        delete liveOwn[nonce];
+        liveSave(liveLoad().filter(function (e) { return e.n !== nonce; }));
+    }
+
+    /* Fresh live segments right now (stale/crashed ones ignored). */
+    function liveNow() {
+        var now = Date.now(), out = [];
+        var list = liveLoad();
+        for (var i = 0; i < list.length; i++) {
+            var e = list[i];
+            if (now - (e.ts || 0) < LIVE_STALE_MS && e.s > 0 && e.s <= now &&
+                (e.k === 'focus' || e.k === 'break')) out.push(e);
+        }
+        return out;
+    }
+
+    function liveActive() { return liveNow().length > 0; }
+
     /* ── pure helpers (also used by pin chips and the unit tests) ── */
 
     function dayStart(ts) { var d = new Date(ts); d.setHours(0, 0, 0, 0); return d.getTime(); }
@@ -96,6 +173,21 @@
             if (t.ts < fromTs || t.ts >= toTs) continue;
             addTo(rep, t.tm, { focusSec: 0, breakSec: 0, focusN: 0, breakN: 0, tasks: 1 });
         }
+        /* Live partials: count elapsed time of currently-running timers.
+           Durations only — session/task counts land at finalization, so a
+           paused run never double-counts. */
+        var nowMs = Date.now();
+        var live = liveNow();
+        for (var q = 0; q < live.length; q++) {
+            var lv = live[q];
+            if (lv.s < fromTs || lv.s >= toTs) continue;
+            var end = Math.min(nowMs, toTs);
+            if (end <= lv.s) continue;
+            var lb = blankPer();
+            var durSec = Math.round((end - lv.s) / 1000);
+            if (lv.k === 'focus') lb.focusSec = durSec; else lb.breakSec = durSec;
+            addTo(rep, lv.tm, lb);
+        }
         return rep;
     }
 
@@ -115,6 +207,16 @@
             var cell = idx[dayKey(s.s)];
             if (!cell) continue;
             if (s.k === 'focus') cell.focusSec += s.d; else cell.breakSec += s.d;
+        }
+        /* Live partials land in their start-day cell so today's bar grows
+           while the timer runs. */
+        var liveCells = liveNow();
+        for (var q = 0; q < liveCells.length; q++) {
+            var lv = liveCells[q];
+            var lc = idx[dayKey(lv.s)];
+            if (!lc) continue;
+            var durSec = Math.round((Date.now() - lv.s) / 1000);
+            if (lv.k === 'focus') lc.focusSec += durSec; else lc.breakSec += durSec;
         }
         return out;
     }
@@ -206,8 +308,9 @@
     }
 
     window.ttStats = {
-        KEY: KEY, VER: VER,
+        KEY: KEY, VER: VER, LIVE_KEY: LIVE_KEY,
         recordSession: recordSession, recordTask: recordTask,
+        liveStart: liveStart, liveStop: liveStop, liveNow: liveNow, liveActive: liveActive,
         clear: clear, data: data,
         dayStart: dayStart, dayKey: dayKey,
         report: report, dailySeries: dailySeries,
