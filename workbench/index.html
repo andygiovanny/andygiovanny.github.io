@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Workbench — Timers, Stats &amp; Countdowns on One Board | TomatoTimers</title>
+<link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
+<link rel="icon" type="image/png" href="/assets/images/favicon.png"/>
+<meta name="description" content="Build your own focus dashboard: stack pomodoro timers, to-do lists, soundscapes, countdowns, streaks and stats on one clean board. Free, no sign-up, saved on your device.">
+<meta name="keywords" content="personal dashboard, pomodoro board, focus workspace, timer widgets, productivity board">
+<meta name="robots" content="index, follow">
+<meta name="author" content="TomatoTimers">
+<link rel="canonical" href="https://www.tomatotimers.com/workbench/">
+<link rel="alternate" hreflang="en" href="https://www.tomatotimers.com/workbench/">
+<link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/workbench/">
+<meta property="og:title" content="My Workbench — Timers, Stats &amp; Countdowns on One Board | TomatoTimers">
+<meta property="og:description" content="Stack pomodoro timers, soundscapes, countdowns, streaks and stats on one clean board. Free, no sign-up, saved on your device.">
+<meta property="og:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<meta property="og:url" content="https://www.tomatotimers.com/workbench/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Workbench — Timers, Stats &amp; Countdowns on One Board">
+<meta name="twitter:description" content="Stack pomodoro timers, soundscapes, countdowns, streaks and stats on one clean board. Free, no sign-up, saved on your device.">
+<meta name="twitter:image" content="https://www.tomatotimers.com/assets/images/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "TomatoTimers Workbench — Personal Focus Dashboard",
+  "url": "https://www.tomatotimers.com/workbench/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free personal focus dashboard: arrange pomodoro timers, to-do lists, ambience soundscapes, countdowns, streaks and statistics on one clean board. Every widget reads the same browser storage as the standalone timer pages, and the layout is saved on the device only."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Pomodoro Timer", "item": "https://www.tomatotimers.com" },
+    { "@type": "ListItem", "position": 2, "name": "Workbench", "item": "https://www.tomatotimers.com/workbench/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the Workbench?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The Workbench is your own page on TomatoTimers: a clean board where you arrange the timers and tools you actually use — a pomodoro next to a to-do list, a countdown pin, an ambience tile and your stats — each widget snapped neatly into place." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is my board saved? Do I need an account?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No account, ever. Your board layout and every widget's data live in this browser's local storage, on this device only. Nothing is uploaded anywhere." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do the widgets stay in sync with the timer pages?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The widgets on the board are the same engines as the full pages, reading the same browser storage — a task you check off on the board is checked off on the timer page, and the streak you mark in the widget shows up in the streaks tracker." }
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXWPJH9V4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXWPJH9V4X', { 'page_path': window.location.pathname });
+</script>
+<script>window.TT_TECHNIQUE = 'workbench';</script>
+<script src="/assets/js/tt-events.js?v=1.0"></script>
+<link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf2e9;
+    --panel: #FFFFFF;
+    --text: #58240E;
+    --muted: #8C5A3E;
+    --accent: #DE4B3A;
+    --tomato: #DE4B3A;
+    --border: #E2D0AF;
+    --panel2: #FFFFFF;
+    --input: #FFFFFF;
+    --hairline: rgba(88, 36, 14, .10);
+  }
+  html.theme-dark {
+    --bg: #14100c;
+    --panel: #1f1813;
+    --text: #E8D9B8;
+    --muted: #A98B6F;
+    --accent: #E05A48;
+    --tomato: #E05A48;
+    --border: #3a2d20;
+    --panel2: #241b14;
+    --input: #2a2018;
+    --hairline: rgba(232, 217, 184, .10);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    transition: background .25s, color .25s;
+  }
+  h1, h2, h3, .baloo { font-family: 'Baloo Tammudu', 'Segoe UI', system-ui, sans-serif; }
+
+  /* ---------- site header (shared chrome) ---------- */
+  .header {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap;
+    padding: 14px 22px; background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 40;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .header-logo { height: 40px; display: block; }
+  .theme-select {
+    font-family: inherit; font-size: 13px; color: var(--text);
+    background: var(--input); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 8px; cursor: pointer;
+  }
+  .lang-globe { color: var(--muted); }
+  .header-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+  .button-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .button-style {
+    font-family: 'Baloo Tammudu', 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px; padding: 8px 16px 4px;
+    background-color: var(--panel2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 2px 0 rgba(88, 36, 14, .15);
+    cursor: pointer; text-decoration: none; display: inline-block;
+    transition: color .15s, border-color .15s, background .15s;
+    line-height: 1.4;
+  }
+  .button-style:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- board bar ---------- */
+  .board-bar {
+    max-width: 1140px; margin: 26px auto 12px; padding: 0 4px;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .board-bar h1 { font-size: 30px; margin: 0; line-height: 1.1; }
+  .board-bar .sub { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
+  .board-actions { display: flex; gap: 8px; }
+  .btn-add {
+    font-family: 'Baloo Tammudu', 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px; padding: 9px 20px 5px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px; cursor: pointer;
+    box-shadow: 0 2px 0 rgba(88, 36, 14, .25);
+    display: inline-flex; align-items: center; gap: 8px;
+    line-height: 1.4; transition: filter .15s, transform .05s;
+  }
+  .btn-add:hover { filter: brightness(1.07); }
+  .btn-add:active { transform: translateY(1px); }
+  .btn-add svg { width: 16px; height: 16px; fill: currentColor; }
+
+  /* ---------- board canvas ---------- */
+  .board-scroll { overflow-x: auto; padding: 4px 0 30px; }
+  #board {
+    position: relative;
+    width: 1140px; margin: 0 auto;
+    min-height: 520px;
+    border-radius: 18px;
+    transition: background-image .2s;
+  }
+  /* grid hint — only while editing */
+  body.wb-editing #board {
+    background-image: radial-gradient(circle, var(--hairline) 1.4px, transparent 1.5px);
+    background-size: 96px 88px;
+    background-position: 0 0;
+  }
+  .tile {
+    position: absolute;
+    display: flex; align-items: flex-start; justify-content: flex-start;
+    border-radius: 16px;
+  }
+  body.wb-editing .tile { touch-action: none; }
+  .tile iframe {
+    border: 0; display: block; border-radius: 16px;
+    background: transparent;
+  }
+  body.wb-editing .tile { cursor: grab; }
+  body.wb-editing .tile.dragging { cursor: grabbing; z-index: 60 !important; }
+  body.wb-editing .tile.dragging .tile-card { box-shadow: 0 14px 34px rgba(0,0,0,.28); transform: scale(1.02); }
+  .tile-card {
+    border-radius: 16px; overflow: hidden;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    transition: box-shadow .15s, transform .15s;
+    height: 100%;
+  }
+  /* normal-mode hover = "this is a movable card" affordance */
+  body:not(.wb-editing) .tile:hover .tile-card { box-shadow: 0 0 0 2px rgba(222, 75, 58, .5); }
+  body.wb-editing .tile-card { box-shadow: 0 5px 16px rgba(0,0,0,.16); animation: wb-jiggle 0.28s ease-in-out infinite alternate; }
+  @keyframes wb-jiggle { from { transform: rotate(-.35deg); } to { transform: rotate(.35deg); } }
+  body.wb-editing .tile.dragging .tile-card, body.wb-editing .tile.rm-armed .tile-card { animation: none; }
+  body.wb-editing .tile iframe { pointer-events: none; }
+
+  /* edit badges */
+  .t-badge {
+    position: absolute; z-index: 5; display: none;
+    border: none; cursor: pointer; font-family: 'Baloo Tammudu', sans-serif;
+    align-items: center; justify-content: center;
+  }
+  body.wb-editing .t-badge { display: inline-flex; }
+  .t-remove {
+    top: -8px; left: -8px; width: 24px; height: 24px; border-radius: 13px;
+    background: var(--accent); color: #fff; line-height: 1;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25); padding: 0;
+  }
+  .t-remove svg { width: 13px; height: 13px; display: block; }
+  .tile.rm-armed .t-remove { width: auto; padding: 0 10px; font-size: 13px; }
+  .t-size {
+    bottom: -8px; right: -8px; min-width: 26px; height: 26px; padding: 0 7px;
+    border-radius: 14px; background: var(--panel2); color: var(--muted);
+    border: 1px solid var(--border); font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.18);
+  }
+  .t-size:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- empty state ---------- */
+  #empty {
+    position: absolute; inset: 0; display: none;
+    flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    text-align: center; padding: 30px;
+  }
+  #empty.show { display: flex; }
+  #empty img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; opacity: .95; }
+  #empty .e-title { font-family: 'Baloo Tammudu', sans-serif; font-size: 24px; margin: 6px 0 0; }
+  #empty .e-sub { font-size: 14px; color: var(--muted); margin: 0; max-width: 380px; }
+
+  /* ---------- iOS sheet ---------- */
+  .sheet-backdrop {
+    position: fixed; inset: 0; z-index: 90;
+    background: rgba(20, 10, 4, .38);
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+    opacity: 0; pointer-events: none; transition: opacity .22s;
+  }
+  body.sheet-open .sheet-backdrop { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: fixed; z-index: 95; left: 50%;
+    bottom: 0; transform: translate(-50%, 105%);
+    width: 100%; max-width: 620px;
+    max-height: 82vh; display: flex; flex-direction: column;
+    background: var(--bg);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.3);
+    transition: transform .28s cubic-bezier(.32,.72,.35,1);
+  }
+  body.sheet-open .sheet { transform: translate(-50%, 0); }
+  @media (min-width: 700px) {
+    .sheet { bottom: auto; top: 50%; transform: translate(-50%, -46%) scale(.96); border-radius: 20px; opacity: 0; transition: transform .24s cubic-bezier(.32,.72,.35,1), opacity .2s; }
+    body.sheet-open .sheet { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+  .sheet-grab { padding: 8px 0 2px; display: flex; justify-content: center; flex: 0 0 auto; }
+  .sheet-grab span { width: 38px; height: 5px; border-radius: 3px; background: var(--border); }
+  .sheet-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 18px 10px; flex: 0 0 auto;
+  }
+  .sheet-head h2 { margin: 0; font-size: 22px; line-height: 1.2; }
+  .sheet-close {
+    border: none; background: var(--panel2); color: var(--muted);
+    width: 30px; height: 30px; border-radius: 16px; cursor: pointer;
+    font-size: 17px; line-height: 1; border: 1px solid var(--border);
+  }
+  .sheet-close:hover { color: var(--accent); border-color: var(--accent); }
+  .sheet-body { overflow-y: auto; padding: 0 14px 22px; -webkit-overflow-scrolling: touch; }
+
+  /* iOS-style preview grid — every card shows the real widget live */
+  .sheet-group-label {
+    font-family: 'Baloo Tammudu', sans-serif;
+    font-size: 14px; color: var(--muted);
+    margin: 16px 8px 6px;
+  }
+  .sheet-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px; margin: 2px 2px 6px;
+  }
+  .pv-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(88,36,14,.06);
+    transition: border-color .12s, transform .12s;
+  }
+  .pv-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .pv-card:active { border-color: var(--accent); }
+  .pv-stage {
+    position: relative; height: 150px;
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid var(--hairline); overflow: hidden;
+  }
+  .pv-box {
+    position: relative; overflow: hidden; border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(88, 36, 14, .12);
+    background: var(--panel); flex: 0 0 auto;
+  }
+  .pv-box iframe { border: 0; display: block; transform-origin: top left; background: var(--panel); }
+  .pv-add {
+    position: absolute; top: 6px; right: 6px; z-index: 2;
+    width: 22px; height: 22px; border-radius: 12px;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .12s; pointer-events: none;
+    box-shadow: 0 2px 6px rgba(88,36,14,.25);
+  }
+  .pv-add svg { width: 13px; height: 13px; display: block; }
+  .pv-card:hover .pv-add, .pv-card:focus-visible .pv-add { opacity: 1; }
+  .pv-meta { padding: 7px 10px 9px; }
+  .pv-name { font-family: 'Baloo Tammudu', sans-serif; font-size: 13px; line-height: 1.25; }
+  .pv-spec { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .pv-meta select {
+    font-family: inherit; font-size: 12px; color: var(--text);
+    background: var(--input); border: 1px solid var(--border);
+    border-radius: 8px; padding: 3px 5px; max-width: 100%; margin-top: 5px;
+  }
+
+  /* ---------- about / faq ---------- */
+  .about { max-width: 760px; margin: 20px auto 30px; padding: 0 20px; }
+  .about h2 { font-size: 24px; margin: 30px 0 14px; }
+  .about .faq-q { font-family: 'Baloo Tammudu', sans-serif; font-size: 17px; margin: 18px 0 4px; }
+  .about .faq-a { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 0; }
+
+  /* ---------- footer ---------- */
+  .site-footer {
+    border-top: 1px solid var(--border); background: var(--panel);
+    padding: 22px; text-align: center; margin-top: 40px;
+  }
+  .site-footer .f-links { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; margin-bottom: 10px; }
+  .site-footer a { color: var(--muted); text-decoration: none; font-size: 13px; }
+  .site-footer a:hover { color: var(--accent); }
+  .site-footer .f-note { font-size: 12px; color: var(--muted); margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a class="logo" href="https://www.tomatotimers.com/" target="_self" style="text-decoration:none; display:flex; align-items:center;">
+      <img id="logo" src="/assets/images/logo.svg" alt="TomatoTimers" class="header-logo"
+           onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
+    </a>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="position:relative; display:inline-block;">
+    <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
+    <select id="lang-select" class="theme-select" aria-label="Choose language" style="padding-left:38px;">
+      <option value="/workbench/" selected>English</option>
+    </select>
+    </span>
+    <select id="theme-select" class="theme-select" aria-label="Choose site theme">
+      <option value="light">Light Theme</option>
+      <option value="dark">Dark Theme</option>
+    </select>
+    </div>
+  </div>
+  <div class="header-nav">
+    <div class="button-row">
+      <button type="button" class="button-style" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">How It Works</button>
+      <button type="button" class="button-style" id="nav-add">Add Widget</button>
+    </div>
+    <div class="button-row">
+      <a href="https://www.tomatotimers.com/" target="_self" class="button-style">Pomodoro Timer</a>
+      <a href="https://www.tomatotimers.com/ambience/" target="_blank" rel="noopener noreferrer" class="button-style">Ambience Studio 🎵</a>
+    </div>
+  </div>
+</div>
+
+<h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">My Workbench — Personal Focus Dashboard</h1>
+
+<div class="board-bar">
+  <div>
+    <h1 class="baloo">My Board</h1>
+    <p class="sub">Your timers and tools, your layout — saved on this device only.</p>
+  </div>
+  <div class="board-actions">
+    <button type="button" class="btn-add" id="btn-add">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a1 1 0 0 1 1 1v5h5a1 1 0 0 1 0 2H9v5a1 1 0 0 1-2 0V9H2a1 1 0 0 1 0-2h5V2a1 1 0 0 1 1-1z"/></svg>
+      Add Widget
+    </button>
+    <button type="button" class="button-style" id="btn-edit" title="Drag widgets to rearrange, tap − to remove">Edit Board</button>
+  </div>
+</div>
+
+<div class="board-scroll">
+  <div id="board">
+    <div id="empty">
+      <img src="/assets/images/mascot.png" alt="" onerror="this.style.display='none'">
+      <div class="e-title">Your board is empty</div>
+      <p class="e-sub">Tap <b>Add Widget</b> to drop your first timer, countdown or soundscape here — then drag things around until it feels like yours.</p>
+      <button type="button" class="btn-add" id="empty-add">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a1 1 0 0 1 1 1v5h5a1 1 0 0 1 0 2H9v5a1 1 0 0 1-2 0V9H2a1 1 0 0 1 0-2h5V2a1 1 0 0 1 1-1z"/></svg>
+        Add your first widget
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-backdrop" id="sheet-backdrop"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Add widget">
+  <div class="sheet-grab"><span></span></div>
+  <div class="sheet-head">
+    <h2 class="baloo">Add Widget</h2>
+    <button type="button" class="sheet-close" id="sheet-close" aria-label="Close">×</button>
+  </div>
+  <div class="sheet-body" id="sheet-body"></div>
+</div>
+
+<div class="about" id="about">
+  <h2 class="baloo">About your workbench</h2>
+  <div class="faq-q">What is the Workbench?</div>
+  <p class="faq-a">The Workbench is your own page on TomatoTimers: a clean board where you arrange the timers and tools you actually use — a pomodoro next to a to-do list, a countdown pin, an ambience tile and your stats — each widget snapped neatly into place.</p>
+  <div class="faq-q">Where is my board saved? Do I need an account?</div>
+  <p class="faq-a">No account, ever. Your board layout and every widget's data live in this browser's local storage, on this device only. Nothing is uploaded anywhere.</p>
+  <div class="faq-q">Do the widgets stay in sync with the timer pages?</div>
+  <p class="faq-a">Yes. The widgets on the board are the same engines as the full pages, reading the same browser storage — a task you check off on the board is checked off on the timer page, and the streak you mark in the widget shows up in the streaks tracker.</p>
+</div>
+
+<div class="site-footer">
+  <div class="f-links">
+    <a href="https://www.tomatotimers.com/">Pomodoro Timer</a>
+    <a href="https://www.tomatotimers.com/52-17/">52/17 Timer</a>
+    <a href="https://www.tomatotimers.com/20-20-20-rule/">20-20-20 Rule</a>
+    <a href="https://www.tomatotimers.com/flowtime/">Flowtime</a>
+    <a href="https://www.tomatotimers.com/custom-timer/">Custom Timer</a>
+    <a href="https://www.tomatotimers.com/ambience/">Ambience Studio</a>
+    <a href="https://www.tomatotimers.com/stats/">Stats</a>
+    <a href="https://www.tomatotimers.com/days-until/">Days Until</a>
+    <a href="https://www.tomatotimers.com/streaks/">Streaks</a>
+  </div>
+  <p class="f-note">TomatoTimers — free focus tools. No sign-up. Saved on your device.</p>
+</div>
+
+<script>
+/* ═══════════ Workbench board engine ═══════════
+   Grid: 12 cols × 160px-row-units, 1140px content (84px col + 12px gutter).
+   Half-rows: 80px tall widgets snap into half units (88px half pitch incl. gap).
+   Placement = {id, kind, s, c, r, b}  (c: col, r: half-row, b: optional binding)
+   Persisted in localStorage 'tt_workbench_layout_v1'. */
+(function () {
+  'use strict';
+
+  /* ---------- theme (house pattern) ---------- */
+  (function () {
+    var t = 'light';
+    try { t = localStorage.getItem('tt_theme') || 'light'; } catch (e) {}
+    document.documentElement.classList.remove('theme-dark', 'theme-classic');
+    if (t === 'dark') document.documentElement.classList.add('theme-dark');
+    var sel = document.getElementById('theme-select');
+    if (sel) {
+      sel.value = t;
+      sel.addEventListener('change', function () {
+        try { localStorage.setItem('tt_theme', sel.value); } catch (e) {}
+        document.documentElement.classList.remove('theme-dark', 'theme-classic');
+        if (sel.value === 'dark') document.documentElement.classList.add('theme-dark');
+      });
+    }
+  })();
+
+  /* ---------- grid math ---------- */
+  var COLS = 12, COLW = 84, HGUT = 12, PITCH = COLW + HGUT;      // 96
+  var HALF_H = 80, VGUT = 8, HPITCH = HALF_H + VGUT;             // 88
+  var CONTENT_W = COLS * COLW + (COLS - 1) * HGUT;               // 1140
+  var STORE = 'tt_workbench_layout_v1';
+
+  function spanW(w) { return w * PITCH - HGUT; }
+  function spanH(h) { return h * HPITCH - VGUT; }
+
+  /* ---------- widget registry ----------
+     kind → def. Timer families (pomo/tasks/f52/f20/ft/ct/amb-deck) store
+     size in item.s and cycle it via the fam map. */
+  var KINDS = {}, FAMS = {};
+  function def(kind, label, spec, tile, span, url, fam, bindKey) {
+    KINDS[kind] = { kind: kind, label: label, spec: spec, tile: tile, span: span, url: url, fam: fam || null, bindKey: bindKey || null };
+  }
+
+  /* timer widget URL families */
+  ['s', 'm', 'l'].forEach(function (s) {
+    var S = s.toUpperCase(), dims = s === 's' ? [468, 160] : s === 'm' ? [564, 640] : [828, 640];
+    var span = s === 's' ? [5, 2] : s === 'm' ? [6, 8] : [9, 8];
+    var spec = s === 's' ? '5×1 · 468×160' : s === 'm' ? '6×4 · 564×640' : '9×4 · 828×640';
+    def('pomo-' + s, 'Pomodoro Timer · ' + S, spec, dims, span, '../index.html?embed=1&size=' + s, 'pomo');
+    def('tasks-' + s, 'To-Do List · ' + S, spec, dims, span, '../index.html?embed=1&app=tasks&size=' + s, 'tasks');
+    def('f52-' + s, '52/17 Timer · ' + S, spec, dims, span, '../52-17/index.html?embed=1&size=' + s, 'f52');
+    def('f20-' + s, '20-20-20 Timer · ' + S, spec, dims, span, '../20-20-20-rule/index.html?embed=1&size=' + s, 'f20');
+    def('ft-' + s, 'Flowtime Timer · ' + S, spec, dims, span, '../flowtime/index.html?embed=1&size=' + s, 'ft');
+    def('ct-' + s, 'Custom Timer · ' + S, spec, dims, span, '../custom-timer/index.html?embed=1&size=' + s, 'ct');
+    def('adeck-' + s, 'Studio Deck · ' + S, spec, dims, span, '../ambience/index.html?embed=1&app=deck&size=' + s, 'adeck');
+  });
+  Object.keys(KINDS).forEach(function (k) {
+    var fam = KINDS[k].fam;
+    if (fam) { (FAMS[fam] = FAMS[fam] || {}); FAMS[fam][k.slice(fam.length + 1)] = k; }
+  });
+
+  def('amb-tile', 'Soundscape Tile', '3×1 · 276×160', [276, 160], [3, 2],
+    function (b) { return '../ambience/index.html?embed=1&app=tile&sound=' + encodeURIComponent(b || 'rain'); });
+  def('amb-mixer', 'Preset Mixer', '6×4 · 564×640', [564, 640], [6, 8],
+    '../ambience/index.html?embed=1&app=mixer');
+
+  def('st-pin', 'Stat Pin', '3×½ · 276×80', [276, 80], [3, 1],
+    function (b) { return '../stats/index.html?embed=1&size=pin' + (b ? '&pin=' + encodeURIComponent(b) : ''); },
+    null, 'statPin');
+  def('st-bars', '14-Day Bars', '6×2 · 564×320', [564, 320], [6, 4],
+    '../stats/index.html?embed=1&size=m&pin=bars');
+  def('st-donut', 'Technique Donut', '6×2 · 564×320', [564, 320], [6, 4],
+    '../stats/index.html?embed=1&size=m&pin=donut');
+  def('st-rhythm', 'Daily Rhythm', '6×4 · 564×640', [564, 640], [6, 8],
+    '../stats/index.html?embed=1&size=m&pin=rhythm');
+  def('st-heat', 'Activity Heatmap', '6×2 · 564×320', [564, 320], [6, 4],
+    '../stats/index.html?embed=1&size=m&pin=heatmap');
+  def('st-records', 'Records & Streaks', '9×2 · 828×320', [828, 320], [9, 4],
+    '../stats/index.html?embed=1&size=l');
+
+  def('du-pin-s', 'Countdown Pin', '2×½ · 184×80', [184, 80], [2, 1],
+    function (b) { return '../days-until/index.html?embed=1&app=pin&size=s' + (b ? '&pin=' + encodeURIComponent(b) : ''); },
+    null, 'countdownId');
+  def('du-pin-m', 'Countdown Card', '3×1 · 276×160', [276, 160], [3, 2],
+    function (b) { return '../days-until/index.html?embed=1&app=pin&size=m' + (b ? '&pin=' + encodeURIComponent(b) : ''); },
+    null, 'countdownId');
+  def('du-strip', 'All Countdowns', '5×1 · 468×160', [468, 160], [5, 2],
+    '../days-until/index.html?embed=1&app=strip');
+
+  def('sk-pin', 'Streak Pin', '3×½ · 276×80', [276, 80], [3, 1],
+    function (b) { return '../streaks/index.html?embed=1&app=pin' + (b ? '&pin=' + encodeURIComponent(b) : ''); },
+    null, 'streakId');
+  def('sk-cal', 'Streak Calendar', '9×4 · 828×640', [828, 640], [9, 8],
+    '../streaks/index.html?embed=1&app=cal');
+
+  var SOUNDS = [
+    ['rain', 'Rain'], ['thunder', 'Thunder'], ['wind', 'Wind'], ['campfire', 'Campfire'],
+    ['waves', 'Ocean Waves'], ['cafe', 'Coffee Shop'], ['birds', 'Seagull'], ['night', 'Mountain Night'],
+    ['typing', 'Keyboard'], ['Train', 'Train Ambience'], ['Airplane', 'Airplane'], ['Metro', 'Subway'],
+    ['Cricket', 'Cricket Singing'], ['River', 'River Flowing'], ['chalkboard', 'Chalkboard'], ['barn', 'Barn'],
+    ['restaurant', 'Restaurant'], ['classroom', 'Classroom'], ['bird', 'Bird Chirping'], ['lofi1', 'Lofi 1'],
+    ['lofi2', 'Lofi 2'], ['lofi3', 'Lofi 3'], ['jazz1', 'Jazz 1'], ['jazz2', 'Jazz 2'],
+    ['jazz3', 'Jazz 3'], ['classical1', 'Classical 1'], ['classical2', 'Classical 2'], ['classical3', 'Classical 3']
+  ];
+
+  /* picker grouping — mirrors the site pages (like the preview rows) */
+  var GROUPS = [
+    { name: 'Pomodoro Timer', kinds: ['pomo-s', 'pomo-m', 'pomo-l', 'tasks-s', 'tasks-m', 'tasks-l'] },
+    { name: '52/17 Timer', kinds: ['f52-s', 'f52-m', 'f52-l'] },
+    { name: '20-20-20 Rule', kinds: ['f20-s', 'f20-m', 'f20-l'] },
+    { name: 'Flowtime', kinds: ['ft-s', 'ft-m', 'ft-l'] },
+    { name: 'Custom Timer', kinds: ['ct-s', 'ct-m', 'ct-l'] },
+    { name: 'Ambience Studio', kinds: ['amb-tile', 'amb-mixer', 'adeck-s', 'adeck-m', 'adeck-l'], soundPick: true },
+    { name: 'Stats', kinds: ['st-pin', 'st-bars', 'st-donut', 'st-rhythm', 'st-heat', 'st-records'] },
+    { name: 'Days Until', kinds: ['du-pin-s', 'du-pin-m', 'du-strip'] },
+    { name: 'Streaks', kinds: ['sk-pin', 'sk-cal'] }
+  ];
+
+  function resolveDef(item) {
+    var d = KINDS[item.kind];
+    if (d) return d;
+    if (item.s && FAMS[item.kind] && FAMS[item.kind][item.s]) return KINDS[FAMS[item.kind][item.s]];
+    return null;
+  }
+  function buildUrl(defI, item) {
+    return typeof defI.url === 'function' ? defI.url(item.b || null) : defI.url;
+  }
+
+  /* ---------- state ---------- */
+  var state = { v: 1, seq: 1, items: [] };
+  function save() {
+    try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {}
+  }
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE);
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (!d || d.v !== 1 || !Array.isArray(d.items)) return;
+      d.items = d.items.filter(function (it) { return it && resolveDef(it) && typeof it.c === 'number' && typeof it.r === 'number'; });
+      state = { v: 1, seq: d.seq || (d.items.length + 1), items: d.items };
+    } catch (e) {}
+  }
+
+  /* ---------- geometry helpers ---------- */
+  function overlaps(a, b) {
+    return a.c < b.c + b.span[0] && b.c < a.c + a.span[0] &&
+           a.r < b.r + b.span[1] && b.r < a.r + a.span[1];
+  }
+  function withSpans() {
+    return state.items.map(function (it) { var d = resolveDef(it); return { it: it, c: it.c, r: it.r, span: d.span }; });
+  }
+  function firstFree(w, h) {
+    var placed = withSpans();
+    for (var r = 0; r < 400; r++) {
+      for (var c = 0; c <= COLS - w; c++) {
+        var cand = { c: c, r: r, span: [w, h] };
+        if (!placed.some(function (p) { return overlaps(cand, p); })) return { c: c, r: r };
+      }
+    }
+    var bottom = placed.reduce(function (m, p) { return Math.max(m, p.r + p.span[1]); }, 0);
+    return { c: 0, r: bottom };
+  }
+  function nudgeDown(item, ignoreId) {
+    var guard = 0;
+    var mySpan = resolveDef(item).span;
+    while (guard++ < 800) {
+      var hit = false;
+      for (var i = 0; i < state.items.length; i++) {
+        var o = state.items[i];
+        if (o.id === ignoreId) continue;
+        var od = resolveDef(o);
+        if (overlaps({ c: item.c, r: item.r, span: mySpan }, { c: o.c, r: o.r, span: od.span })) { hit = true; break; }
+      }
+      if (!hit) return;
+      item.r += 1;
+    }
+  }
+
+  /* ---------- rendering ---------- */
+  var board = document.getElementById('board');
+  var emptyEl = document.getElementById('empty');
+
+  function render() {
+    /* remove stale tiles */
+    var tiles = board.querySelectorAll('.tile');
+    for (var i = 0; i < tiles.length; i++) tiles[i].remove();
+    var maxBottom = 0;
+    state.items.forEach(function (it) {
+      var d = resolveDef(it);
+      if (!d) return;
+      maxBottom = Math.max(maxBottom, it.r + d.span[1]);
+      board.appendChild(makeTile(it, d));
+    });
+    var minRows = 6; /* 3 full rows */
+    var rows = Math.max(minRows, maxBottom);
+    board.style.height = spanH(rows) + 40 + 'px';
+    board.style.minHeight = '';
+    emptyEl.classList.toggle('show', state.items.length === 0);
+  }
+
+  /* lazy-mount: tiles outside the viewport (+600px margin) don't fetch
+     their widget until the user scrolls near — big boards stay cheap */
+  var tileObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var f = en.target;
+      var url = f.getAttribute('data-src');
+      if (url && !f.getAttribute('src')) f.src = url;
+      tileObserver.unobserve(f);
+    });
+  }, { rootMargin: '600px' });
+
+  function makeTile(it, d) {
+    var el = document.createElement('div');
+    el.className = 'tile';
+    el.dataset.id = it.id;
+    el.style.left = (it.c * PITCH) + 'px';
+    el.style.top = (it.r * HPITCH) + 'px';
+    el.style.width = spanW(d.span[0]) + 'px';
+    el.style.height = spanH(d.span[1]) + 'px';
+    el.style.zIndex = 1;
+
+    var card = document.createElement('div');
+    card.className = 'tile-card';
+    card.style.width = d.tile[0] + 'px';
+    card.style.height = d.tile[1] + 'px';
+    var f = document.createElement('iframe');
+    var url = buildUrl(d, it);
+    f.setAttribute('data-src', url);
+    /* visible now (or within 600px of the fold) → mount immediately so the
+       tile is live this frame; genuinely far tiles defer to the observer */
+    if (el.getBoundingClientRect().top <= window.innerHeight + 600) {
+      f.src = url;
+    } else {
+      tileObserver.observe(f);
+    }
+    f.width = d.tile[0];
+    f.height = d.tile[1];
+    f.setAttribute('title', d.label);
+    card.appendChild(f);
+    el.appendChild(card);
+
+    var MINUS_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M3.5 8h9"/></svg>';
+    var rm = document.createElement('button');
+    rm.className = 't-badge t-remove';
+    rm.type = 'button';
+    rm.innerHTML = MINUS_SVG;
+    rm.setAttribute('aria-label', 'Remove widget');
+    rm.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+    rm.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (el.classList.contains('rm-armed')) { removeItem(it.id); return; }
+      el.classList.add('rm-armed');
+      rm.textContent = 'Remove';
+      setTimeout(function () { el.classList.remove('rm-armed'); rm.innerHTML = MINUS_SVG; }, 2600);
+    });
+    el.appendChild(rm);
+
+    if (d.fam) {
+      var sz = document.createElement('button');
+      sz.className = 't-badge t-size';
+      sz.type = 'button';
+      sz.textContent = (it.s || 's').toUpperCase();
+      sz.setAttribute('aria-label', 'Change size');
+      sz.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+      sz.addEventListener('click', function (e) {
+        e.stopPropagation();
+        cycleSize(it);
+        sz.textContent = it.s.toUpperCase();
+      });
+      el.appendChild(sz);
+    }
+
+    attachDrag(el, it, d);
+    return el;
+  }
+
+  /* ---------- drag with live snap ---------- */
+  var dragZ = 10;
+  function attachDrag(el, it, d) {
+    var startPX = 0, startPY = 0, originC = 0, originR = 0, moved = false, active = false;
+    el.addEventListener('pointerdown', function (e) {
+      if (!document.body.classList.contains('wb-editing')) return;
+      if (e.button !== undefined && e.button !== 0) return;
+      active = true; moved = false;
+      startPX = e.clientX; startPY = e.clientY;
+      originC = it.c; originR = it.r;
+      try { el.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (!active) return;
+      e.preventDefault();
+      var dx = e.clientX - startPX, dy = e.clientY - startPY;
+      if (!moved && Math.abs(dx) + Math.abs(dy) < 6) return;
+      if (!moved) { moved = true; el.classList.add('dragging'); el.style.zIndex = ++dragZ; }
+      var c = Math.round((originC * PITCH + dx) / PITCH);
+      var r = Math.round((originR * HPITCH + dy) / HPITCH);
+      c = Math.max(0, Math.min(COLS - d.span[0], c));
+      r = Math.max(0, r);
+      it.c = c; it.r = r;
+      el.style.left = (c * PITCH) + 'px';
+      el.style.top = (r * HPITCH) + 'px';
+    });
+    function up() {
+      if (!active) return;
+      active = false;
+      el.classList.remove('dragging');
+      if (!moved) return;
+      nudgeDown(it, it.id);
+      save();
+      render();
+    }
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+  }
+
+  /* ---------- size cycling ---------- */
+  var SIZE_ORDER = ['s', 'm', 'l'];
+  function cycleSize(it) {
+    var fam = FAMS[it.kind];
+    if (!fam) return;
+    var cur = it.s || 's';
+    var next = SIZE_ORDER[(SIZE_ORDER.indexOf(cur) + 1) % SIZE_ORDER.length];
+    if (!fam[next]) next = SIZE_ORDER[0];
+    it.s = next;
+    var d = resolveDef(it);
+    it.c = Math.min(it.c, COLS - d.span[0]);
+    nudgeDown(it, it.id);
+    save();
+    render();
+    if (window.TTEvent) TTEvent('workbench_widget_resize', { tool: it.kind, mode: next });
+  }
+
+  /* ---------- add / remove ---------- */
+  function addWidget(kind, bind) {
+    var d = KINDS[kind];
+    if (!d) return;
+    var it = {
+      id: state.seq++,
+      kind: d.fam ? d.fam : kind,
+      s: d.fam ? kind.slice(d.fam.length + 1) : undefined,
+      c: 0, r: 0, b: bind || null
+    };
+    var dd = resolveDef(it);
+    var pos = firstFree(dd.span[0], dd.span[1]);
+    it.c = pos.c; it.r = pos.r;
+    state.items.push(it);
+    save();
+    render();
+    if (window.TTEvent) TTEvent('workbench_widget_add', { tool: it.kind, source: 'picker' });
+  }
+  function removeItem(id) {
+    state.items = state.items.filter(function (x) { return x.id !== id; });
+    save();
+    render();
+    if (window.TTEvent) TTEvent('workbench_widget_remove', { source: 'board' });
+  }
+
+  /* ---------- edit mode ---------- */
+  var btnEdit = document.getElementById('btn-edit');
+  function setEditing(on) {
+    document.body.classList.toggle('wb-editing', on);
+    btnEdit.textContent = on ? 'Done' : 'Edit Board';
+  }
+  btnEdit.addEventListener('click', function () { setEditing(!document.body.classList.contains('wb-editing')); });
+
+  /* ---------- picker sheet ---------- */
+  var sheet = document.getElementById('sheet');
+  var sheetBody = document.getElementById('sheet-body');
+  function openSheet() {
+    buildSheet();
+    document.body.classList.add('sheet-open');
+  }
+  function closeSheet() { document.body.classList.remove('sheet-open'); }
+  document.getElementById('btn-add').addEventListener('click', openSheet);
+  document.getElementById('nav-add').addEventListener('click', openSheet);
+  document.getElementById('empty-add').addEventListener('click', openSheet);
+  document.getElementById('sheet-close').addEventListener('click', closeSheet);
+  document.getElementById('sheet-backdrop').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeSheet(); setEditing(false); }
+  });
+
+  var PLUS_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>';
+  function buildSheet() {
+    sheetBody.innerHTML = '';
+    /* lazy-load each card's live iframe as it scrolls near the viewport,
+       throttled: at most PV_MAX iframes load at once, the rest queue —
+       an unthrottled mount burst (~10 full pages) froze Andy's picker */
+    var pvQueue = [], pvActive = 0, PV_MAX = 3;
+    function pvPump() {
+      while (pvActive < PV_MAX && pvQueue.length) {
+        var qf = pvQueue.shift();
+        if (!qf || qf.src) continue;
+        pvActive++;
+        qf.addEventListener('load', function () { pvActive--; pvPump(); }, { once: true });
+        qf.src = qf.getAttribute('data-src');
+      }
+    }
+    var pvObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var f = en.target;
+        if (en.isIntersecting && !f.src) { pvQueue.push(f); pvObserver.unobserve(f); }
+      });
+      pvPump();
+    }, { root: sheetBody, rootMargin: '250px' });
+
+    GROUPS.forEach(function (g) {
+      var label = document.createElement('div');
+      label.className = 'sheet-group-label';
+      label.textContent = g.name;
+      sheetBody.appendChild(label);
+      var grid = document.createElement('div');
+      grid.className = 'sheet-grid';
+      sheetBody.appendChild(grid);
+      g.kinds.forEach(function (k) {
+        var d = KINDS[k];
+        if (!d) return;
+        var card = document.createElement('div');
+        card.className = 'pv-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', 'Add ' + d.label + ' to board');
+        var stage = document.createElement('div');
+        stage.className = 'pv-stage';
+        var box = document.createElement('div');
+        box.className = 'pv-box';
+        var f = document.createElement('iframe');
+        f.setAttribute('title', d.label + ' preview');
+        f.setAttribute('data-src', buildUrl(d, { b: null }));
+        f.setAttribute('loading', 'lazy');
+        box.appendChild(f);
+        var plus = document.createElement('span');
+        plus.className = 'pv-add';
+        plus.innerHTML = PLUS_SVG;
+        stage.appendChild(box);
+        stage.appendChild(plus);
+        card.appendChild(stage);
+        var meta = document.createElement('div');
+        meta.className = 'pv-meta';
+        var nm = document.createElement('div');
+        nm.className = 'pv-name';
+        nm.textContent = d.label;
+        meta.appendChild(nm);
+        var spec = document.createElement('div');
+        spec.className = 'pv-spec';
+        spec.textContent = d.spec;
+        meta.appendChild(spec);
+        var selS = null;
+        if (g.soundPick && k === 'amb-tile') {
+          selS = document.createElement('select');
+          selS.setAttribute('aria-label', 'Soundscape');
+          SOUNDS.forEach(function (sc) {
+            var o = document.createElement('option');
+            o.value = sc[0]; o.textContent = sc[1];
+            selS.appendChild(o);
+          });
+          selS.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+          selS.addEventListener('click', function (e) { e.stopPropagation(); });
+          selS.addEventListener('change', function () {
+            var url = buildUrl(d, { b: selS.value });
+            f.setAttribute('data-src', url);
+            if (f.src) f.src = url;
+          });
+          meta.appendChild(selS);
+        }
+        card.appendChild(meta);
+
+        /* scale the real widget into the 150px stage */
+        function fit() {
+          var s = Math.min(1, (stage.clientWidth - 16) / d.tile[0], (stage.clientHeight - 16) / d.tile[1]);
+          box.style.width = Math.round(d.tile[0] * s) + 'px';
+          box.style.height = Math.round(d.tile[1] * s) + 'px';
+          f.style.width = d.tile[0] + 'px';
+          f.style.height = d.tile[1] + 'px';
+          f.style.transform = 'scale(' + s + ')';
+        }
+        grid.appendChild(card);
+        /* measure only once the card is in the DOM (detached clientWidth = 0) */
+        fit();
+        pvObserver.observe(f);
+        function add() { addWidget(k, selS ? selS.value : null); closeSheet(); setEditing(true); /* land in edit mode so the new tile can be dragged right away */ }
+        card.addEventListener('click', add);
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); add(); }
+        });
+      });
+    });
+  }
+
+  /* ---------- widget → board protocols ----------
+     Widgets postMessage the board; the board persists bindings and answers
+     acks. Mirrors the stand-in listener in _work/embed-preview.html. */
+  var TOOL_PAGES = {
+    'days-until': '../days-until/index.html',
+    'streaks': '../streaks/index.html',
+    'stats': '../stats/index.html'
+  };
+  window.addEventListener('message', function (e) {
+    try {
+      var d = e.data;
+      if (!d || !d.tt) return;
+      var fe = e.source && e.source.frameElement;
+      var tile = fe && fe.closest ? fe.closest('.tile') : null;
+      var item = tile ? state.items.filter(function (x) { return String(x.id) === tile.dataset.id; })[0] : null;
+
+      if (d.tt === 'tt-block-config' && item) {
+        if (e.source) e.source.postMessage({ tt: 'tt-msg-ack' }, '*');
+        item.b = String(d.value).slice(0, 60);
+        save();
+        var dd = resolveDef(item);
+        fe.src = buildUrl(dd, item);
+      } else if (d.tt === 'tt-open-tool' && TOOL_PAGES[d.tool]) {
+        if (e.source) e.source.postMessage({ tt: 'tt-msg-ack' }, '*');
+        window.open(TOOL_PAGES[d.tool], '_blank');
+      } else if (d.tt === 'tt-open-settings') {
+        /* v1: ack so the widget's "+" doesn't double-open, then open the
+           standalone page. Batch 3.5's universal settings replaces this. */
+        if (e.source) e.source.postMessage({ tt: 'tt-settings-ack' }, '*');
+        window.open('../custom-timer/index.html', '_blank');
+      }
+    } catch (err) {}
+  });
+
+  /* ---------- boot ---------- */
+  load();
+  render();
+})();
+</script>
+</body>
+</html>

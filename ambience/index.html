@@ -7,7 +7,8 @@
     /* Language memory: if the visitor picked a language before, go straight to it. */
     (function () {
       try {
-        var l = localStorage.getItem('tt_lang');
+        if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */
+                var l = localStorage.getItem('tt_lang');
         if (!l || l === 'en') return;
         var p = location.pathname;
         if (/^\/(id|es|pt|vi)(\/|$)/.test(p)) return;  // already on a translation
@@ -28,7 +29,7 @@
     <link rel="alternate" hreflang="vi" href="https://www.tomatotimers.com/vi/ambience/">
     <link rel="alternate" hreflang="x-default" href="https://www.tomatotimers.com/ambience/">
     <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png"/>
-    <script src="https://apis.google.com/js/platform.js"></script>
+    <script>if(!/[?&]embed=1/.test(location.search))document.write('<script src="https://apis.google.com/js/platform.js"><\/script>');</script>
     
     <script type="text/javascript">
     (function(){

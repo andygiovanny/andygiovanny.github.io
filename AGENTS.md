@@ -157,7 +157,7 @@
 - New video cards go ON TOP of the video grid (first card), never appended
   at the bottom — newest content leads the stack.
 
-## Workbench (IN PROGRESS — batches 1–3 built: embed S/M/L + tasks widgets + ambience tiles)
+## Workbench (IN PROGRESS — batches 1–3 built: embed S/M/L + tasks widgets + ambience tiles + tool widgets; **BOARD (batch 3) built 2026-11-25**)
 
 Andy's concept: a blank page where users stack timers + tools like
 Lego/Notion ("for customer loyalty — a page purely theirs"). Design
@@ -173,6 +173,43 @@ decisions agreed with Andy, do NOT re-litigate without him:
   already share data via localStorage (`tt_*` keys) so a streaks block shows
   the SAME streaks as the streaks page — no sync layer, no server, no login.
   The pinned widgets (days-until / streaks / stats) are already proto-blocks.
+- **THE BOARD = `workbench/index.html`** (BUILT 2026-11-25, batch 3 — Andy's
+  iOS design: "board itself clean, grid invisible but locked; picker like iOS
+  groups widgets by their apps → group by our subfolder pages; popup/sheet,
+  board stays clean"). CLEAN CANVAS: tiles carry no chrome in normal mode;
+  the snap grid shows only as faint dots WHILE EDITING. Placement =
+  `{id, kind, s, c, r, b}` in `tt_workbench_layout_v1` (c = col 0–11,
+  r = half-row, b = optional binding). GRID MATH: 84px col + 12px gutter
+  (pitch 96, content 1140 fixed/centered, wider windows get empty margins);
+  vertical half-units 80px tile + 8px gap (pitch 88) — full row = 2 halves
+  (160+16). TILE = exact widget px centered in its span box (L/records 828
+  sits centered in the 852 span; days compact 184 overhangs the 180 span by
+  2px into each gutter — intentional, gutters are empty). COLLISION: drop
+  nudges DOWN to first free slot (iOS-style); new widgets land at first-free
+  top-left scan. PICKER: iOS sheet (centered modal ≥700px, bottom sheet
+  below; grabber, backdrop blur) grouped by site page — 9 groups, 34 rows,
+  spec text `5×1 · 468×160` per row, red ⊕; the soundscape-tile row carries
+  an inline 28-sound select (a <select> inside a <button> is invalid HTML —
+  rows are role=button divs with select stopPropagation). EDIT = jiggle mode
+  (Edit/Done button; Esc exits): tiles lift + wobble, iframes pointer-events
+  none, drag = live snap on pointer events, red − badge arms a 2.6s
+  "Remove" confirm, corner size pill cycles S→M→L for fam widgets
+  (pomo/tasks/f52/f20/ft/ct/adeck — stored as `{kind: fam, s}`). PROTOCOLS:
+  the board answers its widgets itself (preview-page stand-in is for the
+  preview only) — `tt-block-config` persists b + reloads the iframe;
+  `tt-open-tool` opens the tool page; `tt-open-settings` acks
+  `tt-settings-ack` + opens custom-timer standalone (the universal settings
+  control replaces this). GA: workbench_widget_add / _remove / _resize
+  (tool/mode/source — all registered params). Page facts: EN-only lang
+  select, NO tt_lang redirect (translations don't exist — adding one later
+  needs the guard), full SEO set incl FAQPage matching the visible About
+  section, GA4 tags + TT_TECHNIQUE 'workbench' + tt-events.js, NO ads (tool
+  page). Verified: `_work/test-board.html` ALL PASS (tile geometry vs span
+  math, snap origins, iframe sizes/urls, edit badges, sheet groups/rows,
+  add→persist, size cycle src change, drag +192px snap, collision nudge
+  r=15, arm→remove, Escape, reload-restore) + headless screenshots light &
+  dark via `_work/shot-board.html` (seeds a demo layout — the real board is
+  never seeded).
 - **Resizing: SNAP-TO-GRID with 3 size classes per block — NEVER freeform.**
   Agreed for stability: finite tested states (no infinite edge-case sizes),
   iframes clip/scrollbar at arbitrary sizes, clean persistence
@@ -186,6 +223,10 @@ decisions agreed with Andy, do NOT re-litigate without him:
     stretching). Columns stay 84px for everyone; wider windows just center the
     board with empty margins. Fills exactly the middle zone between the pinned
     side ads — zero grid under the ads. Rows unlimited downward (page scrolls).
+    **Half-rows allowed since 2026-11-24 (Andy: cut the pin in half): a widget
+    may be 80px tall (1 half-row) when its content is single-line minimal —
+    first = days-until pin compact 2×1 (184×80). All multi-content widgets
+    stay 160 tall = 2 half-rows; existing sizes unchanged.**
   - **COMPACT = 4×1 (360×160) — NEW smaller timer bar** (not built yet):
     tighter everything — ~90px duck, digits ~150%, mode pills 2×2 or trimmed.
   - **SMALL = 5×1 (468×160) — horizontal Spotify-style bar** (DESIGN LOCKED
@@ -367,6 +408,99 @@ decisions agreed with Andy, do NOT re-litigate without him:
   - Widget UI is its OWN design per size (real font sizes/element sizes) —
     NEVER zoom/squeeze the page. The widget frame = neutral title bar
     (no fake OS window chrome — Andy is on Windows).
+- **52-17 WIDGETS = S 5x1 / M 6x4 / L 9x4** (BUILT 2026-11-23, batch: port
+  to other timers 1/4): `52-17/index.html?embed=1&size=s|m|l` — the 52/17
+  sprint engine (page-global functions, own IIFE — NOT tomato.js) with the
+  pomodoro widget formats. Identity elements KEPT per Andy: the ⚡ sprint
+  energy bar + the sprint cycle strip (bars+dots, "N sprints this session")
+  on ALL sizes (added to S in the polish pass — Andy: "there is still
+  space"). S = CSS grid: 76px mascot | energy micro-bar (8px, 9px
+  micro-label kept — Andy wanted the meter text visible) + digits
+  (48px) + cycle strip (240px, sess-history hidden) |
+  controls HORIZONTAL right (40px buttons in a row, vertically
+  centered); stats line padded 5px off the strip. M digits 96px / L 134px
+  (Andy's "huge timer" feedback). S break panel
+  restyled as a compact absolute tag (title ellipsis + actions, ~71px —
+  Baloo line-height gotchas: 11px font needs line-height 1.2-1.3 or the tag
+  double-height Baloo boxes). Ambience pill kept at M/L, dropped at S.
+  Gotchas learned live: (1) hide `.tm-active-line` in ALL embed sizes — the
+  empty aria-live line reserves ~31px invisible height (same as the pomodoro
+  widget); (2) `html.tt-embed { overflow: hidden }` — the absolutely-
+  positioned S break tag nudges scrollHeight +5px and would grow a scrollbar
+  in the exact-fit frame; (3) skip-to-break sets `left = 1` and opens the
+  panel on the NEXT tick — a synchronous click-check reads false, wait 2s;
+  (4) `#vignette` is position:fixed inset:0 — MUST be hidden in embed or it
+  covers the widget; (5) the empty ambience wrapper div's 4px margin creates
+  an IMPLICIT 2nd grid row at S (stage grew 160→164px) — hide it with
+  `.stage > div:has(> .ambience-master-pill) { display:none }` (a :not-chain
+  version hides digits/controls — do NOT use it); (6)
+  `html.tt-embed .break-panel.open { animation:none }` — CSS animations
+  freeze mid-frame in throttled iframes and skew geometry probes; (7) S
+  toast anchored TOP (`bottom:auto; top:4px`) — a hidden toast's
+  translateY(80px) grows scrollHeight. Break flow verified live in-widget: sprint → break
+  countdown → skip break → back to work, sprint logged. Normal page
+  regression-verified (no embed param = unchanged).
+- **20-20-20 WIDGETS = S 5x1 / M 6x4 / L 9x4** (BUILT 2026-11-23, batch:
+  port to other timers 2/4): `20-20-20-rule/index.html?embed=1&size=s|m|l`
+  — the eye-break timer (page-global engine, own IIFE) in the 52-17
+  widget formats. Identity elements KEPT at every size: the tomato energy
+  bar (9px micro-label at S — Andy) + the wilting mascot. NO cycle strip
+  on this technique (nothing to port). The break UX is the page's own #windowOverlay (fixed inset:0 +
+  window card with win-art flipbook + ring), NOT a .break-panel — the
+  port rules differ: `.stage ~ *` hides it so it needs
+  `html.tt-embed #windowOverlay { display:flex !important }` (closed state
+  stays visibility:hidden via base CSS), and `transition:none` or the
+  throttled-iframe freeze skews probes. S = compact tag bottom-left (title
+  + 24px ring + actions, win-art/hint dropped); M card 307x581 (window
+  width min(340px,84vw,48vh), ring 72px); L card ~358x~610 (width
+  min(360px,56vh), ring 80px) — always size the card by HEIGHT
+  (art is aspect-ratio:1 square + ~270px break-ui), width alone lets it
+  exceed the 640 frame. Verified live (`_work/test-202020-embed.html`):
+  160/640/640 exact-fit, skip→window opens at all sizes, skip-break
+  closes, normal page untouched.
+- **FLOWTIME WIDGETS = S 5x1 / M 6x4 / L 9x4** (BUILT 2026-11-23, batch:
+  port to other timers 3/4): `flowtime/index.html?embed=1&size=s|m|l`
+  — Andy's spec: S/M carry ONLY the essentials (the screenshot
+  part: work bar, break-earned bar, break bank chip, digits, controls
+  — no duck, too much UI to compress); L = the FULL stage WITH
+  the duck video (280px, 16:9). NO break overlay on this technique ——
+  the BREAK button switches mode (fire→cool) and the duck naps.
+  Gotchas learned live: (1) flowtime has TWO .energy-wrap siblings and
+  NO ids on the wraps — target them with `:has(#workBar)` and
+  `:has(#breakFill)`; nth-of-type counts ALL div siblings, not the
+  class; (2) in a grid, auto-placed items fill the 1fr rows first —
+  pin EVERY item to an explicit grid-area or bars spill into the flex
+  rows; (3) .mascot-wrap has min-height:232px — the common
+  `html.tt-embed .mascot-wrap { min-height:0 }` release is mandatory
+  (L overflowed by 135px without it); (4) S fits at digits 40px + 3px
+  row-gaps (44px + 4px left a ghost 6px overflow — Baloo line
+  boxes ride high); (5) L drops the ft-phase hint (the duck carries
+  the state) and runs zeroed margins — duck + 2 bars + bank +
+  134px digits + controls + ambience = 640 exactly. S polish (Andy):
+  bars max-width 300px (not full-bleed), stage side padding 20px,
+  break bank as PLAIN TEXT (pill container removed). BREAK only fires
+  when break time is banked (engine rule, works in-widget). Verified
+  live (`_work/test-flowtime-embed.html`): 160/640/640 exact-fit,
+  play ticks, normal page regression clean. Preview page gained a
+  Flowtime row.
+- **STREAKS WIDGETS = PIN 3×1 half-row (276×80) / CAL 9×4 (828×640)** (BUILT 2026-11-24, second TOOL widgets — Andy's model: "large = calendar, small = pinned one", no Medium): `streaks/index.html?embed=1&app=pin[&pin=<id>]` and `?embed=1&app=cal`. PIN WIDENED to 3 cols same evening (Andys call: name truncated + the 🔥 emoji rendered as tofu at 2 cols) — flame is an inline SVG, not emoji. PIN = one streak + **tap-to-check-in round button** (accent when today is checked; count-up streaks hide it) — blank pin = picker → posts `tt-block-config` block `streakspin` key `streakId` + self-reloads. CAL = streak list (the page's own `#chips` MOVED into a left pane, restyled vertical, per-row mark buttons injected by WRAPPING `renderAll` — engine rebuilds chips every render, so buttons re-sync inside the wrapper) + month calendar (page's own `#calWrap` moved into the right pane; `grid-auto-rows:1fr` fills the 640px height) + an "＋ Add streak" footer button (`tt-open-tool`) — a "Check in today" footer button was built then REMOVED the same night (Andy: the per-row checkmarks do the same job, and the toast confirms every toggle). KEY IMPLEMENTATION (same house pattern as days-until): builder INSIDE the engine IIFE after the boot `renderAll()`; cal mode reuses engine DOM instead of duplicating calendar logic. GOTCHAS: (1) this page wraps content in `.stage` — hide it in the chrome rule or ~300px of stray content overflows the frame (the chips/calWrap survive because they are MOVED OUT before paint); (2) the page has a `.sr-only` h1 + header `#lang-select` FIRST in DOM — tests must query `select.wb-sel`, not `select`; (3) mark buttons must be re-SYNCED (not re-created) inside the renderAll wrapper or they stack. Empty store → "No streaks yet" + round "+" (`tt-open-tool` tool `streaks`, 600ms ack fallback, TTEvent tool_open source workbench_widget). Preview: additive demo streaks (s_demo1 Morning run checkin gaps 2,5 / s_demo2 Read 20 pages gaps 1,3 / s_demo3 No sugar countup) + listener branches streakspin/streaks. Verified live (`_work/test-streaks-embed.html`): pin 184×80 exact, mark toggle 2→1→2 days, blank pick→bind→render, cal 828×640 exact with 42 cells + 5 chips + 4 row marks, today-btn undo/redo round-trip, normal page regression clean (0 embed classes).
+- **STATS WIDGETS = PIN 3×1 half-row (276×80) / CHART-M ×4 faces (bars·donut·heatmap at 6×2 564×320, RHYTHM tall at 6×4 564×640 — height-adaptive, one URL) / RECORDS WIDE-SHORT 9×2 (828×320)** (BUILT 2026-11-25, third TOOL widgets — Andy's rule: ONE chart per widget, NO switcher, NO scroll; want more charts → drop more widgets; records CUT from 9×4 to 9×2 same day on Andy's call — "vertical height cut is good": `justify-content:space-between` smeared 3-4 rows across 640px of dead bands; the short face uses a fixed gap + `justify-content:center` on the list + inline `.rec-val small` + compact paddings — all 4 rows + footer fit 320 exactly): `stats/index.html?embed=1&size=pin[&pin=<metric>:<seg>]` / `?embed=1&size=m[&pin=bars|donut|rhythm|heatmap[:seg]]` / `?embed=1&size=l`. PIN = metric×period chip (focus|breaks|tasks|sessions × today|week|month|all — same matrix as the page's "Pinned to your timers", CUSTOM EXCLUDED) with the page's duck icons; blank → picker → `tt-block-config` block `statspin`/`statschart` key `statPin` + self-reload. M = the page's OWN panel MOVED into `.wb-root` (`#bars`/`#donutWrap`/rhythm `#dowBars.closest('.panel')`/`#activityPanel`) so the engine's `render()` keeps painting it — ZERO duplicated chart logic; period pills (Today/Week/Month/All) switch `curSeg` + `render()` locally; `bars` ignores period (always 14d). L = records `.panel` moved + "Open full stats →" (`tt-open-tool` tool `stats`). Pin chip computes from `ttStats.report()` directly and `render` is WRAPPED (`__wbPaintPin`) so storage events repaint it live. GOTCHAS: (1) chrome-hide must include `#explainer`/`#other-rhythm`/`#tools`/`.site-footer` (they made the document 3-4k px tall); (2) pin label+num spans need `display:block`; (3) heatmap `.hm-flex` must stay content-height — its ylabels are `1fr` rows and smear if stretched (fixed 12px rows; `margin:auto 0` centers the band; `.hm-scroll` overflow hidden = fixed window, newest right-aligned, NO user scroll per Andy); (4) donut legend rows wrap at 564px (nowrap + 215px donut); (5) demo seeds can't use the key-absent rule (sessions have no ids) — seed ONLY when the store is completely empty, written through `ttStats.recordSession/recordTask` so caps apply. Empty charts show the page's own empty-notes (`.empty-note { margin:auto }` centers them). Verified: `_work/test-stats-embed.html` 28/28 ALL PASS + headless-Chrome screenshots (`--headless=new --user-data-dir` persistent profile seeded via the harness page). Preview: 30-day demo stats + 8-window Stats row + listener branches `statPin`/`stats`.
+- **DAYS-UNTIL WIDGETS = PIN COMPACT 2×1 (184×80, half-row) / PIN WIDE 3×1 (276×160) / STRIP 5×1 (468×160)** (BUILT 2026-11-24, first TOOL widgets — Andy's blank→pick→bind model; pin layouts REVISED same day: compact = the site's minimal card — icon + name + days-left ONLY, no date; wide = the site's BIG card — icon on the RIGHT, big count + date line; Andy rejected the first version where both pins showed the same info). `days-until/index.html?embed=1&app=pin&size=s|m[&pin=<id>]` and `?embed=1&app=strip`. The pin WITHOUT a valid id renders a picker of the user's countdowns; picking posts `{tt:'tt-block-config', block:'dayspin', key:'countdownId', value}` to the board AND self-reloads with `&pin=` — batch 3's board persists the binding in the layout data (house pattern for ALL pin blocks: streaks/stats pins will pick the same way). Empty store → "No countdowns yet" + round "＋" (posts `tt-open-tool`, 600 ms fallback window.open — the "＋" protocol is now shared with custom-timer). Strip = all countdowns nearest-first. KEY IMPLEMENTATION: the widget builder lives INSIDE the engine IIFE (days-until's engine is IIFE-scoped — a head <script> cannot reach store/paintCard/setIconEl) and registers its cards into the engine's `tickables` so the page's own 1s ticker paints them. Gotchas: (1) `.stage ~ *` catches ANY body-appended widget root — exclude with `:not(.wb-root)`; (2) `#yt-promo` sits BEFORE `.stage` on this page (unlike the timers) — list it explicitly in the chrome-hide rule or it grows a phantom 354px bar; (3) the `tt_lang` head redirect FIRES INSIDE EMBED IFRAMES for anyone with a saved language — guarded with `if (/[?&]embed=1/.test(location.search)) return;` on ALL 9 EN pages (latent bug that would have broken every widget for non-EN users). GA4 `tool_open` on the "＋" (tool 'days_until', source 'workbench_widget'). Preview page: 3 demo countdowns seeded in <head> only when the key is absent + stand-in listener answers tt-block-config/tt-open-tool/tt-open-settings. Verified live (`_work/test-days-embed.html`): exact-fit 160 at all 4 windows, ticking clocks, pick→bind→render round-trip, empty states, top-level "＋" fallback opens the tool, normal page regression clean. Builder/fix scripts: `_work/build_days_widgets.py`, `_work/fix_days_builder.py`, `_work/guard_lang_redirect.py`.
+- **THIRD-PARTY WIDGET RULES (Andy, locked 2026-11-24 — applies to ALL
+  future workbench blocks/plugins, e.g. Spotify/Discord ideas):** (1) ZERO
+  COST — free embeds/APIs only; no paid tiers, no usage-based billing,
+  nothing that can grow a bill. If a service needs an API key, the USER
+  brings their own and it never touches Andy's accounts. (2) NO BACKEND ——
+  the site is static GitHub Pages, every integration runs client-side.
+  Iframe embeds (Spotify embed player) and free no-key APIs (Lanyard for
+  Discord presence) are the only allowed shapes. (3) LOCALLY SAVED ——
+  any user configuration (Discord ID, playlist URL, city for weather) is
+  stored in localStorage, never on a server. (4) FUN-FIRST — these exist
+  so users enjoy the workbench, not as a revenue/cost engine. Candidates
+  passing all four: Spotify embed block, Discord presence via Lanyard,
+  weather, GitHub graph, Lichess puzzle. Anything failing any rule is out.
+- **CUSTOM-TIMER WIDGETS = S 5×1 (468×160) / M 6×4 (564×640) / L 9×4 (828×640)** (BUILT 2026-11-24, batch: port to other timers 4/4 — REVERSES the rejection recorded in the universal-settings bullet below, Andy's go 2026-11-24): `custom-timer/index.html?embed=1&size=s|m|l` — runs ONE saved profile: the current one (`byo_current`) or `&profile=<id>` (id sliced to 40 chars, engine falls back to timers[0] on unknown ids). Building/editing profiles deliberately stays on the standalone page — Andy: complicated setup belongs there, not in the widget; the universal Custom tab (batch 3) edits profiles later and COMPLEMENTS the widget, it does not replace it. The builder auto-opens on first visit when `byo_timers` is empty, so the embed chrome rule (`.stage ~ *`) must keep killing it — verified builderOpen=false at all 3 sizes even with zero profiles. Layouts: S = CSS grid `76px minmax(0,1fr) auto` / mascot 76px video column spanning all rows | phase label (#secName 11px ellipsis 170px + "Phase N of M") + 40px digits left + 8px progress bar spanning to the controls' right edge (label hidden at S) | 40px round controls horizontal right; extend + ambience dropped at S (space). M/L = flex column space-evenly (the flowtime M pattern): M mascot 160 / digits 96 / controls 54, L mascot 220 / digits 134 / controls 64; extend-wrap (engine `.on` while running) + ambience pill kept. Engine untouched — head flag script + scoped CSS only. Verified live (`_work/test-custom-embed.html`, seeded `byo_timers` profile): exact-fit 160/640/640, profile renders ("Deep Work / Phase 1 of 2 / 25:00"), play ticks, skip advances phase, extend appears at M/L, standalone page regression clean. Empty-profile state: the 3 controls hide and ONE round "＋" button asks the host page via postMessage (`{tt:'tt-open-settings', technique:'custom'}`) to open settings — batch 3's board acks (`tt-settings-ack`) and opens the universal settings Custom tab; no ack in 600 ms (or a top-level embed URL) falls back to the standalone page in a new tab.
+- **Universal settings control (Andy's design, locked 2026-11-23):** ONE settings block on the board with a TAB per timer technique — Pomodoro | 52-17 | 20-20-20 | Flowtime | Custom — each tab holds that page's OWN settings form, lifted verbatim from the page's settings modal. Each tab writes to that technique's EXISTING localStorage key (every timer page already persists its settings there), so every widget of that technique on the board follows its tab automatically — zero new sync layer, same trick as the tasks widget sharing `tt_tasks_v1`. Per-technique settings stay independent (a pomodoro widget and a 52-17 widget on the same board keep their own rhythms). A custom-timer widget was REJECTED here on 2026-11-23 ("too complex, redundant") but that call REVERSED on 2026-11-24 (Andy's go) — see the CUSTOM-TIMER WIDGETS bullet above; the Custom tab still edits profiles, it does not replace the widget. Part of batch 3 (the board canvas), since a board with no way to change timer lengths feels broken.
 - **Embed URL params:** `?embed=1&size=s|m` per block (`size=c` reserved for
   the Compact class once built).
 - **Persistence:** layout saved to localStorage (per layout), same
@@ -391,6 +525,11 @@ belong in the work log below.
   dimensions (technique, phase, from_phase, profile, tool, href, theme, lang,
   source, sound, preset, mode). Any NEW page must include the two script tags
   (TT_TECHNIQUE + tt-events.js) after the gtag config block.
+- **Workbench (2026-11-25):** ALL widget batches done (timers S/M/L ×5,
+  tasks, ambience tile/mixer/deck, days-until, streaks, stats) AND the board
+  itself: `workbench/index.html` (clean canvas, invisible snap grid, iOS
+  sheet picker, jiggle edit, `tt_workbench_layout_v1`). EN only, uncommitted
+  on development — Andy reviews, then decides on publishing + nav/card links.
 - **custom-timer (English + all 4 translations): DONE** — multi-timer
   profiles with named settings, share links (`#share=`), builder with
   drag-reorder/duplicate/per-phase everything, editable extend length,
@@ -423,11 +562,13 @@ belong in the work log below.
   teach the pin feature on first visit; pin chips on all 25 timer pages.
   sitemap.xml = 40 URLs. Next: Andy reviews id wording, commits on
   `development`, then a Streak Counter card for the Tools sections.
-- **Workbench (IN PROGRESS, EN-only so far):** embed-mode timer widgets
-  (S/M/L built 2026-11-16/18), tasks widgets S/M/L (2026-11-18), ambience
-  tiles x28 (2026-11-23), task-clock ownership so only the earliest-started
-  pomodoro drains the active task (2026-11-23). Preview: `_work/embed-preview.html`.
-  Next: Batch B Preset Mixer block, then port the pattern to the other timers.
+- **Workbench (IN PROGRESS, EN-only so far):** embed-mode timer widgets S/M/L on all 5 timers (pomodoro
+  2026-11-16/18; 52-17 + 20-20-20 + flowtime + custom-timer 2026-11-23/24), tasks
+  widgets S/M/L (2026-11-18), ambience tiles x28 + Preset Mixer + Studio Deck
+  S/M/L (2026-11-23), task-clock ownership (2026-11-23), days-until pin/strip
+  widgets + blank→pick→bind pattern (2026-11-24). Preview:
+  `_work/embed-preview.html`. Next: batch 3 — board canvas + universal tabbed
+  settings (quote model first).
 - **stats (translations SHIPPED 2026-11-12, EN+id/es/pt/vi):** shared recorder
   `assets/js/ttstats.js` + wired main pomodoro + EN page at `stats/`
   (segments, 14-day chart, donut, rhythm charts, heatmap, records, deltas,
@@ -442,6 +583,314 @@ belong in the work log below.
   dropdown everywhere, then translations.
 
 ## Work log (newest on top)
+
+- **2026-11-25 (Kimi Work — light):** STATS WIDGET DE-JANK + PILL REMOVAL
+  (Andy's "Today tab can't be selected / just remove Today·Week·Month"). (1)
+  The period pill bar is GONE from the M chart widgets (donut/rhythm/heatmap) —
+  the gear picker is now the single way to change period (one chart per
+  widget, no on-tile switcher; the bound pin seg still drives render(), so
+  donut:all / donut:month etc. keep working via gear re-pick). The
+  "Today can't be selected" was the live-update wrapper throttling
+  storage-event repaints to 1/5s with `today` as the default landing seg —
+  moot now that the pills are gone. Full stats PAGE untouched (pills live
+  only in the embed builder). Removed `.wb-head/.wb-segs/.wb-seg` CSS +
+  builder block; harness assertion flipped to "pills REMOVED". (2) PICKER
+  PREVIEW THROTTLE — opening the sheet used to mount up to ~10 full-page
+  iframes at once (Andy's screenshot: all 34 preview cards blank white on a
+  busy board); preview loads are now queued, max 3 concurrent iframes, next
+  starts on load. Files: `stats/index.html`, `workbench/index.html`,
+  `_work/test-stats-embed.html` (ALL PASS), `_work/test-board.html`
+  re-run ALL PASS run=12, `_work/embed-preview.html` stats v=5→v=6.
+  NOT committed. Next: Andy re-checks on his real board, then the universal
+  tabbed settings (resume on his go).
+
+- **2026-11-25 (Kimi Work — HIGH):** THE BOARD BUILT — `workbench/index.html`,
+  batch 3, Andy's locked iOS design: clean canvas (zero tile chrome in
+  normal mode), INVISIBLE locked snap grid that reveals as faint dots only
+  while editing; iOS sheet picker grouped by site page (9 groups / 34 rows,
+  grid-spec text per row, soundscape-tile row has an inline 28-sound select);
+  jiggle edit mode (Edit/Done, Esc) with live-snap pointer drag, iOS red −
+  → 2.6s "Remove" arm, corner size pill cycling S→M→L on the 7 timer/deck
+  families; placements `{id,kind,s,c,r,b}` in `tt_workbench_layout_v1`;
+  grid pitch 96 (84+12), half-row pitch 88 (80+8), tile = exact widget px
+  centered in its span box; collision = nudge-down; board answers
+  tt-block-config (persists binding, reloads widget) / tt-open-tool /
+  tt-open-settings (ack + opens custom-timer standalone until the universal
+  settings control exists). Full EN SEO set (FAQPage matches the visible
+  About section), GA4 + TT_TECHNIQUE 'workbench', no ads, lang select EN-only
+  with NO tt_lang redirect (translations don't exist yet — add the guard
+  with the first translation). Verified: `_work/test-board.html` ALL PASS
+  (geometry/snap/drag/nudge/cycle/remove/sheet/persistence-reload) + headless
+  screenshots light & dark (`_work/shot-board.html` seeds a demo layout for
+  shots only; the real board is never seeded). Preview page got a "Workbench
+  board" link row. Files: `workbench/index.html` (new), `_work/test-board.html`
+  (new), `_work/shot-board.html` (new), `_work/embed-preview.html`, `AGENTS.md`.
+  NOT committed — Andy reviews first. Next: Andy designs a real board at
+  `/workbench/`, then the follow-up rounds (universal tabbed settings,
+  compact 4x1 timer class, fun widgets under the third-party rules).
+  SAME-DAY REFINEMENT 1 (Andy's first design pass): (1) EVERY tile carries a
+  card frame (`.tile-card` = panel bg + 1px border + 16px radius) so
+  borderless widgets (tasks, S timers) read as cards and the shared column
+  edges are VISIBLE — the "alignment" complaint was really the missing
+  frames; (2) edit discoverability — button renamed "Edit Board" (+tooltip),
+  normal-mode tile hover shows an accent ring (`.tile:hover .tile-card` —
+  parent hover fires through the iframe child; long-press CANNOT work:
+  iframes eat all pointer events in normal mode, edit mode is the only
+  door); (3) PICKER PREVIEW — rows no longer add on tap: tapping selects a
+  row (chevron, `.sel` tint) and the sheet top shows a LIVE scaled preview
+  of the real widget (single iframe, `transform: scale()` to fit a
+  300×230 stage, sound select feeds the amb-tile preview too); adding
+  happens via the "Add to Board" button under the preview. Harness extended
+  (frame computed style, preview src/scale/selection, add-via-preview) —
+  re-run ALL PASS incl. reload-restore; screenshots `v2-*.png`.
+  SAME-DAY REFINEMENT 2 (Andy's design pass): tiles were CENTERED in
+  their spans, so a Large sank 28px below a Small in the same band (the
+  "still not aligned" bug) → `.tile` is now top-left aligned
+  (`align-items/justify-content: flex-start`) so every card edge sits
+  exactly on grid lines; harness gained frame+alignment assertions
+  (offset ≤1px), re-run ALL PASS. The empty-space-beside-a-Large (L = 9
+  of 12 cols, only pins fit beside) is INHERENT to the locked iOS
+  hero-widget model + fixed 1140px board width — explained to Andy, not
+  changed (a wider board or 8-col L would need his explicit spec call).
+  SAME-DAY REFINEMENT 3 (picker redesign, "why do I have to click to see
+  it"): the sheet is now a pure iOS-style PREVIEW GRID — no more list +
+  tap-to-preview-pane. Every widget renders its own LIVE scaled iframe in
+  a card (150px stage, `transform: scale()` fit, name + spec under it,
+  hover shows a floating "+" badge, tap the card = add + close). Cards
+  lazy-load their iframe via IntersectionObserver (root = sheet body,
+  250px margin) so off-screen previews cost nothing — this keeps 34 live
+  widgets affordable. Ambience tile keeps its sound select inside the
+  card (updates data-src / live src). Gotcha recorded: scale MUST be
+  measured after the grid is attached to the DOM (detached clientWidth =
+  0 → NaN style) — grid is appended to the sheet body BEFORE cards are
+  built. Harness phases 6–7 rewritten for the grid (34 cards, data-src,
+  scale >0 and ≤ stage, add-via-card) — ALL PASS run=7; shot `v3-sheet`.
+  SAME-DAY REFINEMENT 4 (tasks-S pin redesign + auto-edit): (1) TASKS S was
+  BROKEN — its embed CSS still assumed the retired tall 360×640 S shape, but
+  the board's S class is now the wide-short 468×160 pin bar (same as the
+  timer S), so everything overflowed/overlapped in 160px. New S block in
+  index.html: title + single-line quick-add only (color swatches, estimate
+  input, list, done-wrap and toolbar hidden — they live in M/L). M/L
+  unchanged and verified at real sizes. (2) Adding a widget from the picker
+  now AUTO-ENTERS edit mode (add() → setEditing(true)) so the new tile can
+  be dragged immediately — Andy's ask. Harness gained the assertion; phase 8
+  toggle made conditional; ALL PASS run=8. Gotcha: headless Chrome caches
+  pages hard per profile — add a cache-buster query param when re-shooting
+  an edited page. REFINEMENT 4b: the S pin got a GLANCE LINE
+  (`#tm_pin_status`, base CSS `display:none`, shown only in the S embed) —
+  "N open tasks · first task title" (or "No tasks yet" / "all N done ✔"),
+  rendered by `renderPinStatus(queued, done)` from `render()`. Andy's
+  board had TWO tasks-S tiles and the pin hid the list entirely; the full
+  list still lives in M/L — S is a quick-add + glance bar by design.
+  Verified: seeded-store pin shot + M regression (pin line hidden, full
+  list intact). REFINEMENT 4c (Andy: "can I see my task on the S one?" —
+  yes): the pin now renders up to 2 REAL clickable task rows
+  (`#tm_pin_tasks` + `.tm-pin-task/.tm-pin-check/.tm-pin-title`, shown
+  only in the S embed) — round checkbox calls the same `toggleDone(id)`
+  as the full list, so checking on the pin updates the board instantly;
+  overflow shows "N open tasks · +X more" in the status line. Fits 160px
+  exactly (verified with 3 open + 1 done: title+form+status+2 rows, no
+  clip). Done tasks stay out of the pin (they're in the M/L done section).
+  REFINEMENT 4d (remove-badge fix): the "−" was a TEXT GLYPH in Baloo
+  Tammudu — its vertical metrics pinned the bar to the TOP of the circle
+  (the misalignment) and the armed pill inherited the glyph box (the black
+  blob). Now an inline SVG dash (site icon convention), `padding: 0`, and
+  the armed pill keeps `height: 24px` with `0 10px` padding — both states
+  verified pixel-clean via forced-state screenshots. House gotcha: the
+  board store requires `{v, seq}` in the seed or items are dropped; and
+  virtual-time screenshots fast-forward the 2.6s disarm — force
+  `.rm-armed` + textContent directly to shoot the armed state. SURGICAL
+  PERF PASS (Andy's "slow and janky" — diagnosed with receipts, not vibes):
+  every widget iframe was dragging a whole website. Fixes: (1) EMBED
+  SLIM-GATE — index.html wraps popper/bootstrap-js/moment/platform.js in one
+  conditional document.write block, jquery-confirm+addthis in another, all
+  skipped when `?embed=1` (moment had ZERO call sites anywhere — dead
+  script; bootstrap JS only serves the full-page modal; addthis is a
+  tracker). 52-17/20-20-20/flowtime/ambience got the same gate for
+  platform.js. CRITICAL: the written `<\/script>` MUST be backslash-escaped
+  or the HTML parser kills the inline block (sed ate the backslash once —
+  verify with a runtime probe, not just node --check). Verified by probe:
+  EMBED → moment/bootstrap/addthis/jconfirm all undefined, jQuery present;
+  FULL → all load. (2) BOARD LAZY-MOUNT — tiles start as data-src and mount
+  when within 600px of the fold (IntersectionObserver); visible tiles mount
+  synchronously so add/cycle UX stays instant (harness caught the async
+  regression — fixed by the sync path). Harness ALL PASS run=11. Env note:
+  hung headless Chrome processes hold the user-data-dir lock and stall the
+  NEXT run for minutes — tasklist for chrome.exe before blaming the page.
+
+- **2026-11-25 (Kimi Work — medium):** STATS WIDGETS on `stats/index.html`
+  (Andy's dashboard model, one chart per widget — NO chart switcher, no
+  scroll: want another chart, drop another widget). Three shapes:
+  PIN 3x1 half-row (276x80) = ONE metric×period chip (Focus/Breaks/Tasks/
+  Sessions × Today/Week/Month/All time — the page's own pin matrix, Custom
+  excluded), duck icon + label + big number, blank→picker bind; M 6x4
+  (564x640) = ONE chart per widget — `pin=bars|donut|rhythm|heatmap[:seg]`
+  — with live period pills (Today/Week/Month/All) on the seg-driven charts;
+  L 9x4 (828x640) = Records & streaks, all-time by definition, "Open full
+  stats →" footer (`tt-open-tool`). KEY IMPLEMENTATION: M/L MOVE the page's
+  own panels (`#bars`/`#donutWrap`/`#rhythm-grid`/`#activityPanel`/
+  records `.panel`) into `.wb-root` — the engine's `render()` keeps painting
+  them (zero duplicated chart logic); the pin chip computes straight from
+  `ttStats.report()` and `render` is WRAPPED so the chip repaints on storage
+  events (live). Binding grammar is shared: `metric:seg` for pins,
+  `chart:seg` for charts (disjoint key spaces) — one `__wbParsePin`.
+  Chrome-hide must list `#explainer`/`#other-rhythm`/`#tools`/`.site-footer`
+  (forgotten at first — they made the iframe document 3000px+ tall).
+  GOTCHAS fixed during visual pass: pin label+number were inline spans on
+  one row (display:block); heatmap `.hm-flex` must NOT flex-grow (ylabels
+  are `1fr` rows — they smeared across the frame; fixed 12px rows +
+  `margin:auto 0` centers the band); donut legend rows wrap (nowrap +
+  smaller donut 215px). Empty states: charts show the page's own
+  empty-notes (centered via `.empty-note { margin:auto }`). Verified
+  headless (`_work/test-stats-embed.html` ALL PASS 28/28: exact fits, 14
+  bars, 24 hour bars, 196 heatmap cells, blank pick→bind round-trip
+  "sessions → 33", pin live-update 22m→1h22m on new data, normal page
+  regression) + headless-Chrome screenshots with a persistent profile
+  (`--headless=new --user-data-dir`, seed via the harness page first).
+  Preview: stats demo seed (30 days, ONLY if the store is completely empty —
+  sessions have no ids so the key-absent rule becomes an empty-store rule,
+  written through `ttStats.recordSession` so caps apply) + 8-window Stats row
+  + listener branches `statPin`/`stats`. Files: `stats/index.html`,
+  `_work/embed-preview.html`, `_work/test-stats-embed.html`, `_work/shots/`.
+  SAME-DAY REVISION 1: records widget cut from 9×4 (828×640) to WIDE-SHORT 9×2
+  (828×320) per Andy — dead bands gone, all 4 rows + footer exact fit.
+  SAME-DAY REVISION 2: chart Ms split by height — bars / per technique /
+  activity now live at 6×2 (564×320, height-adaptive via a
+  `@media (max-height:400px)` block inside the embed CSS — one URL pattern
+  serves both heights); RHYTHM KEEPS the tall 6×4 face per Andy (splitting it
+  into dow/hour widgets was proposed, he said leave it). Harness re-run
+  ALL PASS 28/28 at the new sizes. SAME-DAY REVISION 3: blank pickers
+  overflowed their flex row (`.wb-sel` had `width:100%` — two of them
+  wanted 200% of the row; the M blank hid it at 564 but the 276 pin clipped
+  the period select) → `.wb-blank-row .wb-sel { flex:1 1 0; width:auto }`;
+  pin blank also got compacted (9px label, no note — 80px frame). Headless
+  screenshots of sub-500px windows lie (Chrome clamps min window width —
+  the "clipped" render was a capture artifact; the in-browser measurement
+  is authoritative: 2×112px selects, no overflow).
+  SAME-DAY REVISION 4: pin chip polish per Andy — label+num block
+  `text-align:center` in the space between duck icon and gear, num
+  `white-space:nowrap` + `overflow:visible` (no value can clip/wrap, 20px),
+  gear padding 4→8px right / 6px top (was crowding the corner). Harness
+  re-run ALL PASS 28/28; live measurement: gear right=268 (=276−8), num
+  box 178px no overflow. GOTCHA: Andy still saw the OLD render afterwards —
+  the preview iframes' `?v=N` cache-buster pins the whole document (inline
+  CSS lives in the HTML), so any stats/index.html edit MUST bump v= on all
+  stats iframes in `_work/embed-preview.html` (now v=5). AND the actual
+  "cut" he meant: the UPPERCASE pin label's capitals were clipped on top —
+  `.wb-pin-txt` set `line-height:1.15` (→ an 11.5px box for the 10px
+  label) and `.wb-pin-lbl` keeps `overflow:hidden` for the ellipsis, so the
+  font's ascenders overhung the line box and got sliced at 140% zoom. Fix:
+  label gets its own `line-height:1.5` + `padding-top:2px` (ellipsis
+  retained). Verified: harness re-run ALL PASS 28/28 + 3× headless zoom
+  shows full letterforms.
+  Next: Andy reviews the Stats row at the preview page, then batch 3 (board
+  canvas + universal tabbed settings, quote first).
+
+- **2026-11-24 (Kimi Work, pt 12 — streaks widgets):** BUILT streaks workbench
+  widgets on `streaks/index.html` (Andy's model: L = calendar, S = pinned one,
+  no M): PIN 3x1 half-row (276x80 — widened from 184 after review: name truncation + tofu flame) = one streak + tap-to-check-in; CAL 9x4
+  (828x640) = streak list + month calendar (reuses the page's own #chips +
+  #calWrap moved into panes; renderAll wrapped to re-sync per-row marks).
+  Same house pattern as days-until (flag+CSS in head, builder inside engine
+  IIFE, blank->pick->bind via `tt-block-config` block `streakspin`, "+"
+  via `tt-open-tool`). Gotcha fixed: `.stage` wrapper had to join the
+  chrome-hide list. Verified live (`_work/test-streaks-embed.html`): exact
+  fits, check-in toggles, pick->bind round-trip, today-btn undo/redo, normal
+  page clean. Preview page: streaks demo seed (additive) + row of 3 windows +
+  listener branches. Also today: days-until pin layouts reworked per Andy
+  (compact = minimal site card, wide = big site card icon-right), pin compact
+  moved to the new 80px HALF-ROW grid unit, 10px padding after the pin accent
+  line, preview window labels shortened (title bar was stretching narrow
+  windows → white gap), preview page iframes all `loading="lazy"` (54 full
+  pages were loading at once = the heaviness Andy felt), tasks L widget
+  top-aligned + list grows to fill (was vertically centered with dead bands).
+  AGENTS.md grid spec amended: half-rows (80px) allowed for single-line
+  minimal widgets; 160px widgets = 2 half-rows, sizes unchanged.
+  Files: `streaks/index.html`, `index.html` (tasks L), `days-until/index.html`,
+  `_work/embed-preview.html`, `_work/test-streaks-embed.html`,
+  `_work/build_streaks_widgets.py`, `_work/add_streaks_preview.py`,
+  `_work/log_streaks_widgets.py` (this script). Next: Andy reviews streaks
+  widgets at the preview page, then stats pins or batch 3 (board canvas).
+
+- **2026-11-23 (Kimi Work, pt 6 — light, ON MASTER):** STATS-CARD ART
+  REBUILT (Andy's dark-mode report: cream halo box around the mascot on the
+  Focus Stats card). Root cause: 2026-11-13's ffmpeg colorkey left a
+  semi-transparent fringe, and the duck's cream body (≈#fff8e6, distance
+  ~10-13 from the #faefe8 bg) sat INSIDE the key range, so on dark cards the
+  duck went dark and the fringe glowed. Rebuilt from
+  `assets/gifs/stats-mascot-light.mp4` with a distance-based alpha +
+  color decontamination (`_work/rekey_stats_card.py`): the bg is dead flat
+  (p60 distance 3.3) so a tight 4→12 ramp keys bg fully while the lightest
+  content (duck ~10.5) stays opaque; pure-white objects (chart whiteboard)
+  are protected by a closer-to-white-than-cream rule. Same filename
+  `assets/images/stats-card.png` (480² RGBA, 142 KB) — all 35 card rows
+  pick it up automatically, no markup touched. Frame-verified composited on
+  dark (#1a140f) and cream (#FBF3E4): no halo, duck + whiteboard + tomato
+  correct on both. PORT NEEDED: development still has the old PNG — copy
+  over on the next development session.
+
+
+- **2026-11-24 (Kimi Work, pt 11 — medium):** WORKBENCH — DAYS-UNTIL WIDGETS on EN `days-until/index.html` — the first TOOL blocks and the debut of Andy's blank→pick→bind model: the picker offers ONE generic "Countdown pin", the user drops it, the blank card asks WHICH countdown to track, the board saves the binding. Three shapes: pin compact 2×1 (180×160), pin wide 3×1 (276×160), strip 5×1 (468×160, all countdowns nearest-first). Battle scars: the engine is IIFE-scoped so the builder must live inside the engine IIFE after runTicker() (head scripts see nothing); widget cards ride the engine's own tickables (free 1s painting, zero new timers); `.stage ~ *` killed the body-appended widget root (:not(.wb-root) fix); `#yt-promo` (BEFORE .stage on this page) grew a phantom 354px overflow until explicitly hidden; the `tt_lang` redirect fires inside embed iframes — guarded on all 9 EN pages (index, 52-17, 20-20-20, flowtime, custom-timer, days-until, streaks, stats, ambience) with a one-line embed check before the redirect. Also extended the preview page: demo countdowns seeded in <head> (key-absent rule), Days Until row (4 windows), stand-in board listener now answers tt-block-config (re-points the asking iframe) and tt-open-tool (opens the tool page) alongside the existing tt-open-settings. A completion-push task (manual, disabled) was created and FIRED at the end of this batch — its notification pings Andy's devices; runs of a disabled task are allowed. Verified live end-to-end incl. the preview-page pick→ack→re-point→render chain. Next: streaks pin blocks (same blank→pick→bind pattern), then batch 3 (board canvas + universal settings, quote first).
+
+- **2026-11-24 (Kimi Work, pt 10 — medium):** WORKBENCH — CUSTOM-TIMER WIDGETS S/M/L on EN `custom-timer/index.html` (`?embed=1&size=s|m|l`), port 4/4 — REVERSES the 2026-11-23 rejection (Andy's call: "let's see how you build it"). The widget runs the CURRENT saved profile (`byo_current`; `&profile=<id>` pins another). Build/edit deliberately stays on the standalone page — the builder auto-opens on first visit when `byo_timers` is empty, so the embed chrome rule (`.stage ~ *`) must keep it dead in widgets (verified builderOpen=false at all sizes, zero-profile and seeded). Layouts: S = grid 76px mascot video | phase label + 40px digits + 8px progress bar spanning to the controls' edge | 40px horizontal round controls right; extend + ambience dropped at S. M/L = flex column space-evenly (flowtime pattern): M mascot 160/digits 96/controls 54, L mascot 220/digits 134/controls 64; extend-wrap (`.on` while running, engine-driven) + ambience pill kept. Engine untouched — head flag script + scoped CSS only. Verified live (`_work/test-custom-embed.html` with a seeded `byo_timers` profile): 160/640/640 exact-fit, "Deep Work / Phase 1 of 2 / 25:00" renders, play ticks 25:00→24:58, skip advances to phase 2, extend appears at M/L while running, standalone page regression clean (0 embed classes, header/promo/tasks/`editTimerBtn` intact). Same-day FLOWTIME POLISH (unlogged until now): S bars full-span aligned to the BREAK button edge (20px stage side padding) + break bank as plain text (pill container removed); M content spread space-evenly; M/S BREAK pill `width:auto` fix (the page's `.cbtn{width}` rule was overriding the pill). Preview page gained the Custom Timer row; all preview iframe v= params bumped 6→7 (plain F5 suffices — the Ctrl+F5 ritual is retired). SAME-DAY ADDENDUM — "＋" BUILD BUTTON (Andy's go): in embed mode with ZERO saved profiles the widget's 3 controls hide and ONE round "＋" button remains; click asks the host page via postMessage `{tt:'tt-open-settings', technique:'custom'}` to open settings — batch 3's board answers `tt-settings-ack` and opens the universal settings on the Custom tab; no ack within 600 ms (or a top-level embed URL) falls back to `window.open(location.pathname)` = the standalone page in a new tab. GA4 `tool_open` (tool 'custom_timer_builder', source 'workbench_widget'). `_work/embed-preview.html` carries the stand-in listener (acks + opens the standalone page). Verified live: empty state at S/M/L shows a single 40/54/64 "＋" (hint now 'press ＋ to build one', exact-fit kept), the ack path opened the standalone tab, the top-level fallback opened it instantly, profile-present + standalone-page regressions clean. Custom-timer preview iframes bumped to v=8. Next: batch 3 quote — board canvas + universal tabbed settings incl. the Custom tab (medium-heavy, await Andy's go).
+- **2026-11-23 (Kimi Work, pt 9 — medium):** WORKBENCH — FLOWTIME
+  WIDGETS S/M/L on EN `flowtime/index.html` (`?embed=1&size=s|m|l`),
+  port 3/4. Andy's call on the crowded UI: S/M = essentials only
+  (work bar + break-earned bar + break bank + digits + controls, duck
+  hidden), L = full stage with the duck video. S = grid: digits +
+  horizontal controls on row 2, both 8px meter bars (9px micro-labels)
+  spanning below, bank chip under them. M = duckless vertical column
+  with phase hint + ambience. L = duck 280px + both bars + bank +
+  134px digits + controls + ambience (phase hint dropped), zeroed
+  margins to land 640 exactly. Battle scars in the spec bullet: :has
+  selectors for the twin energy-wraps, explicit grid-areas everywhere
+  (auto-placement spills into 1fr rows), mascot min-height release,
+  S digits 40px over 44 for the Baloo ghost overflow. All 3 sizes
+  verified exact-fit + play flow live; normal page untouched. Preview
+  page gained a Flowtime row. Next: batch 3 (board canvas + universal
+  tabbed settings, medium-heavy — quote model + estimate before
+  building).
+- **2026-11-23 (Kimi Work, pt 8 — medium):** WORKBENCH — 20-20-20
+  WIDGETS S/M/L on EN `20-20-20-rule/index.html` (`?embed=1&size=s|m|l`),
+  port 2/4 of the widget pattern. Same flag script + scoped CSS, engine
+  untouched. S = mascot | digits + energy micro-bar | horizontal controls
+  (52-17 S round-2 layout); M/L = vertical workspace with tomato energy
+  bar + ambience pill; digits M 96px / L 134px. Break = the page's own
+  #windowOverlay: S gets a compact bottom-left tag (title + mini ring +
+  snooze/skip), M/L keep the full window card sized by height (307x581 /
+  ~358x~610, rings 72/80px). Gotcha: `.stage ~ *` chrome-hiding also kills
+  the overlay — restore with `display:flex !important` (base
+  visibility:hidden keeps it inert when closed). Verified live
+  (`_work/test-202020-embed.html`): all 3 sizes exact-fit, break opens /
+  skip-break closes at S + M, normal page regression clean (0 embed
+  classes, defaults intact). Preview page gained a 20/20/20 row. Spec
+  bullet in the Workbench section. Next: flowtime widget port (3/4, same
+  pattern), then batch 3 (board canvas + universal settings).
+- **2026-11-23 (Kimi Work, pt 7 — medium):** WORKBENCH — 52-17 TIMER
+  WIDGETS S/M/L on EN `52-17/index.html` (`?embed=1&size=s|m|l`), the first
+  port of the pomodoro widget pattern to another timer. Head flag script +
+  scoped embed CSS only — engine untouched (chrome hidden via header/pin-row/
+  bsa/`.stage ~ *` rules; `#vignette` fixed-overlay hidden). Energy bar + sprint
+  cycle strip kept on M/L per Andy. POLISH PASS (light, Andy feedback:
+  "huge timer / add the bar + sprint to S / align timer & controls"):
+  S rebuilt as CSS grid WITH the energy micro-bar + cycle strip (label/
+  sess-history hidden). ROUND 2 (Andy S-layout pass): timer ON TOP,
+  all bars BELOW it (5-row 1fr/auto grid, stage height pinned 160px,
+  4px row-gaps). Controls sit in the DIGITS row (right, 40px buttons
+  horizontal); cycle strip + stats SPAN cols 2-4 under the buttons
+  (justify-self:start, track fixed 240px) so "0 sprints / 0m focused"
+  fits ONE line at 10px — inside col 2 alone it wraps. Padding: M
+  digits margin-top 12px, L 20px ("padding above the timer").
+  M digits 128→96px, L 152→134px;
+  `animation:none` on the widget break panel (mid-frame freeze in
+  throttled iframes skewed probes); S toast top-anchored; implicit-grid-row
+  gotcha fixed via `:has(> .ambience-master-pill)` hide. S break panel
+  restyled as compact absolute tag; ambience pill M/L only. Verified live
+  (`_work/test-5217-embed.html`): all 3 sizes exact-fit (160/640/640, no
+  overflow after hiding `.tm-active-line` + overflow guard), break flow
+  works in-widget, normal page unchanged. Preview page gained a 52/17 row.
+  Spec bullet in the Workbench section. Next: 20-20-20-rule and flowtime
+  widget ports (same pattern), then custom-timer assessment.
 
 
 - **2026-11-23 (Kimi Work, pt 5 — medium):** LIVE-STATS HOTFIX PORTED to

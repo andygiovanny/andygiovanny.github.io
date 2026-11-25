@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-(function(){try{var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
+(function(){try{if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
 </script>
 <title>Days Until — Free Countdown Tracker for Deadlines &amp; Events | TomatoTimers</title>
 <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
@@ -127,6 +127,90 @@
 </script>
     <script>window.TT_TECHNIQUE = 'days-until';</script>
     <script src="/assets/js/tt-events.js?v=1.0"></script>
+<script>
+/* ╔═ Workbench embed (?embed=1&app=pin|strip) — days-until ═╗
+   app=pin&pin=<id>&size=s|m  one countdown (blank picker state without a valid id)
+   app=strip                  all countdowns, nearest first (5x1 468x160).
+   The builder lives INSIDE the engine IIFE (engine is IIFE-scoped) — see the
+   "workbench embed widget" section after runTicker(). */
+(function () {
+    try {
+        var p = new URLSearchParams(location.search);
+        if (p.get('embed') !== '1') return;
+        var r = document.documentElement;
+        r.classList.add('tt-embed');
+        var app = p.get('app') === 'pin' ? 'pin' : 'strip';
+        var size = p.get('size') === 'm' ? 'm' : 's';
+        r.classList.add('tt-embed-' + app + (app === 'pin' ? '-' + size : ''));
+    } catch (e) {}
+})();
+</script>
+<style>
+/* chrome off — .stage and everything after it, header, toast, side ads, vignette */
+html.tt-embed .header,
+html.tt-embed #toast,
+html.tt-embed #yt-promo,
+html.tt-embed .stage,
+html.tt-embed .stage ~ *:not(.wb-root),
+html.tt-embed [id^="bsa-zone"],
+html.tt-embed #vignette { display: none !important; }
+html.tt-embed { overflow: hidden; }
+html.tt-embed body { margin: 0; }
+html.tt-embed .wb-root { width: 100vw; height: 100vh; box-sizing: border-box; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+/* shared bits */
+html.tt-embed .wb-icon { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden; background: var(--panel2); border: 1px solid var(--border); }
+html.tt-embed .wb-icon img { width: 82%; height: 82%; object-fit: contain; }
+html.tt-embed .wb-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.25; }
+html.tt-embed .wb-count { display: flex; align-items: baseline; white-space: nowrap; line-height: 1.2; }
+html.tt-embed .wb-count .cd-days small { font-size: .62em; margin-left: 2px; }
+html.tt-embed .wb-count .cd-clock:not(:empty)::before { content: '\00B7'; margin: 0 5px; color: var(--muted); }
+html.tt-embed .is-past .wb-count, html.tt-embed .is-today .wb-count { color: var(--accent); }
+
+/* PIN card — blank / picked states share this shell */
+html.tt-embed .wb-pin { display: flex; align-items: center; gap: 10px; width: 100%; height: 100%; box-sizing: border-box; border-left: 4px solid var(--cd, var(--tomato)); padding-left: 10px; }
+html.tt-embed .wb-info { flex: 1 1 auto; min-width: 0; }
+html.tt-embed .wb-date { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* PIN COMPACT = 2x1 (184x80) — minimal: icon + name + days-left only */
+html.tt-embed-pin-s .wb-root { padding: 10px 14px; }
+html.tt-embed-pin-s .wb-pin { gap: 8px; }
+html.tt-embed-pin-s .wb-icon { width: 36px; height: 36px; }
+html.tt-embed-pin-s .wb-name { font-size: 11px; }
+html.tt-embed-pin-s .wb-count .cd-days { font-size: 15px; }
+html.tt-embed-pin-s .wb-count .cd-clock { font-size: 11px; color: var(--muted); }
+html.tt-embed-pin-s .wb-date { display: none; }
+
+/* PIN WIDE = 3x1 (276x160) — big site card: icon RIGHT, count + date */
+html.tt-embed-pin-m .wb-root { padding: 14px 16px; }
+html.tt-embed-pin-m .wb-pin { gap: 12px; }
+html.tt-embed-pin-m .wb-icon { width: 64px; height: 64px; order: 2; }
+html.tt-embed-pin-m .wb-info { order: 1; }
+html.tt-embed-pin-m .wb-name { font-size: 14px; margin-bottom: 2px; }
+html.tt-embed-pin-m .wb-count .cd-days { font-size: 26px; }
+html.tt-embed-pin-m .wb-count .cd-clock { font-size: 13px; color: var(--muted); }
+html.tt-embed-pin-m .wb-date { font-size: 11px; margin-top: 3px; }
+
+/* STRIP = 5x1 (468x160) */
+html.tt-embed-strip .wb-root { padding: 12px 10px; align-items: stretch; }
+html.tt-embed-strip .wb-strip { display: flex; align-items: center; width: 100%; height: 100%; overflow-x: auto; box-sizing: border-box; }
+html.tt-embed-strip .wb-item { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; min-width: 126px; max-width: 168px; height: 100%; padding: 0 12px; border-left: 3px solid var(--cd, var(--tomato)); border-right: 1px solid var(--border); }
+html.tt-embed-strip .wb-item:last-child { border-right: none; }
+html.tt-embed-strip .wb-icon { width: 30px; height: 30px; }
+html.tt-embed-strip .wb-name { font-size: 11px; }
+html.tt-embed-strip .wb-count .cd-days { font-size: 13px; }
+html.tt-embed-strip .wb-count .cd-clock { font-size: 10px; color: var(--muted); }
+
+/* blank picker + empty states */
+html.tt-embed .wb-blank { width: 100%; text-align: center; padding: 12px; box-sizing: border-box; }
+html.tt-embed .wb-blank-label { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px; }
+html.tt-embed .wb-sel { width: 100%; max-width: 210px; font-family: inherit; font-size: 12px; color: var(--text); background: var(--input); border: 1px solid var(--border); border-radius: 8px; padding: 5px 6px 3px; }
+html.tt-embed .wb-none { text-align: center; padding: 12px; box-sizing: border-box; }
+html.tt-embed .wb-none-text { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+html.tt-embed .wb-plus { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--panel2); color: var(--text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+html.tt-embed .wb-plus:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+html.tt-embed .wb-plus svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+</style>
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1192,7 +1276,88 @@ renderPickers();
 initPresets();
 initShareView();
 renderBoard();
+
 runTicker();
+
+/* ── workbench embed widget (?embed=1&app=pin|strip) — INSIDE the IIFE so
+   store/parseTarget/paintCard/setIconEl/humanDate/tickables are in scope.
+   Bespoke widget UI; cards register into tickables so the page's own 1s
+   ticker paints them. Engine untouched. ── */
+try {
+if (document.documentElement.classList.contains('tt-embed')) {
+  var __wp = new URLSearchParams(location.search);
+  var __app = __wp.get('app') === 'pin' ? 'pin' : 'strip';
+  var __box = document.createElement('div');
+  __box.className = 'wb-root';
+  document.body.appendChild(__box);
+
+  function __byId(id) { return store.countdowns.filter(function (c) { return c.id === id; })[0] || null; }
+  function __nearest() {
+    return store.countdowns.slice().sort(function (a, b) { return parseTarget(a.target) - parseTarget(b.target); });
+  }
+  function __openTool() {
+    if (window.TTEvent) { try { TTEvent('tool_open', { tool: 'days_until', source: 'workbench_widget' }); } catch (e) {} }
+    var acked = false, t = null;
+    window.addEventListener('message', function (e) { if (e.data && e.data.tt === 'tt-msg-ack') { acked = true; if (t) clearTimeout(t); } });
+    var go = function () { try { window.open(location.pathname, '_blank'); } catch (e) {} };
+    if (window.parent === window) { go(); return; }
+    try { window.parent.postMessage({ tt: 'tt-open-tool', tool: 'days-until' }, '*'); } catch (e) {}
+    t = setTimeout(function () { if (!acked) go(); }, 600);
+  }
+  function __addPlus(parent) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'wb-plus'; b.title = 'Open Days Until';
+    b.setAttribute('aria-label', 'Open Days Until');
+    b.innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>';
+    b.addEventListener('click', __openTool);
+    parent.appendChild(b);
+  }
+  function __none() {
+    var ne = document.createElement('div'); ne.className = 'wb-none';
+    var tx = document.createElement('div'); tx.className = 'wb-none-text'; tx.textContent = 'No countdowns yet';
+    ne.appendChild(tx); __addPlus(ne); __box.appendChild(ne);
+  }
+  function __pinCard(parent, cd, itemClass) {
+    var card = document.createElement('div');
+    card.className = itemClass || 'wb-pin'; card.style.setProperty('--cd', cd.color);
+    var ic = document.createElement('div'); ic.className = 'wb-icon'; setIconEl(ic, cd.icon); card.appendChild(ic);
+    var info = document.createElement('div'); info.className = 'wb-info'; card.appendChild(info);
+    var nm = document.createElement('div'); nm.className = 'wb-name'; nm.textContent = cd.name; info.appendChild(nm);
+    var ct = document.createElement('div'); ct.className = 'wb-count'; info.appendChild(ct);
+    var dEl = document.createElement('span'); dEl.className = 'cd-days'; ct.appendChild(dEl);
+    var cEl = document.createElement('span'); cEl.className = 'cd-clock'; ct.appendChild(cEl);
+    var dt = document.createElement('div'); dt.className = 'wb-date'; dt.textContent = humanDate(parseTarget(cd.target)); info.appendChild(dt);
+    parent.appendChild(card);
+    var tk = { el: card, cd: cd, daysEl: dEl, clockEl: cEl };
+    tickables.push(tk); paintCard(tk, new Date());
+  }
+
+  if (__app === 'pin') {
+    var __cd = __byId(__wp.get('pin'));
+    if (__cd) { __pinCard(__box, __cd); }
+    else if (store.countdowns.length) {
+      var bl = document.createElement('div'); bl.className = 'wb-blank';
+      var lb = document.createElement('div'); lb.className = 'wb-blank-label'; lb.textContent = 'Track a countdown'; bl.appendChild(lb);
+      var sel = document.createElement('select'); sel.className = 'wb-sel'; sel.setAttribute('aria-label', 'Pick a countdown');
+      __nearest().forEach(function (c) {
+        var o = document.createElement('option'); o.value = c.id; o.textContent = c.name; sel.appendChild(o);
+      });
+      bl.appendChild(sel);
+      sel.addEventListener('change', function () {
+        var id = sel.value;
+        try { window.parent.postMessage({ tt: 'tt-block-config', block: 'dayspin', key: 'countdownId', value: id }, '*'); } catch (e) {}
+        var q = new URLSearchParams(location.search); q.set('pin', id);
+        location.search = q.toString();
+      });
+      __box.appendChild(bl);
+    } else { __none(); }
+  } else if (!store.countdowns.length) { __none(); }
+  else {
+    var row = document.createElement('div'); row.className = 'wb-strip'; __box.appendChild(row);
+    __nearest().forEach(function (c) { __pinCard(row, c, 'wb-item'); });
+  }
+}
+} catch (e) {}
 })();
 </script>
 

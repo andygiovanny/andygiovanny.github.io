@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-(function(){try{var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
+(function(){try{if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
 </script>
 <title>Focus Stats — Track Pomodoro Sessions, Focus Time &amp; Tasks | TomatoTimers</title>
 <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
@@ -493,6 +493,138 @@
   });
 })();
 </script>
+<script>
+/* Workbench embed (?embed=1&app=stats&size=pin|m|l) — stats: flag the mode
+   before the engine boots. The widget builder runs INSIDE the engine IIFE
+   (see "workbench embed widgets" near the end) where render/segRange/fmtDur
+   are in scope. */
+(function () {
+  try {
+    var p = new URLSearchParams(location.search);
+    if (p.get('embed') !== '1') return;
+    var r = document.documentElement;
+    var s = p.get('size');
+    r.classList.add('tt-embed');
+    r.classList.add('tt-embed-' + (s === 'pin' ? 'pin' : s === 'l' ? 'l' : 'm'));
+  } catch (e) {}
+})();
+</script>
+<style>
+/* Workbench embed (?embed=1&app=stats&size=pin|m|l) — stats widgets.
+   pin = ONE metric×period chip, 3x1 half-row (276x80), blank→picker bind.
+   m   = ONE chart (bars|donut|rhythm|heatmap), 6x4 (564x640) — moves the
+         page's own panel into the widget root so render() keeps painting it
+         (zero duplicated chart logic). Period pills switch the range live.
+   l   = Records & streaks, 9x4 (828x640), all-time by definition. */
+html.tt-embed .header,
+html.tt-embed #yt-promo,
+html.tt-embed .stage,
+html.tt-embed #toast,
+html.tt-embed #explainer,
+html.tt-embed #other-rhythm,
+html.tt-embed #tools,
+html.tt-embed .site-footer,
+html.tt-embed [id^="bsa-zone"],
+html.tt-embed .ads-lg-only { display: none !important; }
+html.tt-embed { overflow: hidden; }
+html.tt-embed body { margin: 0; }
+html.tt-embed .wb-root { width: 100vw; height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; position: relative; font-family: 'Baloo Tammudu', cursive, sans-serif; }
+html.tt-embed .wb-sel { width: 100%; min-width: 0; font-family: inherit; font-size: 12px; color: var(--text); background: var(--input); border: 1px solid var(--border); border-radius: 8px; padding: 5px 6px 3px; box-sizing: border-box; }
+html.tt-embed .wb-blank { width: 100%; text-align: center; box-sizing: border-box; }
+html.tt-embed .wb-blank-label { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px; }
+html.tt-embed .wb-blank-row { display: flex; gap: 6px; }
+html.tt-embed .wb-blank-row .wb-sel { flex: 1 1 0; width: auto; }
+html.tt-embed .wb-blank-note { font-size: 10px; color: var(--muted); margin-top: 6px; }
+html.tt-embed .wb-foot { flex: 0 0 auto; margin-top: 8px; text-align: center; }
+html.tt-embed .wb-foot button { font-family: inherit; font-size: 11px; color: var(--muted); background: var(--panel2); border: 1px solid var(--border); border-radius: 999px; padding: 4px 14px 2px; cursor: pointer; }
+html.tt-embed .wb-foot button:hover { color: var(--accent); border-color: var(--accent); }
+html.tt-embed .wb-gear { position: absolute; top: 8px; right: 10px; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border); background: var(--panel2); color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; z-index: 3; }
+html.tt-embed .wb-gear:hover { color: var(--accent); border-color: var(--accent); }
+html.tt-embed .wb-gear svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: block; }
+
+/* pin — 3x1 half-row (276x80) */
+html.tt-embed-pin .wb-root { padding: 8px 34px 8px 12px; justify-content: center; }
+html.tt-embed-pin .wb-pin { display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; }
+html.tt-embed-pin .wb-pin-ico { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: var(--panel2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+html.tt-embed-pin .wb-pin-ico img { width: 82%; height: 82%; object-fit: contain; }
+html.tt-embed-pin .wb-pin-txt { flex: 1; min-width: 0; line-height: 1.15; text-align: center; }
+html.tt-embed-pin .wb-pin-lbl { display: block; font-size: 10px; line-height: 1.5; padding-top: 2px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.tt-embed-pin .wb-pin-num { display: block; font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1.15; white-space: nowrap; overflow: visible; }
+html.tt-embed-pin .wb-blank { padding: 4px 0; }
+html.tt-embed-pin .wb-blank-label { font-size: 9px; margin-bottom: 4px; }
+html.tt-embed-pin .wb-blank-note { display: none; }
+html.tt-embed-pin .wb-sel { font-size: 11px; padding: 3px 5px 2px; }
+html.tt-embed-pin .wb-gear { top: 6px; right: 8px; }
+
+/* m + l shared — moved panel fills the widget */
+html.tt-embed-m .wb-root,
+html.tt-embed-l .wb-root { padding: 12px 30px 12px 16px; }
+html.tt-embed-m .wb-panel,
+html.tt-embed-l .wb-panel { flex: 1; min-height: 0; display: flex !important; flex-direction: column; background: var(--panel2); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin: 0; box-sizing: border-box; overflow: hidden; }
+html.tt-embed-m .wb-panel .panel-title,
+html.tt-embed-l .wb-panel .panel-title { font-size: 13px; margin: 0 0 4px; flex: 0 0 auto; }
+html.tt-embed-m .wb-panel .panel-sub,
+html.tt-embed-l .wb-panel .panel-sub { display: none; }
+
+/* m — bars */
+html.tt-embed-m .wb-panel .bars { flex: 1; min-height: 0; height: auto; }
+html.tt-embed-m .wb-panel .legend { margin-top: 6px; font-size: 11px; }
+
+/* m — donut */
+html.tt-embed-m .wb-panel .donut-wrap { flex: 1; min-height: 0; flex-wrap: nowrap; justify-content: center; }
+html.tt-embed-m .wb-panel .donut { width: 215px; height: 215px; }
+html.tt-embed-m .wb-panel .donut-hole { inset: 36px; }
+html.tt-embed-m .wb-panel .donut-total { font-size: 22px; }
+html.tt-embed-m .wb-panel .dlegend { flex: 0 1 auto; min-width: 0; }
+
+/* m — rhythm: stack day-of-week over hour-of-day */
+html.tt-embed-m .wb-panel .rhythm-grid { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; gap: 10px; flex: 1; min-height: 0; }
+html.tt-embed-m .wb-panel .rhythm-grid > div { display: flex; flex-direction: column; min-height: 0; }
+html.tt-embed-m .wb-panel .rhythm-grid > div + div { border-left: 0; padding-left: 0; border-top: 1px solid var(--border); padding-top: 8px; }
+html.tt-embed-m .wb-panel .mini { flex: 1; min-height: 0; height: auto; }
+html.tt-embed-m .wb-panel .rhythm-lbl { font-size: 11px; margin-bottom: 4px; flex: 0 0 auto; }
+
+/* m — heatmap: fixed window, no user scroll (newest right-aligned) */
+html.tt-embed-m .wb-panel .hm-flex { flex: 0 0 auto; margin: auto 0; }
+html.tt-embed-m .wb-panel .hm-scroll { overflow: hidden; }
+html.tt-embed-m .wb-panel .hm-cell { width: 12px; height: 12px; }
+html.tt-embed-m .wb-panel .hm-months { font-size: 9px; }
+html.tt-embed-m .wb-panel .hm-ylabels { grid-template-rows: repeat(7, 12px); gap: 3px; margin: 15px 0 6px; font-size: 9px; align-content: start; }
+html.tt-embed-m .wb-panel .hm-legend { margin-top: 6px; font-size: 10px; }
+html.tt-embed-m .wb-panel .hm-hours .hm-cell { height: auto; aspect-ratio: 1; }
+html.tt-embed-m .wb-panel .hm-hour-lbls { font-size: 8px; }
+html.tt-embed-m .wb-panel .dleg-row { white-space: nowrap; font-size: 11.5px; }
+html.tt-embed-m .wb-panel .empty-note,
+html.tt-embed-l .wb-panel .empty-note { margin: auto; }
+
+/* m — SHORT FACE (6x2, 564x320): bars/donut/heatmap drop into half-height
+   blocks automatically — rhythm keeps the tall 6x4 face. Height-adaptive via
+   the iframe viewport, one URL pattern serves both. */
+@media (max-height: 400px) {
+  html.tt-embed-m .wb-root { padding: 10px 30px 10px 16px; }
+  html.tt-embed-m .wb-panel { padding: 10px 14px; }
+  html.tt-embed-m .wb-panel .donut { width: 175px; height: 175px; }
+  html.tt-embed-m .wb-panel .donut-hole { inset: 29px; }
+  html.tt-embed-m .wb-panel .donut-total { font-size: 19px; }
+  html.tt-embed-m .wb-panel .legend { margin-top: 4px; }
+  html.tt-embed-m .wb-panel .hm-cell { width: 11px; height: 11px; }
+  html.tt-embed-m .wb-panel .hm-legend { margin-top: 4px; }
+}
+
+/* l — records & streaks: WIDE-SHORT 9x2 (828x320) — no dead bands */html.tt-embed-l .wb-panel { padding: 10px 14px; }
+html.tt-embed-l .wb-panel .rec-grid { flex: 1; min-height: 0; grid-template-columns: 190px 1fr; gap: 12px; }
+html.tt-embed-l .wb-panel .rec-streak { justify-content: center; }
+html.tt-embed-l .wb-panel .rec-flame img { height: 48px; width: 48px; }
+html.tt-embed-l .wb-panel .rec-streak-num { font-size: 26px; }
+html.tt-embed-l .wb-panel .rec-streak-lbl { font-size: 12px; margin-top: 0; }
+html.tt-embed-l .wb-panel .rec-streak-sub { font-size: 10.5px; }
+html.tt-embed-l .wb-panel .rec-list { justify-content: center; gap: 6px; }
+html.tt-embed-l .wb-panel .rec-row { padding: 8px 12px; }
+html.tt-embed-l .wb-panel .rec-row .rec-name { font-size: 12.5px; }
+html.tt-embed-l .wb-panel .rec-row .rec-val { font-size: 14px; }
+html.tt-embed-l .wb-panel .rec-row .rec-val small { display: inline; margin-left: 6px; font-size: 10.5px; }
+html.tt-embed-l .wb-foot { margin-top: 6px; }
+</style>
 </head>
 <body>
 
@@ -1448,6 +1580,183 @@ window.addEventListener('storage', function (e) {
     if (now - lastLiveRender > 5000) { lastLiveRender = now; render(); }
   }
 });
+
+/* ── workbench embed widgets (?embed=1&size=pin|m|l&pin=…) ── */
+var EMBED = /[?&]embed=1/.test(location.search);
+var __GEAR_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.01a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h.01a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>';
+var __wbRoot = null, __wbPin = null;
+var __WB_METRICS = {
+  focus:    { name: 'Focus',     ico: '/assets/images/icons/duck-headphones.png' },
+  breaks:   { name: 'Breaks',    ico: '/assets/images/icons/duck-strawhat.png' },
+  tasks:    { name: 'Tasks',     ico: '/assets/images/icons/duck-school.png' },
+  sessions: { name: 'Sessions',  ico: '/assets/images/icons/duck-monocle.png' }
+};
+var __WB_SEGS = { today: 'Today', week: 'This week', month: 'This month', all: 'All time' };
+var __WB_CHARTS = {
+  bars:    { name: 'Last 14 days',  segs: false },
+  donut:   { name: 'Per technique', segs: true },
+  rhythm:  { name: 'Your rhythm',   segs: true },
+  heatmap: { name: 'Activity',      segs: true }
+};
+
+function __wbParsePin(raw, size) {
+  if (!raw) return null;
+  var a = raw.split(':')[0], b = raw.split(':')[1];
+  if (size === 'pin') {
+    if (__WB_METRICS[a] && __WB_SEGS[b]) return { kind: 'metric', metric: a, seg: b };
+    return null;
+  }
+  if (__WB_CHARTS[a]) return { kind: 'chart', chart: a, seg: __WB_SEGS[b] ? b : 'week' };
+  return null;
+}
+function __wbMkRoot() {
+  __wbRoot = document.createElement('div');
+  __wbRoot.className = 'wb-root';
+  document.body.appendChild(__wbRoot);
+  return __wbRoot;
+}
+function __wbBind(value) { /* tell the board + reload bound */
+  try { window.parent.postMessage({ tt: 'tt-block-config', block: __WB_SIZE === 'pin' ? 'statspin' : 'statschart', key: 'statPin', value: value }, '*'); } catch (e) {}
+  var q = new URLSearchParams(location.search);
+  q.set('pin', value);
+  location.search = q.toString();
+}
+function __wbGear() {
+  var g = document.createElement('button');
+  g.type = 'button'; g.className = 'wb-gear'; g.title = 'Change this widget';
+  g.setAttribute('aria-label', 'Change this widget');
+  g.innerHTML = __GEAR_SVG;
+  g.addEventListener('click', function () { __wbBlank(true); });
+  if (__wbRoot) __wbRoot.appendChild(g);
+}
+function __wbOpenTool() {
+  if (window.TTEvent) { try { TTEvent('tool_open', { tool: 'stats', source: 'workbench_widget' }); } catch (e) {} }
+  var acked = false, t = null;
+  window.addEventListener('message', function (e) { if (e.data && e.data.tt === 'tt-msg-ack') { acked = true; if (t) clearTimeout(t); } });
+  var go = function () { try { window.open(location.pathname, '_blank'); } catch (e) {} };
+  if (window.parent === window) { go(); return; }
+  try { window.parent.postMessage({ tt: 'tt-open-tool', tool: 'stats' }, '*'); } catch (e) {}
+  t = setTimeout(function () { if (!acked) go(); }, 600);
+}
+function __wbBlank(repicking) {
+  if (!__wbRoot) __wbMkRoot(); else __wbRoot.innerHTML = '';
+  var bl = document.createElement('div');
+  bl.className = 'wb-blank';
+  var lab = document.createElement('div');
+  lab.className = 'wb-blank-label';
+  lab.textContent = __WB_SIZE === 'pin' ? 'Pick a stat' : 'Pick your chart';
+  bl.appendChild(lab);
+  var row = document.createElement('div');
+  row.className = 'wb-blank-row';
+  var s1 = document.createElement('select');
+  s1.className = 'wb-sel';
+  var s2 = document.createElement('select');
+  s2.className = 'wb-sel';
+  if (__WB_SIZE === 'pin') {
+    Object.keys(__WB_METRICS).forEach(function (k) {
+      var o = document.createElement('option'); o.value = k; o.textContent = __WB_METRICS[k].name; s1.appendChild(o);
+    });
+    Object.keys(__WB_SEGS).forEach(function (k) {
+      var o = document.createElement('option'); o.value = k; o.textContent = __WB_SEGS[k]; s2.appendChild(o);
+    });
+    s1.value = 'focus'; s2.value = 'week';
+  } else {
+    Object.keys(__WB_CHARTS).forEach(function (k) {
+      var o = document.createElement('option'); o.value = k; o.textContent = __WB_CHARTS[k].name; s1.appendChild(o);
+    });
+    Object.keys(__WB_SEGS).forEach(function (k) {
+      var o = document.createElement('option'); o.value = k; o.textContent = __WB_SEGS[k]; s2.appendChild(o);
+    });
+    s1.value = 'donut'; s2.value = 'week';
+  }
+  row.appendChild(s1); row.appendChild(s2);
+  bl.appendChild(row);
+  var note = document.createElement('div');
+  note.className = 'wb-blank-note';
+  note.textContent = repicking ? 'Pick a new one — the board updates when you do.' : 'Drop more widgets for more charts.';
+  bl.appendChild(note);
+  __wbRoot.appendChild(bl);
+  function maybeBind() {
+    if (__WB_SIZE === 'pin') __wbBind(s1.value + ':' + s2.value);
+    else if (__WB_CHARTS[s1.value].segs) __wbBind(s1.value + ':' + s2.value);
+    else __wbBind(s1.value);
+  }
+  s1.addEventListener('change', maybeBind);
+  s2.addEventListener('change', function () {
+    if (__WB_SIZE === 'pin') __wbBind(s1.value + ':' + s2.value);
+  });
+  s2.style.display = (__WB_SIZE !== 'pin' && !__WB_CHARTS[s1.value].segs) ? 'none' : '';
+  s1.addEventListener('change', function () {
+    s2.style.display = (__WB_SIZE !== 'pin' && !__WB_CHARTS[s1.value].segs) ? 'none' : '';
+  });
+  if (repicking) __wbGear();
+}
+function __wbPaintPin() {
+  if (!__wbRoot || !__wbPin || __wbPin.kind !== 'metric') return;
+  var box = __wbRoot.querySelector('.wb-pin-num');
+  if (!box) return;
+  var rg = segRange[__wbPin.seg]();
+  var r = window.ttStats.report(rg.from, rg.to);
+  box.textContent = __wbPin.metric === 'focus' ? fmtDur(r.focusSec)
+    : __wbPin.metric === 'breaks' ? fmtDur(r.breakSec)
+    : __wbPin.metric === 'tasks' ? String(r.tasks)
+    : String(r.focusN + r.breakN);
+}
+function __wbPinMode() {
+  var m = __WB_METRICS[__wbPin.metric];
+  __wbMkRoot();
+  var pin = document.createElement('div');
+  pin.className = 'wb-pin';
+  pin.innerHTML = '<span class="wb-pin-ico"><img src="' + m.ico + '" alt=""></span>' +
+    '<span class="wb-pin-txt"><span class="wb-pin-lbl">' + esc(m.name) + ' · ' + esc(__WB_SEGS[__wbPin.seg]) + '</span>' +
+    '<span class="wb-pin-num">–</span></span>';
+  __wbRoot.appendChild(pin);
+  __wbGear();
+  __wbPaintPin();
+}
+function __wbChartMode() {
+  var panel;
+  if (__wbPin.chart === 'heatmap') panel = $('activityPanel');
+  else if (__wbPin.chart === 'bars') panel = $('bars').closest('.panel');
+  else if (__wbPin.chart === 'donut') panel = $('donutWrap').closest('.panel');
+  else panel = $('dowBars').closest('.panel');
+  if (!panel) return;
+  __wbMkRoot();
+  /* period pills REMOVED in the widget (Andy's call 2026-11-25): the gear
+     picker is the single way to change period — one chart per widget, no
+     on-tile switcher. The bound pin seg still drives render(). */
+  panel.classList.add('wb-panel');
+  __wbRoot.appendChild(panel);
+  __wbGear();
+  if (__WB_CHARTS[__wbPin.chart].segs) curSeg = __wbPin.seg;
+}
+function __wbRecordsMode() {
+  var panel = $('recList').closest('.panel');
+  if (!panel) return;
+  __wbMkRoot();
+  panel.classList.add('wb-panel');
+  __wbRoot.appendChild(panel);
+  var foot = document.createElement('div');
+  foot.className = 'wb-foot';
+  var b = document.createElement('button');
+  b.type = 'button'; b.textContent = 'Open full stats →';
+  b.addEventListener('click', __wbOpenTool);
+  foot.appendChild(b);
+  __wbRoot.appendChild(foot);
+}
+var __WB_SIZE = '';
+if (EMBED) {
+  __WB_SIZE = document.documentElement.className.indexOf('tt-embed-pin') !== -1 ? 'pin'
+    : document.documentElement.className.indexOf('tt-embed-l') !== -1 ? 'l' : 'm';
+  __wbPin = __wbParsePin(new URLSearchParams(location.search).get('pin') || '', __WB_SIZE);
+  if (__WB_SIZE === 'l') __wbRecordsMode();
+  else if (!__wbPin) __wbBlank(false);
+  else if (__WB_SIZE === 'pin') __wbPinMode();
+  else __wbChartMode();
+  /* keep chips live: wrap render so the pin chip repaints on data changes */
+  var __origRender = render;
+  render = function () { __origRender(); __wbPaintPin(); };
+}
 
 $('loadDemo').addEventListener('click', loadDemo);
 if (!window.ttStats) {

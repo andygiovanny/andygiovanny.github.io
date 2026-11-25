@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-(function(){try{var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
+(function(){try{if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
 </script>
 <title>Custom Timer — Build Your Own Interval, Workout & Study Timer | TomatoTimers</title>
 <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
@@ -135,6 +135,153 @@
 </script>
     <script>window.TT_TECHNIQUE = 'custom';</script>
     <script src="/assets/js/tt-events.js?v=1.0"></script>
+<script>
+/* ── Workbench embed flag (?embed=1&size=s|m|l&profile=<id>) ──
+   Adds classes before paint; &profile= pre-seeds byo_current so the engine
+   (which runs later, at end of body) boots straight into that profile —
+   invalid ids fall back to the user's first timer (engine's own rule).
+   Andy's rule: complex setup stays on the standalone page; the widget RUNS
+   a profile (picked here now, via the board's Custom tab later). */
+(function () {
+    try {
+        var p = new URLSearchParams(location.search);
+        if (p.get('embed') !== '1') return;
+        var r = document.documentElement;
+        r.classList.add('tt-embed');
+        var s = p.get('size');
+        if (s === 's' || s === 'm' || s === 'l') r.classList.add('tt-embed-' + s);
+        var prof = p.get('profile');
+        if (prof) { try { localStorage.setItem('byo_current', String(prof).slice(0, 40)); } catch (e) {} }
+    } catch (e) {}
+})();
+</script>
+<script>
+/* "+" build button — shown in embed widgets ONLY when no saved profile exists
+   (the empty state). Click asks the host page to open settings: the future
+   workbench board answers and opens its universal settings on the Custom tab;
+   anyone else (or silence for 600ms) falls back to the standalone page in a
+   new tab. Engine untouched — the 3 timer controls hide in this state. */
+window.addEventListener('DOMContentLoaded', function () {
+    try {
+        var root = document.documentElement;
+        if (!root.classList.contains('tt-embed')) return;
+        var timers = null;
+        try { timers = JSON.parse(localStorage.getItem('byo_timers') || '[]'); } catch (e) {}
+        if (Array.isArray(timers) && timers.length) return;   /* profiles exist — the widget runs one */
+        root.classList.add('tt-embed-empty');
+        var pos = document.getElementById('secPos');
+        if (pos) pos.textContent = 'press ＋ to build one';
+        var controls = document.querySelector('.controls');
+        if (!controls) return;
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cbtn secondary tt-embed-plus';
+        b.id = 'embedPlusBtn';
+        b.setAttribute('aria-label', 'Build your timer');
+        b.title = 'Build your timer';
+        b.innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>';
+        controls.appendChild(b);
+        var acked = false, fallbackTimer = null;
+        window.addEventListener('message', function (e) {
+            try { if (e.data && e.data.tt === 'tt-settings-ack') { acked = true; if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; } } } catch (err) {}
+        });
+        b.addEventListener('click', function () {
+            if (window.TTEvent) { try { TTEvent('tool_open', { tool: 'custom_timer_builder', source: 'workbench_widget' }); } catch (e) {} }
+            var openStandalone = function () { try { window.open(location.pathname, '_blank'); } catch (e) {} };
+            if (window.parent === window) { openStandalone(); return; }
+            acked = false;
+            try { window.parent.postMessage({ tt: 'tt-open-settings', technique: 'custom' }, '*'); } catch (e) {}
+            fallbackTimer = setTimeout(function () { if (!acked) openStandalone(); }, 600);
+        });
+    } catch (e) {}
+});
+</script>
+<style>
+/* ╔═ Workbench embed widgets (?embed=1&size=s|m|l[&profile=id]) ─ custom-timer ═╗
+   Engine untouched. Identity elements: phase name (.sec-label), phase
+   progress bar, digits. The builder / picker / tasks / stats are page-only
+   (Andy's rule) — hidden in every size. The builder overlay is a .stage
+   sibling so `.stage ~ *` already kills it (it can auto-open on first
+   visit — never in a widget). */
+html.tt-embed .header,
+html.tt-embed #yt-promo,
+html.tt-embed .pin-row,
+html.tt-embed [id^="bsa-zone"],
+html.tt-embed #vignette,
+html.tt-embed .stage ~ * { display: none !important; }
+
+html.tt-embed { overflow: hidden; }
+html.tt-embed .stage {
+    max-width: none; margin: 0; width: 100%; min-height: 100vh; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 14px 16px; box-sizing: border-box;
+}
+html.tt-embed .mascot-wrap { min-height: 0; }
+html.tt-embed .timer-bar,
+html.tt-embed .stats-line,
+html.tt-embed .task-wrap { display: none !important; }   /* page-only UI */
+
+/* ── SMALL = 5x1 (468x160) horizontal bar: mascot | phase name + digits + bar | controls ── */
+html.tt-embed-s .stage {
+    display: grid; height: 160px;
+    grid-template-columns: 76px minmax(0, 1fr) auto;
+    grid-template-rows: 1fr auto auto auto 1fr;
+    align-items: center; justify-items: start;
+    gap: 3px 12px; padding: 0 20px;
+}
+html.tt-embed-s .mascot-wrap { grid-area: 1/1/6/2; }
+html.tt-embed-s .mascot-vid { width: 76px; height: 76px; }
+html.tt-embed-s .sec-label { grid-area: 2/2; font-size: 9px; gap: 6px; margin: 0; flex-wrap: nowrap; max-width: 100%; overflow: hidden; }
+html.tt-embed-s #secName { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+html.tt-embed-s #secPos, html.tt-embed-s #loopBadge { font-size: 9px; flex-shrink: 0; }
+html.tt-embed-s .digits {
+    grid-area: 3/2; font-size: 40px; letter-spacing: 1px; line-height: 1;
+    text-shadow: none; justify-self: start;
+}
+html.tt-embed-s .energy-wrap#barWrap { grid-area: 4/2/5/4; width: 100%; margin: 0; }
+html.tt-embed-s .energy-label { display: none; }
+html.tt-embed-s .energy-bar { height: 8px; }
+html.tt-embed-s .controls { grid-area: 2/3/4/4; margin: 0; gap: 6px; }
+html.tt-embed-s .cbtn { width: 40px; height: 40px; }
+html.tt-embed-s .cbtn svg { width: 18px; height: 18px; }
+html.tt-embed-s .extend-wrap, html.tt-embed-s .ambience-row { display: none !important; }
+html.tt-embed-s #toast { bottom: auto; top: 4px; }
+
+/* ── MEDIUM = 6x4 (564x640) vertical workspace ── */
+html.tt-embed-m .stage { padding: 20px; gap: 4px; justify-content: space-evenly; }
+html.tt-embed-m .mascot-vid { width: 160px; height: 160px; }
+html.tt-embed-m .sec-label { font-size: 15px; gap: 10px; margin: 0; flex-wrap: nowrap; }
+html.tt-embed-m #secName { font-size: 20px; }
+html.tt-embed-m .energy-wrap#barWrap { width: 100%; max-width: 440px; margin: 0; }
+html.tt-embed-m .energy-bar { height: 14px; }
+html.tt-embed-m .energy-label { font-size: 13px; margin-bottom: 3px; }
+html.tt-embed-m .digits { font-size: 96px; line-height: 1; margin-top: 0; }
+html.tt-embed-m .controls { margin: 0; gap: 14px; }
+html.tt-embed-m .cbtn { width: 54px; height: 54px; }
+html.tt-embed-m .cbtn svg { width: 22px; height: 22px; }
+html.tt-embed-m .extend-wrap { margin: 0; }
+html.tt-embed-m .extend-wrap .mini-btn { font-size: 13px; padding: 7px 16px 5px; }
+html.tt-embed-m .ambience-row { margin: 0; }
+
+/* ── LARGE = 9x4 (828x640) horizontal workspace ── */
+html.tt-embed-l .stage { padding: 12px 28px; gap: 4px; justify-content: space-evenly; }
+html.tt-embed-l .mascot-vid { width: 220px; height: 220px; }
+html.tt-embed-l .sec-label { font-size: 17px; gap: 12px; margin: 0; flex-wrap: nowrap; }
+html.tt-embed-l #secName { font-size: 22px; }
+html.tt-embed-l .energy-wrap#barWrap { width: 100%; max-width: 620px; margin: 0; }
+html.tt-embed-l .energy-bar { height: 16px; }
+html.tt-embed-l .energy-label { font-size: 14px; margin-bottom: 3px; }
+html.tt-embed-l .digits { font-size: 134px; line-height: 1; margin-top: 0; }
+html.tt-embed-l .controls { margin: 0; gap: 16px; }
+html.tt-embed-l .extend-wrap { margin: 0; }
+html.tt-embed-l .ambience-row { margin: 0; }
+
+/* "+" build button — empty-profile state only (script adds .tt-embed-empty) */
+html.tt-embed .tt-embed-plus { display: none; }
+html.tt-embed-empty .controls .cbtn:not(.tt-embed-plus) { display: none !important; }
+html.tt-embed-empty .tt-embed-plus { display: inline-flex; align-items: center; justify-content: center; }
+html.tt-embed-empty .tt-embed-plus:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: none; }
+</style>
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
 <style>
   :root {

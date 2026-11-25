@@ -7,6 +7,7 @@
 /* Language memory: if the visitor picked a language before, go straight to it. */
 (function () {
   try {
+    if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */
     var l = localStorage.getItem('tt_lang');
     if (!l || l === 'en') return;
     var p = location.pathname;
@@ -1012,7 +1013,7 @@
 body.theme-dark .lang-globe { color: #E8D9B8; }
 body.theme-classic .lang-globe { color: #c65e5e; }
 </style>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>if(!/[?&]embed=1/.test(location.search))document.write('<script src="https://apis.google.com/js/platform.js" async defer><\/script>');</script>
              <!-- YT Subs button -->
 <script type="text/javascript">
 (function(){
@@ -1073,6 +1074,126 @@ body.theme-classic .lang-globe { color: #c65e5e; }
   });
 })();
 </script>
+<script>
+/* ── Workbench embed flag (?embed=1&size=s|m|l) — adds classes before paint,
+   same pattern as the main page. Spec: AGENTS.md "Workbench". ── */
+(function () {
+    try {
+        var p = new URLSearchParams(location.search);
+        if (p.get('embed') !== '1') return;
+        var r = document.documentElement;
+        r.classList.add('tt-embed');
+        var s = p.get('size');
+        if (s === 's' || s === 'm' || s === 'l') r.classList.add('tt-embed-' + s);
+    } catch (e) {}
+})();
+</script>
+<style>
+/* ══ Workbench embed widgets (?embed=1&size=s|m|l) — 52/17 ══
+   Engine untouched: chrome hidden, per-size layout only. Kept on M/L: the
+   sprint energy bar + the sprint cycle strip (the technique's identity).
+   Dropped at S: energy bar, cycle strip, ambience pill (space). The break
+   panel survives at every size (it carries the skip-break control). */
+html.tt-embed .header,
+html.tt-embed #yt-promo,
+html.tt-embed .pin-row,
+html.tt-embed [id^="bsa-zone"],
+html.tt-embed #vignette,
+html.tt-embed .stage ~ * { display: none !important; }
+
+html.tt-embed { overflow: hidden; }   /* exact-fit frames: never show a scrollbar */
+html.tt-embed .break-panel.open { animation: none; }   /* no room for the bounce in a widget frame */
+html.tt-embed .stage {
+    max-width: none; margin: 0; width: 100%; min-height: 100vh; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 14px 16px; box-sizing: border-box;
+}
+html.tt-embed .mascot-wrap { min-height: 0; }
+html.tt-embed .tm-active-line { display: none !important; }   /* reserves ~31px invisible (same gotcha as the pomodoro widget) */
+html.tt-embed #toast { bottom: 8px; }
+html.tt-embed-s #toast { bottom: auto; top: 4px; }   /* hidden toast slides from the top in the bar, never grows the frame */
+
+/* ── SMALL = 5x1 (468x160) horizontal bar: mascot | digits | controls ── */
+/* grid: mascot | energy/digits/strip stack | controls column */
+html.tt-embed-s .stage {
+    display: grid; height: 160px;
+    grid-template-columns: 76px minmax(0, 1fr) auto;
+    grid-template-rows: 1fr auto auto auto 1fr;
+    align-items: center; justify-items: center;
+    gap: 4px 12px; padding: 0 12px;
+}
+/* Andy's S layout (2026-11-23): TIMER ON TOP, all bars BELOW it */
+html.tt-embed-s .mascot-wrap { grid-area: 1/1/6/2; min-height: 0; }
+html.tt-embed-s #tomato, html.tt-embed-s #chickVideo { width: 76px; height: 76px; }
+html.tt-embed-s .digits {
+    grid-area: 2/2; font-size: 48px; letter-spacing: 1px; line-height: 1;
+    text-shadow: none; transform: none;
+}
+html.tt-embed-s .energy-wrap {
+    grid-area: 3/2; display: block; width: 100%; max-width: 240px; margin: 0;
+}
+html.tt-embed-s .energy-label { font-size: 9px; margin-bottom: 2px; }
+/* Andy: the meter text stays visible at S, just tiny */
+html.tt-embed-s .energy-bar { height: 8px; }
+html.tt-embed-s .cycle-strip {
+    grid-area: 4/2/5/4; display: block; width: auto; max-width: none; margin: 0;
+    justify-self: start;   /* left-align with the bar above, not centered under the buttons */
+}
+html.tt-embed-s .sprint-track { max-width: 240px; width: 240px; gap: 4px; }
+html.tt-embed-s .sprint-seg, html.tt-embed-s .sprint-dot { height: 8px; }
+html.tt-embed-s .sprint-dot { width: 8px; }
+/* Andy: pad the stats line off the strip */
+html.tt-embed-s .cycle-stats { font-size: 10px; line-height: 1.2; margin-top: 5px; }
+html.tt-embed-s .sess-history { display: none; }
+/* Andy: controls HORIZONTAL, not the vertical stack */
+html.tt-embed-s .controls { grid-area: 2/3; flex-direction: row; margin-top: 0; gap: 6px; }
+html.tt-embed-s .cbtn { width: 40px; height: 40px; }
+html.tt-embed-s .cbtn svg { width: 18px; height: 18px; }
+/* the ambience wrapper div is empty at S — hide it entirely or its 4px
+   margin-top creates an implicit 2nd grid row and grows the frame */
+html.tt-embed-s .stage > div:has(> .ambience-master-pill) { display: none !important; }
+html.tt-embed-s .break-panel, html.tt-embed-s .tm-zero-overlay { grid-area: 1/1/6/4; margin: 0; }
+/* break = compact tag (title + actions only, idea/hint dropped) */
+html.tt-embed-s .break-panel.open {
+    display: block; position: absolute; left: 6px; bottom: 4px; margin: 0;
+    max-width: 210px; padding: 4px 8px; border-radius: 12px;
+}
+html.tt-embed-s .break-ui > :not(.break-title):not(.break-actions) { display: none; }
+html.tt-embed-s .break-title {
+    font-size: 11px; line-height: 1.3; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; max-width: 194px;
+}
+html.tt-embed-s .break-actions { margin-top: 2px; display: flex; gap: 6px; }
+html.tt-embed-s .mini-btn { font-size: 11px; line-height: 1.2; padding: 2px 8px; }
+
+/* ── MEDIUM = 6x4 (564x640) vertical workspace ── */
+html.tt-embed-m .stage { padding: 16px 20px; gap: 4px; }
+html.tt-embed-m #tomato, html.tt-embed-m #chickVideo { width: 160px; height: 160px; }
+html.tt-embed-m .energy-wrap { max-width: 440px; width: 100%; margin: 4px auto 6px; }
+html.tt-embed-m .energy-bar { height: 14px; }
+html.tt-embed-m .energy-label { font-size: 13px; margin-bottom: 3px; }
+html.tt-embed-m .digits { font-size: 96px; margin-top: 12px; }
+html.tt-embed-m .controls { margin-top: 6px; gap: 14px; }
+html.tt-embed-m .cbtn { width: 54px; height: 54px; }
+html.tt-embed-m .cbtn svg { width: 22px; height: 22px; }
+html.tt-embed-m .ambience-master-pill { margin-top: 6px; }
+html.tt-embed-m .cycle-strip { margin-top: 10px; width: 100%; }
+html.tt-embed-m .sprint-track { max-width: 460px; }
+html.tt-embed-m .sess-history { display: none; }
+html.tt-embed-m .break-panel { max-width: 400px; margin-top: 8px; }
+
+/* ── LARGE = 9x4 (828x640) horizontal workspace ── */
+html.tt-embed-l .stage { padding: 16px 28px; gap: 4px; }
+html.tt-embed-l #tomato, html.tt-embed-l #chickVideo { width: 168px; height: 168px; }
+html.tt-embed-l .energy-wrap { max-width: 620px; width: 100%; margin: 2px auto 4px; }
+html.tt-embed-l .energy-bar { height: 16px; }
+html.tt-embed-l .digits { font-size: 134px; line-height: 1; margin-top: 20px; }
+html.tt-embed-l .controls { margin-top: 4px; }
+html.tt-embed-l .cycle-strip { margin-top: 8px; width: 100%; }
+html.tt-embed-l .sprint-track { max-width: 600px; }
+html.tt-embed-l .sess-history { display: none; }
+html.tt-embed-l .break-panel { max-width: 420px; margin-top: 6px; }
+</style>
 <base target="_blank">
 
 <!-- Google tag (gtag.js) -->
@@ -2191,7 +2312,8 @@ window.startWork = function () {
         { id:'classroom', file:'/ambience/audio/classroom.ogg' },
         { id:'lofi1', file:'/ambience/audio/lofi1.ogg' },
         { id:'lofi2', file:'/ambience/audio/lofi2.ogg' },
-        { id:'lofi3', file:'/ambience/audio/lofi3.ogg' },
+        { id:'lofi3', file:'/ambience/audio/lofi3.ogg' },
+
         { id:'jazz1', file:'/ambience/audio/jazz1.ogg' },
         { id:'jazz2', file:'/ambience/audio/jazz2.ogg' },
         { id:'jazz3', file:'/ambience/audio/jazz3.ogg' },

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-(function(){try{var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
+(function(){try{if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */var l=localStorage.getItem('tt_lang');if(!l||l==='en')return;var p=location.pathname;if(/^\/(id|es|pt|vi)(\/|$)/.test(p))return;location.replace('/'+l+(p==='/'?'/':p));}catch(e){}})();
 </script>
 <title>Streak Counter — Daily Check-ins &amp; Days Since Anything | TomatoTimers</title>
 <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png"/>
@@ -438,6 +438,97 @@
 })();
 </script>
 <base target="_blank">
+<script>
+/* Workbench embed (?embed=1&app=pin|cal) — streaks: flag the mode before the
+   engine boots. The widget builder itself runs INSIDE the engine IIFE (after
+   renderAll) where store/byId/toggleToday/currentStreak/setIconEl are in
+   scope — see "workbench embed widgets" near the end of the engine. */
+(function () {
+  try {
+    var p = new URLSearchParams(location.search);
+    if (p.get('embed') !== '1') return;
+    var r = document.documentElement;
+    r.classList.add('tt-embed');
+    r.classList.add('tt-embed-' + (p.get('app') === 'cal' ? 'cal' : 'pin'));
+  } catch (e) {}
+})();
+</script>
+<style>
+/* Workbench embed (?embed=1&app=pin|cal) — streaks.
+   pin = ONE streak + tap-to-check-in, 2x1 half-row (184x80).
+   cal = streak list + month calendar, 9x4 (828x640) — REUSES the page's own
+   #chips + #calWrap (moved into the widget root) so renderAll keeps painting
+   them; zero duplicated calendar logic. */
+html.tt-embed .header,
+html.tt-embed .stage,
+html.tt-embed #yt-promo,
+html.tt-embed #addForm,
+html.tt-embed #stats,
+html.tt-embed #manage,
+html.tt-embed #dataRow,
+html.tt-embed #emptyState,
+html.tt-embed #explainer,
+html.tt-embed #other-rhythm,
+html.tt-embed #tools,
+html.tt-embed .site-footer,
+html.tt-embed [id^="bsa-zone"],
+html.tt-embed .ads-lg-only,
+html.tt-embed #vignette { display: none !important; }
+html.tt-embed { overflow: hidden; }
+html.tt-embed body { margin: 0; }
+html.tt-embed .wb-root { width: 100vw; height: 100vh; box-sizing: border-box; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+html.tt-embed .wb-icon { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden; background: var(--panel2); border: 1px solid var(--border); }
+html.tt-embed .wb-icon img { width: 82%; height: 82%; object-fit: contain; }
+html.tt-embed .wb-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.25; }
+html.tt-embed .wb-mark { flex: 0 0 auto; border-radius: 50%; border: 1px solid var(--border); background: var(--panel2); color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+html.tt-embed .wb-mark svg { width: 62%; height: 62%; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; display: block; }
+html.tt-embed .wb-mark.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+/* blank picker + empty states (same shapes as the days-until widgets) */
+html.tt-embed .wb-blank { width: 100%; text-align: center; padding: 10px 14px; box-sizing: border-box; }
+html.tt-embed .wb-blank-label { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px; }
+html.tt-embed .wb-sel { width: 100%; max-width: 100%; font-family: inherit; font-size: 12px; color: var(--text); background: var(--input); border: 1px solid var(--border); border-radius: 8px; padding: 5px 6px 3px; }
+html.tt-embed .wb-none { text-align: center; padding: 12px; box-sizing: border-box; }
+html.tt-embed .wb-none-text { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+html.tt-embed .wb-plus { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--panel2); color: var(--text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+html.tt-embed .wb-plus:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+html.tt-embed .wb-plus svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+
+/* PIN = 2x1 half-row (184x80): icon + name + streak count + check-in */
+html.tt-embed-pin #chips, html.tt-embed-pin #calWrap { display: none !important; }
+html.tt-embed-pin .wb-root { padding: 10px 14px; }
+html.tt-embed-pin .wb-pin { display: flex; align-items: center; gap: 8px; width: 100%; height: 100%; box-sizing: border-box; border-left: 4px solid var(--cd, var(--accent)); padding-left: 10px; }
+html.tt-embed-pin .wb-icon { width: 36px; height: 36px; }
+html.tt-embed-pin .wb-info { flex: 1 1 auto; min-width: 0; }
+html.tt-embed-pin .wb-name { font-size: 11px; }
+html.tt-embed-pin .wb-count { font-size: 15px; white-space: nowrap; line-height: 1.2; }
+html.tt-embed-pin .wb-count .wb-flame { display: inline-flex; margin-left: 4px; vertical-align: -2px; }
+html.tt-embed-pin .wb-count .wb-flame svg { width: 14px; height: 14px; fill: var(--accent); display: block; }
+html.tt-embed-pin .wb-mark { width: 30px; height: 30px; }
+
+/* CAL = 9x4 (828x640): streak list left, calendar right */
+html.tt-embed-cal .wb-root { padding: 18px; gap: 18px; align-items: stretch; justify-content: flex-start; }
+html.tt-embed-cal .wb-list { flex: 0 0 248px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; min-height: 0; }
+html.tt-embed-cal .wb-cal { flex: 1 1 auto; display: flex; flex-direction: column; min-width: 0; }
+html.tt-embed-cal .wb-cal-foot { flex: 0 0 auto; }
+/* chips become the vertical streak list */
+html.tt-embed-cal #chips { flex-direction: column !important; align-items: stretch !important; flex-wrap: nowrap !important; gap: 8px !important; margin: 0 !important; justify-content: flex-start !important; }
+html.tt-embed-cal .chip { height: auto; min-height: 40px; border-radius: 12px; padding: 6px 10px; width: 100%; box-sizing: border-box; }
+html.tt-embed-cal .chip.sel { border-color: var(--accent); }
+html.tt-embed-cal .chip .cnum { margin-left: auto; }
+html.tt-embed-cal .wb-mark { width: 24px; height: 24px; }
+/* the calendar fills its pane */
+html.tt-embed-cal #calWrap { flex: 1 1 auto; display: flex !important; flex-direction: column; min-height: 0; margin: 0 !important; }
+html.tt-embed-cal .cal-grid { flex: 1 1 auto; grid-auto-rows: 1fr; }
+html.tt-embed-cal .cal-day { min-height: 0; }
+html.tt-embed-cal .cal-hint { margin-top: 6px; }
+html.tt-embed-cal .wb-add { width: 100%; margin-top: 8px; background: var(--panel2); border: 1px solid var(--border); color: var(--muted); border-radius: 12px; font-family: inherit; font-size: 13px; padding: 8px 12px 6px; cursor: pointer; }
+html.tt-embed-cal .wb-add:hover { color: var(--accent); border-color: var(--accent); }
+/* toast must fit the small frames — full-page pill otherwise explodes the pin */
+html.tt-embed #toast { bottom: 6px; padding: 4px 12px 3px; font-size: 11px; gap: 6px;
+  max-width: calc(100vw - 20px); box-sizing: border-box; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+html.tt-embed #toast button { font-size: 11px; }
+</style>
 </head>
 <body>
 
@@ -1411,6 +1502,131 @@ renderPickers();
 refreshModePills();
 initPresets();
 renderAll();
+
+/* ── workbench embed widgets (?embed=1&app=pin|cal) — INSIDE the IIFE so
+   store/byId/save/currentStreak/toggleToday/todayKey/setIconEl are in scope.
+   cal mode REUSES the page's own #chips + #calWrap (moved into the widget
+   root) so renderAll keeps painting them — zero duplicated calendar logic.
+   Engine untouched. ── */
+try {
+if (document.documentElement.classList.contains('tt-embed')) {
+  var __wp = new URLSearchParams(location.search);
+  var __app = __wp.get('app') === 'cal' ? 'cal' : 'pin';
+  var __box = document.createElement('div');
+  __box.className = 'wb-root';
+  document.body.appendChild(__box);
+
+  var __CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg>';
+  function __openTool() {
+    if (window.TTEvent) { try { TTEvent('tool_open', { tool: 'streaks', source: 'workbench_widget' }); } catch (e) {} }
+    var acked = false, t = null;
+    window.addEventListener('message', function (e) { if (e.data && e.data.tt === 'tt-msg-ack') { acked = true; if (t) clearTimeout(t); } });
+    var go = function () { try { window.open(location.pathname, '_blank'); } catch (e) {} };
+    if (window.parent === window) { go(); return; }
+    try { window.parent.postMessage({ tt: 'tt-open-tool', tool: 'streaks' }, '*'); } catch (e) {}
+    t = setTimeout(function () { if (!acked) go(); }, 600);
+  }
+  function __addPlus(parent) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'wb-plus'; b.title = 'Open Streaks';
+    b.setAttribute('aria-label', 'Open Streaks');
+    b.innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>';
+    b.addEventListener('click', __openTool);
+    parent.appendChild(b);
+  }
+  function __none() {
+    var ne = document.createElement('div'); ne.className = 'wb-none';
+    var tx = document.createElement('div'); tx.className = 'wb-none-text'; tx.textContent = 'No streaks yet';
+    ne.appendChild(tx); __addPlus(ne); __box.appendChild(ne);
+  }
+  function __markBtn(s, onToggle) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'wb-mark';
+    b.setAttribute('aria-label', 'Check in today');
+    b.innerHTML = __CHECK_SVG;
+    b.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      if (s.mode === 'countup') return;
+      toggleToday(s);
+      b.classList.toggle('on', !!s.checkins[todayKey()]);
+      if (onToggle) onToggle();
+    });
+    b.classList.toggle('on', s.mode !== 'countup' && !!s.checkins[todayKey()]);
+    if (s.mode === 'countup') b.style.display = 'none';
+    return b;
+  }
+
+  if (__app === 'pin') {
+    var __s = byId(__wp.get('pin'));
+    if (__s) {
+      var card = document.createElement('div');
+      card.className = 'wb-pin'; card.style.setProperty('--cd', __s.color);
+      var ic = document.createElement('div'); ic.className = 'wb-icon'; setIconEl(ic, __s.icon); card.appendChild(ic);
+      var info = document.createElement('div'); info.className = 'wb-info'; card.appendChild(info);
+      var nm = document.createElement('div'); nm.className = 'wb-name'; nm.textContent = __s.name; info.appendChild(nm);
+      var ct = document.createElement('div'); ct.className = 'wb-count'; info.appendChild(ct);
+      var num = document.createElement('span'); ct.appendChild(num);
+      var fl = document.createElement('span'); fl.className = 'wb-flame';
+      fl.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2c.9 2.9-1.4 4.3-2.4 5.8C8.1 9.9 7 11.6 7 14a5 5 0 0 0 10 0c0-1.6-.6-2.9-1.3-4-.3 1.2-1 2-1.9 2.5.4-3.4-.4-7.6-1.8-10.5z"/></svg>';
+      ct.appendChild(fl);
+      var paint = function () {
+        var n = currentStreak(__s);
+        num.textContent = n + (n === 1 ? ' day' : ' days');
+      };
+      var mk = __markBtn(__s, paint);
+      card.appendChild(mk);
+      paint();
+      __box.appendChild(card);
+    } else if (store.streaks.length) {
+      var bl = document.createElement('div'); bl.className = 'wb-blank';
+      var lb = document.createElement('div'); lb.className = 'wb-blank-label'; lb.textContent = 'Track a streak'; bl.appendChild(lb);
+      var sel = document.createElement('select'); sel.className = 'wb-sel'; sel.setAttribute('aria-label', 'Pick a streak');
+      store.streaks.forEach(function (s2) {
+        var o = document.createElement('option'); o.value = s2.id; o.textContent = s2.name; sel.appendChild(o);
+      });
+      bl.appendChild(sel);
+      sel.addEventListener('change', function () {
+        var id = sel.value;
+        try { window.parent.postMessage({ tt: 'tt-block-config', block: 'streakspin', key: 'streakId', value: id }, '*'); } catch (e) {}
+        var q = new URLSearchParams(location.search); q.set('pin', id);
+        location.search = q.toString();
+      });
+      __box.appendChild(bl);
+    } else { __none(); }
+  } else if (!store.streaks.length) { __none(); }
+  else {
+    var listPane = document.createElement('div'); listPane.className = 'wb-list';
+    var calPane = document.createElement('div'); calPane.className = 'wb-cal';
+    listPane.appendChild($('chips'));
+    calPane.appendChild($('calWrap'));
+    var foot = document.createElement('div'); foot.className = 'wb-cal-foot';
+    var addBtn = document.createElement('button');
+    addBtn.type = 'button'; addBtn.className = 'wb-add';
+    addBtn.textContent = '＋ Add streak';
+    addBtn.addEventListener('click', __openTool);
+    foot.appendChild(addBtn);
+    listPane.appendChild(foot);
+    __box.appendChild(listPane); __box.appendChild(calPane);
+
+    /* per-row mark buttons inside the chips — re-synced after every renderAll */
+    function __injectMarks() {
+      var chips = $('chips');
+      if (!chips) return;
+      var rows = chips.querySelectorAll('.chip');
+      store.streaks.forEach(function (s, i) {
+        var row = rows[i + 1]; /* [0] = "All streaks" */
+        if (!row) return;
+        var old = row.querySelector('.wb-mark');
+        if (old) { old.classList.toggle('on', s.mode !== 'countup' && !!s.checkins[todayKey()]); return; }
+        row.appendChild(__markBtn(s, null));
+      });
+    }
+    var __ra = renderAll;
+    renderAll = function () { __ra(); __injectMarks(); };
+    renderAll();
+  }
+}
+} catch (e) {}
 })();
 </script>
 

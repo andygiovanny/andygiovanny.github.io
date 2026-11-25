@@ -7,6 +7,7 @@
 /* Language memory: if the visitor picked a language before, go straight to it. */
 (function () {
   try {
+    if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */
     var l = localStorage.getItem('tt_lang');
     if (!l || l === 'en') return;
     var p = location.pathname;
@@ -1139,7 +1140,109 @@ html.theme-dark .ft-log-band { background: #1f1813; }
 </script>
     <script>window.TT_TECHNIQUE = 'flowtime';</script>
     <script src="/assets/js/tt-events.js?v=1.0"></script>
-    <script src="https://apis.google.com/js/platform.js"></script> <!-- YT Subs button --><base target="_blank">
+<script>
+/* ── Workbench embed flag (?embed=1&size=s|m|l) — adds classes before paint,
+   same pattern as the other timer pages. Spec: AGENTS.md "Workbench". ── */
+(function () {
+    try {
+        var p = new URLSearchParams(location.search);
+        if (p.get('embed') !== '1') return;
+        var r = document.documentElement;
+        r.classList.add('tt-embed');
+        var s = p.get('size');
+        if (s === 's' || s === 'm' || s === 'l') r.classList.add('tt-embed-' + s);
+    } catch (e) {}
+})();
+</script>
+<style>
+/* ╔═ Workbench embed widgets (?embed=1&size=s|m|l) ─ flowtime ═╗
+   Engine untouched: chrome hidden, per-size layout only. Andy's spec: S/M
+   carry ONLY the essentials (work bar, break-earned bar, break bank, digits,
+   controls — no duck, too much UI to compress); L = the full stage WITH the
+   duck video. NO break overlay on this technique (the BREAK button switches
+   mode, the duck naps). */
+html.tt-embed .header,
+html.tt-embed #yt-promo,
+html.tt-embed .pin-row,
+html.tt-embed [id^="bsa-zone"],
+html.tt-embed #vignette,
+html.tt-embed .stage ~ * { display: none !important; }
+
+html.tt-embed { overflow: hidden; }   /* exact-fit frames: never show a scrollbar */
+html.tt-embed .stage {
+    max-width: none; margin: 0; width: 100%; min-height: 100vh; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 14px 16px; box-sizing: border-box;
+}
+html.tt-embed .mascot-wrap { min-height: 0; }
+html.tt-embed .tm-active-line { display: none !important; }   /* reserves ~31px invisible (same gotcha as the other widgets) */
+html.tt-embed #toast { bottom: 8px; }
+
+/* S/M: no duck — Andy's "take this part" call (too much UI to compress) */
+html.tt-embed-s .mascot-wrap,
+html.tt-embed-m .mascot-wrap { display: none !important; }
+
+/* ── SMALL = 5x1 (468x160) horizontal bar: digits + controls on one row,
+   both meter bars spanning below, bank chip under them ── */
+html.tt-embed-s .stage {
+    display: grid; height: 160px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 1fr auto auto auto auto 1fr;
+    align-items: center; justify-items: start;
+    gap: 3px 12px; padding: 0 20px;
+}
+html.tt-embed-s .digits {
+    grid-area: 2/1; font-size: 40px; letter-spacing: 1px; line-height: 1;
+    text-shadow: none; justify-self: start;
+}
+html.tt-embed-s .energy-wrap { width: 100%; margin: 0; }   /* Andy: bars span to the BREAK button edge */
+html.tt-embed-s .energy-wrap:has(#workBar) { grid-area: 3/1/4/3; }
+html.tt-embed-s .energy-wrap:has(#breakFill) { grid-area: 4/1/5/3; }
+html.tt-embed-s .energy-label { font-size: 9px; margin-bottom: 2px; }
+html.tt-embed-s .energy-bar { height: 8px; }
+html.tt-embed-s .ft-bank {
+    grid-area: 5/1; margin: 0; justify-self: start;
+    font-size: 10px; padding: 0; gap: 4px;
+    background: none; border: none;   /* Andy: drop the pill, keep the words */
+}
+html.tt-embed-s .ft-phase { display: none; }
+html.tt-embed-s .controls { grid-area: 2/2; margin-top: 0; gap: 6px; }
+html.tt-embed-s .cbtn { width: 40px; height: 40px; }
+html.tt-embed-s .cbtn svg { width: 18px; height: 18px; }
+html.tt-embed-s .cbtn.fire {
+    width: auto; height: 40px; padding: 2px 14px 0; font-size: 12px; margin-top: 0;
+}
+html.tt-embed-s .stage > div:has(> .ambience-master-pill) { display: none !important; }
+html.tt-embed-s #toast { bottom: auto; top: 4px; }   /* hidden toast slides from the top, never grows the frame */
+
+/* ── MEDIUM = 6x4 (564x640) vertical workspace, duckless ── */
+html.tt-embed-m .stage { padding: 20px 20px; gap: 4px; justify-content: space-evenly; }
+/* Andy: spread the elements to fill the 640 frame instead of a centered clump */
+html.tt-embed-m .energy-wrap { max-width: 440px; width: 100%; margin: 2px auto; }
+html.tt-embed-m .energy-bar { height: 14px; }
+html.tt-embed-m .energy-label { font-size: 13px; margin-bottom: 3px; }
+html.tt-embed-m .ft-bank { font-size: 13px; padding: 6px 18px 4px; margin: 4px auto 2px; }
+html.tt-embed-m .digits { font-size: 96px; line-height: 1; margin-top: 12px; }
+html.tt-embed-m .ft-phase { font-size: 13px; margin-top: 2px; }
+html.tt-embed-m .controls { margin-top: 6px; gap: 14px; }
+html.tt-embed-m .cbtn { width: 54px; height: 54px; }
+html.tt-embed-m .cbtn svg { width: 22px; height: 22px; }
+html.tt-embed-m .cbtn.fire { width: auto; height: 54px; font-size: 15px; padding: 3px 22px 0; margin-top: 0; }
+html.tt-embed-m .ambience-master-pill { margin-top: 6px; }
+
+/* ── LARGE = 9x4 (828x640) horizontal workspace WITH the duck ── */
+html.tt-embed-l .stage { padding: 10px 28px; gap: 4px; }
+html.tt-embed-l .ft-duck-wrap { width: 280px; max-width: 60vw; }
+html.tt-embed-l .ft-phase { display: none; }
+html.tt-embed-l .energy-wrap { max-width: 620px; width: 100%; margin: 0 auto; }
+html.tt-embed-l .energy-bar { height: 16px; }
+html.tt-embed-l .energy-label { font-size: 14px; margin-bottom: 3px; }
+html.tt-embed-l .ft-bank { font-size: 15px; padding: 6px 22px 3px; margin: 0 auto; }
+html.tt-embed-l .digits { font-size: 134px; line-height: 1; margin-top: 6px; }
+html.tt-embed-l .controls { margin-top: 0; gap: 16px; }
+html.tt-embed-l .ambience-master-pill { margin-top: 2px; }
+</style>
+    <script>if(!/[?&]embed=1/.test(location.search))document.write('<script src="https://apis.google.com/js/platform.js"><\/script>');</script> <!-- YT Subs button --><base target="_blank">
 </head>
 <body>
 
@@ -2307,7 +2410,8 @@ console.log('[Flowtime] engine ready. Mode:', settings.mode, 'Bank:', fmt(bankMs
         { id:'classroom', file:'/ambience/audio/classroom.ogg' },
         { id:'lofi1', file:'/ambience/audio/lofi1.ogg' },
         { id:'lofi2', file:'/ambience/audio/lofi2.ogg' },
-        { id:'lofi3', file:'/ambience/audio/lofi3.ogg' },
+        { id:'lofi3', file:'/ambience/audio/lofi3.ogg' },
+
         { id:'jazz1', file:'/ambience/audio/jazz1.ogg' },
         { id:'jazz2', file:'/ambience/audio/jazz2.ogg' },
         { id:'jazz3', file:'/ambience/audio/jazz3.ogg' },

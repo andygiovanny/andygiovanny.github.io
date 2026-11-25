@@ -98,6 +98,7 @@
 /* Language memory: if the visitor picked a language before, go straight to it. */
 (function () {
   try {
+    if (/[?&]embed=1/.test(location.search)) return; /* workbench embeds never redirect */
     var l = localStorage.getItem('tt_lang');
     if (!l || l === 'en') return;
     var p = location.pathname;
@@ -455,10 +456,10 @@
     <link rel="stylesheet" href="assets/css/style.css?v=1.0">
     <link rel="stylesheet" href="assets/css/animate.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
-    <script src="https://apis.google.com/js/platform.js"></script> <!-- YT Subs button -->
+    <!-- Embed slim-gate: popper/bootstrap/moment/platform never run inside
+         workbench widgets (no modal, no +1 button at widget size).
+         document.write keeps the parse order identical to the old tags. -->
+    <script>if(!/[?&]embed=1/.test(location.search)){document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"><\/script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"><\/script><script src="https://apis.google.com/js/platform.js"><\/script>');}</script>
 
    
     <!-- Google tag (gtag.js) -->
@@ -758,16 +759,15 @@
 
     /* TASKS — L = 9×4 (828×640): the full list at full size, all features.
        Same footprint as the timer Large. */
-    html.tt-embed-tasks.tt-embed-l .todo-background { padding: 24px !important; }
+    html.tt-embed-tasks.tt-embed-l .todo-background { padding: 24px !important; justify-content: flex-start !important; height: 100vh; min-height: 0 !important; box-sizing: border-box; }
     html.tt-embed-tasks.tt-embed-l .tm-section-title { font-size: 25px; margin-bottom: 14px; }
     html.tt-embed-tasks.tt-embed-l #tm_add_form { margin-bottom: 6px; }
-    html.tt-embed-tasks.tt-embed-l .tm-cards { max-height: 430px; overflow-y: auto; }
+    html.tt-embed-tasks.tt-embed-l .tm-cards { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 
-    /* TASKS — S = 4×4 (360×640) + M = 6×4 (564×640): FULL-FEATURE ports of
-       L in tall columns (Andy's calls 2026-11-18: "don't cut features, add
-       vertical height, align top" / M = "slightly shorter large"). Both
-       share one rule set — same flex chain, same 2-line cards; only the
-       padding/title scale differs (M overrides below). */
+    /* TASKS — M = 6×4 (564×640): a full-feature port of
+       L in a tall column (Andy's call 2026-11-18: "don't cut features, add
+       vertical height, align top" / M = "slightly shorter large"). (S is
+       the wide-short pin bar — see its own block below.) */
     html.tt-embed-tasks.tt-embed-s .todo-background,
     html.tt-embed-tasks.tt-embed-m .todo-background { padding: 16px !important; justify-content: flex-start !important; height: 100vh; min-height: 0 !important; box-sizing: border-box; }
     html.tt-embed-tasks.tt-embed-m .todo-background { padding: 20px !important; }
@@ -788,17 +788,23 @@
        2026-11-18 "use the space below it, extend"): cards grow to fill,
        toolbar sits at the bottom, scroll only when genuinely full */
     html.tt-embed-tasks.tt-embed-s .todo-background > .container,
-    html.tt-embed-tasks.tt-embed-m .todo-background > .container { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    html.tt-embed-tasks.tt-embed-m .todo-background > .container,
+    html.tt-embed-tasks.tt-embed-l .todo-background > .container { flex: 1; display: flex; flex-direction: column; min-height: 0; }
     html.tt-embed-tasks.tt-embed-s .todo-background .row,
     html.tt-embed-tasks.tt-embed-s .todo-background .col-12,
     html.tt-embed-tasks.tt-embed-m .todo-background .row,
-    html.tt-embed-tasks.tt-embed-m .todo-background .col-12 { display: contents; }
+    html.tt-embed-tasks.tt-embed-m .todo-background .col-12,
+    html.tt-embed-tasks.tt-embed-l .todo-background .row,
+    html.tt-embed-tasks.tt-embed-l .todo-background .col-12 { display: contents; }
     html.tt-embed-tasks.tt-embed-s #task_manager,
-    html.tt-embed-tasks.tt-embed-m #task_manager { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    html.tt-embed-tasks.tt-embed-m #task_manager,
+    html.tt-embed-tasks.tt-embed-l #task_manager { flex: 1; display: flex; flex-direction: column; min-height: 0; }
     html.tt-embed-tasks.tt-embed-s .tt-tasks-col,
-    html.tt-embed-tasks.tt-embed-m .tt-tasks-col { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    html.tt-embed-tasks.tt-embed-m .tt-tasks-col,
+    html.tt-embed-tasks.tt-embed-l .tt-tasks-col { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
     html.tt-embed-tasks.tt-embed-s .tm-cards,
-    html.tt-embed-tasks.tt-embed-m .tm-cards { overflow-y: auto; }
+    html.tt-embed-tasks.tt-embed-m .tm-cards,
+    html.tt-embed-tasks.tt-embed-l .tm-cards { overflow-y: auto; }
     html.tt-embed-tasks.tt-embed-s #tm_done_cards,
     html.tt-embed-tasks.tt-embed-m #tm_done_cards { max-height: 90px; overflow-y: auto; }
     html.tt-embed-tasks.tt-embed-s .tm-card,
@@ -809,6 +815,26 @@
     html.tt-embed-tasks.tt-embed-m .tm-card-top { flex-wrap: wrap; row-gap: 4px; }
     html.tt-embed-tasks.tt-embed-s .tm-title,
     html.tt-embed-tasks.tt-embed-m .tm-title { flex: 1 1 100%; }
+
+    /* TASKS — S is now the WIDE-SHORT pin bar (5×1, 468×160 — same class as
+       the timer S); the rules above were written for the retired tall
+       360×640 shape and overflow a 160px frame. Pin design: title + a
+       single-line quick-add. Swatches, estimate, the list itself and the
+       toolbar live in M/L (or the main page) — there is no room at pin
+       height. */
+    html.tt-embed-tasks.tt-embed-s .todo-background { padding: 14px 16px !important; justify-content: center !important; }
+    html.tt-embed-tasks.tt-embed-s .tm-section-title { font-size: 15px; margin: 0 0 8px; }
+    html.tt-embed-tasks.tt-embed-s .tm-color-picker { display: none !important; }
+    html.tt-embed-tasks.tt-embed-s #tm_add_form { flex-wrap: nowrap !important; margin: 0; gap: 8px; }
+    html.tt-embed-tasks.tt-embed-s #tm_add_title { flex: 1 1 auto; min-width: 0; }
+    html.tt-embed-tasks.tt-embed-s .tm-input { padding: 7px 12px; font-size: 13px; }
+    html.tt-embed-tasks.tt-embed-s .tm-estimate-input { display: none; }
+    html.tt-embed-tasks.tt-embed-s .tm-add-btn { padding: 6px 16px !important; font-size: 13px !important; flex: 0 0 auto; }
+    html.tt-embed-tasks.tt-embed-s .tm-pin-status { display: block; }
+    html.tt-embed-tasks.tt-embed-s .tm-pin-tasks { display: block; }
+    html.tt-embed-tasks.tt-embed-s #tm_cards,
+    html.tt-embed-tasks.tt-embed-s #tm_done_wrap,
+    html.tt-embed-tasks.tt-embed-s .tm-toolbar { display: none !important; }
 
     /* never show scrollbars inside the widget frame */
     html.tt-embed-s, html.tt-embed-m, html.tt-embed-l { overflow: hidden; }
@@ -1270,6 +1296,18 @@
     margin-bottom: 8px;
 }
 .tm-toolbar { display: flex; justify-content: space-between; margin-top: 14px; }
+/* glance line for the S pin widget — hidden everywhere except the S embed
+   (see the tt-embed-tasks.tt-embed-s block in the widget CSS) */
+.tm-pin-status { display: none; margin: 8px 2px 0; font-size: 12px; color: rgba(140,90,62,.75); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tm-pin-status strong { color: #58240E; }
+/* slim clickable task rows for the S pin widget — hidden everywhere
+   except the S embed (see the tt-embed-tasks.tt-embed-s widget CSS) */
+.tm-pin-tasks { display: none; margin: 5px 2px 0; min-width: 0; }
+.tm-pin-task { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #58240E; min-width: 0; }
+.tm-pin-task + .tm-pin-task { margin-top: 3px; }
+.tm-pin-check { flex: 0 0 auto; width: 15px; height: 15px; border-radius: 9px; border: 2px solid rgba(140,90,62,.4); background: #fff; cursor: pointer; padding: 0; }
+.tm-pin-check:hover { border-color: #DE4B3A; }
+.tm-pin-title { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tm-tool-btn {
     background: none;
     border: none;
@@ -2019,6 +2057,8 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
                         <input type="text" id="tm_add_estimate" class="tm-input tm-estimate-input" placeholder="est time" maxlength="12" aria-label="Estimated time (optional)">
                         <button type="submit" class="to-do-button btn rounded-pill tm-add-btn">Add</button>
                     </form>
+                    <div id="tm_pin_status" class="tm-pin-status" aria-live="polite"></div>
+                    <div id="tm_pin_tasks" class="tm-pin-tasks"></div>
                     <div id="tm_cards" class="tm-cards"></div>
                     <div id="tm_done_wrap" class="tm-done-wrap d-none">
                         <div class="tm-done-header">Done <span id="tm_done_count"></span></div>
@@ -2857,8 +2897,7 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
     });
 })();
 </script>
-<script src="assets/js/jquery-confirm/dist/jquery-confirm.min.js"></script>
-<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59bf5fb7954a0abb"></script>
+<script>if(!/[?&]embed=1/.test(location.search)){document.write('<script src="assets/js/jquery-confirm/dist/jquery-confirm.min.js"><\/script><script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59bf5fb7954a0abb"><\/script>');}</script>
     
       <footer style="margin-top: 40px; text-align: center; color: #8C5A3E; font-size: 15px; font-weight: 400; padding-bottom: 25px; width: 100%;">
     <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px;">
@@ -2939,7 +2978,8 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         { id:'classroom', file:'ambience/audio/classroom.ogg' },
         { id:'lofi1', file:'ambience/audio/lofi1.ogg' },
         { id:'lofi2', file:'ambience/audio/lofi2.ogg' },
-        { id:'lofi3', file:'ambience/audio/lofi3.ogg' },
+        { id:'lofi3', file:'ambience/audio/lofi3.ogg' },
+
         { id:'jazz1', file:'ambience/audio/jazz1.ogg' },
         { id:'jazz2', file:'ambience/audio/jazz2.ogg' },
         { id:'jazz3', file:'ambience/audio/jazz3.ogg' },
@@ -3796,7 +3836,48 @@ body.theme-classic .tm-active-line .tm-est-left { color: #FFD9CF; }
         doneCardsEl.innerHTML = '';
         done.forEach(function (t) { doneCardsEl.appendChild(renderCard(t)); });
 
+        renderPinStatus(queued, done);
         renderActiveLine();
+    }
+
+    function renderPinStatus(queued, done) {
+        var el = document.getElementById('tm_pin_status');
+        var rowsEl = document.getElementById('tm_pin_tasks');
+        if (!el || !rowsEl) return;
+        el.innerHTML = '';
+        rowsEl.innerHTML = '';
+        var MAX = 2;
+        if (!queued.length && !done.length) {
+            el.textContent = 'No tasks yet — add one above.';
+            return;
+        }
+        var b = document.createElement('strong');
+        b.textContent = queued.length + (queued.length === 1 ? ' open task' : ' open tasks');
+        el.appendChild(b);
+        if (!queued.length) {
+            el.appendChild(document.createTextNode(' · all ' + done.length + ' done ✔'));
+            return;
+        }
+        if (queued.length > MAX) {
+            el.appendChild(document.createTextNode(' · +' + (queued.length - MAX) + ' more'));
+        }
+        queued.slice(0, MAX).forEach(function (t) {
+            var row = document.createElement('div');
+            row.className = 'tm-pin-task';
+            var chk = document.createElement('button');
+            chk.type = 'button';
+            chk.className = 'tm-pin-check';
+            chk.title = 'Mark done';
+            chk.setAttribute('aria-label', 'Mark "' + t.title + '" done');
+            chk.addEventListener('click', function () { toggleDone(t.id); });
+            var span = document.createElement('span');
+            span.className = 'tm-pin-title';
+            span.textContent = t.title;
+            span.title = t.title;
+            row.appendChild(chk);
+            row.appendChild(span);
+            rowsEl.appendChild(row);
+        });
     }
 
     function renderCard(task) {
