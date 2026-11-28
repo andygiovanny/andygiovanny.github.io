@@ -1308,6 +1308,12 @@
 .tm-pin-check { flex: 0 0 auto; width: 15px; height: 15px; border-radius: 9px; border: 2px solid rgba(140,90,62,.4); background: #fff; cursor: pointer; padding: 0; }
 .tm-pin-check:hover { border-color: #DE4B3A; }
 .tm-pin-title { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* dark theme (Tier 2 audit 2026-11-27): the pin status/titles were hardcoded
+   light-theme browns (#58240E on #fff) — unreadable on the dark panel */
+body.theme-dark .tm-pin-status { color: rgba(169,143,111,.8); }
+body.theme-dark .tm-pin-status strong { color: #E8D9B8; }
+body.theme-dark .tm-pin-task { color: #E8D9B8; }
+body.theme-dark .tm-pin-check { background: #2a2018; border-color: rgba(169,143,111,.55); }
 .tm-tool-btn {
     background: none;
     border: none;

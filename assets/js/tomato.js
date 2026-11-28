@@ -286,6 +286,14 @@ $('#SaveSet').on('click', function () {
     longMin = Number($("#long_break_value").val());
     shortMin = Number($("#short_break_value").val());
 
+    /* Persist durations (shared with the workbench's universal settings —
+       absent key = classic defaults, read back at load below). */
+    try {
+        localStorage.setItem('tt_pomo_minutes_v1', JSON.stringify({
+            pomodoroMin: pomodoroMin, shortMin: shortMin, longMin: longMin
+        }));
+    } catch (e) {}
+
     if (isPomClicked) gMinutes = pomodoroMin;
     if (isLongClicked) gMinutes = longMin;
     if (isShortCliked) gMinutes = shortMin;
@@ -311,6 +319,17 @@ $(document).ready(function () {
 var pomodoroMin = 25;
 var shortMin = 5;
 var longMin = 15;
+/* Workbench universal-settings support: read saved durations once.
+   Key absent (never saved / legacy visitor) = classic defaults above —
+   existing users are never migrated or overwritten implicitly. */
+try {
+    var __ttPomoSaved = JSON.parse(localStorage.getItem('tt_pomo_minutes_v1') || 'null');
+    if (__ttPomoSaved) {
+        if (__ttPomoSaved.pomodoroMin > 0) pomodoroMin = __ttPomoSaved.pomodoroMin;
+        if (__ttPomoSaved.shortMin > 0) shortMin = __ttPomoSaved.shortMin;
+        if (__ttPomoSaved.longMin > 0) longMin = __ttPomoSaved.longMin;
+    }
+} catch (e) {}
 $("#pomodoro_value").val(pomodoroMin);
 $("#short_break_value").val(shortMin);
 $("#long_break_value").val(longMin);

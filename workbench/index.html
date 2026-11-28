@@ -79,6 +79,7 @@
 </script>
 <script>window.TT_TECHNIQUE = 'workbench';</script>
 <script src="/assets/js/tt-events.js?v=1.0"></script>
+<script src="/assets/js/ttstats.js?v=1.1"></script> <!-- next-task chip records completions like the main page -->
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -110,7 +111,9 @@
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    /* site-wide convention: Baloo Tammudu is the base font everywhere
+       (assets/css/style.css sets the same on the timer pages) */
+    font-family: 'Baloo Tammudu', 'Segoe UI', system-ui, sans-serif;
     transition: background .25s, color .25s;
   }
   h1, h2, h3, .baloo { font-family: 'Baloo Tammudu', 'Segoe UI', system-ui, sans-serif; }
@@ -127,10 +130,29 @@
   .header-logo { height: 40px; display: block; }
   .theme-select {
     font-family: inherit; font-size: 13px; color: var(--text);
-    background: var(--input); border: 1px solid var(--border);
-    border-radius: 8px; padding: 6px 8px; cursor: pointer;
+    background-color: var(--input); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 26px 6px 8px; cursor: pointer;
+    /* appearance:none: WebKit/Safari IGNORES author padding on native
+       <select>s, so the lang picker's padding-left never applied there and
+       the globe landed on the label text. With appearance:none the padding
+       applies and we draw our own chevron (the native arrow disappears). */
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%238C5A3E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat; background-position: right 9px center;
   }
-  .lang-globe { color: var(--muted); }
+  html.theme-dark .theme-select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23A98B6F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  }
+  #lang-select { padding-left: 30px; }
+  .lang-globe {
+    color: var(--muted);
+    /* size in CSS, not just width/height attributes — attributes alone have
+       proven unreliable across browsers/zoom states, and an unsized svg
+       renders at viewBox size (24px) and lands on top of the label text */
+    width: 16px; height: 16px; display: block;
+    position: absolute; left: 9px; top: 50%;
+    transform: translateY(-50%); pointer-events: none;
+  }
   .header-nav { display: flex; gap: 8px; flex-wrap: wrap; }
   .button-row { display: flex; gap: 8px; flex-wrap: wrap; }
   .button-style {
@@ -147,7 +169,7 @@
 
   /* ---------- board bar ---------- */
   .board-bar {
-    max-width: 1140px; margin: 26px auto 12px; padding: 0 4px;
+    max-width: 1044px; margin: 26px auto 12px; padding: 0 4px;
     display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap;
   }
   .board-bar h1 { font-size: 30px; margin: 0; line-height: 1.1; }
@@ -168,9 +190,11 @@
 
   /* ---------- board canvas ---------- */
   .board-scroll { overflow-x: auto; padding: 4px 0 30px; }
+  /* editing gets breathing room so the banner never crowds the top row (Andy's call 2026-11-27) */
+  body.wb-editing .board-scroll { padding-top: 16px; }
   #board {
     position: relative;
-    width: 1140px; margin: 0 auto;
+    width: 1044px; margin: 0 auto;
     min-height: 520px;
     border-radius: 18px;
     transition: background-image .2s;
@@ -187,12 +211,16 @@
     border-radius: 16px;
   }
   body.wb-editing .tile { touch-action: none; }
+  /* live-drag parting animation: the held tile is exempt (it tracks raw) */
+  body.wb-editing .tile { transition: top .2s cubic-bezier(.3,.7,.3,1), left .2s cubic-bezier(.3,.7,.3,1); }
+  body.wb-editing .tile.dragging { transition: none; }
   .tile iframe {
     border: 0; display: block; border-radius: 16px;
     background: transparent;
   }
   body.wb-editing .tile { cursor: grab; }
-  body.wb-editing .tile.dragging { cursor: grabbing; z-index: 60 !important; }
+  body.wb-editing .tile .tile-card { cursor: grab; } /* Safari reports the child's cursor over the card surface */
+  body.wb-editing .tile.dragging, body.wb-editing .tile.dragging .tile-card { cursor: grabbing; z-index: 60 !important; }
   body.wb-editing .tile.dragging .tile-card { box-shadow: 0 14px 34px rgba(0,0,0,.28); transform: scale(1.02); }
   .tile-card {
     border-radius: 16px; overflow: hidden;
@@ -207,6 +235,81 @@
   @keyframes wb-jiggle { from { transform: rotate(-.35deg); } to { transform: rotate(.35deg); } }
   body.wb-editing .tile.dragging .tile-card, body.wb-editing .tile.rm-armed .tile-card { animation: none; }
   body.wb-editing .tile iframe { pointer-events: none; }
+  body.wb-editing .tile .native-fill { pointer-events: none; } /* edit mode: content inert so the whole tile drags */
+
+  /* ---------- native filler blocks (iframe-free) ---------- */
+  .native-fill {
+    width: 100%; height: 100%; box-sizing: border-box; overflow: hidden;
+    font-family: 'Baloo Tammudu', sans-serif; color: var(--text);
+    user-select: none; display: flex; align-items: center; justify-content: center;
+  }
+  /* duck pal — click cycles the art */
+  .native-fill.duck { cursor: pointer; }
+  .native-fill.duck img { display: block; object-fit: contain; pointer-events: none; }
+  .native-fill.duck .duck-e { line-height: 1; pointer-events: none; }
+  .duck-s img { width: 52px; height: 52px; } .duck-s .duck-e { font-size: 40px; }
+  .duck-m img { width: 104px; height: 104px; } .duck-m .duck-e { font-size: 76px; }
+  .native-fill.duck:active img, .native-fill.duck:active .duck-e { transform: scale(.92); }
+  .native-fill.duck img, .native-fill.duck .duck-e { transition: transform .12s ease; }
+  /* sticky note — colored paper, dark ink in BOTH themes (it's paper) */
+  .native-fill.note { padding: 9px 10px; align-items: stretch; justify-content: flex-start; position: relative; }
+  .native-fill.note textarea {
+    flex: 1; width: 100%; border: none; outline: none; resize: none; background: transparent;
+    font-family: 'Baloo Tammudu', sans-serif; color: #4A2C1A; line-height: 1.35; padding: 0 0 20px; margin: 0;
+    user-select: text; /* .native-fill is user-select:none — a note must select */
+  }
+  .note-s textarea { font-size: 12px; padding-bottom: 14px; }
+  .note-m textarea { font-size: 13.5px; }
+  .note-l textarea { font-size: 14px; }
+  .native-fill.note textarea::placeholder { color: rgba(74, 44, 26, .45); }
+  /* theme-matched default ("auto" swatch): cream paper on light, dark panel
+     on dark — ink flips with it (Andy's 2026-11-27 ask) */
+  .note-auto { background: var(--bg); }
+  html.theme-dark .note-auto { background: var(--panel); }
+  /* .native-fill.note textarea (0,2,1) beats .note-auto textarea (0,1,1),
+     so the auto-ink overrides MUST carry the full class chain */
+  .native-fill.note-auto textarea { color: var(--text); }
+  .native-fill.note-auto textarea::placeholder { color: var(--muted); }
+  .note-auto .note-dot { border-color: var(--muted); }
+  .note-auto .note-dot.sel { border-color: var(--text); }
+  .note-dot.auto { background: linear-gradient(90deg, #fbf2e9 50%, #2a2018 50%); }
+  /* paper-on-cream and panel-on-dark both blend into their surroundings
+     (Andy's picker screenshot 2026-11-27) — a hairline inset edge defines
+     the note in every state; the dark one is bumped to stay visible */
+  .native-fill.note { box-shadow: inset 0 0 0 1px rgba(88, 36, 14, .16); }
+  html.theme-dark .note-auto { box-shadow: inset 0 0 0 1px #4a3826; }
+  /* visible palette strip — a single dot didn't read as a picker (Andy) */
+  .note-colors { position: absolute; left: 8px; right: 8px; bottom: 6px; display: flex; gap: 6px; }
+  .note-dot {
+    width: 12px; height: 12px; border-radius: 7px; padding: 0; cursor: pointer;
+    border: 2px solid rgba(74, 44, 26, .35); transition: transform .12s ease;
+  }
+  .note-dot.sel { border-color: #4A2C1A; transform: scale(1.18); }
+  .note-s .note-colors { left: 7px; right: 7px; bottom: 5px; gap: 5px; }
+  .note-s .note-dot { width: 9px; height: 9px; border-width: 1.5px; }
+  /* next task chip — live from tt_tasks_v1 */
+  .native-fill.next { gap: 8px; justify-content: flex-start; padding: 0 12px; cursor: default; }
+  .next .next-check {
+    flex: 0 0 auto; width: 20px; height: 20px; border-radius: 11px; padding: 0; cursor: pointer;
+    border: 2px solid var(--muted); background: transparent; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .next .next-check:hover { border-color: var(--accent); }
+  .next .next-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .next-s .next-title { font-size: 12.5px; }
+  .next-m .next-title { font-size: 14px; }
+  .next .next-empty { color: var(--muted); font-size: 12.5px; }
+  /* clock */
+  .native-fill.clock { flex-direction: column; gap: 0; }
+  .clock .clk-t { line-height: 1.05; letter-spacing: .5px; }
+  .clock .clk-d { color: var(--muted); line-height: 1.2; }
+  .clock-c .clk-t { font-size: 24px; }
+  .clock-q .clk-t { font-size: 44px; } .clock-q .clk-d { font-size: 12px; margin-top: 2px; }
+  .clock-w { flex-direction: row !important; gap: 12px; }
+  .clock-w .clk-t { font-size: 26px; }
+  .clock-w .clk-d { font-size: 11.5px; align-self: flex-end; padding-bottom: 18px; }
+  .clock-t .clk-t { font-size: 44px; } .clock-t .clk-d { font-size: 12px; margin-top: 4px; }
+
 
   /* edit badges */
   .t-badge {
@@ -261,8 +364,13 @@
   }
   body.sheet-open .sheet { transform: translate(-50%, 0); }
   @media (min-width: 700px) {
-    .sheet { bottom: auto; top: 50%; transform: translate(-50%, -46%) scale(.96); border-radius: 20px; opacity: 0; transition: transform .24s cubic-bezier(.32,.72,.35,1), opacity .2s; }
-    body.sheet-open .sheet { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    /* closed sheet MUST NOT intercept: after buildSheet() fills it, an
+       opacity:0 sheet centered on screen otherwise eats wheel scroll, clicks
+       (ghost widgets from a "closed" picker) and tile drags — 2026-11-27 */
+    .sheet { bottom: auto; top: 50%; transform: translate(-50%, -46%) scale(.96); border-radius: 20px; opacity: 0; visibility: hidden; pointer-events: none;
+      transition: transform .24s cubic-bezier(.32,.72,.35,1), opacity .2s, visibility 0s .28s; }
+    body.sheet-open .sheet { transform: translate(-50%, -50%) scale(1); opacity: 1; visibility: visible; pointer-events: auto;
+      transition: transform .24s cubic-bezier(.32,.72,.35,1), opacity .2s, visibility 0s 0s; }
   }
   .sheet-grab { padding: 8px 0 2px; display: flex; justify-content: center; flex: 0 0 auto; }
   .sheet-grab span { width: 38px; height: 5px; border-radius: 3px; background: var(--border); }
@@ -294,7 +402,14 @@
     border-radius: 14px; overflow: hidden; cursor: pointer;
     box-shadow: 0 2px 8px rgba(88,36,14,.06);
     transition: border-color .12s, transform .12s;
+    position: relative;
   }
+  /* click-catcher: clicks inside the preview iframe would otherwise never
+     reach the card's add handler (iframes swallow parent-bound clicks) —
+     the L cards' previews fill the stage so almost nothing responded.
+     This transparent layer makes the WHOLE card clickable. The soundscape
+     select gets z-index 4 to stay interactive above it. */
+  .pv-card::after { content: ''; position: absolute; inset: 0; z-index: 3; }
   .pv-card:hover { border-color: var(--accent); transform: translateY(-1px); }
   .pv-card:active { border-color: var(--accent); }
   .pv-stage {
@@ -308,6 +423,7 @@
     background: var(--panel); flex: 0 0 auto;
   }
   .pv-box iframe { border: 0; display: block; transform-origin: top left; background: var(--panel); }
+  .pv-native { transform-origin: top left; background: var(--panel); overflow: hidden; border-radius: 10px; }
   .pv-add {
     position: absolute; top: 6px; right: 6px; z-index: 2;
     width: 22px; height: 22px; border-radius: 12px;
@@ -325,6 +441,7 @@
     font-family: inherit; font-size: 12px; color: var(--text);
     background: var(--input); border: 1px solid var(--border);
     border-radius: 8px; padding: 3px 5px; max-width: 100%; margin-top: 5px;
+    position: relative; z-index: 4; /* above the card's click-catcher */
   }
 
   /* ---------- about / faq ---------- */
@@ -342,6 +459,188 @@
   .site-footer a { color: var(--muted); text-decoration: none; font-size: 13px; }
   .site-footer a:hover { color: var(--accent); }
   .site-footer .f-note { font-size: 12px; color: var(--muted); margin: 0; }
+
+  /* ---------- board switcher (multi-board, iOS-style) ---------- */
+  .bs-row {
+    display: flex; align-items: center; gap: 16px;
+    width: 1044px; margin: 0 auto; padding: 12px 2px 0;
+  }
+  .bs-row .board-switch {
+    display: flex; align-items: center; justify-content: flex-start; gap: 10px;
+    flex-wrap: wrap; flex: 1 1 auto; min-width: 0;
+  }
+  .bs-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'Baloo Tammudu', 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px; line-height: 1.4; padding: 8px 16px 4px;
+    background-color: var(--panel2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 2px 0 rgba(88, 36, 14, .15);
+    cursor: pointer; max-width: 240px;
+    transition: color .15s, border-color .15s, background .15s;
+  }
+  .bs-pill .bs-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bs-pill:hover { color: var(--accent); border-color: var(--accent); }
+  .bs-pill.sel {
+    background: var(--accent); color: #fff;
+    border-color: var(--accent); box-shadow: 0 2px 0 rgba(88, 36, 14, .25);
+  }
+  .bs-pill.sel:hover { filter: brightness(1.07); }
+  .bs-pill.bs-add { padding: 8px 14px 4px; font-size: 16px; line-height: 1.1; }
+  .bs-act {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 21px; height: 21px; border-radius: 50%; border: none; cursor: pointer;
+    background: rgba(128, 96, 64, .18); color: inherit; padding: 0; flex: 0 0 auto;
+    font-family: inherit; font-size: 12px; line-height: 1;
+  }
+  .bs-pill.sel .bs-act { background: rgba(255, 255, 255, .25); }
+  .bs-act:hover { background: rgba(128, 96, 64, .35); }
+  .bs-pill.sel .bs-act:hover { background: rgba(255, 255, 255, .45); }
+  /* rename pencil reads cleaner as a bare glyph — no chip circle (Andy's call) */
+  .bs-act.bs-ren { width: auto; height: auto; border-radius: 0; background: none; padding: 0 1px; font-size: 13px; }
+  .bs-pill.sel .bs-act.bs-ren, .bs-pill.sel .bs-act.bs-ren:hover { background: none; }
+  .bs-act.bs-ren:hover { opacity: .7; }
+  /* baseline, not center: the button text is Baloo (ink rides high in its line
+     box) so centering the boxes puts the count text visibly above the button
+     text — baselines sit both labels on one line */
+  .bs-count-wrap { flex: 0 0 auto; display: inline-flex; align-items: baseline; gap: 10px; }
+  .bs-count { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .bs-clear {
+    font-family: 'Baloo Tammudu', 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px; line-height: 1.4; padding: 8px 16px 4px;
+    background-color: var(--panel2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 2px 0 rgba(88, 36, 14, .15);
+    cursor: pointer; white-space: nowrap;
+    transition: color .15s, border-color .15s, background .15s;
+  }
+  .bs-clear:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* editing banner — makes edit mode unmistakable (Andy's "invisible
+     overlay" moment was edit mode doing its job too quietly) */
+  .edit-banner {
+    display: none; align-items: center; gap: 8px;
+    width: 1044px; margin: 8px auto 14px; padding: 8px 14px;
+    background: rgba(222, 75, 58, .09); border: 1px dashed rgba(222, 75, 58, .5);
+    border-radius: 12px; color: var(--accent);
+    font-size: 13px; font-family: 'Baloo Tammudu', sans-serif;
+  }
+  body.wb-editing .edit-banner { display: flex; }
+  .edit-banner svg { width: 15px; height: 15px; flex: 0 0 auto; }
+
+  /* toast (soft-cap hint etc.) */
+  .wb-toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(16px);
+    z-index: 120; max-width: 480px; padding: 10px 18px 7px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(40, 16, 6, .25);
+    font-size: 13.5px; line-height: 1.45; color: var(--text);
+    opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+    font-family: 'Baloo Tammudu', sans-serif;
+  }
+  .wb-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---------- universal timer settings sheet ---------- */
+  .set-overlay {
+    position: fixed; inset: 0; z-index: 90; display: none;
+    background: rgba(20, 12, 6, .45); backdrop-filter: blur(3px);
+    align-items: center; justify-content: center; padding: 18px;
+  }
+  .set-overlay.open { display: flex; }
+  .set-box {
+    width: 520px; max-width: 100%; max-height: 86vh; display: flex; flex-direction: column;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    box-shadow: 0 22px 60px rgba(40, 16, 6, .35); overflow: hidden;
+  }
+  .set-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px 10px; border-bottom: 1px solid var(--hairline);
+  }
+  .set-head h2 { font-size: 19px; margin: 0; }
+  .set-close {
+    border: none; background: none; cursor: pointer; font-size: 24px; line-height: 1;
+    color: var(--muted); padding: 0 4px; font-family: inherit;
+  }
+  .set-close:hover { color: var(--accent); }
+  .set-tabs { display: flex; gap: 4px; padding: 10px 14px 0; border-bottom: 1px solid var(--hairline); flex-wrap: wrap; }
+  .set-tab {
+    font-family: 'Baloo Tammudu', sans-serif; font-size: 14px; line-height: 1.2;
+    padding: 6px 12px 4px; border: 1px solid transparent; border-bottom: none;
+    border-radius: 10px 10px 0 0; background: none; color: var(--muted); cursor: pointer;
+  }
+  .set-tab:hover { color: var(--accent); }
+  .set-tab.sel { background: var(--panel2); border-color: var(--border); color: var(--accent); }
+  .set-body { padding: 14px 18px; overflow-y: auto; flex: 1; }
+  .set-pane { display: none; }
+  .set-pane.sel { display: block; }
+  .set-pane .st-label {
+    display: block; font-size: 11px; letter-spacing: .06em; color: var(--muted);
+    margin: 10px 0 3px; font-weight: 600;
+  }
+  .set-pane .st-input, .set-pane select.st-input {
+    width: 100%; box-sizing: border-box; font-family: inherit; font-size: 14px;
+    padding: 7px 10px 5px; border-radius: 10px;
+    background: var(--input); border: 1px solid var(--border); color: var(--text);
+  }
+  .set-pane .st-input:focus { outline: 2px solid rgba(222, 75, 58, .4); }
+  .set-pane .st-row { display: flex; gap: 8px; align-items: center; }
+  .set-pane .st-row .st-input { flex: 1; }
+  .set-pane .st-test {
+    flex: 0 0 auto; font-family: inherit; font-size: 13px; cursor: pointer;
+    padding: 6px 12px 4px; border-radius: 10px;
+    background: var(--panel2); border: 1px solid var(--border); color: var(--text);
+  }
+  .set-pane .st-test:hover { color: var(--accent); border-color: var(--accent); }
+  .set-pane .st-hr { border: none; border-top: 1px solid var(--hairline); margin: 14px 0 4px; }
+  .set-pane .st-section { font-family: 'Baloo Tammudu', sans-serif; font-size: 15px; margin: 8px 0 2px; }
+  .set-pane .st-desc { font-size: 12px; color: var(--muted); margin: 0 0 4px; line-height: 1.5; }
+  /* flowtime tier editor */
+  .set-pane .st-tier-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+  .set-pane .st-tier-row .st-input { flex: 1; min-width: 0; }
+  .set-pane .st-tier-x {
+    flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--panel2); color: var(--muted); font-family: inherit;
+  }
+  .set-pane .st-tier-x:hover { color: var(--accent); border-color: var(--accent); }
+  .set-pane .st-mini {
+    font-family: inherit; font-size: 12.5px; cursor: pointer; margin: 2px 6px 2px 0;
+    padding: 4px 10px 2px; border-radius: 9px;
+    background: var(--panel2); border: 1px solid var(--border); color: var(--text);
+  }
+  .set-pane .st-mini:hover { color: var(--accent); border-color: var(--accent); }
+  .set-pane .st-mode-row { display: flex; gap: 8px; margin: 6px 0 10px; }
+  .set-pane .st-mode {
+    flex: 1; text-align: center; cursor: pointer; font-size: 13.5px;
+    padding: 8px 6px 5px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--panel2); color: var(--text); font-family: inherit;
+  }
+  .set-pane .st-mode small { display: block; font-size: 11px; color: var(--muted); }
+  .set-pane .st-mode.sel { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .set-pane .st-check { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text); margin: 8px 0 2px; cursor: pointer; }
+  .set-pane .st-check input { width: 16px; height: 16px; accent-color: #DE4B3A; cursor: pointer; }
+  .set-pane .st-note { font-size: 11.5px; color: var(--muted); margin: 2px 0 0; }
+  .set-pane .st-open-link {
+    display: inline-block; margin-top: 10px; font-family: 'Baloo Tammudu', sans-serif;
+    font-size: 15px; padding: 8px 16px 5px; border-radius: 10px; cursor: pointer;
+    background: var(--accent); color: #fff; border: none; text-decoration: none; line-height: 1.3;
+  }
+  .set-foot {
+    display: flex; justify-content: flex-end; gap: 8px; align-items: center;
+    padding: 12px 18px; border-top: 1px solid var(--hairline);
+  }
+  .set-foot .st-saved { font-size: 12.5px; color: var(--muted); margin-right: auto; opacity: 0; transition: opacity .2s; }
+  .set-foot .st-saved.show { opacity: 1; }
+  .set-foot .st-cancel {
+    font-family: inherit; font-size: 14px; cursor: pointer; padding: 7px 14px 5px;
+    border-radius: 10px; background: none; border: 1px solid var(--border); color: var(--text);
+  }
+  .set-foot .st-save {
+    font-family: 'Baloo Tammudu', sans-serif; font-size: 15px; cursor: pointer;
+    padding: 7px 18px 4px; border-radius: 10px; line-height: 1.3;
+    background: var(--accent); color: #fff; border: none;
+    box-shadow: 0 2px 0 rgba(88, 36, 14, .25);
+  }
+  .set-foot .st-save:active { transform: translateY(1px); }
 </style>
 </head>
 <body>
@@ -353,8 +652,8 @@
            onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://www.tomatotimers.com/assets/images/'+(document.documentElement.classList.contains('theme-dark')?'logo-dark.svg':'logo.svg');}">
     </a>
     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="position:relative; display:inline-block;">
-    <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); pointer-events:none;"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
-    <select id="lang-select" class="theme-select" aria-label="Choose language" style="padding-left:38px;">
+    <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.93 9h-3.02a15.7 15.7 0 0 0-1.2-5.4A8.02 8.02 0 0 1 19.93 11zM12 4.06c.9 1.16 1.66 3.28 1.86 6.94h-3.72c.2-3.66.96-5.78 1.86-6.94zM8.29 5.6A15.7 15.7 0 0 0 7.09 11H4.07a8.02 8.02 0 0 1 4.22-5.4zM4.07 13h3.02c.1 2.08.55 3.9 1.2 5.4A8.02 8.02 0 0 1 4.07 13zM12 19.94c-.9-1.16-1.66-3.28-1.86-6.94h3.72c-.2 3.66-.96 5.78-1.86 6.94zm3.71-1.54c.65-1.5 1.1-3.32 1.2-5.4h3.02a8.02 8.02 0 0 1-4.22 5.4z"/></svg>
+    <select id="lang-select" class="theme-select" aria-label="Choose language">
       <option value="/workbench/" selected>English</option>
     </select>
     </span>
@@ -380,10 +679,14 @@
 
 <div class="board-bar">
   <div>
-    <h1 class="baloo">My Board</h1>
+    <h1 class="baloo" id="board-title">My Board</h1>
     <p class="sub">Your timers and tools, your layout — saved on this device only.</p>
   </div>
   <div class="board-actions">
+    <button type="button" class="button-style" id="btn-settings" title="Set durations, chimes and ambience for every timer on this board">
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2.4" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke-linecap="round"/></svg>
+      Timer Settings
+    </button>
     <button type="button" class="btn-add" id="btn-add">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a1 1 0 0 1 1 1v5h5a1 1 0 0 1 0 2H9v5a1 1 0 0 1-2 0V9H2a1 1 0 0 1 0-2h5V2a1 1 0 0 1 1-1z"/></svg>
       Add Widget
@@ -391,6 +694,16 @@
     <button type="button" class="button-style" id="btn-edit" title="Drag widgets to rearrange, tap − to remove">Edit Board</button>
   </div>
 </div>
+
+<div class="bs-row">
+  <div class="board-switch" id="board-switch" role="tablist" aria-label="Your boards"></div>
+  <span class="bs-count-wrap" id="bs-count-wrap"></span>
+</div>
+<div class="edit-banner" id="edit-banner">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+  <span><b>Editing mode</b> — drag tiles to rearrange, tap − to remove, tap the corner size pill to resize. Widgets are asleep until you finish: press <b>Done</b> or Esc.</span>
+</div>
+<div class="wb-toast" id="wb-toast" role="status"></div>
 
 <div class="board-scroll">
   <div id="board">
@@ -414,6 +727,134 @@
     <button type="button" class="sheet-close" id="sheet-close" aria-label="Close">×</button>
   </div>
   <div class="sheet-body" id="sheet-body"></div>
+</div>
+
+<!-- ══ UNIVERSAL TIMER SETTINGS (one tab per technique; writes each page's
+     own localStorage key, so every widget of that family follows) ══ -->
+<div class="set-overlay" id="set-overlay">
+  <div class="set-box" role="dialog" aria-modal="true" aria-label="Timer settings">
+    <div class="set-head">
+      <h2 class="baloo">Timer Settings</h2>
+      <button type="button" class="set-close" id="set-close" aria-label="Close">×</button>
+    </div>
+    <div class="set-tabs" id="set-tabs" role="tablist">
+      <button type="button" class="set-tab sel" data-tab="pomo" role="tab">Pomodoro</button>
+      <button type="button" class="set-tab" data-tab="f52" role="tab">52-17</button>
+      <button type="button" class="set-tab" data-tab="f20" role="tab">20-20-20</button>
+      <button type="button" class="set-tab" data-tab="ft" role="tab">Flowtime</button>
+      <button type="button" class="set-tab" data-tab="ct" role="tab">Custom</button>
+    </div>
+    <div class="set-body">
+
+      <div class="set-pane sel" data-pane="pomo">
+        <label class="st-label" for="st-pomo-p">POMODORO (MINUTES)</label>
+        <input type="number" id="st-pomo-p" class="st-input" min="1" max="180" step="1">
+        <label class="st-label" for="st-pomo-s">SHORT BREAK (MINUTES)</label>
+        <input type="number" id="st-pomo-s" class="st-input" min="1" max="60" step="1">
+        <label class="st-label" for="st-pomo-l">LONG BREAK (MINUTES)</label>
+        <input type="number" id="st-pomo-l" class="st-input" min="1" max="120" step="1">
+        <hr class="st-hr">
+        <div class="st-section">🔔 Notification Sound</div>
+        <p class="st-desc">Plays when a phase ends. Notification 1 is the default beep.</p>
+        <div class="st-row"><select id="st-pomo-chime" class="st-input"></select><button type="button" class="st-test" data-test="st-pomo-chime">▶ Test</button></div>
+        <hr class="st-hr">
+        <div class="st-section">🎵 Ambience</div>
+        <p class="st-desc">Presets play while the timer runs. Edit the presets in the Ambience Studio widget.</p>
+        <label class="st-label" for="st-pomo-amb-p">WHILE FOCUSING (POMODORO)</label>
+        <select id="st-pomo-amb-p" class="st-input amb-sel"></select>
+        <label class="st-label" for="st-pomo-amb-s">DURING SHORT BREAK</label>
+        <select id="st-pomo-amb-s" class="st-input amb-sel"></select>
+        <label class="st-label" for="st-pomo-amb-l">DURING LONG BREAK</label>
+        <select id="st-pomo-amb-l" class="st-input amb-sel"></select>
+      </div>
+
+      <div class="set-pane" data-pane="f52">
+        <label class="st-label" for="st-f52-w">WORK (MINUTES)</label>
+        <input type="number" id="st-f52-w" class="st-input" min="1" max="180" step="1">
+        <label class="st-label" for="st-f52-b">BREAK (MINUTES)</label>
+        <input type="number" id="st-f52-b" class="st-input" min="1" max="120" step="1">
+        <label class="st-label" for="st-f52-e">EXTEND BREAK (MINUTES)</label>
+        <input type="number" id="st-f52-e" class="st-input" min="1" max="60" step="1">
+        <hr class="st-hr">
+        <div class="st-section">🔔 Notification Sound</div>
+        <p class="st-desc">Plays when the sprint ends and when the break ends.</p>
+        <div class="st-row"><select id="st-f52-chime" class="st-input"></select><button type="button" class="st-test" data-test="st-f52-chime">▶ Test</button></div>
+        <hr class="st-hr">
+        <div class="st-section">🎵 Ambience</div>
+        <label class="st-label" for="st-f52-amb-p">WHILE WORKING</label>
+        <select id="st-f52-amb-p" class="st-input amb-sel"></select>
+        <label class="st-label" for="st-f52-amb-s">DURING BREAK</label>
+        <select id="st-f52-amb-s" class="st-input amb-sel"></select>
+      </div>
+
+      <div class="set-pane" data-pane="f20">
+        <label class="st-label" for="st-f20-w">WORK (MINUTES)</label>
+        <input type="number" id="st-f20-w" class="st-input" min="1" max="180" step="1">
+        <label class="st-label" for="st-f20-b">BREAK (SECONDS)</label>
+        <input type="number" id="st-f20-b" class="st-input" min="5" max="300" step="5">
+        <label class="st-label" for="st-f20-z">SNOOZE (SECONDS)</label>
+        <input type="number" id="st-f20-z" class="st-input" min="10" max="600" step="10">
+        <hr class="st-hr">
+        <div class="st-section">🔔 Notification Sound</div>
+        <p class="st-desc">Plays when the break window opens and when it closes.</p>
+        <div class="st-row"><select id="st-f20-chime" class="st-input"></select><button type="button" class="st-test" data-test="st-f20-chime">▶ Test</button></div>
+        <hr class="st-hr">
+        <div class="st-section">🎵 Ambience</div>
+        <label class="st-label" for="st-f20-amb-p">WHILE WORKING</label>
+        <select id="st-f20-amb-p" class="st-input amb-sel"></select>
+        <label class="st-label" for="st-f20-amb-s">DURING BREAK</label>
+        <select id="st-f20-amb-s" class="st-input amb-sel"></select>
+      </div>
+
+      <div class="set-pane" data-pane="ft">
+        <div class="st-section" style="margin-top:2px">Break reward</div>
+        <div class="st-mode-row">
+          <button type="button" class="st-mode sel" id="st-ft-tiered">Tiered<small>Zoe's method</small></button>
+          <button type="button" class="st-mode" id="st-ft-ratio">Single ratio<small>steady pace</small></button>
+        </div>
+        <div id="st-ft-tiered-wrap">
+          <label class="st-label">WORK MIN → BREAK EARNED</label>
+          <div id="st-ft-tiers"></div>
+          <button type="button" class="st-mini" id="st-ft-addtier">+ add tier</button>
+          <button type="button" class="st-mini" id="st-ft-resetzoe">↺ reset to Zoe's method</button>
+          <label class="st-check"><input type="checkbox" id="st-ft-cont"><span>charge continuously</span></label>
+        </div>
+        <div id="st-ft-ratio-wrap" style="display:none">
+          <label class="st-label" for="st-ft-n">WORK MINUTES PER 1 BREAK MINUTE (N)</label>
+          <input type="number" id="st-ft-n" class="st-input" min="2" max="10" step="1">
+          <label class="st-label" for="st-ft-cap">LONGEST BREAK ALLOWED (MINUTES)</label>
+          <input type="number" id="st-ft-cap" class="st-input" min="0" max="60" step="1">
+          <p class="st-note">0 = no limit.</p>
+        </div>
+        <hr class="st-hr">
+        <label class="st-label" for="st-ft-full">WORK BAR FULL AT (MINUTES — VISUAL ONLY, NO ALARM)</label>
+        <input type="number" id="st-ft-full" class="st-input" min="1" max="600" step="1">
+        <hr class="st-hr">
+        <div class="st-section">🔔 Notification Sound</div>
+        <p class="st-desc">Plays when a break starts and when it ends.</p>
+        <div class="st-row"><select id="st-ft-chime" class="st-input"></select><button type="button" class="st-test" data-test="st-ft-chime">▶ Test</button></div>
+        <hr class="st-hr">
+        <div class="st-section">🎵 Ambience</div>
+        <label class="st-label" for="st-ft-amb-p">WHILE WORKING</label>
+        <select id="st-ft-amb-p" class="st-input amb-sel"></select>
+        <label class="st-label" for="st-ft-amb-s">DURING BREAK</label>
+        <select id="st-ft-amb-s" class="st-input amb-sel"></select>
+      </div>
+
+      <div class="set-pane" data-pane="ct">
+        <div class="st-section" style="margin-top:2px">Custom timers are built, not configured</div>
+        <p class="st-desc" style="margin-top:6px">A custom timer is a stack of your own phases — name it, set each phase's length, sound and ambience, then loop it. That builder lives on the Custom Timer page, and every Custom Timer widget on this board follows the profile you save there.</p>
+        <a class="st-open-link" href="../custom-timer/index.html" target="_blank" rel="noopener">Open the Custom Timer builder →</a>
+        <p class="st-note" style="margin-top:10px">Profiles are saved in this browser (same storage the widgets read) — no account, nothing uploaded.</p>
+      </div>
+
+    </div>
+    <div class="set-foot">
+      <span class="st-saved" id="st-saved">Saved ✓ — widgets updated</span>
+      <button type="button" class="st-cancel" id="set-cancel">Cancel</button>
+      <button type="button" class="st-save" id="set-save">Save Settings</button>
+    </div>
+  </div>
 </div>
 
 <div class="about" id="about">
@@ -443,34 +884,39 @@
 
 <script>
 /* ═══════════ Workbench board engine ═══════════
-   Grid: 12 cols × 160px-row-units, 1140px content (84px col + 12px gutter).
+   Grid: 11 cols × 160px-row-units, 1044px content (84px col + 12px gutter).
    Half-rows: 80px tall widgets snap into half units (88px half pitch incl. gap).
    Placement = {id, kind, s, c, r, b}  (c: col, r: half-row, b: optional binding)
    Persisted in localStorage 'tt_workbench_layout_v1'. */
 (function () {
   'use strict';
 
-  /* ---------- theme (house pattern) ---------- */
+  /* ---------- theme (house pattern; canonical key tt_theme_v1 — the
+     workbench used to write its own 'tt_theme' key, so widgets (which read
+     tt_theme_v1/site-theme) never followed. Fallback read migrates old
+     users' saved preference; writes go to the canonical key.) ---------- */
   (function () {
     var t = 'light';
-    try { t = localStorage.getItem('tt_theme') || 'light'; } catch (e) {}
+    try { t = localStorage.getItem('tt_theme_v1') || localStorage.getItem('tt_theme') || 'light'; } catch (e) {}
     document.documentElement.classList.remove('theme-dark', 'theme-classic');
     if (t === 'dark') document.documentElement.classList.add('theme-dark');
+    if (t === 'classic') document.documentElement.classList.add('theme-classic');
     var sel = document.getElementById('theme-select');
     if (sel) {
       sel.value = t;
       sel.addEventListener('change', function () {
-        try { localStorage.setItem('tt_theme', sel.value); } catch (e) {}
+        try { localStorage.setItem('tt_theme_v1', sel.value); } catch (e) {}
         document.documentElement.classList.remove('theme-dark', 'theme-classic');
         if (sel.value === 'dark') document.documentElement.classList.add('theme-dark');
+        if (sel.value === 'classic') document.documentElement.classList.add('theme-classic');
       });
     }
   })();
 
   /* ---------- grid math ---------- */
-  var COLS = 12, COLW = 84, HGUT = 12, PITCH = COLW + HGUT;      // 96
+  var COLS = 11, COLW = 84, HGUT = 12, PITCH = COLW + HGUT;      // 96 — PINNED: the small/medium widget tiles (468/564px) fill a 5/6-col span EXACTLY at pitch 96. Any narrower pitch makes adjacent tiles overlap (proven 2026-11-26: pitch 92 → 8px card overlap, and the algebra 7·P≤624 forbids fitting twelve 468px-5-spans under ~1092 with positive gutters). Route B (2026-11-26): cols cut 12→11 so content is 1044px and always clears the 160px side-ad lane (viewport ≥1400px); tiles untouched, zero ad-fill loss. Cost: M+M no longer fits side by side.
   var HALF_H = 80, VGUT = 8, HPITCH = HALF_H + VGUT;             // 88
-  var CONTENT_W = COLS * COLW + (COLS - 1) * HGUT;               // 1140
+  var CONTENT_W = COLS * COLW + (COLS - 1) * HGUT;               // 1044
   var STORE = 'tt_workbench_layout_v1';
 
   function spanW(w) { return w * PITCH - HGUT; }
@@ -480,8 +926,8 @@
      kind → def. Timer families (pomo/tasks/f52/f20/ft/ct/amb-deck) store
      size in item.s and cycle it via the fam map. */
   var KINDS = {}, FAMS = {};
-  function def(kind, label, spec, tile, span, url, fam, bindKey) {
-    KINDS[kind] = { kind: kind, label: label, spec: spec, tile: tile, span: span, url: url, fam: fam || null, bindKey: bindKey || null };
+  function def(kind, label, spec, tile, span, url, fam, bindKey, native) {
+    KINDS[kind] = { kind: kind, label: label, spec: spec, tile: tile, span: span, url: url, fam: fam || null, bindKey: bindKey || null, native: native || null };
   }
 
   /* timer widget URL families */
@@ -497,6 +943,26 @@
     def('ct-' + s, 'Custom Timer · ' + S, spec, dims, span, '../custom-timer/index.html?embed=1&size=' + s, 'ct');
     def('adeck-' + s, 'Studio Deck · ' + S, spec, dims, span, '../ambience/index.html?embed=1&app=deck&size=' + s, 'adeck');
   });
+  /* native filler blocks (2026-11-27, Andy's gap-fillers) — iframe-free,
+     rendered by NATIVE[<native>] straight into the tile card, so they cost
+     ~zero performance vs a full widget page. Sizes map to the real grid
+     holes: 2-col band beside an L (2×8 tall), 2/3-col half-row slivers,
+     2×1H chips, 2×2H/3×2H squares. b carries per-tile data as JSON
+     (duck: {art}, note: {t,c}); clock/next need none. */
+  def('duck-s', 'Duck Pal · Chip', '2×½ · 180×80', [180, 80], [2, 1], null, 'duck', null, 'duck');
+  def('duck-m', 'Duck Pal · Square', '2×1 · 180×160', [180, 160], [2, 2], null, 'duck', null, 'duck');
+  def('note-s', 'Sticky Note · Mini', '2×½ · 180×80', [180, 80], [2, 1], null, 'note', null, 'note');
+  def('note-m', 'Sticky Note', '3×1 · 276×160', [276, 160], [3, 2], null, 'note', null, 'note');
+  def('note-l', 'Sticky Note · Tall', '2×2 · 180×320', [180, 320], [2, 4], null, 'note', null, 'note');
+  def('next-s', 'Next Task · Chip', '2×½ · 180×80', [180, 80], [2, 1], null, 'next', null, 'next');
+  def('next-m', 'Next Task · Wide', '3×½ · 276×80', [276, 80], [3, 1], null, 'next', null, 'next');
+  /* clock: 4 distinct shapes, no size badge (a cycle order across these
+     would feel random — the user picks the shape that fits the hole) */
+  def('clock-c', 'Clock · Chip', '2×½ · 180×80', [180, 80], [2, 1], null, null, null, 'clock');
+  def('clock-q', 'Clock · Square', '2×1 · 180×160', [180, 160], [2, 2], null, null, null, 'clock');
+  def('clock-w', 'Clock · Wide', '3×½ · 276×80', [276, 80], [3, 1], null, null, null, 'clock');
+  def('clock-t', 'Clock · Tall', '2×2 · 180×320', [180, 320], [2, 4], null, null, null, 'clock');
+
   Object.keys(KINDS).forEach(function (k) {
     var fam = KINDS[k].fam;
     if (fam) { (FAMS[fam] = FAMS[fam] || {}); FAMS[fam][k.slice(fam.length + 1)] = k; }
@@ -548,6 +1014,7 @@
 
   /* picker grouping — mirrors the site pages (like the preview rows) */
   var GROUPS = [
+    { name: 'Board Extras', kinds: ['duck-s', 'duck-m', 'note-s', 'note-m', 'note-l', 'next-s', 'next-m', 'clock-c', 'clock-q', 'clock-w', 'clock-t'] },
     { name: 'Pomodoro Timer', kinds: ['pomo-s', 'pomo-m', 'pomo-l', 'tasks-s', 'tasks-m', 'tasks-l'] },
     { name: '52/17 Timer', kinds: ['f52-s', 'f52-m', 'f52-l'] },
     { name: '20-20-20 Rule', kinds: ['f20-s', 'f20-m', 'f20-l'] },
@@ -565,24 +1032,401 @@
     if (item.s && FAMS[item.kind] && FAMS[item.kind][item.s]) return KINDS[FAMS[item.kind][item.s]];
     return null;
   }
+  /* ---------- native filler block renderers ----------
+     Iframe-free blocks drawn straight into the tile card. b carries per-tile
+     data as JSON: duck {art}, note {t,c}; clock/next need none.
+     opts.preview = static picker render (no intervals, no listeners). */
+  var MASCOT_ARTS = ['duck-plain', 'duck-tomato', 'duck-sunglasses', 'cat-maestro',
+    'duck-explorer', 'duck-santa', 'duck-safari', 'duck-sport',
+    'duck-strawhat', 'duck-sprout', 'duck-astronaut', 'duck-crying',
+    'duck-monocle', 'duck-angry', 'duck-school', 'duck-headphones']
+    .map(function (m) { return 'img:' + m; })
+    .concat(['🍅', '☕', '🌱', '🎧', '📚', '🏃']);
+  var NOTE_COLORS = ['#F6D56B', '#F5A3B7', '#A8D0F0', '#B8D8A0', '#F2B880', '#C9B2E8'];
+  var CLK_DOWS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var CLK_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function nativeData(it) { try { return it.b ? JSON.parse(it.b) : {}; } catch (e) { return {}; } }
+  function setNativeData(it, obj) { it.b = JSON.stringify(obj); save(); }
+
+  var NATIVE = {
+    duck: function (card, it, d, tileEl, opts) {
+      var dat = nativeData(it);
+      var art = dat.art || 'img:duck-tomato';
+      var wrap = document.createElement('div');
+      wrap.className = 'native-fill duck ' + d.kind;
+      if (art.indexOf('img:') === 0) {
+        var img = document.createElement('img');
+        img.src = '/assets/images/icons/' + art.slice(4) + '.png';
+        img.alt = '';
+        wrap.appendChild(img);
+      } else {
+        var e = document.createElement('span');
+        e.className = 'duck-e';
+        e.textContent = art;
+        wrap.appendChild(e);
+      }
+      if (!opts.preview) {
+        wrap.title = 'Click to change the pal';
+        wrap.addEventListener('click', function () {
+          if (document.body.classList.contains('wb-editing')) return;
+          var cur = nativeData(it).art || 'img:duck-tomato';
+          var next = MASCOT_ARTS[(MASCOT_ARTS.indexOf(cur) + 1 + MASCOT_ARTS.length) % MASCOT_ARTS.length];
+          setNativeData(it, { art: next });
+          render();
+        });
+      }
+      card.appendChild(wrap);
+    },
+
+    note: function (card, it, d, tileEl, opts) {
+      var dat = nativeData(it);
+      var isAuto = dat.c === undefined || dat.c === null || dat.c === 'auto';
+      var ci = isAuto ? -1 : (typeof dat.c === 'number' && NOTE_COLORS[dat.c] ? dat.c : 0);
+      var wrap = document.createElement('div');
+      wrap.className = 'native-fill note ' + d.kind;
+      if (isAuto) wrap.classList.add('note-auto');
+      else wrap.style.background = NOTE_COLORS[ci];
+      var ta = document.createElement('textarea');
+      ta.placeholder = 'Note…';
+      ta.value = dat.t || '';
+      ta.setAttribute('aria-label', 'Sticky note');
+      wrap.appendChild(ta);
+      var dotRow = document.createElement('div');
+      dotRow.className = 'note-colors';
+      var swatches = [{ auto: true }].concat(NOTE_COLORS.map(function (col, idx) { return { col: col, idx: idx }; }));
+      swatches.forEach(function (sw) {
+        var b = document.createElement('button');
+        var sel = (sw.auto && isAuto) || (!sw.auto && !isAuto && sw.idx === ci);
+        b.className = 'note-dot' + (sel ? ' sel' : '') + (sw.auto ? ' auto' : '');
+        if (!sw.auto) b.style.background = sw.col;
+        b.title = sw.auto ? 'Match theme' : 'Note color';
+        b.setAttribute('aria-label', sw.auto ? 'Match theme' : 'Note color ' + sw.col);
+        if (!opts.preview) {
+          b.addEventListener('click', function () {
+            var cur = nativeData(it);
+            if (sw.auto) {
+              cur.c = 'auto';
+              wrap.classList.add('note-auto');
+              wrap.style.background = '';
+            } else {
+              cur.c = sw.idx;
+              wrap.classList.remove('note-auto');
+              wrap.style.background = sw.col;
+            }
+            setNativeData(it, cur);
+            dotRow.querySelectorAll('.note-dot').forEach(function (d2) { d2.classList.remove('sel'); });
+            b.classList.add('sel');
+          });
+        }
+        dotRow.appendChild(b);
+      });
+      wrap.appendChild(dotRow);
+      if (!opts.preview) {
+        var deb = null;
+        ta.addEventListener('input', function () {
+          clearTimeout(deb);
+          deb = setTimeout(function () {
+            var cur = nativeData(it); cur.t = ta.value; setNativeData(it, cur);
+          }, 400);
+        });
+      }
+      card.appendChild(wrap);
+    },
+
+    next: function (card, it, d, tileEl, opts) {
+      function build() {
+        card.querySelectorAll('.native-fill').forEach(function (n) { n.remove(); });
+        var wrap = document.createElement('div');
+        wrap.className = 'native-fill next ' + d.kind;
+        var task = null;
+        try {
+          var store = JSON.parse(localStorage.getItem('tt_tasks_v1') || 'null');
+          if (store && Array.isArray(store.tasks)) {
+            for (var i = 0; i < store.tasks.length; i++) {
+              if (!store.tasks[i].done) { task = store.tasks[i]; break; }
+            }
+          }
+        } catch (e) {}
+        if (task) {
+          var chk = document.createElement('button');
+          chk.className = 'next-check';
+          chk.type = 'button';
+          chk.title = 'Mark done';
+          chk.setAttribute('aria-label', 'Mark "' + task.title + '" done');
+          chk.innerHTML = '<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+          var ttl = document.createElement('span');
+          ttl.className = 'next-title';
+          ttl.textContent = task.title;
+          ttl.title = task.title;
+          if (!opts.preview) {
+            chk.addEventListener('click', function () {
+              try {
+                var store = JSON.parse(localStorage.getItem('tt_tasks_v1') || 'null');
+                if (store && Array.isArray(store.tasks)) {
+                  for (var i = 0; i < store.tasks.length; i++) {
+                    if (store.tasks[i].id === task.id && !store.tasks[i].done) {
+                      store.tasks[i].done = true;
+                      localStorage.setItem('tt_tasks_v1', JSON.stringify(store));
+                      if (window.ttStats && window.ttStats.recordTask) {
+                        try { window.ttStats.recordTask('pomodoro', Date.now()); } catch (e2) {}
+                      }
+                      break;
+                    }
+                  }
+                }
+              } catch (e) {}
+              repaintNextChips(); /* the storage event only fires on OTHER documents — repaint our own chips directly */
+            });
+          }
+          wrap.appendChild(chk);
+          wrap.appendChild(ttl);
+        } else {
+          var em = document.createElement('span');
+          em.className = 'next-empty';
+          em.textContent = 'All clear ✔';
+          wrap.appendChild(em);
+        }
+        card.appendChild(wrap);
+      }
+      build();
+      if (tileEl) tileEl._repaintNext = build;
+    },
+
+    clock: function (card, it, d, tileEl, opts) {
+      var variant = d.kind.split('-')[1]; /* c | q | w | t */
+      var wrap = document.createElement('div');
+      wrap.className = 'native-fill clock clock-' + variant;
+      var tEls = [];
+      function line(cls) { var s = document.createElement('div'); s.className = cls; wrap.appendChild(s); return s; }
+      var tMain, tSec, dateEl;
+      if (variant === 't') {
+        tMain = [line('clk-t'), line('clk-t'), line('clk-t')];
+        dateEl = line('clk-d');
+      } else {
+        tMain = line('clk-t');
+        if (variant !== 'c') dateEl = line('clk-d');
+      }
+      function paint() {
+        var n = new Date();
+        var hh = pad2(n.getHours()), mm = pad2(n.getMinutes()), ss = pad2(n.getSeconds());
+        if (variant === 't') {
+          tMain[0].textContent = hh; tMain[1].textContent = mm; tMain[2].textContent = ss;
+        } else {
+          tMain.textContent = hh + ':' + mm + (variant === 'w' ? ':' + ss : '');
+        }
+        if (dateEl) dateEl.textContent = CLK_DOWS[n.getDay()] + ', ' + n.getDate() + ' ' + CLK_MON[n.getMonth()];
+      }
+      paint();
+      if (!opts.preview && tileEl) {
+        var iv = setInterval(paint, 1000);
+        var prev = tileEl._cleanup;
+        tileEl._cleanup = function () { clearInterval(iv); if (prev) prev(); };
+      }
+      card.appendChild(wrap);
+    }
+  };
+
+  /* tasks written from any widget iframe land here via the storage event;
+     the board's own check-off writes never fire it (same document), so the
+     chip handler above calls this directly too */
+  function repaintNextChips() {
+    var ts = board.querySelectorAll('.tile');
+    for (var i = 0; i < ts.length; i++) {
+      if (ts[i].dataset.nkind === 'next' && ts[i]._repaintNext) ts[i]._repaintNext();
+    }
+  }
+  window.addEventListener('storage', function (e) {
+    if (e.key !== 'tt_tasks_v1') return;
+    repaintNextChips();
+  });
+
   function buildUrl(defI, item) {
     return typeof defI.url === 'function' ? defI.url(item.b || null) : defI.url;
   }
 
-  /* ---------- state ---------- */
-  var state = { v: 1, seq: 1, items: [] };
+  /* ---------- state: named boards (multi-board, iOS-style) ----------
+     boards = { current: <id>, list: [ { id, name, v, seq, items } ] }
+     `state` stays a reference to the CURRENT board's layout object, so all
+     existing board code (render/drag/cycle/add) works unchanged.
+     Old single-board key `tt_workbench_layout_v1` migrates once into
+     board #1 (old key left intact as a read-only backup). */
+  var BOARDS_STORE = 'tt_workbench_boards_v1';
+  var boards = { current: 1, list: [{ id: 1, name: 'My Board', v: 1, seq: 1, items: [] }] };
+  var state = boards.list[0];
+  var SOFT_CAP = 10; /* live iframes per board before the jank appears */
+
+  function cleanItems(d) {
+    return (Array.isArray(d.items) ? d.items : []).filter(function (it) {
+      return it && resolveDef(it) && typeof it.c === 'number' && typeof it.r === 'number';
+    });
+  }
+  /* Route B one-time nudge (2026-11-26): layouts saved at 12 cols may hold
+     widgets whose right edge now exceeds the 11-col grid — clamp c leftward.
+     Also heals PRE-EXISTING overlaps (buried tiles were only grabbable at
+     tiny exposed slivers). Collisions settle downward (same iOS-style rule
+     as drop nudging). Runs on load only; the fixed layout is saved back,
+     so it happens once. */
+  function clampToGrid(items) {
+    var moved = false;
+    items.forEach(function (it) {
+      var d = resolveDef(it);
+      if (!d) return;
+      var maxC = COLS - d.span[0];
+      if (it.c > maxC) { it.c = Math.max(0, maxC); moved = true; }
+    });
+    var hadOverlap = items.some(function (a, i) {
+      var da = resolveDef(a);
+      if (!da) return false;
+      return items.some(function (b, j) {
+        if (j <= i) return false;
+        var db = resolveDef(b);
+        return db && overlaps({ c: a.c, r: a.r, span: da.span }, { c: b.c, r: b.r, span: db.span });
+      });
+    });
+    if (!moved && !hadOverlap) return false;
+    items.forEach(function (it) {
+      var guard = 0, d = resolveDef(it);
+      if (!d) return;
+      while (guard++ < 800) {
+        var hit = items.some(function (o) {
+          if (o === it) return false;
+          var od = resolveDef(o);
+          return od && overlaps({ c: it.c, r: it.r, span: d.span }, { c: o.c, r: o.r, span: od.span });
+        });
+        if (!hit) break;
+        it.r += 1;
+      }
+    });
+    return true;
+  }
   function save() {
-    try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {}
+    try { localStorage.setItem(BOARDS_STORE, JSON.stringify(boards)); } catch (e) {}
   }
   function load() {
     try {
-      var raw = localStorage.getItem(STORE);
-      if (!raw) return;
-      var d = JSON.parse(raw);
-      if (!d || d.v !== 1 || !Array.isArray(d.items)) return;
-      d.items = d.items.filter(function (it) { return it && resolveDef(it) && typeof it.c === 'number' && typeof it.r === 'number'; });
-      state = { v: 1, seq: d.seq || (d.items.length + 1), items: d.items };
+      var raw = localStorage.getItem(BOARDS_STORE);
+      if (raw) {
+        var b = JSON.parse(raw);
+        if (b && Array.isArray(b.list) && b.list.length) {
+          b.list.forEach(function (bd) { bd.items = cleanItems(bd); bd.seq = bd.seq || (bd.items.length + 1); bd.name = String(bd.name || 'Board').slice(0, 30); });
+          var clamped = false;
+          b.list.forEach(function (bd) { if (clampToGrid(bd.items)) clamped = true; });
+          boards = { current: b.list[0].id, list: b.list };
+          var cur = b.list.filter(function (bd) { return bd.id === b.current; })[0];
+          if (cur) boards.current = cur.id;
+          state = cur || b.list[0];
+          if (clamped) save(); /* persist the one-time Route B nudge */
+          return;
+        }
+      }
+      /* migration: old single-board layout → board #1 (old key preserved) */
+      var old = localStorage.getItem(STORE);
+      if (old) {
+        var d = JSON.parse(old);
+        if (d && d.v === 1) {
+          var items = cleanItems(d);
+          clampToGrid(items); /* save() below persists the nudge either way */
+          boards = { current: 1, list: [{ id: 1, name: 'My Board', v: 1, seq: d.seq || (items.length + 1), items: items }] };
+          state = boards.list[0];
+          save();
+        }
+      }
     } catch (e) {}
+  }
+
+  /* ---------- board switcher ---------- */
+  var switchEl = document.getElementById('board-switch');
+  var countEl = document.getElementById('bs-count-wrap');
+  var toastEl = document.getElementById('wb-toast');
+  var toastT = null;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    if (toastT) clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.classList.remove('show'); }, 4200);
+  }
+  function renderSwitch() {
+    switchEl.innerHTML = '';
+    boards.list.forEach(function (bd) {
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'bs-pill' + (bd.id === boards.current ? ' sel' : '');
+      pill.setAttribute('role', 'tab');
+      var nm = document.createElement('span');
+      nm.className = 'bs-name';
+      nm.textContent = bd.name;
+      pill.appendChild(nm);
+      if (bd.id === boards.current) {
+        var ren = document.createElement('button');
+        ren.type = 'button'; ren.className = 'bs-act bs-ren'; ren.title = 'Rename board'; ren.textContent = '✎';
+        ren.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var name = prompt('Rename this board:', bd.name);
+          if (name && name.trim()) { bd.name = name.trim().slice(0, 30); save(); renderSwitch(); syncBoardTitle(); }
+        });
+        var del = document.createElement('button');
+        del.type = 'button'; del.className = 'bs-act'; del.title = 'Delete board';
+        del.textContent = '×';
+        del.style.display = boards.list.length > 1 ? '' : 'none';
+        del.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (!confirm('Delete board "' + bd.name + '"? Its widgets will be removed.')) return;
+          setEditing(false); /* the new board's widgets must not inherit the asleep state */
+          boards.list = boards.list.filter(function (x) { return x.id !== bd.id; });
+          if (boards.current === bd.id) { boards.current = boards.list[0].id; state = boards.list[0]; render(); }
+          save(); renderSwitch(); syncBoardTitle();
+          if (window.TTEvent) TTEvent('workbench_board_remove', { source: 'switcher' });
+        });
+        pill.appendChild(ren);
+        pill.appendChild(del);
+      }
+      pill.addEventListener('click', function () {
+        if (boards.current === bd.id) return;
+        setEditing(false); /* switching boards while editing left widgets asleep with no visible cue */
+        boards.current = bd.id;
+        state = bd;
+        save();
+        render();
+        renderSwitch();
+        syncBoardTitle();
+      });
+      switchEl.appendChild(pill);
+    });
+    var add = document.createElement('button');
+    add.type = 'button'; add.className = 'bs-pill bs-add'; add.title = 'Add a new board'; add.textContent = '＋';
+    add.addEventListener('click', function () {
+      var id = boards.list.reduce(function (m, b) { return Math.max(m, b.id); }, 0) + 1;
+      var nb = { id: id, name: 'Board ' + (boards.list.length + 1), v: 1, seq: 1, items: [] };
+      setEditing(false); /* same asleep-state inheritance as switch/delete */
+      boards.list.push(nb);
+      boards.current = id;
+      state = nb;
+      save(); render(); renderSwitch(); syncBoardTitle();
+      if (window.TTEvent) TTEvent('workbench_board_add', { source: 'switcher' });
+    });
+    switchEl.appendChild(add);
+    var count = document.createElement('span');
+    count.className = 'bs-count';
+    count.textContent = state.items.length + (state.items.length === 1 ? ' widget' : ' widgets');
+    countEl.textContent = '';
+    countEl.appendChild(count);
+    if (state.items.length > 0) {
+      var clear = document.createElement('button');
+      clear.type = 'button'; clear.className = 'bs-clear'; clear.textContent = 'Clear board';
+      clear.addEventListener('click', function () {
+        if (!confirm('Remove all ' + state.items.length + ' widgets from "' + state.name + '"? You can re-add them anytime.')) return;
+        state.items = [];
+        save(); render(); renderSwitch(); syncBoardTitle();
+        if (window.TTEvent) TTEvent('workbench_board_clear', { source: 'switcher' });
+      });
+      countEl.appendChild(clear);
+    }
+  }
+  function syncBoardTitle() {
+    var t = document.getElementById('board-title');
+    if (t) t.textContent = state.name;
+    document.title = state.name + ' — My Workbench';
   }
 
   /* ---------- geometry helpers ---------- */
@@ -619,6 +1463,88 @@
       item.r += 1;
     }
   }
+  /* Insert semantics (Andy's call 2026-11-27): a dropped/resized widget KEEPS
+     its spot; the widgets underneath shift down to make room, cascading.
+     Every move is strictly downward so the loop always terminates.
+     Pass 2 resolves sibling collisions (two widgets pushed to the same
+     landing spot push each other apart) — without it they deadlock. */
+  function pushOthersDown(item) {
+    var guard = 0;
+    var md = resolveDef(item);
+    if (!md) return;
+    function bottomOf(x, xd) { return x.r + xd.span[1]; }
+    while (guard++ < 800) {
+      var moved = false, i, j, o, od, a, b, da, db, lo, hi, t;
+      for (i = 0; i < state.items.length; i++) {
+        o = state.items[i];
+        if (o === item) continue;
+        od = resolveDef(o);
+        if (!od) continue;
+        if (overlaps({ c: item.c, r: item.r, span: md.span }, { c: o.c, r: o.r, span: od.span })) {
+          t = bottomOf(item, md);
+          if (t > o.r) { o.r = t; moved = true; }
+        }
+      }
+      for (i = 0; i < state.items.length; i++) {
+        for (j = i + 1; j < state.items.length; j++) {
+          a = state.items[i]; b = state.items[j];
+          if (a === item || b === item) continue;
+          da = resolveDef(a); db = resolveDef(b);
+          if (!da || !db) continue;
+          if (overlaps({ c: a.c, r: a.r, span: da.span }, { c: b.c, r: b.r, span: db.span })) {
+            lo = a.r <= b.r ? a : b;
+            hi = lo === a ? b : a;
+            t = bottomOf(hi, resolveDef(hi));
+            if (t > lo.r) { lo.r = t; moved = true; }
+          }
+        }
+      }
+      if (!moved) return;
+    }
+  }
+  /* Non-mutating variant for the LIVE drag preview: returns { id: newR } for
+     every OTHER item given the dragged item at (c, r). Others are measured
+     from their SAVED positions, so dragging away lets them slide back up
+     (the hole closes). Same two-pass logic as pushOthersDown. */
+  function previewPush(dragged, c, r) {
+    var md = resolveDef(dragged);
+    if (!md) return {};
+    var pos = [];
+    state.items.forEach(function (o) {
+      var od = resolveDef(o);
+      if (!od) return;
+      pos.push(o === dragged
+        ? { id: o.id, c: c, r: r, span: md.span, drag: true }
+        : { id: o.id, c: o.c, r: o.r, span: od.span, drag: false });
+    });
+    function bottomOf(p) { return p.r + p.span[1]; }
+    function hit(a, b) { return a.c < b.c + b.span[0] && b.c < a.c + a.span[0] && a.r < b.r + b.span[1] && b.r < a.r + a.span[1]; }
+    var guard = 0;
+    while (guard++ < 800) {
+      var moved = false, i, j, t, dragP = null;
+      for (i = 0; i < pos.length; i++) if (pos[i].drag) { dragP = pos[i]; break; }
+      for (i = 0; i < pos.length; i++) {
+        var p = pos[i];
+        if (p.drag) continue;
+        if (hit(dragP, p)) { t = bottomOf(dragP); if (t > p.r) { p.r = t; moved = true; } }
+      }
+      for (i = 0; i < pos.length; i++) {
+        for (j = i + 1; j < pos.length; j++) {
+          var a = pos[i], b = pos[j];
+          if (a.drag || b.drag) continue;
+          if (hit(a, b)) {
+            var lo = a.r <= b.r ? a : b, hi = lo === a ? b : a;
+            t = bottomOf(hi);
+            if (t > lo.r) { lo.r = t; moved = true; }
+          }
+        }
+      }
+      if (!moved) break;
+    }
+    var map = {};
+    pos.forEach(function (p) { if (!p.drag) map[p.id] = p.r; });
+    return map;
+  }
 
   /* ---------- rendering ---------- */
   var board = document.getElementById('board');
@@ -627,7 +1553,10 @@
   function render() {
     /* remove stale tiles */
     var tiles = board.querySelectorAll('.tile');
-    for (var i = 0; i < tiles.length; i++) tiles[i].remove();
+    for (var i = 0; i < tiles.length; i++) {
+      if (tiles[i]._cleanup) tiles[i]._cleanup(); /* clock intervals etc. */
+      tiles[i].remove();
+    }
     var maxBottom = 0;
     state.items.forEach(function (it) {
       var d = resolveDef(it);
@@ -637,6 +1566,34 @@
     });
     var minRows = 6; /* 3 full rows */
     var rows = Math.max(minRows, maxBottom);
+    board.style.height = spanH(rows) + 40 + 'px';
+    board.style.minHeight = '';
+    emptyEl.classList.toggle('show', state.items.length === 0);
+    renderSwitch();
+    syncBoardTitle();
+  }
+
+  /* Soft settle after a drag: apply final positions/z-order/height WITHOUT
+     rebuilding tiles — render() destroys every tile and reloads all widget
+     iframes (the flash Andy flagged 2026-11-27). A drop changes nothing but
+     coordinates, so the live DOM just stays. Full render() is kept for
+     add/resize/remove where the tile content genuinely changes. */
+  function settleBoard() {
+    var maxBottom = 0;
+    var ts = board.querySelectorAll('.tile');
+    for (var i = 0; i < ts.length; i++) {
+      var tel = ts[i], o = null;
+      for (var j = 0; j < state.items.length; j++) {
+        if (String(state.items[j].id) === tel.dataset.id) { o = state.items[j]; break; }
+      }
+      var od = o && resolveDef(o);
+      if (!od) continue;
+      maxBottom = Math.max(maxBottom, o.r + od.span[1]);
+      tel.style.left = (o.c * PITCH) + 'px';
+      tel.style.top = (o.r * HPITCH) + 'px';
+      tel.style.zIndex = 1; /* reset the drag-time stacking */
+    }
+    var rows = Math.max(6, maxBottom);
     board.style.height = spanH(rows) + 40 + 'px';
     board.style.minHeight = '';
     emptyEl.classList.toggle('show', state.items.length === 0);
@@ -668,6 +1625,10 @@
     card.className = 'tile-card';
     card.style.width = d.tile[0] + 'px';
     card.style.height = d.tile[1] + 'px';
+    if (d.native) {
+      el.dataset.nkind = d.native;
+      NATIVE[d.native](card, it, d, el, { preview: false });
+    } else {
     var f = document.createElement('iframe');
     var url = buildUrl(d, it);
     f.setAttribute('data-src', url);
@@ -682,6 +1643,7 @@
     f.height = d.tile[1];
     f.setAttribute('title', d.label);
     card.appendChild(f);
+    }
     el.appendChild(card);
 
     var MINUS_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M3.5 8h9"/></svg>';
@@ -719,23 +1681,43 @@
     return el;
   }
 
-  /* ---------- drag with live snap ---------- */
+  /* ---------- drag with live snap ----------
+     Dual-path input: pointer events AND a mouse-event fallback drive the same
+     state. Safari (headed, heavy boards) can stall setPointerCapture move
+     streams; the mouse path has been solid there forever. Moves are deduped
+     by coordinates so a browser that fires both paths never double-steps. */
   var dragZ = 10;
   function attachDrag(el, it, d) {
-    var startPX = 0, startPY = 0, originC = 0, originR = 0, moved = false, active = false;
-    el.addEventListener('pointerdown', function (e) {
+    var startPX = 0, startPY = 0, originC = 0, originR = 0, moved = false, active = false, lastX = null, lastY = null;
+    var liveMap = null, tileEls = null; /* drag-scoped caches */
+
+    function down(x, y) {
       if (!document.body.classList.contains('wb-editing')) return;
-      if (e.button !== undefined && e.button !== 0) return;
       active = true; moved = false;
-      startPX = e.clientX; startPY = e.clientY;
+      startPX = x; startPY = y;
+      lastX = x; lastY = y;
       originC = it.c; originR = it.r;
-      try { el.setPointerCapture(e.pointerId); } catch (err) {}
-      e.preventDefault();
-    });
-    el.addEventListener('pointermove', function (e) {
+      liveMap = null; tileEls = null;
+    }
+    /* iOS-style live parting: shift the other tiles in real time (animated
+       by the .tile transition) while the dragged tile keeps its raw follow */
+    function livePreview(c, r) {
+      if (!tileEls) {
+        tileEls = {};
+        var ts = board.querySelectorAll('.tile');
+        for (var i = 0; i < ts.length; i++) tileEls[ts[i].dataset.id] = ts[i];
+      }
+      liveMap = previewPush(it, c, r);
+      for (var id in liveMap) {
+        var tel = tileEls[id];
+        if (tel) tel.style.top = (liveMap[id] * HPITCH) + 'px';
+      }
+    }
+    function move(x, y) {
       if (!active) return;
-      e.preventDefault();
-      var dx = e.clientX - startPX, dy = e.clientY - startPY;
+      if (x === lastX && y === lastY) return; /* duplicate from the other path */
+      lastX = x; lastY = y;
+      var dx = x - startPX, dy = y - startPY;
       if (!moved && Math.abs(dx) + Math.abs(dy) < 6) return;
       if (!moved) { moved = true; el.classList.add('dragging'); el.style.zIndex = ++dragZ; }
       var c = Math.round((originC * PITCH + dx) / PITCH);
@@ -745,18 +1727,48 @@
       it.c = c; it.r = r;
       el.style.left = (c * PITCH) + 'px';
       el.style.top = (r * HPITCH) + 'px';
-    });
+      livePreview(c, r);
+    }
     function up() {
       if (!active) return;
       active = false;
       el.classList.remove('dragging');
-      if (!moved) return;
-      nudgeDown(it, it.id);
+      if (!moved) { liveMap = null; tileEls = null; return; }
+      /* commit the preview exactly as shown — no snap on drop */
+      if (liveMap) {
+        for (var i = 0; i < state.items.length; i++) {
+          var o = state.items[i];
+          if (o === it) continue;
+          if (liveMap[o.id] !== undefined) o.r = liveMap[o.id];
+        }
+      }
+      liveMap = null; tileEls = null;
+      pushOthersDown(it); /* safety net — a no-op after the preview */
       save();
-      render();
+      settleBoard(); /* NOT render(): rebuilding reloads every widget iframe (flash) */
     }
-    el.addEventListener('pointerup', up);
-    el.addEventListener('pointercancel', up);
+
+    el.addEventListener('pointerdown', function (e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      if (active) return; /* mousedown compat event already handled this press */
+      down(e.clientX, e.clientY);
+      /* preventDefault ONLY while editing (drag select/ghost-image control) —
+         in normal mode it silently blocked focus on native content like the
+         sticky-note textarea (Andy's "cannot type") */
+      if (document.body.classList.contains('wb-editing')) e.preventDefault();
+    });
+    el.addEventListener('mousedown', function (e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      if (active) return;
+      down(e.clientX, e.clientY);
+      if (document.body.classList.contains('wb-editing')) e.preventDefault();
+    });
+    /* document-level so the drag survives capture quirks and fast flicks */
+    document.addEventListener('pointermove', function (e) { move(e.clientX, e.clientY); });
+    document.addEventListener('pointerup', up);
+    document.addEventListener('pointercancel', up);
+    document.addEventListener('mousemove', function (e) { move(e.clientX, e.clientY); });
+    document.addEventListener('mouseup', up);
   }
 
   /* ---------- size cycling ---------- */
@@ -770,7 +1782,7 @@
     it.s = next;
     var d = resolveDef(it);
     it.c = Math.min(it.c, COLS - d.span[0]);
-    nudgeDown(it, it.id);
+    pushOthersDown(it);
     save();
     render();
     if (window.TTEvent) TTEvent('workbench_widget_resize', { tool: it.kind, mode: next });
@@ -792,6 +1804,11 @@
     state.items.push(it);
     save();
     render();
+    /* soft cap (Andy's call): never blocks, just nudges once past the
+       comfort zone — jank scales with live iframes per board */
+    if (state.items.length === SOFT_CAP + 1) {
+      toast('This board is getting heavy (' + state.items.length + ' widgets). Add another board with the ＋ above to keep everything snappy.');
+    }
     if (window.TTEvent) TTEvent('workbench_widget_add', { tool: it.kind, source: 'picker' });
   }
   function removeItem(id) {
@@ -816,7 +1833,13 @@
     buildSheet();
     document.body.classList.add('sheet-open');
   }
-  function closeSheet() { document.body.classList.remove('sheet-open'); }
+  function closeSheet() {
+    document.body.classList.remove('sheet-open');
+    /* a clicked picker card keeps focus after the sheet closes — a later
+       Space/Enter (timer habit) would re-trigger its keydown handler and add
+       a ghost widget while the sheet is hidden (Andy's "widget adds itself") */
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  }
   document.getElementById('btn-add').addEventListener('click', openSheet);
   document.getElementById('nav-add').addEventListener('click', openSheet);
   document.getElementById('empty-add').addEventListener('click', openSheet);
@@ -870,10 +1893,18 @@
         stage.className = 'pv-stage';
         var box = document.createElement('div');
         box.className = 'pv-box';
-        var f = document.createElement('iframe');
-        f.setAttribute('title', d.label + ' preview');
-        f.setAttribute('data-src', buildUrl(d, { b: null }));
-        f.setAttribute('loading', 'lazy');
+        var f;
+        if (d.native) {
+          /* native blocks preview as a static live render — no iframe at all */
+          f = document.createElement('div');
+          f.className = 'pv-native';
+          NATIVE[d.native](f, { id: 'pv-' + k, kind: k, b: null }, d, null, { preview: true });
+        } else {
+          f = document.createElement('iframe');
+          f.setAttribute('title', d.label + ' preview');
+          f.setAttribute('data-src', buildUrl(d, { b: null }));
+          f.setAttribute('loading', 'lazy');
+        }
         box.appendChild(f);
         var plus = document.createElement('span');
         plus.className = 'pv-add';
@@ -923,8 +1954,17 @@
         grid.appendChild(card);
         /* measure only once the card is in the DOM (detached clientWidth = 0) */
         fit();
-        pvObserver.observe(f);
-        function add() { addWidget(k, selS ? selS.value : null); closeSheet(); setEditing(true); /* land in edit mode so the new tile can be dragged right away */ }
+        if (!d.native) pvObserver.observe(f); /* native previews are static — nothing to lazy-load */
+        /* the handlers MUST be dead while the sheet is closed — the card can
+           hold focus after closeSheet() and a stray Space/Enter would
+           otherwise add the widget again from a hidden sheet */
+        function sheetLive() { return document.body.classList.contains('sheet-open'); }
+        function add() {
+          if (!sheetLive()) return;
+          addWidget(k, selS ? selS.value : null);
+          closeSheet();
+          setEditing(true); /* land in edit mode so the new tile can be dragged right away */
+        }
         card.addEventListener('click', add);
         card.addEventListener('keydown', function (e) {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); add(); }
@@ -959,12 +1999,340 @@
         if (e.source) e.source.postMessage({ tt: 'tt-msg-ack' }, '*');
         window.open(TOOL_PAGES[d.tool], '_blank');
       } else if (d.tt === 'tt-open-settings') {
-        /* v1: ack so the widget's "+" doesn't double-open, then open the
-           standalone page. Batch 3.5's universal settings replaces this. */
+        /* universal settings sheet — ack so the widget's "+" doesn't
+           double-open, then open the sheet on the asking technique's tab */
         if (e.source) e.source.postMessage({ tt: 'tt-settings-ack' }, '*');
-        window.open('../custom-timer/index.html', '_blank');
+        var tmap = { custom: 'ct', pomo: 'pomo', '52-17': 'f52', '20-20-20': 'f20', flowtime: 'ft' };
+        openSettings(tmap[d.technique] || 'ct');
       }
     } catch (err) {}
+  });
+
+  /* ---------- universal timer settings sheet ----------
+     Each tab is a faithful copy of that technique's own settings form and
+     writes the SAME localStorage keys the timer pages read — every widget
+     of that family on the board follows automatically (no sync layer). */
+  var ST = {
+    POMO_MIN_KEY: 'tt_pomo_minutes_v1',          /* NEW key (pomo durations were memory-only) */
+    F52_KEY: 'tt_5217_minutes_v1',
+    F20_KEY: 'tt_2020_settings_v1',
+    FT_KEY: 'tt_flow_settings_v1',
+    NOTIFY_KEY: 'tt_notify_sounds_v1',           /* map: main / t5217 / eye / flow → 1..6 */
+    AMB_KEY: 'tt_timer_ambience_settings_v1',    /* slots: pomodoro / shortBreak / longBreak → '0'..'4' */
+    PRESETS_KEY: 'tt_ambience_presets_v1',
+    DEFAULT_PRESET_NAMES: { 1: 'Rainy Focus', 2: 'Cozy Cafe', 3: 'Campfire Night', 4: 'Ocean Breeze' },
+    CHIME_FILES: {
+      1: '/assets/sounds/beep.mp3',
+      2: '/assets/sounds/Notification 1.mp3',
+      3: '/assets/sounds/Notification 2.mp3',
+      4: '/assets/sounds/Notification 3.mp3',
+      5: '/assets/sounds/Notification 4.mp3',
+      6: '/assets/sounds/Notification 5.mp3'
+    },
+    ZOE_TIERS: [[25, 5], [50, 8], [90, 10], [null, 15]],
+    /* tab → tile path that must reload after a save */
+    FAM_PATH: { pomo: '/index.html', f52: '/52-17/index.html', f20: '/20-20-20-rule/index.html', ft: '/flowtime/index.html' },
+    /* tab → chime select id + notify-map slot */
+    CHIME: { pomo: ['st-pomo-chime', 'main'], f52: ['st-f52-chime', 't5217'], f20: ['st-f20-chime', 'eye'], ft: ['st-ft-chime', 'flow'] },
+    /* tab → [ambience select id, slot key] pairs */
+    AMB: {
+      pomo: [['st-pomo-amb-p', 'pomodoro'], ['st-pomo-amb-s', 'shortBreak'], ['st-pomo-amb-l', 'longBreak']],
+      f52: [['st-f52-amb-p', 'pomodoro'], ['st-f52-amb-s', 'shortBreak']],
+      f20: [['st-f20-amb-p', 'pomodoro'], ['st-f20-amb-s', 'shortBreak']],
+      ft: [['st-ft-amb-p', 'pomodoro'], ['st-ft-amb-s', 'shortBreak']]
+    }
+  };
+  function stRead(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } }
+  function stWrite(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+  function stClamp(v, lo, hi, dflt) { v = parseFloat(v); if (!(v > 0)) v = dflt; return Math.min(hi, Math.max(lo, v)); }
+  function stInt(v, lo, hi, dflt) { v = parseInt(v, 10); if (!(v >= lo)) v = dflt; return Math.min(hi, Math.max(lo, v)); }
+  function stEl(id) { return document.getElementById(id); }
+
+  /* chime select options (shared markup across tabs) */
+  var CHIME_LABELS = ['Notification 1 (Default Beep)', 'Notification 2', 'Notification 3', 'Notification 4', 'Notification 5', 'Notification 6'];
+  Object.keys(ST.CHIME).forEach(function (tab) {
+    var sel = stEl(ST.CHIME[tab][0]);
+    if (!sel) return;
+    CHIME_LABELS.forEach(function (label, i) {
+      var o = document.createElement('option');
+      o.value = String(i + 1); o.textContent = label;
+      sel.appendChild(o);
+    });
+  });
+  /* chime test buttons */
+  document.querySelectorAll('.st-test').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var sel = stEl(btn.getAttribute('data-test'));
+      var f = ST.CHIME_FILES[parseInt(sel && sel.value, 10)] || ST.CHIME_FILES[1];
+      try { var a = new Audio(f); a.play(); } catch (e) {}
+    });
+  });
+
+  function stPresetNames() {
+    var saved = stRead(ST.PRESETS_KEY) || {}, out = {};
+    for (var i = 1; i <= 4; i++) out[i] = (saved[i] && saved[i].name) ? saved[i].name : ST.DEFAULT_PRESET_NAMES[i];
+    return out;
+  }
+  /* ambience selects: Off + Preset 1..4 (user names override defaults) */
+  function stFillAmbience() {
+    var names = stPresetNames();
+    Object.keys(ST.AMB).forEach(function (tab) {
+      ST.AMB[tab].forEach(function (pair) {
+        var sel = stEl(pair[0]);
+        if (!sel) return;
+        sel.innerHTML = '';
+        var off = document.createElement('option');
+        off.value = '0'; off.textContent = 'None / Off'; sel.appendChild(off);
+        for (var i = 1; i <= 4; i++) {
+          var o = document.createElement('option');
+          o.value = String(i); o.textContent = 'Preset ' + i + ': ' + names[i];
+          sel.appendChild(o);
+        }
+      });
+    });
+  }
+
+  /* ---- per-tab fill + save ---- */
+  function fillPomo() {
+    var d = stRead(ST.POMO_MIN_KEY) || {};
+    stEl('st-pomo-p').value = d.pomodoroMin || 25;
+    stEl('st-pomo-s').value = d.shortMin || 5;
+    stEl('st-pomo-l').value = d.longMin || 15;
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    stEl(ST.CHIME.pomo[0]).value = String(parseInt(n.main, 10) || 1);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.pomo.forEach(function (pair) { stEl(pair[0]).value = a[pair[1]] || '0'; });
+  }
+  function savePomo() {
+    stWrite(ST.POMO_MIN_KEY, {
+      pomodoroMin: stClamp(stEl('st-pomo-p').value, 1, 600, 25),
+      shortMin: stClamp(stEl('st-pomo-s').value, 1, 600, 5),
+      longMin: stClamp(stEl('st-pomo-l').value, 1, 600, 15)
+    });
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    n.main = stInt(stEl(ST.CHIME.pomo[0]).value, 1, 6, 1);
+    stWrite(ST.NOTIFY_KEY, n);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.pomo.forEach(function (pair) { a[pair[1]] = stEl(pair[0]).value; });
+    stWrite(ST.AMB_KEY, a);
+  }
+  function fillF52() {
+    var d = stRead(ST.F52_KEY) || {};
+    stEl('st-f52-w').value = d.workMin || 52;
+    stEl('st-f52-b').value = d.breakMin || 17;
+    stEl('st-f52-e').value = d.extendMin || 5;
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    stEl(ST.CHIME.f52[0]).value = String(parseInt(n.t5217, 10) || 1);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.f52.forEach(function (pair) { stEl(pair[0]).value = a[pair[1]] || '0'; });
+  }
+  function saveF52() {
+    stWrite(ST.F52_KEY, {
+      workMin: stClamp(stEl('st-f52-w').value, 1, 180, 52),
+      breakMin: stClamp(stEl('st-f52-b').value, 1, 120, 17),
+      extendMin: stClamp(stEl('st-f52-e').value, 1, 60, 5)
+    });
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    n.t5217 = stInt(stEl(ST.CHIME.f52[0]).value, 1, 6, 1);
+    stWrite(ST.NOTIFY_KEY, n);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.f52.forEach(function (pair) { a[pair[1]] = stEl(pair[0]).value; });
+    stWrite(ST.AMB_KEY, a);
+  }
+  function fillF20() {
+    var d = stRead(ST.F20_KEY) || {};
+    stEl('st-f20-w').value = d.workMin || 20;
+    stEl('st-f20-b').value = d.breakSec || 20;
+    stEl('st-f20-z').value = d.snoozeSec || 60;
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    stEl(ST.CHIME.f20[0]).value = String(parseInt(n.eye, 10) || 1);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.f20.forEach(function (pair) { stEl(pair[0]).value = a[pair[1]] || '0'; });
+  }
+  function saveF20() {
+    stWrite(ST.F20_KEY, {
+      workMin: stClamp(stEl('st-f20-w').value, 1, 180, 20),
+      breakSec: stClamp(stEl('st-f20-b').value, 5, 300, 20),
+      snoozeSec: stClamp(stEl('st-f20-z').value, 10, 600, 60)
+    });
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    n.eye = stInt(stEl(ST.CHIME.f20[0]).value, 1, 6, 1);
+    stWrite(ST.NOTIFY_KEY, n);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.f20.forEach(function (pair) { a[pair[1]] = stEl(pair[0]).value; });
+    stWrite(ST.AMB_KEY, a);
+  }
+
+  /* ---- flowtime tab (tier editor cloned from the page's rs* logic) ---- */
+  var ftMode = 'tiered';
+  function ftRenderTiers(tiers) {
+    var box = stEl('st-ft-tiers');
+    box.innerHTML = '';
+    tiers.forEach(function (t, i) {
+      var row = document.createElement('div');
+      row.className = 'st-tier-row';
+      var isLast = i === tiers.length - 1;
+      if (isLast) {
+        row.innerHTML = '<span style="flex:0 0 auto;font-size:12px;color:var(--muted)">past the last tier →</span>'
+          + '<input type="number" class="st-input" min="0" max="600" step="1" value="' + t[1] + '" title="break earned past the last tier">'
+          + '<button type="button" class="st-tier-x" disabled title="last tier stays open-ended" style="opacity:.35">✕</button>';
+      } else {
+        row.innerHTML = '<input type="number" class="st-input" min="1" max="600" step="1" value="' + t[0] + '" title="work minutes at this point">'
+          + '<input type="number" class="st-input" min="0" max="600" step="1" value="' + t[1] + '" title="break earned at this point">'
+          + '<button type="button" class="st-tier-x" title="remove tier">✕</button>';
+      }
+      var x = row.querySelector('.st-tier-x');
+      if (x && !isLast) x.addEventListener('click', function () { if (box.children.length > 1) row.remove(); });
+      box.appendChild(row);
+    });
+  }
+  function ftReadTiers() {
+    var rows = stEl('st-ft-tiers').querySelectorAll('.st-tier-row');
+    var tiers = [];
+    for (var i = 0; i < rows.length; i++) {
+      var ins = rows[i].querySelectorAll('input');
+      var w = ins.length === 2 ? parseFloat(ins[0].value) : null;
+      var b = parseFloat(ins[ins.length - 1].value);
+      if (!(b >= 0)) return null;
+      tiers.push([w, b]);
+    }
+    return tiers;
+  }
+  function ftValidate(tiers) {
+    var prevW = 0, prevB = -1;
+    for (var i = 0; i < tiers.length; i++) {
+      var w = tiers[i][0], b = tiers[i][1];
+      if (i === tiers.length - 1) { if (w !== null) return 'The last tier must be open-ended.'; }
+      else if (!(w > prevW)) return 'Tier ' + (i + 1) + ': work minutes must increase down the list.';
+      if (!(b >= prevB)) return 'Break earned can\'t go down between tiers.';
+      if (w !== null) prevW = w;
+      prevB = b;
+    }
+    return null;
+  }
+  function fillFt() {
+    var s = stRead(ST.FT_KEY);
+    if (!s || (s.mode !== 'tiered' && s.mode !== 'ratio') || !Array.isArray(s.tiers)) {
+      s = { mode: 'tiered', cont: false, tiers: ST.ZOE_TIERS.map(function (t) { return t.slice(); }), ratioN: 5, ratioCap: 15, fullMin: 60 };
+    }
+    if (typeof s.cont === 'undefined') s.cont = false;
+    ftMode = s.mode;
+    stFtModeUI();
+    ftRenderTiers(s.tiers);
+    stEl('st-ft-cont').checked = !!s.cont;
+    stEl('st-ft-n').value = s.ratioN || 5;
+    stEl('st-ft-cap').value = (s.ratioCap === 0 ? 0 : (s.ratioCap || 15));
+    stEl('st-ft-full').value = s.fullMin || 60;
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    stEl(ST.CHIME.ft[0]).value = String(parseInt(n.flow, 10) || 1);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.ft.forEach(function (pair) { stEl(pair[0]).value = a[pair[1]] || '0'; });
+  }
+  function stFtModeUI() {
+    stEl('st-ft-tiered').classList.toggle('sel', ftMode === 'tiered');
+    stEl('st-ft-ratio').classList.toggle('sel', ftMode === 'ratio');
+    stEl('st-ft-tiered-wrap').style.display = ftMode === 'tiered' ? '' : 'none';
+    stEl('st-ft-ratio-wrap').style.display = ftMode === 'ratio' ? '' : 'none';
+  }
+  function saveFt() {
+    var s = stRead(ST.FT_KEY) || {};
+    if (s.mode !== 'tiered' && s.mode !== 'ratio') s = {};
+    var fullMin = stInt(stEl('st-ft-full').value, 1, 600, 60);
+    var ratioN = stInt(stEl('st-ft-n').value, 2, 10, 5);
+    var ratioCap = stInt(stEl('st-ft-cap').value, 0, 60, 15);
+    var tiers = null, err = null;
+    if (ftMode === 'tiered') {
+      tiers = ftReadTiers();
+      if (!tiers) { stFlash('Tier values must be numbers'); return false; }
+      err = ftValidate(tiers);
+      if (err) { stFlash(err); return false; }
+    }
+    s.mode = ftMode;
+    s.cont = stEl('st-ft-cont').checked;
+    s.fullMin = fullMin;
+    s.ratioN = ratioN;
+    s.ratioCap = ratioCap;
+    if (tiers) s.tiers = tiers;
+    if (!Array.isArray(s.tiers)) s.tiers = ST.ZOE_TIERS.map(function (t) { return t.slice(); });
+    stWrite(ST.FT_KEY, s);
+    var n = stRead(ST.NOTIFY_KEY) || {};
+    n.flow = stInt(stEl(ST.CHIME.ft[0]).value, 1, 6, 1);
+    stWrite(ST.NOTIFY_KEY, n);
+    var a = stRead(ST.AMB_KEY) || {};
+    ST.AMB.ft.forEach(function (pair) { a[pair[1]] = stEl(pair[0]).value; });
+    stWrite(ST.AMB_KEY, a);
+    return true;
+  }
+
+  /* ---- sheet open/close/tabs/save ---- */
+  var setTab = 'pomo';
+  var FILL = { pomo: fillPomo, f52: fillF52, f20: fillF20, ft: fillFt };
+  var SAVE = { pomo: savePomo, f52: saveF52, f20: saveF20, ft: saveFt };
+  function stFlash(msg) {
+    var el = stEl('st-saved');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(function () { el.classList.remove('show'); }, 2600);
+  }
+  function stReloadFamily(tab) {
+    var path = ST.FAM_PATH[tab];
+    if (!path) return;
+    document.querySelectorAll('.tile iframe').forEach(function (f) {
+      try {
+        if (f.src && new URL(f.src).pathname === path) f.src = f.src.split('&r=')[0] + '&r=' + Date.now();
+      } catch (e) {}
+    });
+  }
+  function openSettings(tab) {
+    setTab = tab || 'pomo';
+    stFillAmbience();
+    if (FILL[setTab]) FILL[setTab]();
+    document.querySelectorAll('.set-tab').forEach(function (b) { b.classList.toggle('sel', b.getAttribute('data-tab') === setTab); });
+    document.querySelectorAll('.set-pane').forEach(function (p) { p.classList.toggle('sel', p.getAttribute('data-pane') === setTab); });
+    stEl('st-saved').classList.remove('show');
+    stEl('set-overlay').classList.add('open');
+    if (window.TTEvent) TTEvent('tool_open', { tool: 'timer_settings', source: 'workbench' });
+  }
+  function closeSettings() { stEl('set-overlay').classList.remove('open'); }
+  document.querySelectorAll('.set-tab').forEach(function (b) {
+    b.addEventListener('click', function () { openSettings(b.getAttribute('data-tab')); });
+  });
+  stEl('btn-settings').addEventListener('click', function () { openSettings('pomo'); });
+  stEl('set-close').addEventListener('click', closeSettings);
+  stEl('set-cancel').addEventListener('click', closeSettings);
+  stEl('set-overlay').addEventListener('click', function (e) { if (e.target === stEl('set-overlay')) closeSettings(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && stEl('set-overlay').classList.contains('open')) closeSettings();
+  });
+  stEl('set-save').addEventListener('click', function () {
+    if (SAVE[setTab]) {
+      /* save functions return false when validation refuses the write —
+         the error flash stays up and no tile reload happens */
+      if (SAVE[setTab]() !== false) {
+        stReloadFamily(setTab);
+        stEl('st-saved').textContent = 'Saved ✓ — widgets updated';
+        stEl('st-saved').classList.add('show');
+        setTimeout(function () { stEl('st-saved').classList.remove('show'); }, 2200);
+        closeSettings();
+      }
+    } else {
+      closeSettings();
+    }
+  });
+  /* flowtime tier editor wiring */
+  stEl('st-ft-tiered').addEventListener('click', function () { ftMode = 'tiered'; stFtModeUI(); });
+  stEl('st-ft-ratio').addEventListener('click', function () { ftMode = 'ratio'; stFtModeUI(); });
+  stEl('st-ft-addtier').addEventListener('click', function () {
+    var tiers = ftReadTiers() || [];
+    if (tiers.length < 2) tiers = [[25, 5], [null, 15]];
+    var lastPair = tiers[tiers.length - 1];
+    var prevW = tiers.length >= 2 ? tiers[tiers.length - 2][0] : 0;
+    var anchor = (prevW || 0) + 15;
+    tiers.splice(tiers.length - 1, 0, [anchor, lastPair[1]]);
+    ftRenderTiers(tiers);
+  });
+  stEl('st-ft-resetzoe').addEventListener('click', function () {
+    ftRenderTiers(ST.ZOE_TIERS.map(function (t) { return t.slice(); }));
   });
 
   /* ---------- boot ---------- */

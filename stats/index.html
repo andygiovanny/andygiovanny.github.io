@@ -473,7 +473,7 @@
 </style>
 <script>
 (function () {
-  var THEME_KEY = 'site-theme';
+  var THEME_KEY = 'tt_theme_v1'; /* unified house key; 'site-theme' kept as fallback read */
   function apply(t) {
     document.documentElement.classList.remove('theme-dark', 'theme-classic');
     if (t === 'dark') document.documentElement.classList.add('theme-dark');
@@ -481,7 +481,7 @@
     var sel = document.getElementById('theme-select');
     if (sel) sel.value = t;
   }
-  function saved() { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch (e) { return 'light'; } }
+  function saved() { try { return localStorage.getItem(THEME_KEY) || localStorage.getItem('site-theme') || 'light'; } catch (e) { return 'light'; } }
   apply(saved());
   document.addEventListener('DOMContentLoaded', function () {
     apply(saved());

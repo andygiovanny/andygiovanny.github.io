@@ -1124,6 +1124,11 @@ html.tt-embed-amb-tile .tt-amb-tile.on img.tt-amb-icon {
 html.tt-embed-amb-tile .tt-amb-tile.on .tt-amb-state {
     color: var(--accent-tomato, #DE4B3A); font-weight: 600;
 }
+/* dark theme (Tier 2 audit 2026-11-27): the tile card was hardcoded cream
+   #FAF5EB, so on a dark board it glowed light with unreadable light text */
+html.tt-embed-amb-tile body.theme-dark .tt-amb-tile { background: #1f1813; }
+html.tt-embed-amb-tile body.theme-dark .tt-amb-name { color: #E8D9B8; }
+html.tt-embed-amb-tile body.theme-dark .tt-amb-state { color: #A98F6F; }
 /* Preset Mixer — 6×4 (564×640) workbench block */
 html.tt-embed-amb-mixer, html.tt-embed-amb-mixer body {
     height: 100%; margin: 0; padding: 0; background: transparent;
